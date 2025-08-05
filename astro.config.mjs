@@ -4,6 +4,6 @@ import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
-  site: "https://lawlietnick.github.io",
+  site: "https://karppinen.one",
   integrations: [mdx(), sitemap(), tailwind()],
 });
