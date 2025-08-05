@@ -1,17 +1,18 @@
----
-import Container from "@components/Container.astro";
-import Link from "@components/Link.astro";
-import { SITE } from "@consts";
----
-
-<header>
-  <Container>
-    <div class="flex flex-wrap gap-y-2 justify-between">
-      <Link href="/" underline={false}>
-        <div class="font-semibold">
-          <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="50" height="auto" viewBox="0 0 300.000000 210.000000"
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="300.000000pt" height="210.000000pt" viewBox="0 0 300.000000 210.000000"
  preserveAspectRatio="xMidYMid meet">
+ <style>
+    path {
+      fill: #000;
+      fill-rule: nonzero;
+    }
+    @media (prefers-color-scheme: dark) {
+      path {
+        fill: #fff;
+        fill-rule: nonzero;
+      }
+    }
+    </style>
 <g transform="translate(0.000000,210.000000) scale(0.100000,-0.100000)"
 fill="#000000" stroke="none">
 <path d="M650 2093 c-70 -11 -197 -47 -247 -69 -197 -88 -346 -274 -390 -489
@@ -35,38 +36,3 @@ l28 54 -1 -164 c-1 -179 5 -219 32 -218 9 0 69 17 132 38 l115 37 -4 129 c-2
 612 158 726 -24 198 -247 347 -467 310z"/>
 </g>
 </svg>
-
-        </div>
-      </Link>
-      <nav class="flex gap-1">
-        <Link href="/blog">
-          blogi
-        </Link>
-        <span>
-          {`/`}
-        </span>
-        <Link href="/projects">
-          projektit
-        </Link>
-      </nav>
-    </div>
-  </Container>
-</header>
-
-
-<style>
-  .logo path {
-    fill: #000;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .logo path {
-      fill: #fff;
-    }
-  }
-  @media (prefers-color-scheme: ligth) {
-    .logo path {
-      fill: #000;
-    }
-  }
-</style>
