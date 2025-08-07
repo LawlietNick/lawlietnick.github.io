@@ -9,13 +9,13 @@ export const SITE: Site = {
 };
 
 export const HOME: Metadata = {
-  TITLE: "Home",
-  DESCRIPTION: "Astro Nano is a minimal and lightweight blog and portfolio.",
+  TITLE: "Niko Karppinen",
+  DESCRIPTION: "Analytiikan ja hakukoneoptimoinnin konsultti",
 };
 
 export const BLOG: Metadata = {
-  TITLE: "Blog",
-  DESCRIPTION: "A collection of articles on topics I am passionate about.",
+  TITLE: "Blogi",
+  DESCRIPTION: "Omia tekstejä",
 };
 
 export const WORK: Metadata = {
@@ -24,8 +24,8 @@ export const WORK: Metadata = {
 };
 
 export const PROJECTS: Metadata = {
-  TITLE: "Projects",
-  DESCRIPTION: "A collection of my projects, with links to repositories and demos.",
+  TITLE: "Projectit ja esiintymiset",
+  DESCRIPTION: "Viimeisiä projekteja ja esiintymisiä",
 };
 
 export const SOCIALS: Socials = [
