@@ -1,6 +1,6 @@
 ---
 title: "Cookiebot guide"
-description: "Simplified and Prettified guide"
+description: "Simplified guide to install Cookiebot"
 date: "Aug 07 2025"
 ---
 
