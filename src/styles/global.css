@@ -43,6 +43,11 @@ article {
   @apply prose-headings:text-black prose-headings:dark:text-white;
 }
 
+article iframe {
+  max-width: 100%;
+  max-height: auto;
+}
+
 @layer utilities {
   article a {
     @apply font-sans text-current underline underline-offset-2;
