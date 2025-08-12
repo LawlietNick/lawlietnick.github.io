@@ -45,7 +45,7 @@ article {
 
 article iframe {
   max-width: 100%;
-  max-height: auto;
+  height: auto;
 }
 
 @layer utilities {
@@ -75,4 +75,69 @@ html #back-to-top {
 
 html.scrolled #back-to-top {
   @apply opacity-100 pointer-events-auto;
+}
+
+pre:has(code) {
+  position: relative;
+}
+
+pre button.copy {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  height: 28px;
+  width: 28px;
+  padding: 0;
+  display: flex;
+
+  & span {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+
+  & .ready {
+    background-image: url(/icons/copy.svg);
+  }
+
+  & .success {
+    display: none;
+    background-image: url(/icons/copy-success.svg);
+  }
+
+  &.copied {
+    & .success {
+      display: block;
+    }
+
+    & .ready {
+      display: none;
+    }
+  }
+}
+
+/* e.g., src/styles/code.css and import in your layout */
+pre:has(code) { position: relative; }
+
+pre button.copy {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  padding: 0;
+}
+
+pre button.copy .ready {
+  background: url("/icons/copy.svg") no-repeat center;
+  background-size: 18px;
+}
+
+pre button.copy .success {
+  background: url("/icons/copy-success.svg") no-repeat center;
+  background-size: 18px;
+  display: none;
 }
