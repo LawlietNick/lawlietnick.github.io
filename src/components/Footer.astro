@@ -90,3 +90,46 @@ import BackToTop from "@components/BackToTop.astro";
     </div>
   </Container>
 </footer>
+
+<script>
+// Function to handle the page title change
+function handlePageTitleChange() {
+  let originalTitle = document.title;
+  let hidden, visibilityChange;
+
+  if (typeof document.hidden !== "undefined") {
+    hidden = "hidden";
+    visibilityChange = "visibilitychange";
+  } else if (typeof document.msHidden !== "undefined") {
+    hidden = "msHidden";
+    visibilityChange = "msvisibilitychange";
+  } else if (typeof document.webkitHidden !== "undefined") {
+    hidden = "webkitHidden";
+    visibilityChange = "webkitvisibilitychange";
+  }
+
+  function handleVisibilityChange() {
+    if (document[hidden]) {
+      document.title = "Come back to " + originalTitle;
+    } else {
+      document.title = originalTitle;
+    }
+  }
+
+  // Remove any existing event listener to avoid duplicates
+  document.removeEventListener(visibilityChange, handleVisibilityChange, false);
+  
+  // Add the event listener for the new page
+  document.addEventListener(
+    visibilityChange,
+    handleVisibilityChange,
+    false
+  );
+}
+
+// 1. Initial page load (as a fallback)
+handlePageTitleChange();
+
+// 2. Listen for subsequent page loads with View Transitions
+document.addEventListener("astro:page-load", handlePageTitleChange);
+</script>
