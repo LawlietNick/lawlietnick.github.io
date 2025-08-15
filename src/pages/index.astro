@@ -34,8 +34,24 @@ const abs = (path: string) => new URL(path, site).toString();
 const pageUrl = new URL(Astro.url.pathname, site).toString();
 
 const sameAs = (SOCIALS ?? []).map(s => s.HREF).filter(Boolean);
-const iso = (d: string | Date) =>
-  new Date(typeof d === "string" ? d : d.valueOf()).toISOString().slice(0, 10);
+const iso = (d: string | Date) => {
+  const dateObj = new Date(typeof d === "string" ? d : d.valueOf());
+
+  const pad = (num: number) => String(num).padStart(2, "0");
+
+  const year = dateObj.getFullYear();
+  const month = pad(dateObj.getMonth() + 1);
+  const day = pad(dateObj.getDate());
+  const hours = pad(dateObj.getHours());
+  const minutes = pad(dateObj.getMinutes());
+
+  const tzOffsetMin = -dateObj.getTimezoneOffset();
+  const sign = tzOffsetMin >= 0 ? "+" : "-";
+  const tzHours = pad(Math.floor(Math.abs(tzOffsetMin) / 60));
+  const tzMinutes = pad(Math.abs(tzOffsetMin) % 60);
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:00${sign}${tzHours}:${tzMinutes}`;
+};
 
 const latestPosts = blog.map(p => ({
   "@type": "BlogPosting",
@@ -43,7 +59,8 @@ const latestPosts = blog.map(p => ({
   url: abs(`blog/${p.slug}/`),
   headline: p.data.title,
   datePublished: iso(p.data.date),
-  inLanguage: "fi" // your posts default to Finnish; adjust if you later add a lang field
+  inLanguage: "fi",
+  author: { "@id": `${siteBase}#person` }
 }));
 
 const latestProjects = projects.map(pr => ({
