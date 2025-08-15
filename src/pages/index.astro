@@ -4,18 +4,17 @@ import Container from "@components/Container.astro";
 import PageLayout from "@layouts/PageLayout.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import Link from "@components/Link.astro";
-import { dateRange } from "@lib/utils";
 import { SITE, HOME, SOCIALS } from "@consts";
 
 const blog = (await getCollection("blog"))
   .filter(post => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_POSTS_ON_HOMEPAGE);
+  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
 const projects = (await getCollection("projects"))
   .filter(project => !project.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_PROJECTS_ON_HOMEPAGE);
+  .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
 
 const allwork = (await getCollection("work"))
   .sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf())
@@ -28,32 +27,32 @@ const work = await Promise.all(
   })
 );
 
-const site = Astro.site;
+const site = Astro.site!;
 const siteBase = site.toString();
 
-const abs = (path) => new URL(path, site).toString();
+const abs = (path: string) => new URL(path, site).toString();
 const pageUrl = new URL(Astro.url.pathname, site).toString();
 
 const sameAs = (SOCIALS ?? []).map(s => s.HREF).filter(Boolean);
-const iso = (d) => new Date(typeof d === "string" ? d : d.valueOf()).toISOString().slice(0,10);
+const iso = (d: string | Date) =>
+  new Date(typeof d === "string" ? d : d.valueOf()).toISOString().slice(0, 10);
 
-// Map homepage lists
 const latestPosts = blog.map(p => ({
   "@type": "BlogPosting",
   "@id": abs(`blog/${p.slug}/#article`),
   url: abs(`blog/${p.slug}/`),
   headline: p.data.title,
   datePublished: iso(p.data.date),
-  inLanguage: p.data.lang ?? "fi"
+  inLanguage: "fi" // your posts default to Finnish; adjust if you later add a lang field
 }));
 
 const latestProjects = projects.map(pr => ({
-  "@type": pr.data.type ?? "CreativeWork",
+  "@type": "CreativeWork", // set per-project type later if you add a `type` field
   "@id": abs(`projects/${pr.slug}/#item`),
   url: abs(`projects/${pr.slug}/`),
   name: pr.data.title,
   datePublished: iso(pr.data.date),
-  inLanguage: pr.data.lang ?? "fi"
+  inLanguage: "fi"
 }));
 
 const homeJsonLd = {
@@ -62,16 +61,16 @@ const homeJsonLd = {
     {
       "@type": "Person",
       "@id": `${siteBase}#person`,
-      "name": SITE?.NAME ?? "Niko Karppinen",
+      "name": SITE.NAME ?? "Niko Karppinen",
       "url": siteBase,
-      "description": HOME?.DESCRIPTION ?? "Analytiikka, SEO ja datalähtöinen kehitys.",
+      "description": HOME.DESCRIPTION ?? "Analytiikka, SEO ja datalähtöinen kehitys.",
       "sameAs": sameAs
     },
     {
       "@type": "WebSite",
       "@id": `${siteBase}#website`,
       "url": siteBase,
-      "name": SITE?.TITLE ?? SITE?.NAME ?? "Niko Karppinen",
+      "name": SITE.NAME ?? "Niko Karppinen",
       "publisher": { "@id": `${siteBase}#person` },
       "inLanguage": "fi"
     },
@@ -79,7 +78,7 @@ const homeJsonLd = {
       "@type": "WebPage",
       "@id": `${pageUrl}#webpage`,
       "url": pageUrl,
-      "name": HOME?.TITLE ?? "Etusivu",
+      "name": HOME.TITLE ?? "Etusivu",
       "isPartOf": { "@id": `${siteBase}#website` },
       "about": { "@id": `${siteBase}#person` },
       "inLanguage": "fi"
@@ -110,7 +109,6 @@ const homeJsonLd = {
       : [])
   ]
 };
-
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION} jsonLd={homeJsonLd}>

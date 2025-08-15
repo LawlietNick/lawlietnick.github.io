@@ -11,11 +11,11 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
   lang?: string;
 }
-const { title, description, image, jsonLd = null, lang ="fi" } = Astro.props;
+const { title, description, image, jsonLd = null, lang = "fi" } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="fi">
+<html lang={lang}>
   <head>
     <Head title={`${title}`} description={description} image={image} jsonLd={jsonLd} />
   </head>

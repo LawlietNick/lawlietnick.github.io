@@ -49,10 +49,10 @@ const { title, description, image = "/nano.png", jsonLd = null } = Astro.props;
 <meta property="og:image" content={new URL(image, Astro.url)} />
 
 {jsonLd && Array.isArray(jsonLd) && jsonLd.map((block) => (
-  <script type="application/ld+json" set:html={JSON.stringify(block)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(block)} />
 ))}
 {jsonLd && !Array.isArray(jsonLd) && (
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 )}
 
 <ClientRouter  />
