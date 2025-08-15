@@ -28,9 +28,92 @@ const work = await Promise.all(
   })
 );
 
+const site = Astro.site;
+const siteBase = site.toString();
+
+const abs = (path) => new URL(path, site).toString();
+const pageUrl = new URL(Astro.url.pathname, site).toString();
+
+const sameAs = (SOCIALS ?? []).map(s => s.HREF).filter(Boolean);
+const iso = (d) => new Date(typeof d === "string" ? d : d.valueOf()).toISOString().slice(0,10);
+
+// Map homepage lists
+const latestPosts = blog.map(p => ({
+  "@type": "BlogPosting",
+  "@id": abs(`blog/${p.slug}/#article`),
+  url: abs(`blog/${p.slug}/`),
+  headline: p.data.title,
+  datePublished: iso(p.data.date),
+  inLanguage: p.data.lang ?? "fi"
+}));
+
+const latestProjects = projects.map(pr => ({
+  "@type": pr.data.type ?? "CreativeWork",
+  "@id": abs(`projects/${pr.slug}/#item`),
+  url: abs(`projects/${pr.slug}/`),
+  name: pr.data.title,
+  datePublished: iso(pr.data.date),
+  inLanguage: pr.data.lang ?? "fi"
+}));
+
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteBase}#person`,
+      "name": SITE?.NAME ?? "Niko Karppinen",
+      "url": siteBase,
+      "description": HOME?.DESCRIPTION ?? "Analytiikka, SEO ja datalähtöinen kehitys.",
+      "sameAs": sameAs
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteBase}#website`,
+      "url": siteBase,
+      "name": SITE?.TITLE ?? SITE?.NAME ?? "Niko Karppinen",
+      "publisher": { "@id": `${siteBase}#person` },
+      "inLanguage": "fi"
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${pageUrl}#webpage`,
+      "url": pageUrl,
+      "name": HOME?.TITLE ?? "Etusivu",
+      "isPartOf": { "@id": `${siteBase}#website` },
+      "about": { "@id": `${siteBase}#person` },
+      "inLanguage": "fi"
+    },
+    ...(latestPosts.length
+      ? [{
+          "@type": "ItemList",
+          "@id": `${siteBase}#latest-posts`,
+          "name": "Viimeisimmät artikkelit",
+          "itemListElement": latestPosts.map((item, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": item
+          }))
+        }]
+      : []),
+    ...(latestProjects.length
+      ? [{
+          "@type": "ItemList",
+          "@id": `${siteBase}#latest-projects`,
+          "name": "Viimeisimmät projektit",
+          "itemListElement": latestProjects.map((item, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": item
+          }))
+        }]
+      : [])
+  ]
+};
+
 ---
 
-<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION} jsonLd={homeJsonLd}>
   <Container>
     <h4 class="animate font-semibold text-black dark:text-white">
       Hei, minä olen Niko Karppinen <span class="text-xl">👋🏻</span> 

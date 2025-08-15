@@ -16,11 +16,12 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = "/nano.png" } = Astro.props;
+const { title, description, image = "/nano.png", jsonLd = null } = Astro.props;
 ---
 
 <meta charset="utf-8" />
@@ -34,6 +35,7 @@ const { title, description, image = "/nano.png" } = Astro.props;
 <link rel="preload" href={lora400} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={lora600} as="font" type="font/woff2" crossorigin/>
 
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
 <link rel="canonical" href={canonicalURL} />
 
 <title>{title}</title>
@@ -45,6 +47,13 @@ const { title, description, image = "/nano.png" } = Astro.props;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
+
+{jsonLd && Array.isArray(jsonLd) && jsonLd.map((block) => (
+  <script type="application/ld+json" set:html={JSON.stringify(block)} />
+))}
+{jsonLd && !Array.isArray(jsonLd) && (
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+)}
 
 <ClientRouter  />
 
