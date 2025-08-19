@@ -11,7 +11,10 @@ export default defineConfig({
     mdx(),
     sitemap(),
     tailwind(),
-    umami({ id: "94db1cb1-74f4-4a40-ad6c-962362670409" })
+    umami({
+      id: "c7ab1eae-9cab-4e98-a355-c789877e07c2",
+      endpointUrl: "https://righteous-terrier.pikapod.net",
+    })
   ],
 
   markdown: {
