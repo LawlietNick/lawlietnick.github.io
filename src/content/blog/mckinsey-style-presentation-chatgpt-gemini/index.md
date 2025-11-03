@@ -134,8 +134,8 @@ For example:
 * **TOPIC_TITLE:** Website Performance Optimization
 * **PRESENTATION_GOAL:** Present Critical Audit Findings
 * **AUDIENCE:** Operations Team
-* **CORE_DATA_POINTS:** LCP cut in half, total page size reduced from 10MB to 5MB
-* **KEY_RESOLUTION/RECOMMENDATION:** Optimize URL structure into 10 content categories
+* **CORE_DATA_POINTS:** Largest contentful Paint cut in half, total page size reduced from 10MB to 5MB
+* **KEY_RESOLUTION/RECOMMENDATION:** Optimize content for AI Overview
 
 
 ### **Step 4 – Review, Polish, and Present**
@@ -147,29 +147,3 @@ The AI will return a **slide-by-slide outline** that you can:
 * Present to decision-makers as a clear, structured recommendation deck
 
 The result: a presentation built like a McKinsey consultant’s — without starting from a blank slide.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Context
-
-McKinsey consultants use two tightly linked frameworks to make complex information crystal clear:
-
-1. SCQR Framework (Situation–Complication–Question–Resolution) — This creates the storyline or logical flow of your presentation.
-
-2. Pyramid Principle — This defines how ideas are structured on each level of the deck or memo.
-
-Used together, they ensure your argument is logical, persuasive, and immediately actionable for executives.
-
