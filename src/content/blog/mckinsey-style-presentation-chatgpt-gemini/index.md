@@ -56,14 +56,10 @@ You only need to feed it a few key details about your topic.
 
 Here’s how:
 
----
-
 ### **Step 1 – Gather Your Core Material**
 
 Before you start, collect the main data points, findings, or audit insights you want to communicate.
 You don’t need slides yet, just a few bullet points with results or actions.
-
----
 
 ### **Step 2 – Paste This Prompt into ChatGPT or Gemini**
 
@@ -127,8 +123,6 @@ The AI will then ask you six short questions to generate a **complete McKinsey-s
     * **Call to Action (Decision Required):** Based on the **[PRESENTATION_GOAL]**, we require [State the single, explicit ask—e.g., "Immediate approval of the $4M budget," or "Executive sponsorship to implement the three remediation steps."].
 ```
 
----
-
 ### **Step 3 – Provide Your Inputs**
 
 After you paste the prompt, the AI will ask you the six questions above.
@@ -143,7 +137,6 @@ For example:
 * **CORE_DATA_POINTS:** LCP cut in half, total page size reduced from 10MB to 5MB
 * **KEY_RESOLUTION/RECOMMENDATION:** Optimize URL structure into 10 content categories
 
----
 
 ### **Step 4 – Review, Polish, and Present**
 
