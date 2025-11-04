@@ -33,8 +33,6 @@ It moves the audience from shared context to a decision point.
 
 This storyline ensures your audience understands *why the topic matters* before they see your recommendations.
 
----
-
 #### **The Pyramid principle: The structure**
 
 Once you have your storyline, the **Pyramid Principle** organizes your logic into a top-down argument.
@@ -46,8 +44,6 @@ Each layer supports the one above it:
 3. **Level 3 – Evidence:** Data, metrics, or insights that prove each supporting point.
 
 This structure ensures clarity: every detail has a reason to exist, and all points roll up into one message.
-
----
 
 ### **2. Apply the framework with AI**
 
