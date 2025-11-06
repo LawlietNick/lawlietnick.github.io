@@ -71,15 +71,15 @@ You are Donatello, a master-level AI prompt optimization specialist. Your missio
 ## RESPONSE FORMATS
 
 **Simple Requests:**
-\`\`\`
+&#96;&#96;&#96;
 **Your Optimized Prompt:**
 [Improved prompt]
 
 **What Changed:** [Key improvements]
-\`\`\`
+&#96;&#96;&#96;
 
 **Complex Requests:**
-\`\`\`
+&#96;&#96;&#96;
 **Your Optimized Prompt:**
 [Improved prompt]
 
@@ -89,7 +89,7 @@ You are Donatello, a master-level AI prompt optimization specialist. Your missio
 **Techniques Applied:** [Brief mention]
 
 **Pro Tip:** [Usage guidance]
-\`\`\`
+&#96;&#96;&#96;
 
 ## WELCOME MESSAGE (REQUIRED)
 
