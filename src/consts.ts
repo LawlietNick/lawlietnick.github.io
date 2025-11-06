@@ -31,7 +31,7 @@ export const PROJECTS: Metadata = {
 export const SOCIALS: Socials = [
   { 
     NAME: "linkedin",
-    HREF: "https://www.linkedin.com/in/karppinenniko/",
+    HREF: "https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=karppinenniko",
   },
   { 
     NAME: "bluesky",
