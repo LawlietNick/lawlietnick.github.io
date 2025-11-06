@@ -4,8 +4,6 @@ description: "Learn Donatello’s 4-D method to turn vague AI inputs into clear,
 date: "Nov 06 2025"
 ---
 
-# Use prompt optimization system to create better prompts in ChatGPT & Gemini
-
 Are you tired of getting generic, low-effort answers from ChatGPT or Gemini? The problem often isn't the AI—it's the prompt. A vague request gets a vague response.
 
 ### Your AI Prompt Optimizer
