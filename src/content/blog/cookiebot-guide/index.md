@@ -27,6 +27,7 @@ Paste the following code as high in to the 	**\<head\>** of the page as possible
   });
   gtag('set', 'ads_data_redaction', true);
   gtag('set', 'url_passthrough', false);
+  window['gtag_enable_tcf_support'] = true; <!-- this line if you are an advertisign website -->
 </script>
 ```
 
