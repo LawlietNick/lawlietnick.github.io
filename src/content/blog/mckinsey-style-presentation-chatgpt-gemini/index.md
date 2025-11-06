@@ -4,14 +4,12 @@ description: "Learn how to create McKinsey-style presentations using ChatGPT or 
 date: "Nov 03 2025"
 ---
 
-## **How to turn your analysis into a McKinsey-Style presentation using ChatGPT or Gemini**
-
 Most professionals can produce data. Few can turn that data into a story that convinces decision-makers to act.
 That’s why consultants at McKinsey, BCG, and Bain rely on a strict logic framework called the SCQR and Pyramid Principle to structure every presentation. It turns messy findings into a clear narrative that moves from insight to action.
 
 The good news is that you don’t need a strategy background to use it. With one AI prompt, you can create a complete executive-ready presentation outline using ChatGPT or Gemini. Here’s how.
 
-### **1. Start with the Framework: How consultants structure their story**
+### 1. Start with the Framework: How consultants structure their story
 
 At McKinsey and similar strategy firms, every presentation follows two connected frameworks:
 **The SCQR Model** and **The Pyramid Principle**.
@@ -19,7 +17,7 @@ Together, they make your argument both *logical* and *action-oriented.*
 
 ---
 
-#### **The SCQR model: The storyline**
+#### The SCQR model: The storyline
 
 The SCQR (Situation–Complication–Question–Resolution) structure is the foundation of a compelling executive narrative.
 It moves the audience from shared context to a decision point.
@@ -33,7 +31,7 @@ It moves the audience from shared context to a decision point.
 
 This storyline ensures your audience understands *why the topic matters* before they see your recommendations.
 
-#### **The Pyramid principle: The structure**
+#### The Pyramid principle: The structure
 
 Once you have your storyline, the **Pyramid Principle** organizes your logic into a top-down argument.
 
@@ -45,19 +43,19 @@ Each layer supports the one above it:
 
 This structure ensures clarity: every detail has a reason to exist, and all points roll up into one message.
 
-### **2. Apply the framework with AI**
+### 2. Apply the framework with AI
 
 Now that you understand the logic behind the presentation, you can let AI handle the formatting and structure for you.
 You only need to feed it a few key details about your topic.
 
 Here’s how:
 
-### **Step 1 – Gather your core material**
+### Step 1 – Gather your core material
 
 Before you start, collect the main data points, findings, or audit insights you want to communicate.
 You don’t need slides yet, just a few bullet points with results or actions.
 
-### **Step 2 – Paste this prompt into ChatGPT or Gemini**
+### Step 2 – Paste this prompt into ChatGPT or Gemini
 
 Copy and paste the following text exactly.
 The AI will then ask you six short questions to generate a **complete McKinsey-style SCQR + Pyramid Principle presentation outline**.
@@ -133,7 +131,7 @@ The AI will then ask you six short questions to generate a **complete McKinsey-s
     *   **Call to Action (Decision Required):** Based on the **[PRESENTATION\_GOAL]**, we require [State the single, explicit ask—e.g., "Immediate approval of the $4M budget," or "Executive sponsorship to implement the three remediation steps."].
 ```
 
-### **Step 3 – Provide your inputs**
+### Step 3 – Provide your inputs
 
 After you paste the prompt, the AI will ask you the six questions above.
 Answer them clearly. Each response gives the AI the raw material it needs to build your story.
@@ -148,7 +146,7 @@ For example:
 * **KEY_RESOLUTION/RECOMMENDATION:** Optimize content for AI Overview
 
 
-### **Step 4 – Review, polish, and present**
+### Step 4 – Review, polish, and present
 
 The AI will return a **slide-by-slide outline** that you can:
 
