@@ -18,11 +18,6 @@ export const BLOG: Metadata = {
   DESCRIPTION: "Kirjotelmia siitä sun tästä",
 };
 
-export const WORK: Metadata = {
-  TITLE: "Work",
-  DESCRIPTION: "Where I have worked and what I have done.",
-};
-
 export const PROJECTS: Metadata = {
   TITLE: "Projectit ja esiintymiset",
   DESCRIPTION: "Viimeisiä projekteja ja esiintymisiä",

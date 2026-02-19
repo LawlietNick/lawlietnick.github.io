@@ -17,17 +17,6 @@ const projects = (await getCollection("projects"))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
 
-const allwork = (await getCollection("work"))
-  .sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf())
-  .slice(0,SITE.NUM_WORKS_ON_HOMEPAGE);
-
-const work = await Promise.all(
-  allwork.map(async (item) => {
-    const { Content } = await item.render();
-    return { ...item, Content };
-  })
-);
-
 const site = Astro.site!;
 const siteBase = site.toString();
 
@@ -82,7 +71,41 @@ const homeJsonLd = {
       "name": SITE.NAME ?? "Niko Karppinen",
       "url": siteBase,
       "description": HOME.DESCRIPTION ?? "Analytiikka, SEO ja datalähtöinen kehitys.",
-      "sameAs": sameAs
+      "sameAs": sameAs,
+      "knowsAbout": [
+        {
+          "@type": "DefinedTerm",
+          "name": "Hakukoneoptimointi"
+        },
+        {
+          "@type": "DefinedTerm",
+          "name": "Tekninen SEO"
+        },
+        {
+          "@type": "DefinedTerm",
+          "name": "Web-analytiikka"
+        },
+        {
+          "@type": "DefinedTerm",
+          "name": "Google Analytics 4"
+        },
+        {
+          "@type": "DefinedTerm",
+          "name": "PiwikPro"
+        },
+        {
+          "@type": "DefinedTerm",
+          "name": "Matomo"
+        },
+        {
+          "@type": "DefinedTerm",
+          "name": "Google Tag Manager"
+        },
+        {
+          "@type": "DefinedTerm",
+          "name": "Tekoäly markkinoinnissa"
+        }
+      ]
     },
     {
       "@type": "WebSite",
