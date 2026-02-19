@@ -59,6 +59,12 @@ const { title, description, image = "/nano.png", jsonLd = null } = Astro.props;
 
 <link rel="alternate" type="application/rss+xml" title={SITE.NAME} href={new URL("rss.xml", Astro.site)} />
 
+<script
+    src="https://app.rybbit.io/api/script.js"
+    data-site-id="6f009de8f938"
+    defer
+></script>
+
 <script>
   import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
   document.addEventListener("astro:before-swap", (e) =>
