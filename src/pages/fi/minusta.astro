@@ -1,0 +1,112 @@
+---
+import Base from "../../layouts/Base.astro";
+import SplitSection from "../../components/SplitSection.astro";
+import AboutIntro from "../../components/AboutIntro.astro";
+import Appearances from "../../components/Appearances.astro";
+---
+
+<Base title="Minusta" description="Niko Karppinen on SEO- ja analytiikkakonsultti, joka työskentelee digitaalisen mittaamisen, teknisten toteutusten ja käytännöllisten digitaalisten järjestelmien parissa." schemaPageType="about">
+  <AboutIntro fi={true} />
+
+  <SplitSection id="approach" variant="about">
+    <Fragment slot="title">
+      <h2>Miten lähestyn työtä</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Hyvien järjestelmien pitäisi tehdä seuraavasta päätöksestä selkeämpi.
+        Palaan tähän testiin, tarkastelinpa mittaussuunnitelmaa,
+        sivustorakennetta tai seurannan toteutusta.
+      </p>
+      <p>
+        Työni sijoittuu usein kohtaan, jossa SEO, analytiikka, sisältö, seuranta
+        ja tekninen toteutus kohtaavat. Yhdistän tietoa näiden alueiden välillä
+        sen sijaan, että käsittelisin jokaista erillisenä ongelmana. Joskus se
+        tarkoittaa myös kysymistä, onko alkuperäinen ongelma määritelty oikein.
+      </p>
+      <p>
+        Kun aihe on abstrakti, käytän konkreettisia esimerkkejä, vertauksia ja
+        pieniä toimivia malleja, jotta sitä on helpompi tarkastella. Rakennan
+        mieluummin jotain testattavaa kuin annan epämääräisen suosituksen, joka
+        vain kuulostaa valmiilta.
+      </p>
+      <p>
+        Tekoäly voi auttaa soveltamaan selkeää prosessia johdonmukaisemmin. Se
+        ei voi korjata epäselvää omistajuutta, epäluotettavaa lähdedataa tai
+        prosessia, jota kukaan ei ymmärrä.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <SplitSection id="values" variant="about">
+    <Fragment slot="title">
+      <h2>Mistä välitän</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Välitän selkeydestä, luottamuksesta ja hyödyllisestä rakenteesta:
+        mittaamisesta, joka tukee oikeita päätöksiä sen sijaan, että se tuottaa
+        lisää ylläpidettäviä lukuja.
+      </p>
+      <p>
+        Hyvän työn pitäisi antaa ihmisille riittävästi kontekstia arvioida,
+        mikä on tärkeää, ja riittävästi rakennetta toimia sen pohjalta.
+        Työkalut voivat tuoda esiin toistuvia ilmiöitä, mutta inhimillinen
+        harkinta ratkaisee edelleen, mikä on tärkeää asiakkaalle,
+        liiketoiminnalle ja brändille.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <SplitSection id="background" variant="about">
+    <Fragment slot="title">
+      <h2>Tausta</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Olen työskennellyt SEO:n, analytiikan ja digimarkkinoinnin parissa
+        vuodesta 2017. Vuosien varrella olen työskennellyt verkkokauppojen,
+        teleoperaattoreiden, julkisen sektorin organisaatioiden,
+        kuluttajabrändien ja B2B-yritysten kanssa.
+      </p>
+      <p>
+        Työhöni on kuulunut teknisiä SEO-auditointeja, analytiikkatoteutuksia,
+        suostumus- ja seurantaratkaisuja, verkkosivu-uudistusten tukea,
+        mittaussuunnittelua, dashboard-kehitystä ja hakulähtöistä
+        sivustorakenteen suunnittelua.
+      </p>
+      <p>
+        Olen pitkään ollut kiinnostunut teknologian, sisällön, rakenteen ja
+        tarinankerronnan suhteesta. Olen myös kirjoittanut
+        lyhytelokuvakäsikirjoituksia — en ammatillisena meriittinä, vaan koska
+        pidän siitä, miten ideat, rytmi ja viestintä rakentuvat yhteen.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <SplitSection id="outside-work" variant="about">
+    <Fragment slot="title">
+      <h2>Vapaa-ajalla</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Työn ulkopuolella vietän paljon aikaa elokuvien, animen ja
+        tarinavetoisten yksinpelien parissa. Alan Wake ja Metal Gear Solid ovat
+        erityisiä suosikkejani. Minua vetävät puoleensa selkeästi rakennetut
+        tarinat, vahva tunnelma ja hieman erikoiset maailmat.
+      </p>
+      <p>
+        Luen myös sarjakuvia, etenkin Batmania ja Teenage Mutant Ninja
+        Turtlesia. Pidän vahvoista konsepteista ja maailmoista, joilla on oma
+        sisäinen logiikkansa.
+      </p>
+      <p>
+        Tanssin myös kuubalaista salsaa ja lockingia. Molemmissa yhdistyvät
+        rakenne, rytmi, harjoittelu ja improvisaatio. Ne myös tekevät liiasta
+        itsevarmuudesta nopeasti näkyvää.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <Appearances fi={true} />
+</Base>

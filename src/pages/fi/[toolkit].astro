@@ -1,0 +1,68 @@
+---
+import Base from "../../layouts/Base.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import { toolkit } from "../../data/toolkit.js";
+import { interactiveTools } from "../../data/interactive-tools.js";
+
+// item markdown per category (Finnish dirs use the category fiSlug)
+const itemGlobs = {
+  tyokalut: import.meta.glob("./tyokalut/*.md", { eager: true }),
+  toteutusmallit: import.meta.glob("./toteutusmallit/*.md", { eager: true }),
+};
+
+export function getStaticPaths() {
+  return toolkit.map((item) => ({ params: { toolkit: item.fiSlug ?? item.slug }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const c = item.fi;
+const fiSlug = item.fiSlug ?? item.slug;
+const mdItems = Object.entries(itemGlobs[fiSlug] ?? {}).map(([path, mod]) => ({
+  ...mod.frontmatter,
+  href: `/fi/${fiSlug}/${path.split("/").pop().replace(/\.md$/, "")}/`,
+}));
+const interactive = interactiveTools
+  .filter((t) => t.category === item.slug && t.fi)
+  .map((t) => ({ ...t.fi, icon: t.icon, order: t.order ?? 0, href: `/fi/${fiSlug}/${t.fi.slug ?? t.slug}/` }));
+const items = [...mdItems, ...interactive].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+const empty = items.length === 0;
+---
+
+<Base title={c.label} documentTitle={c.documentTitle} description={c.desc} schemaPageType="toolkit" noindex={empty}>
+  <section class="about toolkit-hero wide-band">
+    <div>
+      <h1>{c.label}</h1>
+    </div>
+    <div>
+      <p>{c.desc}</p>
+      {empty && <p class="toolkit-empty">Tätä kokoelmaa kootaan parhaillaan. Palaa pian.</p>}
+    </div>
+  </section>
+
+  {
+    !empty && (
+      <div class="toolkit-grid">
+        {items.map((entry) => (
+          <ServiceCard href={entry.href} icon={entry.icon ?? "✦"} title={entry.title} summary={entry.summary} />
+        ))}
+      </div>
+    )
+  }
+</Base>
+
+<style>
+  .toolkit-empty {
+    color: var(--muted);
+  }
+  .toolkit-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    margin-block: 1.5rem 3rem;
+  }
+  @container page (min-width: 46rem) {
+    .toolkit-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

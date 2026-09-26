@@ -1,0 +1,110 @@
+---
+import Base from "../layouts/Base.astro";
+import SplitSection from "../components/SplitSection.astro";
+import AboutIntro from "../components/AboutIntro.astro";
+import Appearances from "../components/Appearances.astro";
+---
+
+<Base title="About Niko Karppinen" description="Niko Karppinen is an SEO and analytics consultant working across digital measurement, technical implementation and practical digital systems." schemaPageType="about">
+  <AboutIntro />
+
+  <SplitSection id="approach" variant="about">
+    <Fragment slot="title">
+      <h2>How I approach work</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Good systems should make the next decision clearer. That is the test I
+        come back to, whether I am looking at a measurement plan, a site
+        structure, or a tracking implementation.
+      </p>
+      <p>
+        My work often sits where SEO, analytics, content, tracking, and technical
+        implementation meet. I tend to connect information across those areas
+        instead of treating each one as a separate problem. Sometimes that also
+        means asking whether the original problem has been framed correctly.
+      </p>
+      <p>
+        When a subject is abstract, I use concrete examples, analogies, and small
+        working models to make it easier to inspect. I would rather build
+        something that can be tested than deliver a vague recommendation that
+        sounds finished.
+      </p>
+      <p>
+        AI can help apply a clear process more consistently. It cannot repair
+        unclear ownership, unreliable source data, or a process nobody
+        understands.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <SplitSection id="values" variant="about">
+    <Fragment slot="title">
+      <h2>What I care about</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        I care about clarity, trust, and useful structure: measurement that
+        supports real decisions rather than producing more numbers to maintain.
+      </p>
+      <p>
+        Good work should leave people with enough context to judge what matters
+        and enough structure to act on it. Tools can surface patterns, but human
+        judgment still decides what matters for the customer, the business, and
+        the brand.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <SplitSection id="background" variant="about">
+    <Fragment slot="title">
+      <h2>Background</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        I have worked with SEO, analytics, and digital marketing since 2017.
+        Over the years, I have worked with ecommerce businesses,
+        telecommunications companies, public-sector organisations, consumer
+        brands, and B2B companies.
+      </p>
+      <p>
+        My work has included technical SEO audits, analytics implementations,
+        consent and tracking setups, website redesign support, measurement
+        planning, dashboard development, and search-driven site structure
+        planning.
+      </p>
+      <p>
+        I have long been interested in the relationship between technology,
+        content, structure, and storytelling. I have also written short-film
+        screenplays — not as a professional credential, but because I enjoy
+        working out how ideas, pacing, and communication fit together.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <SplitSection id="outside-work" variant="about">
+    <Fragment slot="title">
+      <h2>Outside work</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Outside work, I spend a fair amount of time with films, anime, and
+        story-driven single-player games. Alan Wake and Metal Gear Solid are
+        particular favourites. I am drawn to stories with strong structure,
+        atmosphere, and slightly unusual worlds.
+      </p>
+      <p>
+        Comics are another constant, especially Batman and Teenage Mutant Ninja
+        Turtles. I like strong concepts and worlds with their own internal
+        logic.
+      </p>
+      <p>
+        I also dance Cuban salsa and locking. Both combine structure, rhythm,
+        practice, and improvisation. They are also good at making overconfidence
+        visible very quickly.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <Appearances />
+</Base>

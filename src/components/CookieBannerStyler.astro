@@ -1,0 +1,1100 @@
+---
+// Cookie banner styler widget: pick colours + title/description alignment, see a
+// live preview of the real banner (isolated in an iframe), and copy the themed
+// CSS plus the verbatim HTML and JS for the Cookiebot custom template.
+import baseCss from "../assets/tools/cookie-banner/base.css?raw";
+import bannerHtml from "../assets/tools/cookie-banner/banner.html?raw";
+import bannerJs from "../assets/tools/cookie-banner/banner.js?raw";
+
+const defaults = {
+  previewSize: "desktop",
+  buttonMode: "same",
+  accent: "#afcefa",
+  buttonText: "#000000",
+  hoverBg: "#84aee9",
+  hoverText: "#000000",
+  acceptBg: "#afcefa",
+  acceptText: "#000000",
+  acceptHoverBg: "#84aee9",
+  acceptHoverText: "#000000",
+  acceptBorderEnabled: true,
+  acceptBorderWidth: 2,
+  acceptBorderColor: "#afcefa",
+  acceptBorderHoverColor: "#84aee9",
+  acceptUnderline: false,
+  acceptHoverUnderline: false,
+  acceptRadius: 0,
+  acceptPaddingY: 16,
+  acceptFontSize: 16,
+  acceptFontWeight: "700",
+  denyBg: "#ffffff",
+  denyText: "#0f0f0f",
+  denyHoverBg: "#eeeeee",
+  denyHoverText: "#0f0f0f",
+  denyBorderEnabled: true,
+  denyBorderWidth: 2,
+  denyBorderColor: "#0f0f0f",
+  denyBorderHoverColor: "#0f0f0f",
+  denyUnderline: false,
+  denyHoverUnderline: false,
+  denyRadius: 0,
+  denyPaddingY: 16,
+  denyFontSize: 16,
+  denyFontWeight: "700",
+  detailsBg: "#ffffff",
+  detailsText: "#0f0f0f",
+  detailsHoverBg: "#eeeeee",
+  detailsHoverText: "#0f0f0f",
+  detailsBorderEnabled: false,
+  detailsBorderWidth: 2,
+  detailsBorderColor: "#0f0f0f",
+  detailsBorderHoverColor: "#0f0f0f",
+  detailsUnderline: true,
+  detailsHoverUnderline: true,
+  detailsRadius: 0,
+  detailsPaddingY: 8,
+  detailsFontSize: 16,
+  detailsFontWeight: "400",
+  selectionBg: "#afcefa",
+  selectionText: "#000000",
+  selectionHoverBg: "#84aee9",
+  selectionHoverText: "#000000",
+  selectionBorderEnabled: true,
+  selectionBorderWidth: 2,
+  selectionBorderColor: "#afcefa",
+  selectionBorderHoverColor: "#84aee9",
+  selectionUnderline: false,
+  selectionHoverUnderline: false,
+  selectionRadius: 0,
+  selectionPaddingY: 16,
+  selectionFontSize: 16,
+  selectionFontWeight: "700",
+  textColor: "#0f0f0f",
+  dialogBg: "#ffffff",
+  overlayColor: "#000000",
+  overlayOpacity: 40,
+  dialogPadding: 48,
+  dialogRadius: 0,
+  titleFontSize: 28,
+  titleFontWeight: "700",
+  descriptionFontSize: 16,
+  contentSpacing: 24,
+  preferenceBg: "#f4f4f4",
+  toggleOffTrack: "#868e96",
+  toggleOffHandle: "#ffffff",
+  toggleOnTrack: "#afcefa",
+  toggleOnHandle: "#ffffff",
+  toggleDeniedTrack: "#b0b0b0",
+  toggleDeniedHandle: "#ffffff",
+  borderEnabled: true,
+  borderWidth: 2,
+  borderColor: "#afcefa",
+  borderHoverColor: "#84aee9",
+  underline: false,
+  hoverUnderline: false,
+  radius: 0,
+  paddingY: 16,
+  fontSize: 16,
+  fontWeight: "700",
+  titleAlign: "center",
+  descriptionAlign: "center",
+};
+
+// sample copy so the preview shows real text instead of [#TOKENS#]
+const sample = {
+  LANGUAGE: "en", TEXTDIRECTION: "ltr",
+  TITLE: "We use cookies",
+  TEXT: "We use cookies to improve the site and understand what works. You can change your choices at any time.",
+  DECLINE: "Only necessary", ACCEPT: "Allow cookies", DETAILS: "Show details",
+  LEVELOPTIN_ALLOW_SELECTION: "Allow selection",
+  COOKIETYPE_NECESSARY: "Necessary", COOKIETYPE_NECESSARY_RAW: "Necessary",
+  COOKIETYPEINTRO_NECESSARY: "These cookies are needed for the site to work.", COOKIETABLE_NECESSARY: "",
+  COOKIETYPE_PREFERENCE: "Preferences", COOKIETYPE_PREFERENCE_RAW: "Preferences",
+  COOKIETYPEINTRO_PREFERENCE: "Remember choices such as language.", COOKIETABLE_PREFERENCE: "",
+  COOKIETYPE_STATISTICS: "Statistics", COOKIETYPE_STATISTICS_RAW: "Statistics",
+  COOKIETYPEINTRO_STATISTICS: "Help us understand how the site is used.", COOKIETABLE_STATISTICS: "",
+  COOKIETYPE_ADVERTISING: "Marketing", COOKIETYPE_ADVERTISING_RAW: "Marketing",
+  COOKIETYPEINTRO_ADVERTISING: "Used to make marketing more relevant.", COOKIETABLE_ADVERTISING: "",
+  LASTUPDATED: "Your consent was last updated recently.",
+};
+
+const previewBanner = bannerHtml
+  .replace('id="CookieBanner"', 'id="CookieBanner" class="is-visible-cookie-banner"')
+  .replace(/\[#(\w+)#\]/g, (_, key) => sample[key] ?? "");
+
+const previewCss = `
+  .preview-desktop #CookieBanner .cookiebanner__buttons ul {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px 16px;
+  }
+  .preview-desktop #CookieBanner .cookiebanner__buttons li {
+    width: auto;
+    margin: 0;
+  }
+  .preview-desktop #CookieBanner .cookiebanner__buttons li:last-of-type {
+    grid-column: 1 / -1;
+  }
+  .preview-desktop #CookieBanner .cookiebanner__buttons__accept,
+  .preview-desktop #CookieBanner .cookiebanner__buttons__deny {
+    min-width: 0;
+  }
+  .preview-desktop #CookieBanner .cookiebanner__buttons__details {
+    margin-top: 0;
+  }
+`;
+
+// Split the script tag so Vite's dev dependency scanner does not mistake the
+// iframe srcdoc script for an Astro component script block.
+const scriptOpen = "<scr" + "ipt>";
+const scriptClose = "</scr" + "ipt>";
+const previewDoc = `<!doctype html><html lang="en" class="preview-desktop"><head><meta charset="utf-8"><style>${baseCss}${previewCss}</style></head><body>${previewBanner}${scriptOpen}${bannerJs}${scriptClose}</body></html>`;
+
+const rgba = (hex, opacity) => {
+  const value = hex.replace("#", "");
+  const full = value.length === 3 ? value.split("").map((character) => character + character).join("") : value;
+  return `rgba(${parseInt(full.slice(0, 2), 16)}, ${parseInt(full.slice(2, 4), 16)}, ${parseInt(full.slice(4, 6), 16)}, ${opacity / 100})`;
+};
+
+const overrideBlock = (v) =>
+  `#CookieBanner {\n  --cb-accent: ${v.accent};\n  --cb-button-text: ${v.buttonText};\n  --cb-hover-bg: ${v.hoverBg};\n  --cb-hover-text: ${v.hoverText};\n  --cb-text-color: ${v.textColor};\n  --cb-dialog-bg: ${v.dialogBg};\n  --cb-overlay: ${rgba(v.overlayColor, v.overlayOpacity)};\n  --cb-dialog-padding: ${v.dialogPadding}px;\n  --cb-dialog-radius: ${v.dialogRadius}px;\n  --cb-title-font-size-mobile: ${v.titleFontSize}px;\n  --cb-title-font-size-desktop: ${v.titleFontSize}px;\n  --cb-title-font-weight: ${v.titleFontWeight};\n  --cb-description-font-size-mobile: ${v.descriptionFontSize}px;\n  --cb-description-font-size-desktop: ${v.descriptionFontSize}px;\n  --cb-content-spacing: ${v.contentSpacing}px;\n  --cb-preference-bg: ${v.preferenceBg};\n  --cb-toggle-off: ${v.toggleOffTrack};\n  --cb-toggle-off-handle: ${v.toggleOffHandle};\n  --cb-toggle-on: ${v.toggleOnTrack};\n  --cb-toggle-on-handle: ${v.toggleOnHandle};\n  --cb-toggle-denied: ${v.toggleDeniedTrack};\n  --cb-toggle-denied-handle: ${v.toggleDeniedHandle};\n  --cb-button-border-width: ${v.borderEnabled ? v.borderWidth : 0}px;\n  --cb-button-border-color: ${v.borderColor};\n  --cb-button-border-hover-color: ${v.borderHoverColor};\n  --cb-button-text-decoration: ${v.underline ? "underline" : "none"};\n  --cb-button-hover-text-decoration: ${v.hoverUnderline ? "underline" : "none"};\n  --cb-details-display: block;\n  --cb-title-align: ${v.titleAlign};\n  --cb-description-align: ${v.descriptionAlign};\n}\n`;
+
+const defaultCss = `${overrideBlock(defaults)}\n${baseCss}`;
+
+const colorFields = [
+  { id: "accent", label: "Accent", hint: "Preference toggles" },
+  { id: "textColor", label: "Text", hint: "Title and description" },
+];
+const buttonGroups = [
+  { id: "same", label: "All buttons", prefix: "" },
+  { id: "accept", label: "Accept button", prefix: "accept" },
+  { id: "deny", label: "Deny button", prefix: "deny" },
+  { id: "details", label: "Show details button", prefix: "details" },
+  { id: "selection", label: "Allow selection button", prefix: "selection" },
+];
+const buttonColorFields = [
+  { suffix: "Bg", shared: "accent", label: "Button colour" },
+  { suffix: "Text", shared: "buttonText", label: "Text colour" },
+  { suffix: "HoverBg", shared: "hoverBg", label: "Hover colour" },
+  { suffix: "HoverText", shared: "hoverText", label: "Hover text colour" },
+];
+const alignFields = [
+  { id: "titleAlign", label: "Title alignment" },
+  { id: "descriptionAlign", label: "Description alignment" },
+];
+---
+
+<div class="cbs" data-defaults={JSON.stringify(defaults)}>
+  <form class="cbs__controls" aria-label="Banner styling controls">
+    <details class="cbs__group" open>
+      <summary class="cbs__h">Button styles</summary>
+      <div class="cbs__group-content">
+        <div class="cbs__field">
+          <span class="cbs__legend">Banner buttons</span>
+          <div class="cbs__seg cbs__seg--stack" role="group" aria-label="Banner button styles">
+            <label class="cbs__seg__opt">
+              <input type="radio" name="buttonMode" value="same" checked />
+              <span>Use the same style</span>
+            </label>
+            <label class="cbs__seg__opt">
+              <input type="radio" name="buttonMode" value="separate" />
+              <span>Style separately</span>
+            </label>
+          </div>
+        </div>
+        {
+          buttonGroups.map((group) => (
+            <details class="cbs__button-set" data-button-panel={group.id} open={group.id === "same"}>
+              <summary class="cbs__subhead">{group.label}</summary>
+              <div class="cbs__button-content">
+                {buttonColorFields.map((field) => {
+                  const key = group.prefix ? `${group.prefix}${field.suffix}` : field.shared;
+                  const inputId = `cbs-${key}`;
+                  return (
+                    <div class="cbs__field">
+                      <label for={inputId}>{field.label}</label>
+                      <div class="cbs__color">
+                        <input type="color" id={inputId} name={key} value={defaults[key]} />
+                        <input type="text" class="cbs__hex" aria-label={`${group.label} ${field.label} hex`} value={defaults[key]} data-hex-for={inputId} spellcheck="false" />
+                      </div>
+                    </div>
+                  );
+                })}
+                <details class="cbs__advanced">
+                  <summary>Advanced settings</summary>
+                  <div class="cbs__advanced-content">
+                    <div class="cbs__option-pair">
+                      <label class="cbs__check">
+                        <input type="checkbox" name={group.prefix ? `${group.prefix}Underline` : "underline"} checked={defaults[group.prefix ? `${group.prefix}Underline` : "underline"]} />
+                        <span>Underline text</span>
+                      </label>
+                      <label class="cbs__check">
+                        <input type="checkbox" name={group.prefix ? `${group.prefix}HoverUnderline` : "hoverUnderline"} checked={defaults[group.prefix ? `${group.prefix}HoverUnderline` : "hoverUnderline"]} />
+                        <span>Underline on hover</span>
+                      </label>
+                    </div>
+                    <div class="cbs__shape-grid">
+                  {[
+                    { suffix: "Radius", shared: "radius", label: "Corner radius" },
+                    { suffix: "PaddingY", shared: "paddingY", label: "Vertical padding" },
+                    { suffix: "FontSize", shared: "fontSize", label: "Font size" },
+                  ].map((field) => {
+                    const key = group.prefix ? `${group.prefix}${field.suffix}` : field.shared;
+                    return (
+                      <div class="cbs__field">
+                        <label for={`cbs-${key}`}>{field.label}</label>
+                        <div class="cbs__number">
+                          <input type="number" id={`cbs-${key}`} name={key} value={defaults[key]} min="0" max="48" step="1" />
+                          <span aria-hidden="true">px</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                    </div>
+                    <div class="cbs__field">
+                      <label for={`cbs-${group.prefix || "shared"}-font-weight`}>Font weight</label>
+                      <select class="cbs__select" id={`cbs-${group.prefix || "shared"}-font-weight`} name={group.prefix ? `${group.prefix}FontWeight` : "fontWeight"}>
+                        <option value="400" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "400"}>Regular</option>
+                        <option value="600" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "600"}>Semibold</option>
+                        <option value="700" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "700"}>Bold</option>
+                      </select>
+                    </div>
+                    <label class="cbs__check">
+                      <input type="checkbox" name={group.prefix ? `${group.prefix}BorderEnabled` : "borderEnabled"} checked={defaults[group.prefix ? `${group.prefix}BorderEnabled` : "borderEnabled"]} />
+                      <span>Show border</span>
+                    </label>
+                    <div class="cbs__field" data-border-setting={group.id}>
+                  <label for={`cbs-${group.prefix || "shared"}-border-width`}>Border width<span>Width in pixels</span></label>
+                  <div class="cbs__number">
+                    <input type="number" id={`cbs-${group.prefix || "shared"}-border-width`} name={group.prefix ? `${group.prefix}BorderWidth` : "borderWidth"} value={defaults[group.prefix ? `${group.prefix}BorderWidth` : "borderWidth"]} min="0" max="12" step="1" />
+                    <span aria-hidden="true">px</span>
+                  </div>
+                    </div>
+                    <div class="cbs__field" data-border-setting={group.id}>
+                  <label for={`cbs-${group.prefix || "shared"}-border-color`}>Border colour</label>
+                  <div class="cbs__color">
+                    <input type="color" id={`cbs-${group.prefix || "shared"}-border-color`} name={group.prefix ? `${group.prefix}BorderColor` : "borderColor"} value={defaults[group.prefix ? `${group.prefix}BorderColor` : "borderColor"]} />
+                    <input type="text" class="cbs__hex" aria-label={`${group.label} border colour hex`} value={defaults[group.prefix ? `${group.prefix}BorderColor` : "borderColor"]} data-hex-for={`cbs-${group.prefix || "shared"}-border-color`} spellcheck="false" />
+                  </div>
+                    </div>
+                    <div class="cbs__field" data-border-setting={group.id}>
+                  <label for={`cbs-${group.prefix || "shared"}-border-hover-color`}>Border hover colour</label>
+                  <div class="cbs__color">
+                    <input type="color" id={`cbs-${group.prefix || "shared"}-border-hover-color`} name={group.prefix ? `${group.prefix}BorderHoverColor` : "borderHoverColor"} value={defaults[group.prefix ? `${group.prefix}BorderHoverColor` : "borderHoverColor"]} />
+                    <input type="text" class="cbs__hex" aria-label={`${group.label} border hover colour hex`} value={defaults[group.prefix ? `${group.prefix}BorderHoverColor` : "borderHoverColor"]} data-hex-for={`cbs-${group.prefix || "shared"}-border-hover-color`} spellcheck="false" />
+                  </div>
+                    </div>
+                  </div>
+                </details>
+                <p class="cbs__warn" data-contrast={group.id} role="status" hidden></p>
+                <button type="button" class="cbs__section-reset" data-reset-scope={group.id}>Reset {group.label.toLowerCase()}</button>
+                {group.id === "accept" && (
+                  <div class="cbs__copy-style">
+                    <button type="button" data-copy-style="deny">Copy Accept style to Deny</button>
+                    <button type="button" data-copy-style="details">Copy Accept style to Show details</button>
+                    <button type="button" data-copy-style="selection">Copy Accept style to Allow selection</button>
+                  </div>
+                )}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </details>
+
+    <details class="cbs__group">
+      <summary class="cbs__h">Banner</summary>
+      <div class="cbs__group-content">
+        {
+          [
+            { id: "dialogBg", label: "Banner background" },
+            { id: "overlayColor", label: "Overlay colour" },
+            { id: "preferenceBg", label: "Preference-panel background" },
+          ].map((field) => (
+            <div class="cbs__field">
+              <label for={`cbs-${field.id}`}>{field.label}</label>
+              <div class="cbs__color">
+                <input type="color" id={`cbs-${field.id}`} name={field.id} value={defaults[field.id]} />
+                <input type="text" class="cbs__hex" aria-label={`${field.label} hex`} value={defaults[field.id]} data-hex-for={`cbs-${field.id}`} spellcheck="false" />
+              </div>
+            </div>
+          ))
+        }
+        <div class="cbs__shape-grid">
+          {
+            [
+              { id: "overlayOpacity", label: "Overlay opacity", unit: "%" },
+              { id: "dialogPadding", label: "Outer padding", unit: "px" },
+              { id: "dialogRadius", label: "Corner radius", unit: "px" },
+            ].map((field) => (
+              <div class="cbs__field">
+                <label for={`cbs-${field.id}`}>{field.label}</label>
+                <div class="cbs__number">
+                  <input type="number" id={`cbs-${field.id}`} name={field.id} value={defaults[field.id]} min="0" max={field.id === "overlayOpacity" ? "100" : "96"} step="1" />
+                  <span aria-hidden="true">{field.unit}</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+        <details class="cbs__advanced">
+          <summary>Typography and spacing</summary>
+          <div class="cbs__advanced-content">
+            <div class="cbs__shape-grid">
+              {
+                [
+                  { id: "titleFontSize", label: "Title font size" },
+                  { id: "descriptionFontSize", label: "Description font size" },
+                  { id: "contentSpacing", label: "Content spacing" },
+                ].map((field) => (
+                  <div class="cbs__field">
+                    <label for={`cbs-${field.id}`}>{field.label}</label>
+                    <div class="cbs__number">
+                      <input type="number" id={`cbs-${field.id}`} name={field.id} value={defaults[field.id]} min="0" max="72" step="1" />
+                      <span aria-hidden="true">px</span>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+            <div class="cbs__field">
+              <label for="cbs-title-font-weight">Title font weight</label>
+              <select class="cbs__select" id="cbs-title-font-weight" name="titleFontWeight">
+                <option value="400">Regular</option>
+                <option value="600">Semibold</option>
+                <option value="700" selected>Bold</option>
+              </select>
+            </div>
+          </div>
+        </details>
+        <button type="button" class="cbs__section-reset" data-reset-scope="banner">Reset banner</button>
+      </div>
+    </details>
+
+    <details class="cbs__group">
+      <summary class="cbs__h">Preference toggles</summary>
+      <div class="cbs__group-content">
+        {
+          [
+            { title: "Off", fields: [["toggleOffTrack", "Track colour"], ["toggleOffHandle", "Handle colour"]] },
+            { title: "On", fields: [["toggleOnTrack", "Track colour"], ["toggleOnHandle", "Handle colour"]] },
+            { title: "Denied or disabled", fields: [["toggleDeniedTrack", "Track colour"], ["toggleDeniedHandle", "Handle colour"]] },
+          ].map((group) => (
+            <fieldset class="cbs__toggle-colours">
+              <legend>{group.title}</legend>
+              {group.fields.map(([id, label]) => (
+                <div class="cbs__field">
+                  <label for={`cbs-${id}`}>{label}</label>
+                  <div class="cbs__color">
+                    <input type="color" id={`cbs-${id}`} name={id} value={defaults[id]} />
+                    <input type="text" class="cbs__hex" aria-label={`${group.title} ${label.toLowerCase()} hex`} value={defaults[id]} data-hex-for={`cbs-${id}`} spellcheck="false" />
+                  </div>
+                </div>
+              ))}
+            </fieldset>
+          ))
+        }
+        <button type="button" class="cbs__section-reset" data-reset-scope="toggles">Reset preference toggles</button>
+      </div>
+    </details>
+
+    <details class="cbs__group">
+      <summary class="cbs__h">Alignment</summary>
+      <div class="cbs__group-content">
+        {
+          alignFields.map((f) => (
+            <div class="cbs__field">
+              <span class="cbs__legend">{f.label}</span>
+              <div class="cbs__seg" role="group" aria-label={f.label}>
+                {["left", "center"].map((val) => (
+                  <label class="cbs__seg__opt">
+                    <input type="radio" name={f.id} value={val} checked={defaults[f.id] === val} />
+                    <span>{val === "left" ? "Left" : "Center"}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+        <button type="button" class="cbs__section-reset" data-reset-scope="alignment">Reset alignment</button>
+      </div>
+    </details>
+
+    <details class="cbs__group">
+      <summary class="cbs__h">Colours</summary>
+      <div class="cbs__group-content">
+        {
+          colorFields.map((f) => (
+            <div class="cbs__field">
+              <label for={`cbs-${f.id}`}>{f.label}<span>{f.hint}</span></label>
+              <div class="cbs__color">
+                <input type="color" id={`cbs-${f.id}`} name={f.id} value={defaults[f.id]} />
+                <input type="text" class="cbs__hex" aria-label={`${f.label} hex`} value={defaults[f.id]} data-hex-for={`cbs-${f.id}`} spellcheck="false" />
+              </div>
+            </div>
+          ))
+        }
+        <p class="cbs__warn" id="cbs-body-contrast" role="status" hidden></p>
+        <button type="button" class="cbs__section-reset" data-reset-scope="colours">Reset colours</button>
+      </div>
+    </details>
+
+    <button type="button" class="cbs__reset" id="cbs-reset">Reset to defaults</button>
+  </form>
+
+  <div class="cbs__right">
+    <div class="cbs__preview">
+      <div class="cbs__preview-toolbar">
+        <p class="cbs__preview__label">Live preview</p>
+        <div class="cbs__seg" role="group" aria-label="Preview size">
+          <button type="button" class="cbs__preview-size is-active" data-preview-size="desktop" aria-pressed="true">Desktop</button>
+          <button type="button" class="cbs__preview-size" data-preview-size="mobile" aria-pressed="false">Mobile</button>
+        </div>
+      </div>
+      <div class="cbs__frame-wrap">
+        <iframe class="cbs__frame" title="Cookie banner preview, desktop size" srcdoc={previewDoc} loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="cbs__output">
+      <div class="cbs__tabs" role="tablist" aria-label="Output">
+        <button type="button" role="tab" class="cbs__tab is-active" data-tab="css" aria-selected="true">CSS</button>
+        <button type="button" role="tab" class="cbs__tab" data-tab="html" aria-selected="false">HTML</button>
+        <button type="button" role="tab" class="cbs__tab" data-tab="js" aria-selected="false">JavaScript</button>
+      </div>
+
+      <div class="cbs__panel" data-panel="css">
+        <button type="button" class="cbs__copy" data-copy="cbs-css-out">Copy CSS</button>
+        <textarea id="cbs-css-out" class="cbs__code" readonly spellcheck="false">{defaultCss}</textarea>
+      </div>
+      <div class="cbs__panel" data-panel="html" hidden>
+        <button type="button" class="cbs__copy" data-copy="cbs-html-out">Copy HTML</button>
+        <textarea id="cbs-html-out" class="cbs__code" readonly spellcheck="false">{bannerHtml}</textarea>
+      </div>
+      <div class="cbs__panel" data-panel="js" hidden>
+        <button type="button" class="cbs__copy" data-copy="cbs-js-out">Copy JS</button>
+        <textarea id="cbs-js-out" class="cbs__code" readonly spellcheck="false">{bannerJs}</textarea>
+      </div>
+    </div>
+  </div>
+
+  <textarea id="cbs-base" hidden aria-hidden="true">{baseCss}</textarea>
+</div>
+
+<style>
+  .cbs {
+    display: grid;
+    gap: clamp(2rem, 5cqi, 4rem);
+    margin-block: 1rem 2rem;
+    font-size: var(--font-size-ui);
+    line-height: var(--line-height-ui);
+  }
+  @container page (min-width: 52rem) {
+    .cbs { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); align-items: start; }
+  }
+
+  .cbs__controls {
+    display: grid;
+    gap: 0;
+    padding: clamp(1.25rem, 3cqi, 1.75rem);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    align-self: start;
+  }
+  .cbs__h {
+    position: relative;
+    margin: 0;
+    padding: 1rem 1.75rem 1rem 0;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+  }
+  .cbs__h::-webkit-details-marker { display: none; }
+  .cbs__h::after {
+    content: "+";
+    position: absolute;
+    inset: 50% 0 auto auto;
+    translate: 0 -50%;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--muted);
+  }
+  .cbs__group[open] > .cbs__h::after { content: "−"; }
+  .cbs__h:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }
+  .cbs__group + .cbs__group { border-top: 1px solid var(--line); }
+  .cbs__group-content {
+    display: grid;
+    gap: 1.1rem;
+    padding: 0.25rem 0 1.25rem;
+  }
+
+  .cbs__field { display: grid; gap: 0.4rem; }
+  .cbs__field > label,
+  .cbs__legend { font-size: var(--font-size-ui); font-weight: var(--font-weight-medium); color: var(--ink); }
+  .cbs__field > label span {
+    display: block;
+    font-weight: var(--font-weight-body);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .cbs__color { display: flex; gap: 0.5rem; align-items: center; }
+  .cbs__color input[type="color"] {
+    inline-size: 2.75rem; block-size: 2.4rem;
+    padding: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    cursor: pointer;
+  }
+  .cbs__hex {
+    flex: 1; min-width: 0;
+    padding: 0.5rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .cbs__hex:focus-visible,
+  .cbs__number input:focus-visible,
+  .cbs__check input:focus-visible,
+  .cbs__seg__opt input:focus-visible + span { outline: var(--focus-ring); outline-offset: 2px; }
+
+  .cbs__check {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--ink);
+  }
+  .cbs__check input { inline-size: 1.1rem; block-size: 1.1rem; accent-color: var(--accent); }
+  .cbs__number {
+    display: flex;
+    align-items: center;
+    max-width: 8rem;
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .cbs__number input {
+    min-width: 0;
+    width: 100%;
+    padding: 0.5rem 0.2rem 0.5rem 0.6rem;
+    font: inherit;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+  }
+  .cbs__number span { padding-right: 0.6rem; font-size: 0.85rem; }
+  .cbs__shape-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  .cbs__select {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    font: inherit;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .cbs__select:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+  [data-border-setting].is-disabled { opacity: 0.5; }
+
+  .cbs__seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; width: fit-content; }
+  .cbs__seg--stack { display: grid; width: 100%; }
+  .cbs__seg__opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .cbs__seg__opt span {
+    display: block; padding: 0.5rem 1rem;
+    font-size: 0.85rem; color: var(--muted);
+    cursor: pointer; transition: background var(--duration-fast) var(--ease-out);
+  }
+  .cbs__seg__opt:not(:last-child) span { border-right: 1px solid var(--line); }
+  .cbs__seg--stack .cbs__seg__opt:not(:last-child) span { border-right: 0; border-bottom: 1px solid var(--line); }
+  .cbs__seg__opt input:checked + span { background: var(--accent); color: var(--bg); font-weight: var(--font-weight-medium); }
+
+  .cbs__button-set {
+    margin: 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+  .cbs__button-set[hidden] { display: none; }
+  .cbs__subhead {
+    position: relative;
+    padding: 0.9rem 1.5rem 0.9rem 0;
+    font-size: 0.9rem;
+    font-weight: var(--font-weight-strong);
+    color: var(--ink);
+    cursor: pointer;
+    list-style: none;
+  }
+  .cbs__subhead::-webkit-details-marker { display: none; }
+  .cbs__subhead::after {
+    content: "+";
+    position: absolute;
+    right: 0;
+    color: var(--muted);
+  }
+  .cbs__button-set[open] > .cbs__subhead::after { content: "−"; }
+  .cbs__subhead:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+  .cbs__button-content {
+    display: grid;
+    gap: 1.1rem;
+    padding-bottom: 1rem;
+  }
+  .cbs__advanced {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+  }
+  .cbs__advanced > summary {
+    position: relative;
+    padding: 0.7rem 2rem 0.7rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--ink);
+    cursor: pointer;
+    list-style: none;
+  }
+  .cbs__advanced > summary::-webkit-details-marker { display: none; }
+  .cbs__advanced > summary::after {
+    content: "+";
+    position: absolute;
+    right: 0.8rem;
+    color: var(--muted);
+  }
+  .cbs__advanced[open] > summary::after { content: "−"; }
+  .cbs__advanced > summary:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+  .cbs__advanced-content {
+    display: grid;
+    gap: 1rem;
+    padding: 0.25rem 0.8rem 0.9rem;
+    border-top: 1px solid var(--line);
+  }
+  .cbs__option-pair { display: grid; gap: 0.65rem; padding-top: 0.7rem; }
+  .cbs__toggle-colours {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0.9rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+  .cbs__toggle-colours legend {
+    padding-right: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: var(--font-weight-strong);
+    color: var(--ink);
+  }
+
+  .cbs__warn {
+    margin: 0; padding: 0.6rem 0.75rem;
+    font-size: 0.82rem;
+    color: var(--color-neutral-950);
+    background: var(--pop);
+    border-radius: var(--radius-sm);
+  }
+
+  .cbs__reset {
+    justify-self: start;
+    margin-top: 1rem;
+    padding: 0.5rem 0.9rem;
+    font: inherit; font-size: 0.85rem; font-weight: var(--font-weight-medium);
+    color: var(--ink); background: var(--bg);
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .cbs__reset:hover { border-color: var(--accent); }
+  .cbs__section-reset {
+    justify-self: start;
+    padding: 0;
+    font: inherit;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .cbs__section-reset:hover { color: var(--ink); }
+  .cbs__section-reset:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }
+  .cbs__copy-style { display: grid; gap: 0.5rem; }
+  .cbs__copy-style button {
+    padding: 0.5rem 0.7rem;
+    font: inherit;
+    font-size: 0.8rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .cbs__copy-style button:hover { border-color: var(--accent); }
+  .cbs__copy-style button:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+
+  .cbs__right {
+    display: grid;
+    gap: 1.5rem;
+    min-width: 0;
+  }
+  .cbs__preview__label,
+  .cbs__output .cbs__tab { font-size: 0.78rem; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; }
+  .cbs__preview__label { margin: 0; color: var(--muted); font-weight: var(--font-weight-medium); }
+  .cbs__preview-toolbar { display: flex; justify-content: space-between; gap: 1rem; align-items: center; margin-bottom: 0.5rem; }
+  .cbs__preview-size {
+    padding: 0.4rem 0.7rem;
+    font: inherit;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .cbs__preview-size.is-active { color: var(--bg); background: var(--accent); font-weight: var(--font-weight-medium); }
+  .cbs__preview-size:focus-visible { outline: var(--focus-ring); outline-offset: -2px; }
+  .cbs__frame-wrap { display: flex; justify-content: center; }
+  .cbs__frame {
+    width: 100%; height: 460px;
+    border: 1px solid var(--line); border-radius: var(--radius-md);
+    background: #fff;
+    transition: width var(--duration-fast) var(--ease-out);
+  }
+  .cbs__frame.is-mobile { width: min(100%, 24.375rem); }
+
+  .cbs__tabs { display: flex; gap: 0.25rem; margin-bottom: -1px; }
+  .cbs__tab {
+    padding: 0.5rem 0.9rem;
+    font: inherit; font-weight: var(--font-weight-medium); color: var(--muted);
+    background: transparent; border: 1px solid transparent; border-bottom: 0;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0; cursor: pointer;
+  }
+  .cbs__tab.is-active { color: var(--ink); background: var(--color-surface); border-color: var(--line); }
+  .cbs__panel { position: relative; }
+  .cbs__copy {
+    position: absolute; top: 0.6rem; right: 0.6rem; z-index: 1;
+    padding: 0.35rem 0.7rem;
+    font: inherit; font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-bold);
+    color: var(--color-neutral-950); background: var(--pop);
+    border: 1px solid color-mix(in srgb, var(--color-neutral-950) 25%, var(--pop)); border-radius: var(--radius-sm); cursor: pointer;
+  }
+  .cbs__copy:hover { translate: 0 -1px; }
+  .cbs__code {
+    width: 100%; height: 300px;
+    padding: 0.9rem 1rem;
+    font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.55;
+    color: var(--ink); background: var(--color-surface);
+    border: 1px solid var(--line); border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+    resize: vertical; white-space: pre; overflow: auto;
+  }
+  #cbs-base { display: none; }
+</style>
+
+<script>
+  const root = document.querySelector(".cbs");
+  if (root) {
+    const defaults = JSON.parse(root.dataset.defaults);
+    const frame = root.querySelector(".cbs__frame");
+    const cssOut = root.querySelector("#cbs-css-out");
+    const baseCss = root.querySelector("#cbs-base").value;
+    const bodyContrast = root.querySelector("#cbs-body-contrast");
+
+    const storageKey = "cookiebot-banner-styler";
+    let savedState = {};
+    try { savedState = JSON.parse(localStorage.getItem(storageKey)) || {}; } catch {}
+    const state = { ...defaults, ...savedState };
+
+    // apply a CSS variable to the live preview's banner element
+    const applyVar = (cssVar, value) => {
+      const el = frame.contentDocument && frame.contentDocument.getElementById("CookieBanner");
+      if (el) el.style.setProperty(cssVar, value);
+    };
+
+    const buttonValues = (prefix) => state.buttonMode === "same"
+      ? {
+          bg: state.accent, text: state.buttonText, hoverBg: state.hoverBg, hoverText: state.hoverText,
+          borderWidth: state.borderEnabled ? state.borderWidth : 0, borderColor: state.borderColor,
+          borderHoverColor: state.borderHoverColor,
+          textDecoration: state.underline ? "underline" : "none",
+          hoverTextDecoration: state.hoverUnderline ? "underline" : "none",
+          radius: state.radius, paddingY: state.paddingY,
+          fontSize: state.fontSize, fontWeight: state.fontWeight,
+        }
+      : {
+          bg: state[`${prefix}Bg`], text: state[`${prefix}Text`],
+          hoverBg: state[`${prefix}HoverBg`], hoverText: state[`${prefix}HoverText`],
+          borderWidth: state[`${prefix}BorderEnabled`] ? state[`${prefix}BorderWidth`] : 0,
+          borderColor: state[`${prefix}BorderColor`],
+          borderHoverColor: state[`${prefix}BorderHoverColor`],
+          textDecoration: state[`${prefix}Underline`] ? "underline" : "none",
+          hoverTextDecoration: state[`${prefix}HoverUnderline`] ? "underline" : "none",
+          radius: state[`${prefix}Radius`], paddingY: state[`${prefix}PaddingY`],
+          fontSize: state[`${prefix}FontSize`], fontWeight: state[`${prefix}FontWeight`],
+        };
+
+    const buildCss = () => {
+      const accept = buttonValues("accept");
+      const deny = buttonValues("deny");
+      const details = buttonValues("details");
+      return `#CookieBanner {\n  --cb-accent: ${state.accent};\n  --cb-accept-bg: ${accept.bg};\n  --cb-accept-text: ${accept.text};\n  --cb-accept-hover-bg: ${accept.hoverBg};\n  --cb-accept-hover-text: ${accept.hoverText};\n  --cb-accept-border-width: ${accept.borderWidth}px;\n  --cb-accept-border-color: ${accept.borderColor};\n  --cb-accept-border-hover-color: ${accept.borderHoverColor};\n  --cb-accept-text-decoration: ${accept.textDecoration};\n  --cb-accept-hover-text-decoration: ${accept.hoverTextDecoration};\n  --cb-accept-radius: ${accept.radius}px;\n  --cb-accept-padding-y: ${accept.paddingY}px;\n  --cb-accept-font-size: ${accept.fontSize}px;\n  --cb-accept-font-weight: ${accept.fontWeight};\n  --cb-deny-bg: ${deny.bg};\n  --cb-deny-text: ${deny.text};\n  --cb-deny-hover-bg: ${deny.hoverBg};\n  --cb-deny-hover-text: ${deny.hoverText};\n  --cb-deny-border-width: ${deny.borderWidth}px;\n  --cb-deny-border-color: ${deny.borderColor};\n  --cb-deny-border-hover-color: ${deny.borderHoverColor};\n  --cb-deny-text-decoration: ${deny.textDecoration};\n  --cb-deny-hover-text-decoration: ${deny.hoverTextDecoration};\n  --cb-deny-radius: ${deny.radius}px;\n  --cb-deny-padding-y: ${deny.paddingY}px;\n  --cb-deny-font-size: ${deny.fontSize}px;\n  --cb-deny-font-weight: ${deny.fontWeight};\n  --cb-details-display: block;\n  --cb-details-bg: ${details.bg};\n  --cb-details-text: ${details.text};\n  --cb-details-hover-bg: ${details.hoverBg};\n  --cb-details-hover-text: ${details.hoverText};\n  --cb-details-border-width: ${details.borderWidth}px;\n  --cb-details-border-color: ${details.borderColor};\n  --cb-details-border-hover-color: ${details.borderHoverColor};\n  --cb-details-text-decoration: ${details.textDecoration};\n  --cb-details-hover-text-decoration: ${details.hoverTextDecoration};\n  --cb-details-radius: ${details.radius}px;\n  --cb-details-padding-y: ${details.paddingY}px;\n  --cb-details-font-size: ${details.fontSize}px;\n  --cb-details-font-weight: ${details.fontWeight};\n  --cb-text-color: ${state.textColor};\n  --cb-dialog-bg: ${state.dialogBg};\n  --cb-overlay: ${rgba(state.overlayColor, state.overlayOpacity)};\n  --cb-dialog-padding: ${state.dialogPadding}px;\n  --cb-dialog-radius: ${state.dialogRadius}px;\n  --cb-title-font-size-desktop: ${state.titleFontSize}px;\n  --cb-title-font-weight: ${state.titleFontWeight};\n  --cb-description-font-size-desktop: ${state.descriptionFontSize}px;\n  --cb-content-spacing: ${state.contentSpacing}px;\n  --cb-preference-bg: ${state.preferenceBg};\n  --cb-title-align: ${state.titleAlign};\n  --cb-description-align: ${state.descriptionAlign};\n}\n\n${baseCss}`;
+    };
+    const buildSelectionCss = () => {
+      const selection = buttonValues("selection");
+      return `\n#CookieBanner {\n  --cb-selection-bg: ${selection.bg};\n  --cb-selection-text: ${selection.text};\n  --cb-selection-hover-bg: ${selection.hoverBg};\n  --cb-selection-hover-text: ${selection.hoverText};\n  --cb-selection-border-width: ${selection.borderWidth}px;\n  --cb-selection-border-color: ${selection.borderColor};\n  --cb-selection-border-hover-color: ${selection.borderHoverColor};\n  --cb-selection-text-decoration: ${selection.textDecoration};\n  --cb-selection-hover-text-decoration: ${selection.hoverTextDecoration};\n  --cb-selection-radius: ${selection.radius}px;\n  --cb-selection-padding-y: ${selection.paddingY}px;\n  --cb-selection-font-size: ${selection.fontSize}px;\n  --cb-selection-font-weight: ${selection.fontWeight};\n}\n`;
+    };
+    const buildToggleCss = () =>
+      `\n#CookieBanner {\n  --cb-toggle-off: ${state.toggleOffTrack};\n  --cb-toggle-off-handle: ${state.toggleOffHandle};\n  --cb-toggle-on: ${state.toggleOnTrack};\n  --cb-toggle-on-handle: ${state.toggleOnHandle};\n  --cb-toggle-denied: ${state.toggleDeniedTrack};\n  --cb-toggle-denied-handle: ${state.toggleDeniedHandle};\n}\n`;
+
+    // WCAG relative luminance + contrast ratio
+    const lum = (hex) => {
+      const h = hex.replace("#", "");
+      const n = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+      const c = [0, 2, 4].map((i) => {
+        const v = parseInt(n.slice(i, i + 2), 16) / 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    };
+    const ratio = (a, b) => {
+      const l1 = lum(a), l2 = lum(b);
+      return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    };
+    const isHex = (v) => /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v);
+    const rgbaValue = (hex, opacity) => {
+      const value = hex.replace("#", "");
+      const full = value.length === 3 ? value.split("").map((character) => character + character).join("") : value;
+      return `rgba(${parseInt(full.slice(0, 2), 16)}, ${parseInt(full.slice(2, 4), 16)}, ${parseInt(full.slice(4, 6), 16)}, ${opacity / 100})`;
+    };
+    const rgba = rgbaValue;
+
+    const checkContrast = () => {
+      const setMessage = (element, messages) => {
+        element.textContent = messages.join(" ");
+        element.hidden = messages.length === 0;
+      };
+      if (state.buttonMode === "same") {
+        const values = buttonValues("accept");
+        const messages = [];
+        const normal = ratio(values.bg, values.text);
+        const hover = ratio(values.hoverBg, values.hoverText);
+        if (normal < 4.5) messages.push(`Button text contrast is low (${normal.toFixed(1)}:1).`);
+        if (hover < 4.5) messages.push(`Hover text contrast is low (${hover.toFixed(1)}:1).`);
+        setMessage(root.querySelector('[data-contrast="same"]'), messages);
+      } else {
+        ["accept", "deny", "details", "selection"].forEach((name) => {
+          const messages = [];
+          const values = buttonValues(name);
+          const normal = ratio(values.bg, values.text);
+          const hover = ratio(values.hoverBg, values.hoverText);
+          if (normal < 4.5) messages.push(`Text contrast is low (${normal.toFixed(1)}:1).`);
+          if (hover < 4.5) messages.push(`Hover text contrast is low (${hover.toFixed(1)}:1).`);
+          setMessage(root.querySelector(`[data-contrast="${name}"]`), messages);
+        });
+      }
+      root.querySelectorAll("[data-contrast]").forEach((element) => {
+        if (element.closest("[data-button-panel]")?.hidden) element.hidden = true;
+      });
+      const bodyMessages = [];
+      const rText = ratio(state.textColor, state.dialogBg);
+      if (rText < 4.5) bodyMessages.push(`Body text contrast is low (${rText.toFixed(1)}:1).`);
+      setMessage(bodyContrast, bodyMessages);
+    };
+
+    const refresh = () => {
+      const accept = buttonValues("accept");
+      const deny = buttonValues("deny");
+      const details = buttonValues("details");
+      const selection = buttonValues("selection");
+      applyVar("--cb-accent", state.accent);
+      const unitValue = (key, value) => ["borderWidth", "radius", "paddingY", "fontSize"].includes(key) ? `${value}px` : value;
+      Object.entries(accept).forEach(([key, value]) => applyVar(`--cb-accept-${key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}`, unitValue(key, value)));
+      Object.entries(deny).forEach(([key, value]) => applyVar(`--cb-deny-${key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}`, unitValue(key, value)));
+      Object.entries(details).forEach(([key, value]) => applyVar(`--cb-details-${key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}`, unitValue(key, value)));
+      Object.entries(selection).forEach(([key, value]) => applyVar(`--cb-selection-${key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}`, unitValue(key, value)));
+      applyVar("--cb-details-display", "block");
+      applyVar("--cb-text-color", state.textColor);
+      applyVar("--cb-dialog-bg", state.dialogBg);
+      applyVar("--cb-overlay", rgbaValue(state.overlayColor, state.overlayOpacity));
+      applyVar("--cb-dialog-padding", `${state.dialogPadding}px`);
+      applyVar("--cb-dialog-radius", `${state.dialogRadius}px`);
+      applyVar("--cb-title-font-size-mobile", `${state.titleFontSize}px`);
+      applyVar("--cb-title-font-size-desktop", `${state.titleFontSize}px`);
+      applyVar("--cb-title-font-weight", state.titleFontWeight);
+      applyVar("--cb-description-font-size-mobile", `${state.descriptionFontSize}px`);
+      applyVar("--cb-description-font-size-desktop", `${state.descriptionFontSize}px`);
+      applyVar("--cb-content-spacing", `${state.contentSpacing}px`);
+      applyVar("--cb-preference-bg", state.preferenceBg);
+      applyVar("--cb-toggle-off", state.toggleOffTrack);
+      applyVar("--cb-toggle-off-handle", state.toggleOffHandle);
+      applyVar("--cb-toggle-on", state.toggleOnTrack);
+      applyVar("--cb-toggle-on-handle", state.toggleOnHandle);
+      applyVar("--cb-toggle-denied", state.toggleDeniedTrack);
+      applyVar("--cb-toggle-denied-handle", state.toggleDeniedHandle);
+      applyVar("--cb-title-align", state.titleAlign);
+      applyVar("--cb-description-align", state.descriptionAlign);
+      cssOut.value = buildCss() + buildSelectionCss() + buildToggleCss();
+      checkContrast();
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    };
+
+    // colour inputs (+ synced hex fields)
+    root.querySelectorAll('input[type="color"]').forEach((input) => {
+      const key = input.name;
+      const hex = root.querySelector(`[data-hex-for="${input.id}"]`);
+      input.addEventListener("input", () => { state[key] = input.value; if (hex) hex.value = input.value; refresh(); });
+      if (hex) hex.addEventListener("input", () => {
+        if (isHex(hex.value)) { input.value = hex.value.length === 4 ? hex.value : hex.value; state[key] = input.value; refresh(); }
+      });
+    });
+
+    // radio controls
+    root.querySelectorAll('input[type="radio"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        if (input.checked) {
+          state[input.name] = input.value;
+          syncButtonPanels();
+          refresh();
+        }
+      });
+    });
+
+    const syncButtonPanels = () => {
+      root.querySelector('[data-button-panel="same"]').hidden = state.buttonMode !== "same";
+      root.querySelectorAll('[data-button-panel]:not([data-button-panel="same"])').forEach((panel) => { panel.hidden = state.buttonMode !== "separate"; });
+    };
+
+    root.querySelectorAll('input[type="checkbox"]').forEach((input) => {
+      input.addEventListener("change", () => { state[input.name] = input.checked; syncBorderControls(); refresh(); });
+    });
+    root.querySelectorAll('input[type="number"]').forEach((input) => {
+      input.addEventListener("input", () => { state[input.name] = Math.max(Number(input.min), Math.min(Number(input.max), Number(input.value) || 0)); refresh(); });
+    });
+    root.querySelectorAll("select").forEach((select) => {
+      select.addEventListener("change", () => { state[select.name] = select.value; refresh(); });
+    });
+
+    const syncBorderControls = () => {
+      ["", "accept", "deny", "details", "selection"].forEach((prefix) => {
+        const enabledKey = prefix ? `${prefix}BorderEnabled` : "borderEnabled";
+        const panel = prefix || "same";
+        root.querySelectorAll(`[data-border-setting="${panel}"]`).forEach((el) => el.classList.toggle("is-disabled", !state[enabledKey]));
+        root.querySelectorAll(`[data-button-panel="${panel}"] input[name$="BorderWidth"], [data-button-panel="${panel}"] input[name$="BorderColor"], [data-button-panel="${panel}"] input[name$="BorderHoverColor"], [data-button-panel="${panel}"] input[name="borderWidth"], [data-button-panel="${panel}"] input[name="borderColor"], [data-button-panel="${panel}"] input[name="borderHoverColor"]`).forEach((input) => { input.disabled = !state[enabledKey]; });
+        root.querySelectorAll(`[data-button-panel="${panel}"] [data-hex-for*="border-color"], [data-button-panel="${panel}"] [data-hex-for*="border-hover-color"]`).forEach((input) => { input.disabled = !state[enabledKey]; });
+      });
+    };
+
+    const syncKeys = (keys) => {
+      keys.forEach((key) => {
+        root.querySelectorAll(`[name="${key}"]`).forEach((control) => {
+          if (control.type === "radio") control.checked = control.value === state[key];
+          else if (control.type === "checkbox") control.checked = state[key];
+          else control.value = state[key];
+          if (control.type === "color") {
+            const hex = root.querySelector(`[data-hex-for="${control.id}"]`);
+            if (hex) hex.value = state[key];
+          }
+        });
+      });
+    };
+    const resetKeys = (keys) => {
+      keys.forEach((key) => { state[key] = defaults[key]; });
+      syncKeys(keys);
+      syncButtonPanels();
+      syncBorderControls();
+      refresh();
+    };
+
+    const sharedButtonKeys = ["accent", "buttonText", "hoverBg", "hoverText", "borderEnabled", "borderWidth", "borderColor", "borderHoverColor", "underline", "hoverUnderline", "radius", "paddingY", "fontSize", "fontWeight"];
+    const resetScopes = {
+      same: sharedButtonKeys,
+      accept: Object.keys(defaults).filter((key) => key.startsWith("accept")),
+      deny: Object.keys(defaults).filter((key) => key.startsWith("deny")),
+      details: Object.keys(defaults).filter((key) => key.startsWith("details")),
+      selection: Object.keys(defaults).filter((key) => key.startsWith("selection")),
+      banner: ["dialogBg", "overlayColor", "overlayOpacity", "dialogPadding", "dialogRadius", "titleFontSize", "titleFontWeight", "descriptionFontSize", "contentSpacing", "preferenceBg"],
+      toggles: ["toggleOffTrack", "toggleOffHandle", "toggleOnTrack", "toggleOnHandle", "toggleDeniedTrack", "toggleDeniedHandle"],
+      alignment: ["titleAlign", "descriptionAlign"],
+      colours: ["accent", "textColor"],
+    };
+    root.querySelectorAll("[data-reset-scope]").forEach((button) => {
+      button.addEventListener("click", () => resetKeys(resetScopes[button.dataset.resetScope]));
+    });
+    root.querySelector("#cbs-reset").addEventListener("click", () => resetKeys(Object.keys(defaults)));
+    root.querySelectorAll("[data-copy-style]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.copyStyle;
+        const targetKeys = [];
+        Object.keys(defaults).filter((key) => key.startsWith("accept")).forEach((sourceKey) => {
+          const targetKey = `${target}${sourceKey.slice("accept".length)}`;
+          state[targetKey] = state[sourceKey];
+          targetKeys.push(targetKey);
+        });
+        syncKeys(targetKeys);
+        syncBorderControls();
+        refresh();
+      });
+    });
+
+    const setPreviewSize = (size) => {
+      const mobile = size === "mobile";
+      frame.classList.toggle("is-mobile", mobile);
+      frame.title = `Cookie banner preview, ${mobile ? "mobile" : "desktop"} size`;
+      frame.contentDocument?.documentElement.classList.toggle("preview-desktop", !mobile);
+      root.querySelectorAll(".cbs__preview-size").forEach((item) => {
+        const active = item.dataset.previewSize === size;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+    };
+    root.querySelectorAll(".cbs__preview-size").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.previewSize = button.dataset.previewSize;
+        setPreviewSize(state.previewSize);
+        refresh();
+      });
+    });
+
+    // tabs
+    root.querySelectorAll(".cbs__tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        root.querySelectorAll(".cbs__tab").forEach((t) => { t.classList.toggle("is-active", t === tab); t.setAttribute("aria-selected", String(t === tab)); });
+        root.querySelectorAll(".cbs__panel").forEach((p) => { p.hidden = p.dataset.panel !== tab.dataset.tab; });
+      });
+    });
+
+    // copy buttons
+    root.querySelectorAll(".cbs__copy").forEach((btn) => {
+      const label = btn.textContent;
+      btn.addEventListener("click", () => {
+        const el = document.getElementById(btn.dataset.copy);
+        navigator.clipboard.writeText(el.value);
+        btn.textContent = "Copied ✓";
+        setTimeout(() => (btn.textContent = label), 1500);
+      });
+    });
+
+    // preview may not be ready on first paint
+    frame.addEventListener("load", () => { setPreviewSize(state.previewSize); refresh(); });
+    root.querySelectorAll("[name]").forEach((control) => {
+      if (!(control.name in state)) return;
+      if (control.type === "radio") control.checked = control.value === state[control.name];
+      else if (control.type === "checkbox") control.checked = state[control.name];
+      else control.value = state[control.name];
+      if (control.type === "color") {
+        const hex = root.querySelector(`[data-hex-for="${control.id}"]`);
+        if (hex) hex.value = state[control.name];
+      }
+    });
+    setPreviewSize(state.previewSize);
+    syncButtonPanels();
+    syncBorderControls();
+    refresh();
+  }
+</script>

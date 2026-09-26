@@ -1,0 +1,43 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import PostList from "../components/PostList.astro";
+import SplitSection from "../components/SplitSection.astro";
+import { selectRecentPosts } from "../utils/recent-posts.ts";
+
+const withTrailingSlash = (path) => path.endsWith("/") ? path : `${path}/`;
+const posts = selectRecentPosts(Object.values(import.meta.glob("./blog/*.md", { eager: true }))
+  .map((p) => ({
+    ...p.frontmatter,
+    url: withTrailingSlash(p.url),
+    minutes: Math.max(1, Math.round(p.rawContent().split(/\s+/).length / 200)),
+  })));
+---
+
+<Base
+  documentTitle="Niko Karppinen | SEO & Analytics Consultant"
+  description="Niko Karppinen helps teams improve digital measurement, SEO, analytics and practical AI workflows."
+  banner
+>
+  <Hero />
+
+  <SplitSection variant="about">
+    <Fragment slot="title">
+      <h2>Clear data starts with clearer questions.</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Most tracking problems are not caused by a missing dashboard. They start
+        with unclear questions, inconsistent implementation or ownership that
+        nobody quite has.
+      </p>
+      <p>
+        I help teams turn that mess into prioritised actions, specifications,
+        documentation and repeatable workflows — from technical SEO and GA4 to
+        reporting and practical AI-assisted work.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <PostList {posts} title="Recent Posts" allHref="/blog/" allLabel="All thoughts" />
+</Base>

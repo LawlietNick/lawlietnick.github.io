@@ -1,0 +1,43 @@
+---
+import Base from "../../layouts/Base.astro";
+import Hero from "../../components/Hero.astro";
+import PostList from "../../components/PostList.astro";
+import SplitSection from "../../components/SplitSection.astro";
+import { selectRecentPosts } from "../../utils/recent-posts.ts";
+
+const withTrailingSlash = (path) => path.endsWith("/") ? path : `${path}/`;
+const posts = selectRecentPosts(Object.values(import.meta.glob("./blog/*.md", { eager: true }))
+  .map((p) => ({
+    ...p.frontmatter,
+    url: withTrailingSlash(p.url),
+    minutes: Math.max(1, Math.round(p.rawContent().split(/\s+/).length / 200)),
+  })));
+---
+
+<Base
+  documentTitle="Niko Karppinen | SEO- ja analytiikkakonsultti"
+  description="Niko Karppinen auttaa tiimejä parantamaan digitaalista mittaamista, hakukoneoptimointia, analytiikkaa ja käytännön AI-työnkulkuja."
+  banner
+>
+  <Hero fi={true} />
+
+  <SplitSection variant="about">
+    <Fragment slot="title">
+      <h2>Selkeä data alkaa selkeämmistä kysymyksistä.</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Useimmat seurannan ongelmat eivät johdu puuttuvasta dashboardista. Ne
+        alkavat epäselvistä kysymyksistä, kirjavista toteutuksista tai vastuusta,
+        jota kukaan ei oikein omista.
+      </p>
+      <p>
+        Autan muuttamaan tämän sotkun priorisoiduiksi toimenpiteiksi,
+        määrittelyiksi, dokumentaatioksi ja toistettaviksi työnkuluiksi —
+        teknisestä SEO:sta ja GA4:stä raportointiin ja käytännön AI-työhön.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <PostList {posts} fi={true} title="Uusimmat kirjoitukset" allHref="/fi/blog/" allLabel="Kaikki kirjoitukset" />
+</Base>

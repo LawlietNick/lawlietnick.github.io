@@ -1,0 +1,427 @@
+---
+import { Picture } from "astro:assets";
+import ButtonLink from "./ButtonLink.astro";
+import robot from "../assets/not-found/kone-robot.png";
+import skyline from "../assets/not-found/skyline.png";
+
+const { fi = false } = Astro.props;
+const copy = fi
+  ? {
+      status: "Sivua ei löytynyt.",
+      title: "Tästä numerosta puuttuu ruutu.",
+      body: "Sivu on ehkä siirtynyt, poistettu tai kadonnut jonnekin ruutujen väliin.",
+      cta: "Selaa artikkeleita",
+      panel: [
+        "404: Pyydetty ruutu ei ole saatavilla.",
+        "Joko linkissä on kirjoitusvirhe tai koodista putosi ruutu.",
+      ],
+      bubble: "Hmm. Tyypillistä.",
+      archive: "Samaan aikaan jossain arkistossa…",
+      closing: ["Kiitos käynnistä.", "Hyvät jutut löytyvät muualta."],
+      archiveLabel: "Arkistohuomautus",
+      robotAlt: "Hämmentynyt robotti tutkii puuttuvaa sarjakuvaruutua",
+      href: "/fi/blog/",
+    }
+  : {
+      status: "This page could not be found.",
+      title: "This issue is missing a panel.",
+      body: "The page may have moved, been removed, or disappeared somewhere between panels.",
+      cta: "Browse articles",
+      panel: [
+        "404: Requested panel unavailable.",
+        "Either the link has a typo, or the code dropped a panel.",
+      ],
+      bubble: "Hmm. Classic.",
+      archive: "Meanwhile, somewhere in the archives…",
+      closing: ["Thanks for stopping by.", "The good stuff is somewhere else."],
+      archiveLabel: "Archive note",
+      robotAlt: "A puzzled robot examining the missing comic panel",
+      href: "/blog/",
+    };
+---
+
+<section class="not-found" aria-labelledby="not-found-title">
+  <div class="not-found__registration" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <div class="not-found__main">
+    <div class="not-found__copy">
+      <p class="not-found__status"><strong>404.</strong> {copy.status}</p>
+      <h1 id="not-found-title">{copy.title}</h1>
+      <svg class="not-found__stroke" viewBox="0 0 120 12" aria-hidden="true">
+        <path d="M3 8C31 3 58 9 117 4" />
+      </svg>
+      <p class="not-found__body">{copy.body}</p>
+      <ButtonLink
+        href={copy.href}
+        data-link-area="404"
+        data-link-type="article-archive"
+        data-link-level="primary"
+      >{copy.cta} <span aria-hidden="true">→</span></ButtonLink>
+    </div>
+
+    <div class="not-found__visual">
+      <svg class="not-found__filter" aria-hidden="true" focusable="false" width="0" height="0">
+        <filter id="nf-torn" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.018 0.05" numOctaves="3" seed="4" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="11" xChannelSelector="R" yChannelSelector="G" result="torn" />
+          <!-- Inner shadow that traces the torn edge: invert the silhouette, blur,
+               push it in from the top-left, then keep only the part landing inside
+               the shape. Reads as the page overhanging a recess torn into it. -->
+          <feComponentTransfer in="torn" result="inv">
+            <feFuncA type="table" tableValues="1 0" />
+          </feComponentTransfer>
+          <feGaussianBlur in="inv" stdDeviation="7" result="invBlur" />
+          <feOffset in="invBlur" dx="5" dy="7" result="invBlurOff" />
+          <feComposite in="invBlurOff" in2="torn" operator="in" result="isMask" />
+          <feFlood flood-color="#000000" flood-opacity="0.5" result="isColor" />
+          <feComposite in="isColor" in2="isMask" operator="in" result="innerShadow" />
+          <feMerge>
+            <feMergeNode in="torn" />
+            <feMergeNode in="innerShadow" />
+            <feMergeNode in="innerShadow" />
+          </feMerge>
+        </filter>
+      </svg>
+      <div class="not-found__panel">
+        <div class="not-found__paper" aria-hidden="true"></div>
+        <p>{copy.panel.map((line) => <span>{line}</span>)}</p>
+      </div>
+      <svg class="not-found__marks" viewBox="0 0 70 60" aria-hidden="true">
+        <path d="M12 48 17 24M17 47 32 25M21 50 47 35" />
+      </svg>
+      <div class="not-found__cameo">
+        <p class="not-found__bubble" aria-hidden="true">{copy.bubble}</p>
+        <Picture src={robot} alt={copy.robotAlt} width={1122} height={1402} widths={[300, 561, 1122]} sizes="(min-width: 46rem) 20rem, 60vw" loading="eager" />
+      </div>
+    </div>
+  </div>
+
+  <aside class="not-found__archive" aria-label={copy.archiveLabel}>
+    <p class="not-found__caption">
+      <span>{copy.archive}</span>
+      <span class="not-found__caption-arrow" aria-hidden="true">→</span>
+    </p>
+    <Picture src={skyline} alt="" width={1536} height={1024} widths={[640, 1024, 1536]} sizes="(min-width: 46rem) 40rem, 100vw" loading="lazy" />
+    <p class="not-found__closing">
+      {copy.closing.map((line, i) => (
+        <span>{line}{i === copy.closing.length - 1 && <b aria-hidden="true"> ★</b>}</span>
+      ))}
+    </p>
+  </aside>
+</section>
+
+<style>
+  .not-found {
+    position: relative;
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    overflow: hidden;
+    border-block: 1px solid var(--line);
+  }
+
+  .not-found__main {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    min-height: 48rem;
+    padding: clamp(2rem, 6vw, 5.5rem) clamp(1.5rem, 5vw, 4.5rem);
+  }
+
+  .not-found__copy { align-self: center; min-width: 0; }
+
+  .not-found__status,
+  .not-found__body,
+  .not-found__panel p,
+  .not-found__bubble,
+  .not-found__caption,
+  .not-found__closing {
+    font-family: var(--font-mono);
+  }
+
+  .not-found__status {
+    margin: 0 0 1.25rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .not-found__status strong { color: var(--accent); }
+
+  h1 {
+    max-width: 10ch;
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6.4vw, 5.6rem);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.045em;
+    line-height: 0.96;
+  }
+
+  .not-found__stroke {
+    display: block;
+    width: 7rem;
+    margin: 1.4rem 0 1.5rem;
+    overflow: visible;
+  }
+
+  .not-found__stroke path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-linecap: round;
+    stroke-width: 4;
+  }
+
+  .not-found__body {
+    max-width: 34ch;
+    margin: 0 0 2rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .not-found__visual {
+    position: relative;
+    min-width: 0;
+    min-height: 39rem;
+    --nf-paper: color-mix(in srgb, var(--ink) 7%, var(--bg));
+  }
+
+  .not-found__filter { position: absolute; width: 0; height: 0; }
+
+  .not-found__panel {
+    position: absolute;
+    inset: -1rem 2.5rem 0 0;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+  }
+
+  /* Torn opening in the page: the clip lives on the ::before so the SVG
+     turbulence filter (applied to the parent) can roughen the already-clipped
+     edge into paper fibres — clip-path is applied after filters, so it must be
+     nested. No outward lift shadow — the page reads as torn open, not as a sheet
+     laid on top; depth comes from the inner shadow the overhanging edge casts. */
+  .not-found__paper {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    filter: url(#nf-torn);
+  }
+
+  .not-found__paper::before,
+  .not-found__paper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(11% 5%, 31% 2%, 37% 9%, 84% 1%, 88% 27%, 87% 51%, 98% 57%, 91% 91%, 64% 96%, 49% 91%, 29% 98%, 7% 93%, 11% 65%, 4% 57%, 10% 34%, 3% 28%, 10% 23%);
+  }
+
+  /* Revealed layer sunk beneath the torn page. Depth is drawn by the inner
+     shadow in the #nf-torn filter, which traces the torn rim exactly. */
+  .not-found__paper::before { background: var(--nf-paper); }
+
+  /* Halftone print texture — stronger toward the torn edges, clean at centre. */
+  .not-found__paper::after {
+    background: radial-gradient(circle, color-mix(in srgb, var(--ink) 34%, transparent) 0 1px, transparent 1.5px) 0 0 / 8px 8px;
+    opacity: 0.55;
+    -webkit-mask-image:
+      radial-gradient(58% 62% at 100% 0%, #000 0%, transparent 68%),
+      radial-gradient(58% 62% at 0% 100%, #000 0%, transparent 68%);
+    mask-image:
+      radial-gradient(58% 62% at 100% 0%, #000 0%, transparent 68%),
+      radial-gradient(58% 62% at 0% 100%, #000 0%, transparent 68%);
+  }
+
+  .not-found__panel p {
+    position: relative;
+    display: grid;
+    gap: 0.35rem;
+    max-width: 30ch;
+    margin: 0;
+    padding: 2rem 4rem 2rem 2rem;
+    color: color-mix(in srgb, var(--ink) 75%, var(--muted));
+    font-size: clamp(0.72rem, 1.3vw, 0.9rem);
+    line-height: 1.5;
+  }
+
+  .not-found__panel p span,
+  .not-found__closing span { display: block; }
+
+  .not-found__marks {
+    position: absolute;
+    z-index: 3;
+    top: -3.75rem;
+    right: 14%;
+    width: 4rem;
+  }
+
+  .not-found__marks path {
+    fill: none;
+    stroke: var(--ink);
+    stroke-linecap: round;
+    stroke-width: 3;
+  }
+
+  .not-found__cameo {
+    position: absolute;
+    z-index: 2;
+    right: -1.5rem;
+    bottom: -4rem;
+    width: clamp(13rem, 23vw, 19rem);
+  }
+
+  .not-found__cameo img { display: block; width: 100%; height: auto; }
+
+  .not-found__bubble {
+    position: absolute;
+    z-index: 2;
+    top: 9%;
+    right: 82%;
+    width: max-content;
+    max-width: 11rem;
+    margin: 0;
+    padding: 0.65rem 0.9rem;
+    border: 2px solid var(--ink);
+    border-radius: 1.5rem;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .not-found__bubble::after {
+    content: "";
+    position: absolute;
+    right: -0.35rem;
+    bottom: 0.15rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    background: var(--bg);
+    rotate: 30deg;
+  }
+
+  .not-found__archive {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(13rem, auto) minmax(20rem, 1.4fr) minmax(15rem, 0.6fr);
+    align-items: end;
+    gap: clamp(1.25rem, 3vw, 2.75rem);
+    min-height: clamp(7.5rem, 11vw, 9.5rem);
+    margin: clamp(1rem, 2vw, 1.75rem);
+    padding: 1.1rem clamp(1.25rem, 3vw, 3rem) 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .not-found__caption {
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    max-width: 17rem;
+    margin: 0 0 1.1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-xs);
+    color: var(--ink);
+    font-size: 0.68rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.055em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .not-found__caption-arrow { flex: none; font-size: 1rem; }
+
+  .not-found__archive img {
+    display: block;
+    align-self: end;
+    justify-self: stretch;
+    width: 100%;
+    height: clamp(7rem, 11vw, 8.5rem);
+    object-fit: cover;
+    object-position: center 48%;
+  }
+
+  .not-found__closing {
+    align-self: center;
+    margin: 0 0 1.1rem;
+    color: var(--ink);
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+
+  .not-found__closing b { color: var(--accent); font-size: 0.95rem; }
+
+  .not-found__crosshair {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    width: 0.85rem;
+    height: 0.85rem;
+    opacity: 0.5;
+  }
+
+  .not-found__crosshair::before,
+  .not-found__crosshair::after {
+    content: "";
+    position: absolute;
+    background: var(--muted);
+  }
+
+  .not-found__crosshair::before { top: 0; left: 50%; width: 1px; height: 100%; transform: translateX(-50%); }
+  .not-found__crosshair::after { top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%); }
+
+  .not-found__registration {
+    position: absolute;
+    z-index: 2;
+    top: 28%;
+    left: 0.55rem;
+    width: 1rem;
+    height: 8rem;
+    border-left: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    opacity: 0.7;
+  }
+
+  .not-found__registration i { position: absolute; left: -0.25rem; width: 0.5rem; border-top: 1px solid var(--muted); }
+  .not-found__registration i:nth-child(1) { top: 0; }
+  .not-found__registration i:nth-child(2) { top: 50%; }
+  .not-found__registration i:nth-child(3) { bottom: 0; }
+
+  @media (max-width: 52rem) {
+    .not-found__main { grid-template-columns: 1fr; min-height: 0; }
+    .not-found__visual { min-height: clamp(31rem, 82vw, 40rem); }
+    .not-found__cameo { right: -1rem; bottom: -2rem; width: clamp(9rem, 27vw, 13rem); }
+    .not-found__archive { grid-template-columns: minmax(12rem, 0.8fr) 1fr; }
+    .not-found__closing { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 35rem) {
+    .not-found { margin-block: 1rem 2rem; }
+    .not-found__main { gap: 2.25rem; padding: 2rem 1rem 3rem; }
+    h1 { max-width: 11ch; font-size: clamp(2.8rem, 14vw, 4.2rem); }
+    .not-found__visual { min-height: 24rem; }
+    .not-found__panel { inset: 0 0.5rem 2.5rem 0; }
+    .not-found__panel p { padding: 2rem 3rem 2rem 1.5rem; font-size: 0.68rem; }
+    .not-found__marks { right: 2.75rem; top:-2.25rem; width: 3rem; }
+    .not-found__cameo { right: -0.25rem; bottom: -1.5rem; width: 8rem; }
+    .not-found__bubble { top: 5%; right: 68%; max-width: 9rem; font-size: 0.6rem; }
+    .not-found__archive { grid-template-columns: 1fr; margin: 0.75rem; padding: 1.25rem 1rem 0; }
+    .not-found__archive img {
+      width: 100%;
+      height: auto;
+      max-height: 7rem;
+      object-fit: contain;
+      object-position: center bottom;
+    }
+    .not-found__closing { grid-column: auto; }
+    .not-found__registration { display: none; }
+  }
+</style>

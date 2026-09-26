@@ -1,0 +1,88 @@
+---
+import ArticleCard from "./ArticleCard.astro";
+
+const { posts = [], fi = false, heading = fi ? "Aiheeseen liittyvät kirjoitukset" : "Related thoughts" } = Astro.props;
+const archiveLabel = fi ? "Näytä kaikki kirjoitukset" : "View all thoughts";
+const archiveHref = fi ? "/fi/blog/" : "/blog/";
+---
+
+{posts.length > 0 && (
+  <section class="related-articles" aria-labelledby="related-articles-heading" data-link-area="related-articles">
+    <header class="related-articles__header">
+      <h2 id="related-articles-heading">{heading}</h2>
+      <a
+        href={archiveHref}
+        data-link-area="related-articles"
+        data-link-type="article-archive"
+        data-link-level="secondary"
+      >
+        {archiveLabel}<span aria-hidden="true"> →</span>
+      </a>
+    </header>
+    <div class="related-articles__grid">
+      {posts.map((post) => <ArticleCard {post} {fi} tracking />)}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-articles {
+    margin-block: clamp(3.5rem, 8vw, 5rem);
+  }
+
+  .related-articles__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  .related-articles__header a {
+    flex: 0 0 auto;
+    color: var(--accent);
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+  }
+
+  .related-articles__header a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .related-articles__header a:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  .related-articles__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 38rem) {
+    .related-articles__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .related-articles__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .related-articles__header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

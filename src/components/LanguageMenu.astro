@@ -1,0 +1,227 @@
+---
+const {
+  fi = false,
+  enLanguageHref,
+  fiLanguageHref,
+  hasLanguageAlternate = true,
+  postWithoutTranslation = false,
+  placement = "footer",
+  idPrefix = placement,
+} = Astro.props;
+
+const panelId = `${idPrefix}-language-menu`;
+const headingId = `${idPrefix}-language-heading`;
+---
+
+<nav
+  class:list={["lang-menu", `lang-menu--${placement}`]}
+  aria-label={fi ? "Kielivalinta" : "Language selection"}
+  data-lang-menu
+>
+  <button
+    class="lang-menu__trigger"
+    type="button"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls={panelId}
+  >
+    <svg class="lang-menu__icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 2.5h9A2.5 2.5 0 0 1 15.5 5v6a2.5 2.5 0 0 1-2.5 2.5H8.6L5 16.6v-3.1H4A2.5 2.5 0 0 1 1.5 11V5A2.5 2.5 0 0 1 4 2.5Z"></path>
+      <path class="lang-menu__icon-outline" d="M13.5 9.5h6.5A2.5 2.5 0 0 1 22.5 12v5a2.5 2.5 0 0 1-2.5 2.5h-.4v3l-3.6-3H13.5A2.5 2.5 0 0 1 11 17v-5a2.5 2.5 0 0 1 2.5-2.5Z"></path>
+      <path class="lang-menu__icon-glyph" d="M6.2 10.6 8.5 5l2.3 5.6M7 8.9h3"></path>
+      <path class="lang-menu__icon-glyph" d="M16.75 12.4v4.2M14.9 13.45l3.7 2.1M18.6 13.45l-3.7 2.1"></path>
+    </svg>
+    <span class="visually-hidden">{fi ? "Kieli:" : "Language:"}</span>
+    <span>{fi ? "Suomi" : "English"}</span>
+    <span class="lang-menu__chevron" aria-hidden="true"></span>
+  </button>
+
+  <div class="lang-menu__panel" id={panelId} hidden>
+    <h3 class="lang-menu__heading" id={headingId}>
+      {fi ? "Vaihda sivun kieli" : "Change the page language"}
+    </h3>
+    <ul class="lang-menu__list" role="list" aria-labelledby={headingId}>
+      <li>
+        <a
+          href={enLanguageHref}
+          lang="en"
+          hreflang="en"
+          rel={hasLanguageAlternate ? "alternate" : undefined}
+          class="lang-menu__option"
+          aria-current={!fi ? "page" : undefined}
+        >
+          English
+          {!fi && <span class="visually-hidden">(current language)</span>}
+          {fi && postWithoutTranslation && (
+            <span class="visually-hidden">(translation unavailable, opens the English homepage)</span>
+          )}
+        </a>
+      </li>
+      <li>
+        <a
+          href={fiLanguageHref}
+          lang="fi"
+          hreflang="fi"
+          rel={hasLanguageAlternate ? "alternate" : undefined}
+          class="lang-menu__option"
+          aria-current={fi ? "page" : undefined}
+        >
+          Suomi
+          {fi && <span class="visually-hidden">(nykyinen kieli)</span>}
+          {!fi && postWithoutTranslation && (
+            <span class="visually-hidden">(käännöstä ei ole, avaa suomenkielisen etusivun)</span>
+          )}
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .lang-menu { position: relative; }
+  .lang-menu__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 38px;
+    padding: 3px 0.9rem;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+  .lang-menu__trigger:hover {
+    border-color: color-mix(in srgb, var(--ink) 30%, var(--line));
+  }
+  .lang-menu__icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    fill: currentColor;
+  }
+  .lang-menu__icon-outline {
+    stroke: var(--bg);
+    stroke-width: 1.4;
+  }
+  .lang-menu__icon-glyph {
+    fill: none;
+    stroke: var(--bg);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .lang-menu__chevron {
+    width: 0.42rem;
+    height: 0.42rem;
+    margin-top: -3px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+  .lang-menu__trigger[aria-expanded="true"] .lang-menu__chevron {
+    margin-top: 3px;
+    transform: rotate(-135deg);
+  }
+  .lang-menu__panel {
+    position: absolute;
+    z-index: 30;
+    min-width: max(100%, 13rem);
+    padding: 0.4rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    box-shadow: var(--shadow-panel);
+  }
+  .lang-menu--footer .lang-menu__panel {
+    bottom: calc(100% + 0.5rem);
+    left: 0;
+  }
+  .lang-menu--header .lang-menu__panel {
+    top: calc(100% + 0.5rem);
+    right: 0;
+  }
+  .lang-menu__panel[hidden] { display: none; }
+  .lang-menu__heading {
+    margin: 0;
+    padding: 0.4rem 0.75rem 0.35rem;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: var(--font-size-ui-xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+  .lang-menu__list {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .lang-menu__option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+  .lang-menu__option:hover {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+  .lang-menu__option[aria-current="page"] { font-weight: 700; }
+  .lang-menu__option[aria-current="page"]::after {
+    content: "✓";
+    margin-left: auto;
+    color: var(--accent);
+  }
+  .lang-menu__trigger:focus-visible,
+  .lang-menu__option:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  function initLanguageMenus(): void {
+    document.querySelectorAll<HTMLElement>("[data-lang-menu]").forEach((menu) => {
+      if ((menu as any).__langBound) return;
+      (menu as any).__langBound = true;
+      const trigger = menu.querySelector<HTMLButtonElement>(".lang-menu__trigger");
+      const panel = menu.querySelector<HTMLElement>(".lang-menu__panel");
+      if (!trigger || !panel) return;
+
+      const setOpen = (open: boolean) => {
+        trigger.setAttribute("aria-expanded", String(open));
+        panel.hidden = !open;
+      };
+      trigger.addEventListener("click", () => setOpen(panel.hidden));
+      document.addEventListener("click", (event) => {
+        if (!menu.contains(event.target as Node)) setOpen(false);
+      });
+      menu.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        setOpen(false);
+        trigger.focus();
+      });
+      menu.addEventListener("focusout", (event) => {
+        const next = event.relatedTarget as Node | null;
+        if (next && menu.contains(next)) return;
+        setOpen(false);
+      });
+    });
+  }
+
+  initLanguageMenus();
+  document.addEventListener("astro:page-load", initLanguageMenus);
+</script>

@@ -1,0 +1,976 @@
+---
+import { toolkit } from "../data/toolkit.js";
+import { siteName } from "../data/site.js";
+import LanguageMenu from "./LanguageMenu.astro";
+import LocaleList from "./LocaleList.astro";
+
+const { fi, t, root, aboutHref, enLanguageHref, fiLanguageHref, hasLanguageAlternate = true, postWithoutTranslation = false } = Astro.props;
+
+// posts for the mega menu, per language
+const postGlob = fi
+  ? import.meta.glob("../pages/fi/blog/*.md", { eager: true })
+  : import.meta.glob("../pages/blog/*.md", { eager: true });
+const withTrailingSlash = (path) => path.endsWith("/") ? path : `${path}/`;
+const recent = Object.values(postGlob)
+  .filter((p) => !p.frontmatter.draft && !p.frontmatter.noindex)
+  .map((p) => ({ ...p.frontmatter, url: withTrailingSlash(p.url) }))
+  .sort((a, b) => new Date(b.date) - new Date(a.date))
+  .slice(0, 4);
+// featured = newest; the list column shows the next three (no duplication)
+const featured = recent[0];
+const recentList = recent.slice(1, 4);
+const workHref = fi ? "/fi/palvelut/" : "/services/";
+const serviceGlob = fi
+  ? import.meta.glob("../pages/fi/palvelut/*.md", { eager: true })
+  : import.meta.glob("../pages/services/*.md", { eager: true });
+const services = Object.entries(serviceGlob)
+  .map(([path, mod]) => ({
+    ...mod.frontmatter,
+    href: `${workHref}${path.split("/").pop().replace(/\.md$/, "")}/`,
+  }))
+  .sort((a, b) => a.order - b.order);
+const serviceGroupOrder = ["seo", "analytics", "reporting"];
+const mm = fi
+  ? {
+      recent: "Uusimmat kirjoitukset",
+      all: "Kaikki kirjoitukset",
+      read: "Lue kirjoitus",
+      menu: "Valikko",
+      close: "Sulje valikko",
+      serviceGroups: { seo: "SEO", analytics: "Analytiikka ja seuranta", reporting: "Raportointi ja jatkuva tuki" },
+      allServices: "Kaikki palvelut",
+      serviceHelp: "Etkö ole varma, mistä aloittaa?",
+    }
+  : {
+      recent: "Recent posts",
+      all: "All thoughts",
+      read: "Read the post",
+      menu: "Menu",
+      close: "Close menu",
+      serviceGroups: { seo: "SEO", analytics: "Analytics & tracking", reporting: "Reporting & ongoing support" },
+      allServices: "View all services",
+      serviceHelp: "Not sure where to start?",
+    };
+
+const fmtDate = (d) => new Date(d).toLocaleDateString(fi ? "fi-FI" : "en-US", { dateStyle: "medium" });
+const isoDate = (d) => new Date(d).toISOString().slice(0, 10);
+
+const current = Astro.url.pathname;
+const isActive = (href) => (href === root ? current === root : current.startsWith(href));
+const serviceHelpHref = `${workHref}${fi ? "#valinta" : "#unsure"}`;
+const toolkitHref = (item) => root + (fi ? item.fiSlug ?? item.slug : item.slug) + "/";
+const toolkitActive = toolkit.some((item) => isActive(toolkitHref(item)));
+const writingActive = isActive(root + "blog/");
+const locales = { fi, enLanguageHref, fiLanguageHref, hasLanguageAlternate, postWithoutTranslation };
+// Temporary: set to true to restore the top-right desktop CTA.
+const showDesktopCta = false;
+---
+
+<header class="site-header" data-site-header>
+  <div class="site-header__inner">
+    <a class="site-header__logo" href={root} aria-label={`${siteName} — ${fi ? "etusivu" : "home"}`}>
+      <img src="/nk-logo.svg" alt="" width="300" height="210" fetchpriority="high" />
+      <span>{siteName}</span>
+    </a>
+
+    <nav class="site-header__nav" aria-label={fi ? "Päävalikko" : "Main navigation"}>
+      <ul class="site-header__nav-list">
+        <li class:list={["site-header__nav-item", { "is-active": isActive(root) }]}>
+          <a class="site-header__nav-link" href={root} aria-current={isActive(root) ? "page" : undefined}>{t.home}</a>
+        </li>
+        <li class:list={["site-header__nav-item", { "is-active": isActive(workHref) }]} data-nav-item>
+          <button
+            class="site-header__nav-trigger"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mega-services"
+            data-nav-trigger
+          >
+            <span>{t.work}</span>
+            <span class="site-header__nav-chevron" aria-hidden="true"></span>
+          </button>
+
+          <div id="mega-services" class="site-header__mega-menu site-header__mega-menu--services" data-nav-panel hidden>
+            <div class="site-header__mega-layout site-header__mega-layout--services">
+              <div class="site-header__service-groups">
+                {serviceGroupOrder.map((group) => (
+                  <div class="site-header__mega-group">
+                    <p class="site-header__mega-group-title">{mm.serviceGroups[group]}</p>
+                    <ul class="site-header__mega-links">
+                      {services.filter((service) => service.group === group).map((service) => (
+                        <li>
+                          <a
+                            href={service.href}
+                            class="site-header__mega-link site-header__service-link"
+                            aria-current={isActive(service.href) ? "page" : undefined}
+                          >
+                            <span class="site-header__mega-link-label">{service.title}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              <div class="site-header__service-footer">
+                <a class="site-header__mega-all" href={workHref}>{mm.allServices}</a>
+                <a class="site-header__service-help" href={serviceHelpHref}>{mm.serviceHelp}</a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class:list={["site-header__nav-item", { "is-active": writingActive }]} data-nav-item>
+          <button
+            class="site-header__nav-trigger"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mega-writing"
+            data-nav-trigger
+          >
+            <span>{t.writing}</span>
+            <span class="site-header__nav-chevron" aria-hidden="true"></span>
+          </button>
+
+          <div id="mega-writing" class="site-header__mega-menu" data-nav-panel hidden>
+            <div class="site-header__mega-layout">
+              <div class="site-header__mega-group">
+                <p class="site-header__mega-group-title">{mm.recent}</p>
+                <ul class="site-header__mega-links">
+                  {recentList.map((p) => (
+                    <li>
+                      <a href={p.url} class="site-header__mega-link">
+                        <span class="site-header__mega-link-label">{p.title}</span>
+                        <span class="site-header__mega-link-text">
+                          <time datetime={isoDate(p.date)}>{fmtDate(p.date)}</time>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <a class="site-header__mega-all" href={root + "blog/"}>{mm.all}</a>
+              </div>
+
+              {featured && (
+                <div class="site-header__mega-featured">
+                  <a href={featured.url} class="site-header__mega-featured-link">
+                    <span class="site-header__mega-featured-title">{featured.title}</span>
+                    <span class="site-header__mega-featured-text">{featured.description}</span>
+                    <span class="site-header__mega-featured-cta">{mm.read}</span>
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </li>
+        <li class:list={["site-header__nav-item", { "is-active": toolkitActive }]} data-nav-item>
+          <button
+            class="site-header__nav-trigger"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mega-toolkit"
+            data-nav-trigger
+          >
+            <span>{t.toolkit}</span>
+            <span class="site-header__nav-chevron" aria-hidden="true"></span>
+          </button>
+
+          <div id="mega-toolkit" class="site-header__mega-menu site-header__mega-menu--narrow" data-nav-panel hidden>
+            <div class="site-header__mega-layout site-header__mega-layout--single">
+              <div class="site-header__mega-group">
+                <ul class="site-header__mega-links">
+                  {toolkit.map((item) => {
+                    const c = fi ? item.fi : item.en;
+                    const href = toolkitHref(item);
+                    return (
+                      <li>
+                        <a href={href} class="site-header__mega-link" aria-current={isActive(href) ? "page" : undefined}>
+                          <span class="site-header__mega-link-label">{c.label}</span>
+                          <span class="site-header__mega-link-text">{c.desc}</span>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class:list={["site-header__nav-item", { "is-active": isActive(aboutHref) }]}>
+          <a class="site-header__nav-link" href={aboutHref} aria-current={isActive(aboutHref) ? "page" : undefined}>{t.about}</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <LanguageMenu {...locales} placement="header" idPrefix="header" />
+      {showDesktopCta && (
+        <a class="cta site-header__cta" href="#">
+          <span class="cta__surface">{t.contact}</span>
+        </a>
+      )}
+    </div>
+
+    <button
+      class="site-header__mobile-toggle"
+      type="button"
+      aria-label={mm.menu}
+      aria-expanded="false"
+      aria-controls="mobile-navigation"
+      data-mobile-nav-toggle
+    >
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-nav-overlay" data-mobile-nav-overlay aria-hidden="true">
+  <div class="mobile-nav-overlay__backdrop" data-mobile-nav-close></div>
+
+  <div
+    class="mobile-nav-overlay__panel"
+    id="mobile-navigation"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="mobile-navigation-title"
+    tabindex="-1"
+    data-mobile-nav-panel
+  >
+    <div class="mobile-nav-overlay__inner">
+      <div class="mobile-nav-overlay__header">
+        <span class="mobile-nav-overlay__title" id="mobile-navigation-title">{mm.menu}</span>
+        <button class="mobile-nav-overlay__close" type="button" aria-label={mm.close} data-mobile-nav-close>
+          <span></span>
+        </button>
+      </div>
+
+      <div class="mobile-nav-overlay__list">
+        <a class="mobile-nav-overlay__plain" href={root}>{t.home}</a>
+
+        <section class="mobile-nav-overlay__section" data-mobile-nav-section>
+          <button
+            class="mobile-nav-overlay__summary"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mobile-services"
+            data-mobile-section-toggle
+          >
+            <span>{t.work}</span>
+            <span class="mobile-nav-overlay__chevron" aria-hidden="true"></span>
+          </button>
+          <div id="mobile-services" class="mobile-nav-overlay__body" data-mobile-section-panel hidden>
+            {serviceGroupOrder.map((group) => (
+              <div class="mobile-nav-overlay__group">
+                <p class="mobile-nav-overlay__group-title">{mm.serviceGroups[group]}</p>
+                <ul class="mobile-nav-overlay__links">
+                  {services.filter((service) => service.group === group).map((service) => (
+                    <li>
+                      <a
+                        href={service.href}
+                        class="mobile-nav-overlay__link"
+                        aria-current={isActive(service.href) ? "page" : undefined}
+                      >
+                        <span class="mobile-nav-overlay__link-label">{service.title}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <div class="mobile-nav-overlay__service-footer">
+              <a class="mobile-nav-overlay__link mobile-nav-overlay__all" href={workHref}>{mm.allServices}</a>
+              <a class="mobile-nav-overlay__link mobile-nav-overlay__help" href={serviceHelpHref}>{mm.serviceHelp}</a>
+            </div>
+          </div>
+        </section>
+        
+        <section class="mobile-nav-overlay__section" data-mobile-nav-section>
+          <button
+            class="mobile-nav-overlay__summary"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mobile-writing"
+            data-mobile-section-toggle
+          >
+            <span>{t.writing}</span>
+            <span class="mobile-nav-overlay__chevron" aria-hidden="true"></span>
+          </button>
+          <div id="mobile-writing" class="mobile-nav-overlay__body" data-mobile-section-panel hidden>
+            <ul class="mobile-nav-overlay__links">
+              {recent.map((p) => (
+                <li>
+                  <a href={p.url} class="mobile-nav-overlay__link">
+                    <span class="mobile-nav-overlay__link-label">{p.title}</span>
+                    <span class="mobile-nav-overlay__link-text">{fmtDate(p.date)}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a class="mobile-nav-overlay__link mobile-nav-overlay__all" href={root + "blog/"}>{mm.all}</a>
+          </div>
+        </section>
+
+        <section class="mobile-nav-overlay__section" data-mobile-nav-section>
+          <button
+            class="mobile-nav-overlay__summary"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mobile-toolkit"
+            data-mobile-section-toggle
+          >
+            <span>{t.toolkit}</span>
+            <span class="mobile-nav-overlay__chevron" aria-hidden="true"></span>
+          </button>
+          <div id="mobile-toolkit" class="mobile-nav-overlay__body" data-mobile-section-panel hidden>
+            <ul class="mobile-nav-overlay__links">
+              {toolkit.map((item) => {
+                const c = fi ? item.fi : item.en;
+                const href = toolkitHref(item);
+                return (
+                  <li>
+                    <a
+                      href={href}
+                      class="mobile-nav-overlay__link"
+                      aria-current={isActive(href) ? "page" : undefined}
+                    >
+                      <span class="mobile-nav-overlay__link-label">{c.label}</span>
+                      <span class="mobile-nav-overlay__link-text">{c.desc}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        <a class="mobile-nav-overlay__plain" href={aboutHref}>{t.about}</a>
+      </div>
+
+      <div class="mobile-nav-overlay__actions">
+        <LocaleList {...locales} />
+        <a class="cta" href="#">
+          <span class="cta__surface">{t.contact}</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  :global(body.has-mobile-nav-open) { overflow: hidden; }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 94%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header__inner {
+    position: relative;              /* mega panel anchors here */
+    width: min(var(--container-wide), 100% - var(--container-gutter));
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(0.5rem, 2vw, 1rem);
+    min-height: 4.5rem;
+    padding-block: 0.5rem;
+  }
+  .site-header__logo {
+    min-width: 0;
+    flex: 0 1 auto;
+    display: flex;
+    align-items: center;
+    gap: min(0.65rem, 12px);
+    color: var(--ink);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    text-decoration: none;
+  }
+  .site-header__logo img { flex: none; height: min(2.5rem, 48px); width: auto; }
+  .site-header__logo span { min-width: 0; overflow-wrap: anywhere; line-height: 1.15; font-family: var(--font-display); }
+
+  /* desktop nav: pill triggers */
+  .site-header__nav { display: none; min-width: 0; }
+  .site-header__nav-list { display: flex; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; gap: 0.375rem; }
+  .site-header__nav-link,
+  .site-header__nav-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    padding: 0.6rem 0.95rem;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
+  }
+  .site-header__nav-link:hover,
+  .site-header__nav-trigger:hover { color: var(--ink); }
+  .site-header__nav-item.is-active :is(.site-header__nav-link, .site-header__nav-trigger) {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+  .site-header__nav-item.is-open .site-header__nav-trigger {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+  .site-header__nav-chevron,
+  .mobile-nav-overlay__chevron {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+  .site-header__nav-item.is-open .site-header__nav-chevron {
+    transform: rotate(-135deg) translate(-1px, -1px);
+  }
+
+  /* floating mega panel */
+  .site-header__mega-menu {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: 50%;
+    width: min(680px, calc(100vw - 3rem));
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard), visibility var(--duration-fast) var(--ease-standard);
+    z-index: 20;
+  }
+  .site-header__mega-menu[hidden] { display: none; }
+  .site-header__mega-menu--narrow { width: min(420px, calc(100vw - 3rem)); }
+  .site-header__mega-menu--services { width: min(90rem, calc(100vw - 2rem)); }
+  .site-header__mega-layout.site-header__mega-layout--single { grid-template-columns: 1fr; }
+  .site-header__nav-item.is-open .site-header__mega-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .site-header__mega-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(240px, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: color-mix(in srgb, var(--bg) 98%, transparent);
+    box-shadow: 0 24px 60px color-mix(in srgb, var(--ink) 12%, transparent);
+    backdrop-filter: blur(18px);
+  }
+  .site-header__mega-layout.site-header__mega-layout--services {
+    display: block;
+    padding: 0;
+    overflow: hidden;
+  }
+  .site-header__service-groups {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 5rem);
+    padding: clamp(1.75rem, 3vw, 3rem);
+  }
+  .site-header__mega-group-title {
+    margin: 0 0 0.85rem;
+    font-size: var(--font-size-ui-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .site-header__mega-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+  .site-header__mega-link {
+    display: block;
+    padding: 0.7rem 0.95rem;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+  .site-header__mega-link:hover,
+  .site-header__mega-link:focus-visible {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+  .site-header__mega-link[aria-current="page"],
+  .mobile-nav-overlay__link[aria-current="page"] {
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent);
+  }
+  .site-header__service-link { padding-block: 0.8rem; }
+  .site-header__mega-link-label { display: block; font-size: 0.98rem; font-weight: 700; color: var(--ink); }
+  .site-header__mega-link-text { display: block; margin-top: 0.2rem; font-size: 0.85rem; color: var(--muted); }
+  .site-header__mega-all {
+    display: inline-block;
+    margin-top: 1rem;
+    font-weight: 600;
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+    color: var(--accent);
+    transition: text-decoration-color var(--duration-base) var(--ease-out);
+  }
+  .site-header__mega-all::after,
+  .mobile-nav-overlay__all::after {
+    content: " →";
+    display: inline-block;
+    transition: translate var(--duration-base) var(--ease-out);
+  }
+  .site-header__mega-all:is(:hover, :focus-visible),
+  .mobile-nav-overlay__all:is(:hover, :focus-visible) {
+    text-decoration-color: currentColor;
+  }
+  .site-header__mega-all:is(:hover, :focus-visible)::after,
+  .mobile-nav-overlay__all:is(:hover, :focus-visible)::after {
+    translate: 0.2em 0;
+  }
+  .site-header__service-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.1rem clamp(1.75rem, 3vw, 3rem);
+    border-top: 1px solid var(--line);
+    background: color-mix(in srgb, var(--accent) 4%, var(--bg));
+  }
+  .site-header__service-footer .site-header__mega-all { margin-top: 0; }
+  .site-header__service-help {
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .site-header__service-help:is(:hover, :focus-visible) {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .site-header__mega-featured {
+    display: flex;
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 18%, transparent), transparent 45%),
+      color-mix(in srgb, var(--accent) 5%, var(--bg));
+    border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+  /* the whole featured card is one link; the spans keep the original stacked layout */
+  .site-header__mega-featured-link {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    border-radius: inherit;
+    text-decoration: none;
+    color: var(--ink);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+  .site-header__mega-featured-link:hover {
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+  .site-header__mega-featured-title,
+  .site-header__mega-featured-text,
+  .site-header__mega-featured-cta {
+    display: block;
+  }
+  .site-header__mega-featured-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 620;
+    font-size: 1.15rem;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .site-header__mega-featured-text { margin-top: 0.75rem; font-size: 0.9rem; line-height: 1.6; color: var(--muted); }
+  .site-header__mega-featured-cta {
+    margin-top: auto;
+    padding-top: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color var(--duration-base) var(--ease-out);
+  }
+  .site-header__mega-featured-cta::after {
+    content: " →";
+    display: inline-block;
+    color: var(--accent);
+    transition: translate var(--duration-base) var(--ease-out);
+  }
+  .site-header__mega-featured-link:is(:hover, :focus-visible) .site-header__mega-featured-cta {
+    text-decoration-color: currentColor;
+  }
+  .site-header__mega-featured-link:is(:hover, :focus-visible) .site-header__mega-featured-cta::after {
+    translate: 0.2em 0;
+  }
+
+  /* actions + theme toggle */
+  .site-header__actions { display: none; align-items: center; gap: 0.9rem; }
+  .site-header__cta { font-size: 0.9rem; }
+
+  :is(.site-header__nav-link, .site-header__nav-trigger, .site-header__mega-link,
+      .site-header__mega-featured-link, .site-header__service-help, .site-header__mobile-toggle,
+      .mobile-nav-overlay__close, .mobile-nav-overlay__summary, .mobile-nav-overlay__link,
+      .mobile-nav-overlay__plain):focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+  }
+  .mobile-nav-overlay__summary:focus-visible { outline-offset: -3px; }
+
+  /* burger -> X */
+  .site-header__mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none; width: 44px; height: 44px;
+    border: none; border-radius: var(--radius-pill);
+    background: none;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .site-header__mobile-toggle.is-hidden { opacity: 0; pointer-events: none; }
+  .site-header__mobile-toggle span,
+  .mobile-nav-overlay__close span {
+    display: block; width: 20px; height: 2px;
+    background: currentColor; position: relative;
+  }
+  .site-header__mobile-toggle[aria-expanded="true"] span,
+  .mobile-nav-overlay__close span { background: transparent; }
+  .site-header__mobile-toggle span::before,
+  .site-header__mobile-toggle span::after,
+  .mobile-nav-overlay__close span::before,
+  .mobile-nav-overlay__close span::after {
+    content: ""; display: block; width: 20px; height: 2px;
+    background: currentColor; position: absolute; left: 0;
+    transition: transform var(--duration-fast) var(--ease-standard), top var(--duration-fast) var(--ease-standard);
+  }
+  .site-header__mobile-toggle span::before { top: -6px; }
+  .site-header__mobile-toggle span::after { top: 6px; }
+  .mobile-nav-overlay__close span::before { top: 0; transform: rotate(45deg); }
+  .mobile-nav-overlay__close span::after { top: 0; transform: rotate(-45deg); }
+
+  /* mobile overlay */
+  .mobile-nav-overlay {
+    position: fixed; inset: 0; z-index: 110;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity var(--duration-fast) var(--ease-standard), visibility var(--duration-fast) var(--ease-standard);
+  }
+  .mobile-nav-overlay.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity var(--duration-fast) var(--ease-standard); }
+  .mobile-nav-overlay__backdrop {
+    position: absolute; inset: 0;
+    background: color-mix(in srgb, var(--color-neutral-950) 28%, transparent);
+  }
+  .mobile-nav-overlay__panel {
+    position: absolute;
+    top: var(--mobile-header-height, 4.5rem); left: 0; right: 0; bottom: 0;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+    transform: translateY(-0.5rem);
+    transition: transform var(--duration-fast) var(--ease-standard);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .mobile-nav-overlay__panel:focus { outline: none; }
+  .mobile-nav-overlay__panel.is-open { transform: translateY(0); }
+  .mobile-nav-overlay__inner {
+    width: min(var(--container-wide), 100% - var(--container-gutter));
+    margin-inline: auto;
+    min-height: 100%;
+    overflow-wrap: anywhere;
+    padding-block: 1rem calc(2.25rem + env(safe-area-inset-bottom, 0px));
+  }
+  .mobile-nav-overlay__header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; margin-bottom: 1rem;
+  }
+  .mobile-nav-overlay__title {
+    font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .mobile-nav-overlay__close {
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: none; width: 44px; height: 44px;
+    border: 1px solid var(--line); border-radius: var(--radius-pill);
+    background: var(--bg); color: var(--ink);
+    cursor: pointer;
+  }
+  .mobile-nav-overlay__list { display: grid; gap: 0.75rem; }
+  .mobile-nav-overlay__plain,
+  .mobile-nav-overlay__section {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .mobile-nav-overlay__plain {
+    display: block;
+    padding: 1rem 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .mobile-nav-overlay__summary {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; width: 100%;
+    padding: 1rem 1.1rem;
+    border: none; background: transparent;
+    font: inherit; font-size: 1rem; font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+  }
+  .mobile-nav-overlay__section.is-open .mobile-nav-overlay__chevron {
+    transform: rotate(-135deg) translate(-1px, -1px);
+  }
+  .mobile-nav-overlay__body { padding: 0 1rem 1rem; display: grid; gap: 1rem; }
+  .mobile-nav-overlay__body[hidden] { display: none; }
+  .mobile-nav-overlay__group { display: grid; gap: 0.25rem; }
+  .mobile-nav-overlay__group-title {
+    margin: 0;
+    padding-inline: 0.8rem;
+    color: var(--muted);
+    font-size: var(--font-size-ui-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .mobile-nav-overlay__links { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+  .mobile-nav-overlay__link {
+    display: block;
+    padding: 0.7rem 0.8rem;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+  .mobile-nav-overlay__link:hover,
+  .mobile-nav-overlay__link:focus-visible {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+  .mobile-nav-overlay__link-label { display: block; font-size: 0.98rem; font-weight: 700; color: var(--ink); }
+  .mobile-nav-overlay__link-text { display: block; margin-top: 0.2rem; font-size: 0.85rem; color: var(--muted); }
+  .mobile-nav-overlay__all {
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      text-decoration-color var(--duration-base) var(--ease-out);
+  }
+  .mobile-nav-overlay__service-footer {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+  }
+  .mobile-nav-overlay__help {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .mobile-nav-overlay__actions {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 1rem; margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .mobile-nav-overlay__actions :global(.cta) { max-width: 100%; white-space: normal; text-align: center; }
+  .mobile-nav-overlay__actions :global(.locale-list ul) { flex-wrap: wrap; }
+  .mobile-nav-overlay__summary > span:first-child { min-width: 0; }
+  .mobile-nav-overlay__chevron { flex-shrink: 0; }
+
+  /* 56rem, not 768px: the Finnish nav labels plus the locale list and CTA need
+     ~844px of inner width, so at 768px the desktop header overflowed */
+  @media (min-width: 56rem) {
+    .site-header__inner { flex-wrap: wrap; }
+    .site-header__nav { display: block; }
+    .site-header__actions { display: flex; }
+    .site-header__mobile-toggle { display: none; }
+    .mobile-nav-overlay { display: none; }
+  }
+</style>
+
+<script>
+  // ported (trimmed) from blog-layout-astrojs Header: click-to-open mega panels + mobile overlay.
+  // The header is re-rendered on every client navigation (no transition:persist), so element
+  // listeners are (re)bound in initHeader() on each astro:page-load — fresh elements, old ones
+  // are discarded with the swapped-out header so nothing leaks. The document/matchMedia listeners
+  // are bound once and read the current header via the module-scoped refs that initHeader refreshes,
+  // so they never accumulate.
+  const desktopBreakpoint = matchMedia("(min-width: 56rem)");
+  let nav, megaItems = [], mobileToggle, overlay, mobilePanel, closeControls, inertRoots;
+  let lastFocus = null;
+  let lastFocusedElement = null;
+  let headerObserver;
+
+  const setMegaOpen = (entry, isOpen) => {
+    entry.trigger.setAttribute("aria-expanded", String(isOpen));
+    entry.panel.hidden = !isOpen;
+    entry.item.classList.toggle("is-open", isOpen);
+  };
+  const entryIsOpen = (entry) => entry.trigger.getAttribute("aria-expanded") === "true";
+  const openMega = () => megaItems.find(entryIsOpen);
+  const closeAllMegas = () => megaItems.forEach((e) => setMegaOpen(e, false));
+
+  const focusPanelLink = (entry, position) => {
+    const focusable = entry.panel.querySelectorAll("a[href]");
+    const target = position === "last" ? focusable[focusable.length - 1] : focusable[0];
+    if (target) requestAnimationFrame(() => target.focus());
+  };
+
+  const mobileIsOpen = () => mobileToggle?.getAttribute("aria-expanded") === "true";
+
+  const setMobileOpen = (isOpen, { restoreFocus = true } = {}) => {
+    if (!mobileToggle) return;
+    if (isOpen) lastFocus = document.activeElement;
+    mobileToggle.setAttribute("aria-expanded", String(isOpen));
+    mobileToggle.classList.toggle("is-hidden", isOpen);
+    document.body.classList.toggle("has-mobile-nav-open", isOpen);
+    overlay.classList.toggle("is-open", isOpen);
+    overlay.setAttribute("aria-hidden", String(!isOpen));
+    mobilePanel.classList.toggle("is-open", isOpen);
+    inertRoots.forEach((el) => (el.inert = isOpen));
+
+    if (isOpen) {
+      requestAnimationFrame(() => closeControls[1]?.focus());
+    } else if (restoreFocus && lastFocus) {
+      requestAnimationFrame(() => lastFocus.focus());
+    }
+  };
+
+  const initHeader = () => {
+    headerObserver?.disconnect();
+    document.body.classList.remove("has-mobile-nav-open");
+    nav = document.querySelector(".site-header__nav");
+    megaItems = [...document.querySelectorAll("[data-nav-item]")].map((item) => ({
+      item,
+      trigger: item.querySelector("[data-nav-trigger]"),
+      panel: item.querySelector("[data-nav-panel]"),
+    }));
+
+    megaItems.forEach((entry) => {
+      entry.trigger.addEventListener("click", () => {
+        const wasOpen = entryIsOpen(entry);
+        closeAllMegas();                       // opening one closes the others
+        if (!wasOpen) setMegaOpen(entry, true);
+      });
+      entry.trigger.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown") { e.preventDefault(); closeAllMegas(); setMegaOpen(entry, true); focusPanelLink(entry, "first"); }
+        if (e.key === "ArrowUp") { e.preventDefault(); closeAllMegas(); setMegaOpen(entry, true); focusPanelLink(entry, "last"); }
+      });
+      entry.panel.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          setMegaOpen(entry, false);
+          entry.trigger.focus();
+          return;
+        }
+        // roving focus within the open dropdown (menubar vertical model)
+        const links = [...entry.panel.querySelectorAll("a[href]")];
+        const i = links.indexOf(document.activeElement);
+        if (i === -1 || !links.length) return;
+        const n = links.length;
+        let next = null;
+        if (e.key === "ArrowDown") next = links[(i + 1) % n];
+        else if (e.key === "ArrowUp") next = links[(i - 1 + n) % n];
+        else if (e.key === "Home") next = links[0];
+        else if (e.key === "End") next = links[n - 1];
+        if (next) { e.preventDefault(); next.focus(); }
+      });
+    });
+    nav?.addEventListener("focusout", (e) => {
+      if (e.relatedTarget && nav.contains(e.relatedTarget)) return;
+      closeAllMegas();
+    });
+
+    // roving focus across top-level items (menubar horizontal model).
+    // Up/Down stay owned by the trigger handler above (open/enter the panel).
+    const topItems = [...(nav?.querySelectorAll(".site-header__nav-link, .site-header__nav-trigger") ?? [])];
+    nav?.addEventListener("keydown", (e) => {
+      const i = topItems.indexOf(e.target);
+      if (i === -1) return;                    // let panel-link keys fall through
+      const n = topItems.length;
+      let next = null;
+      if (e.key === "ArrowRight") next = topItems[(i + 1) % n];
+      else if (e.key === "ArrowLeft") next = topItems[(i - 1 + n) % n];
+      else if (e.key === "Home") next = topItems[0];
+      else if (e.key === "End") next = topItems[n - 1];
+      if (next) { e.preventDefault(); closeAllMegas(); next.focus(); }
+    });
+
+    // mobile overlay
+    mobileToggle = document.querySelector("[data-mobile-nav-toggle]");
+    overlay = document.querySelector("[data-mobile-nav-overlay]");
+    mobilePanel = document.querySelector("[data-mobile-nav-panel]");
+    closeControls = document.querySelectorAll("[data-mobile-nav-close]");
+    inertRoots = document.querySelectorAll("main, footer");
+    inertRoots.forEach((el) => (el.inert = false));
+    const header = document.querySelector("[data-site-header]");
+    const updateHeaderHeight = () => overlay?.style.setProperty("--mobile-header-height", `${header.getBoundingClientRect().height}px`);
+    headerObserver = new ResizeObserver(updateHeaderHeight);
+    headerObserver.observe(header);
+    updateHeaderHeight();
+
+    mobileToggle?.addEventListener("click", () => setMobileOpen(!mobileIsOpen(), { restoreFocus: false }));
+    closeControls.forEach((c) => c.addEventListener("click", () => setMobileOpen(false)));
+
+    // accordion sections
+    document.querySelectorAll("[data-mobile-nav-section]").forEach((section) => {
+      const sToggle = section.querySelector("[data-mobile-section-toggle]");
+      const sPanel = section.querySelector("[data-mobile-section-panel]");
+      sToggle.addEventListener("click", () => {
+        const open = sToggle.getAttribute("aria-expanded") !== "true";
+        sToggle.setAttribute("aria-expanded", String(open));
+        section.classList.toggle("is-open", open);
+        sPanel.hidden = !open;
+      });
+    });
+
+    // close overlay when a link inside is chosen; trap Tab within the panel
+    mobilePanel?.addEventListener("click", (e) => {
+      if (e.target.closest("a")) setMobileOpen(false);
+    });
+    mobilePanel?.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab" || !mobileIsOpen()) return;
+      const focusable = [...mobilePanel.querySelectorAll('a[href], button:not([disabled])')]
+        .filter((el) => !el.closest("[hidden]"));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  };
+
+  // Bound once on document/matchMedia (these survive swaps); they act on the current header
+  // through the module-scoped refs, so there is nothing to remove or rebind per navigation.
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (mobileIsOpen()) { e.preventDefault(); setMobileOpen(false); return; }
+    const open = openMega();
+    if (open) { e.preventDefault(); setMegaOpen(open, false); open.trigger.focus(); }
+  });
+  document.addEventListener("click", (e) => {
+    if (nav && !nav.contains(e.target)) closeAllMegas();
+  });
+  document.addEventListener("focusin", (e) => { lastFocusedElement = e.target; });
+  desktopBreakpoint.addEventListener("change", (e) => {
+    const hadMobileFocus = mobileIsOpen();
+    const hadDesktopFocus = nav?.contains(lastFocusedElement);
+    if (e.matches) {
+      setMobileOpen(false, { restoreFocus: false });
+      if (hadMobileFocus) nav?.querySelector("a, button")?.focus();
+    } else {
+      closeAllMegas();
+      if (hadDesktopFocus) mobileToggle?.focus();
+    }
+  });
+
+  document.addEventListener("astro:page-load", initHeader);
+</script>

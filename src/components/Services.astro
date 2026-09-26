@@ -1,0 +1,56 @@
+---
+const { items, heading, intro } = Astro.props;
+---
+
+<section class="services">
+  <div class="intro">
+    <h2>{heading}</h2>
+    <p>{intro}</p>
+  </div>
+  <div class="sgrid">
+    {items.map((s) => (
+      <article>
+        <div class="icon" aria-hidden="true">{s.icon}</div>
+        <h3>{s.title}</h3>
+        <p>{s.desc}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  /* services panel: full-bleed intro + service grid,
+     theme-aware neutral surface: soft grey in light mode, lifted dark in dark mode */
+  .services {
+    position: relative;
+    display: grid; gap: 3rem;
+    background: var(--color-surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 4rem 3rem;
+    margin-block: 3rem 4rem;
+    margin-inline: calc((100% - 100vw) / 2 + 1.25rem);  /* full-bleed */
+  }
+  @container page (min-width: 46rem) {
+    .services { grid-template-columns: 1fr 2fr; padding: 5rem 4rem; gap: 4rem; }
+  }
+  .services h2 { margin: 0 0 1.25rem; font-size: clamp(1.8rem, 5cqi, 2.8rem); text-transform: uppercase; }
+  .intro p { color: var(--muted); margin: 0 0 1rem; }
+  .sgrid { display: grid; gap: 2.75rem; align-content: start; }
+  @container page (min-width: 46rem) { .sgrid { grid-template-columns: 1fr 1fr; } }
+  .sgrid article { min-width: 0; }
+  .icon {
+    width: 3rem; height: 3rem; border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+    color: var(--accent);
+    display: grid; place-content: center;
+    font-size: 1.3rem;
+  }
+  .sgrid h3 {
+    font-family: "Roboto Flex", system-ui, sans-serif;  /* grotesque caps, not editorial serif */
+    font-weight: var(--font-weight-strong); text-transform: uppercase; letter-spacing: 0.02em;
+    font-size: 1.05rem; margin: 1rem 0 0.6rem;
+  }
+  .sgrid p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+</style>

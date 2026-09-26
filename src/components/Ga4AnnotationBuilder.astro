@@ -1,0 +1,435 @@
+---
+import { annotationCategories, annotationDateGuidance } from "../data/ga4-annotations.js";
+---
+
+<section class="annotation-builder" data-annotation-builder aria-label="GA4-annotaation luonti">
+  <!-- THESIS: A category-led writing desk turns an event into a useful, copyable GA4 note.
+       OWN-WORLD: Inherit the site's Fraunces headings, Roboto Flex UI, neutral surfaces and purple controls.
+       STORY: Choose category and template; edit the actual output; complete a sentence; copy each field.
+       FIRST VIEWPORT: Six category rows beside the editor, with language control and colour guidance visible.
+       FORM: Established tool surface, code-led extension; composition settled in the user conversation.
+       FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
+  <div class="annotation-category-mobile">
+    <label class="annotation-label" for="annotation-category-mobile">Kategoria</label>
+    <select id="annotation-category-mobile" data-category-select>
+      {annotationCategories.map((category) => <option value={category.code}>{category.label} [{category.code}]</option>)}
+    </select>
+  </div>
+  <fieldset class="annotation-categories">
+    <legend>Kategoria</legend>
+    {annotationCategories.map((category, index) => (
+      <label class="annotation-category" style={`--annotation-color: ${category.color}`}>
+        <input type="radio" name="annotation-category" value={category.code} checked={index === 0} />
+        <span class="annotation-dot" aria-hidden="true"></span>
+        <span class="annotation-category-name">{category.label}<small>[{category.code}]</small></span>
+        <svg class="annotation-check" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" /></svg>
+      </label>
+    ))}
+    <p class="annotation-category-hint" data-category-hint>{annotationCategories[0].hint}</p>
+  </fieldset>
+
+  <div class="annotation-editor">
+    <div class="annotation-editor-heading">
+      <h2>Muotoile merkintä</h2>
+      <fieldset class="annotation-language">
+        <legend>Annotaation kieli</legend>
+        <label><input type="radio" name="annotation-language" value="fi" checked /><span>Suomi</span></label>
+        <label><input type="radio" name="annotation-language" value="en" /><span lang="en">English</span></label>
+      </fieldset>
+    </div>
+    <p class="annotation-language-note" data-language-note hidden>Kielivalinta vaihtaa pohjat ja ehdotukset. Omat tekstit säilyvät alkuperäisellä kielellä.</p>
+
+    <div class="annotation-template-row">
+      <div>
+        <label class="annotation-label" for="annotation-template">Tapahtumapohja</label>
+        <select id="annotation-template" data-template>
+          {annotationCategories[0].templates.map((template) => <option value={template.id}>{template.label} [{template.code}]</option>)}
+          <option value="custom">Oma merkintä [{annotationCategories[0].code}]</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="annotation-field">
+      <div class="annotation-field-heading"><label class="annotation-label" for="annotation-title">Otsikko <span class="annotation-required">(pakollinen)</span></label><span class="annotation-count" id="annotation-title-count" data-title-count>0 / 60</span></div>
+      <div class="annotation-title-input"><span data-prefix>[{annotationCategories[0].templates[0].code}]</span><input id="annotation-title" data-title type="text" autocomplete="off" required aria-describedby="annotation-title-count annotation-title-help" /></div>
+      <div class="annotation-field-footer"><p id="annotation-title-help" data-title-help>Täydennä hakasulkeissa oleva kohta.</p><button type="button" class="annotation-copy" data-copy-title disabled>Kopioi otsikko</button></div>
+    </div>
+
+    <div class="annotation-field">
+      <div class="annotation-field-heading"><label class="annotation-label" for="annotation-description">Kuvaus</label><button class="annotation-suggestions-toggle" type="button" data-toggle-suggestions aria-expanded="false" aria-controls="annotation-suggestions">Ehdotukset</button><span class="annotation-count" id="annotation-description-count" data-description-count>0 / 150</span></div>
+      <div class="annotation-description-input">
+        <textarea id="annotation-description" data-description rows="3" aria-describedby="annotation-description-count annotation-description-help" placeholder="Mitä tapahtui, missä ja miksi?"></textarea>
+        <div id="annotation-suggestions" class="annotation-suggestions" data-suggestions hidden>
+          <div class="annotation-suggestions-heading"><p data-suggestions-label>Ehdotuksia kuvaukseen</p><button type="button" data-close-suggestions>Sulje</button></div>
+          <ul aria-label="Kuvauksen ehdotukset" data-suggestion-list></ul>
+        </div>
+      </div>
+      <div class="annotation-field-footer"><p id="annotation-description-help" data-description-help>Valinnainen. Lisää tapahtumaan olennaista taustaa.</p><button type="button" class="annotation-copy" data-copy-description disabled>Kopioi kuvaus</button></div>
+      <span class="visually-hidden" role="status" data-suggestion-status></span>
+    </div>
+
+    <p class="annotation-status visually-hidden" role="status" aria-live="polite" data-status></p>
+    <div class="annotation-instructions">
+      <h3>Päivämäärä tai aikaväli</h3>
+      <p data-date-guidance>{annotationDateGuidance.newsletter}</p>
+    </div>
+    <div class="annotation-instructions annotation-color-guide">
+      <h3>Väri</h3>
+      <p class="annotation-color-note"><span class="annotation-dot" data-color-dot aria-hidden="true"></span><strong data-color-name>Violetti</strong></p>
+    </div>
+  </div>
+  <noscript>Ota JavaScript käyttöön, jotta voit valita tapahtumapohjan ja käyttää tekstiehdotuksia.</noscript>
+</section>
+
+<script>
+  import { annotationCategories, annotationDateGuidance, characterCount, getDescriptionSuggestions, hasPlaceholder } from "../data/ga4-annotations.js";
+
+  function initAnnotationBuilder() {
+    const root = document.querySelector<HTMLElement>("[data-annotation-builder]");
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = "true";
+    const el = <T extends HTMLElement>(selector: string) => root.querySelector<T>(selector)!;
+    const title = el<HTMLInputElement>("[data-title]");
+    const description = el<HTMLTextAreaElement>("[data-description]");
+    const templateSelect = el<HTMLSelectElement>("[data-template]");
+    const titleCopy = el<HTMLButtonElement>("[data-copy-title]");
+    const descriptionCopy = el<HTMLButtonElement>("[data-copy-description]");
+    const suggestions = el<HTMLElement>("[data-suggestions]");
+    const suggestionList = el<HTMLUListElement>("[data-suggestion-list]");
+    const status = el<HTMLElement>("[data-status]");
+    const toggleSuggestions = el<HTMLButtonElement>("[data-toggle-suggestions]");
+    const categorySelect = el<HTMLSelectElement>("[data-category-select]");
+    const dismissedSuggestions = new Set<string>();
+    let titleLanguage = "fi";
+    let descriptionLanguage = "";
+    let category = annotationCategories[0];
+    let language: "fi" | "en" = "fi";
+    let templateId = category.templates[0].id;
+    // Keep edits when exploring templates; drafts live only on this page.
+    const drafts = new Map<string, { title: string; description: string; language: "fi" | "en"; titleLanguage: string; descriptionLanguage: string }>();
+    const key = () => `${category.code}/${templateId}`;
+    const selectedTemplate = () => category.templates.find((template) => template.id === templateId);
+    const code = () => selectedTemplate()?.code ?? category.code;
+    const fullTitle = () => `[${code()}] ${title.value}`;
+
+    try {
+      if (localStorage.getItem("ga4-annotation-language") === "en") language = "en";
+    } catch { /* Language choice works even when browser storage is unavailable. */ }
+
+    function saveDraft() {
+      drafts.set(key(), { title: title.value, description: description.value, language, titleLanguage, descriptionLanguage });
+    }
+
+    function updateFields() {
+      const titleLength = characterCount(fullTitle());
+      const descriptionLength = characterCount(description.value);
+      const titleIssue = !title.value.trim() ? "Kirjoita otsikko." : titleLength > 60 ? `Lyhennä otsikkoa ${titleLength - 60} merkkiä.` : hasPlaceholder(title.value) ? "Täydennä hakasulkeissa olevat kohdat ennen kopiointia." : "Tunniste sisältyy otsikkoon ja merkkimäärään.";
+      const descriptionIssue = descriptionLength > 150 ? `Lyhennä kuvausta ${descriptionLength - 150} merkkiä.` : hasPlaceholder(description.value) ? "Täydennä hakasulkeissa olevat kohdat ennen kopiointia." : "Valinnainen. Lisää tapahtumaan olennaista taustaa.";
+      el("[data-title-count]").textContent = `${titleLength} / 60`;
+      el("[data-description-count]").textContent = `${descriptionLength} / 150`;
+      el("[data-title-help]").textContent = titleIssue;
+      el("[data-description-help]").textContent = descriptionIssue;
+      title.setAttribute("aria-invalid", String(titleLength > 60));
+      description.setAttribute("aria-invalid", String(descriptionLength > 150));
+      el("[data-title-count]").classList.toggle("is-over-limit", titleLength > 60);
+      el("[data-description-count]").classList.toggle("is-over-limit", descriptionLength > 150);
+      titleCopy.disabled = !title.value.trim() || titleLength > 60 || hasPlaceholder(title.value);
+      descriptionCopy.disabled = !description.value.trim() || descriptionLength > 150 || hasPlaceholder(description.value);
+      title.lang = titleLanguage;
+      description.lang = descriptionLanguage;
+    }
+
+    function loadDraft() {
+      const draft = drafts.get(key());
+      const template = selectedTemplate();
+      el("[data-prefix]").textContent = `[${code()}]`;
+      el("[data-date-guidance]").textContent = annotationDateGuidance[templateId] ?? annotationDateGuidance.custom;
+      title.value = draft ? (template && draft.title === template.title[draft.language] ? template.title[language] : draft.title) : template?.title[language] ?? "";
+      titleLanguage = !draft || (template && draft.title === template.title[draft.language]) ? language : draft.titleLanguage;
+      descriptionLanguage = draft?.descriptionLanguage ?? "";
+      description.value = draft?.description ?? "";
+      closeSuggestions();
+      resetCopyFeedback();
+      updateFields();
+    }
+
+    function closeSuggestions(dismiss = false) {
+      if (dismiss) dismissedSuggestions.add(key());
+      suggestions.hidden = true;
+      toggleSuggestions.setAttribute("aria-expanded", "false");
+    }
+
+    function positionSuggestions(manual = false) {
+      const viewport = window.visualViewport;
+      const viewportTop = viewport?.offsetTop ?? 0;
+      const viewportBottom = viewportTop + (viewport?.height ?? window.innerHeight);
+      const headerBottom = document.querySelector("[data-site-header]")?.getBoundingClientRect().bottom ?? 0;
+      const top = Math.max(viewportTop, headerBottom) + 8;
+      const desiredHeight = Math.min(240, viewportBottom - top - 120);
+      let available = description.getBoundingClientRect().top - top - 8;
+      if (manual && available < desiredHeight) {
+        window.scrollBy({ top: available - desiredHeight, behavior: "instant" });
+        available = description.getBoundingClientRect().top - top - 8;
+      }
+      if (available < 112) { closeSuggestions(); return false; }
+      suggestions.style.maxHeight = `${Math.min(240, available)}px`;
+      return true;
+    }
+
+    function showSuggestions(manual = false) {
+      if (!manual && dismissedSuggestions.has(key())) return;
+      if (!positionSuggestions(manual)) return;
+      if (manual) dismissedSuggestions.delete(key());
+      const wasHidden = suggestions.hidden;
+      const items = getDescriptionSuggestions(category, templateId, language, description.value, description.selectionStart);
+      suggestionList.replaceChildren();
+      el("[data-suggestions-label]").textContent = items.some((item) => item.completion) ? "Täydennä lausetta" : "Lisää kuvaukseen";
+      for (const item of items) {
+        const li = document.createElement("li");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.lang = language;
+        const count = characterCount(item.value);
+        const sentence = document.createElement("span");
+        sentence.textContent = item.sentence;
+        button.append(sentence);
+        if (count > 150) {
+          button.disabled = true;
+          const note = document.createElement("small");
+          note.textContent = `Ylittää rajan ${count - 150} merkillä`;
+          button.append(note);
+        }
+        button.addEventListener("click", () => {
+          descriptionLanguage = !description.value.trim() ? language : descriptionLanguage === language ? language : "";
+          description.value = item.value;
+          const placeholder = /\[[^\]]+\]/.exec(item.value.slice(Math.max(0, item.insertionStart)));
+          updateFields();
+          closeSuggestions(true);
+          description.focus({ preventScroll: true });
+          const start = placeholder ? Math.max(0, item.insertionStart) + placeholder.index : item.value.length;
+          description.setSelectionRange(start, placeholder ? start + placeholder[0].length : start);
+          el("[data-suggestion-status]").textContent = placeholder ? "Ehdotus lisätty. Täydennä valittu kohta." : "Ehdotus lisätty kuvaukseen.";
+        });
+        li.append(button);
+        suggestionList.append(li);
+      }
+      suggestions.hidden = items.length === 0;
+      toggleSuggestions.setAttribute("aria-expanded", String(!suggestions.hidden));
+      if (wasHidden && !suggestions.hidden) el("[data-suggestion-status]").textContent = "Kuvausehdotukset avattu. Valitse ehdotus tai jatka kirjoittamista.";
+    }
+
+    function changeCategory(code: string) {
+      saveDraft();
+      category = annotationCategories.find((item) => item.code === code)!;
+      categorySelect.value = category.code;
+      root.querySelectorAll<HTMLInputElement>('input[name="annotation-category"]').forEach((radio) => { radio.checked = radio.value === code; });
+      templateId = category.templates[0].id;
+      templateSelect.replaceChildren(...category.templates.map((template) => new Option(`${template.label} [${template.code}]`, template.id)), new Option(`Oma merkintä [${category.code}]`, "custom"));
+      el("[data-category-hint]").textContent = category.hint;
+      el("[data-color-name]").textContent = category.colorName;
+      el("[data-color-dot]").style.setProperty("--annotation-color", category.color);
+      loadDraft();
+    }
+    root.querySelectorAll<HTMLInputElement>('input[name="annotation-category"]').forEach((radio) => {
+      radio.addEventListener("change", () => changeCategory(radio.value));
+    });
+    categorySelect.addEventListener("change", () => changeCategory(categorySelect.value));
+    templateSelect.addEventListener("change", () => {
+      saveDraft();
+      templateId = templateSelect.value;
+      loadDraft();
+    });
+    root.querySelectorAll<HTMLInputElement>('input[name="annotation-language"]').forEach((radio) => {
+      radio.checked = radio.value === language;
+      radio.addEventListener("change", () => {
+        const template = selectedTemplate();
+        const previousLanguage = language;
+        language = radio.value as "fi" | "en";
+        if (template && title.value === template.title[previousLanguage]) { title.value = template.title[language]; titleLanguage = language; }
+        el("[data-language-note]").hidden = false;
+        closeSuggestions();
+        description.placeholder = language === "fi" ? "Mitä tapahtui, missä ja miksi?" : "What happened, where and why?";
+        try { localStorage.setItem("ga4-annotation-language", language); } catch { /* Optional preference. */ }
+        status.textContent = "";
+        updateFields();
+      });
+    });
+
+    function resetCopyFeedback() {
+      status.textContent = "";
+      titleCopy.textContent = "Kopioi otsikko";
+      descriptionCopy.textContent = "Kopioi kuvaus";
+    }
+    title.addEventListener("input", () => { titleLanguage = ""; resetCopyFeedback(); updateFields(); });
+    description.addEventListener("input", (event) => {
+      descriptionLanguage = "";
+      resetCopyFeedback(); updateFields();
+      if (!(event as InputEvent).isComposing) showSuggestions();
+    });
+    description.addEventListener("compositionend", () => showSuggestions());
+    description.addEventListener("focus", () => showSuggestions());
+    description.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !event.isComposing) closeSuggestions(true);
+    });
+    toggleSuggestions.addEventListener("click", () => {
+      if (!suggestions.hidden) { closeSuggestions(true); return; }
+      showSuggestions(true);
+      if (!suggestions.hidden) suggestions.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
+    });
+    el<HTMLButtonElement>("[data-close-suggestions]").addEventListener("click", () => {
+      closeSuggestions(true);
+      description.focus({ preventScroll: true });
+    });
+    const viewportController = new AbortController();
+    document.addEventListener("pointerdown", (event) => {
+      const target = event.target as Node;
+      if (target !== description && !toggleSuggestions.contains(target) && !suggestions.contains(target)) closeSuggestions();
+    }, { signal: viewportController.signal });
+    suggestions.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") { closeSuggestions(true); description.focus({ preventScroll: true }); }
+    });
+    root.addEventListener("focusout", (event) => {
+      const next = event.relatedTarget as Node | null;
+      if (next !== description && next !== toggleSuggestions && !suggestions.contains(next)) closeSuggestions();
+    });
+    const reposition = () => { if (!suggestions.hidden) positionSuggestions(); };
+    window.addEventListener("scroll", reposition, { passive: true, signal: viewportController.signal });
+    window.addEventListener("resize", reposition, { signal: viewportController.signal });
+    window.visualViewport?.addEventListener("resize", reposition, { signal: viewportController.signal });
+    window.visualViewport?.addEventListener("scroll", reposition, { signal: viewportController.signal });
+    document.addEventListener("astro:before-swap", () => viewportController.abort(), { once: true });
+
+    async function copy(field: HTMLInputElement | HTMLTextAreaElement, text: string, label: string) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const button = field === title ? titleCopy : descriptionCopy;
+        button.textContent = "Kopioitu";
+        status.textContent = `${label} kopioitu.`;
+        window.setTimeout(() => { button.textContent = `Kopioi ${field === title ? "otsikko" : "kuvaus"}`; }, 2500);
+      } catch {
+        closeSuggestions(true);
+        field.focus();
+        field.select();
+        const message = field === title ? `Kopiointi ei onnistunut. Kopioi otsikko käsin ja lisää alkuun [${code()}].` : "Kopiointi ei onnistunut. Teksti on valittu: kopioi se käsin.";
+        el(field === title ? "[data-title-help]" : "[data-description-help]").textContent = message;
+        status.textContent = message;
+      }
+    }
+    titleCopy.addEventListener("click", () => copy(title, fullTitle(), "Otsikko"));
+    descriptionCopy.addEventListener("click", () => copy(description, description.value, "Kuvaus"));
+    el("[data-color-dot]").style.setProperty("--annotation-color", category.color);
+    description.placeholder = language === "fi" ? "Mitä tapahtui, missä ja miksi?" : "What happened, where and why?";
+    el("[data-language-note]").hidden = language === "fi";
+    loadDraft();
+  }
+
+  initAnnotationBuilder();
+  document.addEventListener("astro:page-load", initAnnotationBuilder);
+</script>
+
+<style>
+  .annotation-builder {
+    --annotation-field-line: color-mix(in srgb, var(--ink) 50%, var(--bg));
+    display: grid;
+    grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr);
+    max-width: 75rem;
+    margin-inline: auto;
+    gap: clamp(1.5rem, 3vw, 2rem);
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    margin-bottom: var(--section-y);
+    background: var(--color-accent-panel);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-ui);
+    line-height: var(--line-height-ui);
+    overflow-wrap: anywhere;
+  }
+  .annotation-builder :global([hidden]) { display: none; }
+  .annotation-builder ::selection { background: var(--pop); color: var(--color-neutral-950); }
+  .annotation-builder :global(:focus-visible) { outline: var(--focus-ring-strong); outline-offset: 4px; }
+  .annotation-builder fieldset { padding: 0; margin: 0; border: 0; min-width: 0; }
+  .annotation-categories legend { margin-bottom: 1rem; font-weight: var(--font-weight-strong); }
+  .annotation-category { display: flex; position: relative; align-items: center; gap: 0.8rem; min-height: 4.4rem; padding: 0.9rem 0.75rem; border: 1px solid transparent; border-bottom-color: var(--line); cursor: pointer; border-radius: var(--radius-sm); }
+  .annotation-category:hover { background: var(--color-surface); }
+  .annotation-category:has(:checked) { background: var(--bg); border-color: var(--annotation-field-line); }
+  .annotation-category:has(:focus-visible) { outline: var(--focus-ring-strong); outline-offset: 3px; z-index: 1; }
+  .annotation-category input, .annotation-language input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .annotation-category-name { flex: 1; font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-medium); }
+  .annotation-category-name small { display: block; color: var(--muted); font-size: var(--font-size-ui-xs); margin-top: 0.15rem; }
+  .annotation-dot { display: inline-block; flex-shrink: 0; width: 1rem; height: 1rem; background: var(--annotation-color); border-radius: 50%; outline: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); outline-offset: 2px; }
+  .annotation-check { width: 1.1rem; height: 1.1rem; opacity: 0; flex-shrink: 0; }
+  .annotation-category:has(:checked) .annotation-check { opacity: 1; }
+  .annotation-category-hint { color: var(--muted); font-size: var(--font-size-ui-sm); margin: 1.25rem 0 0; }
+  .annotation-category-mobile { display: none; }
+  .annotation-editor { min-width: 0; }
+  .annotation-editor-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .annotation-editor-heading h2 { margin: 0; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  .annotation-language { display: flex; flex-wrap: wrap; gap: 0.2rem; }
+  .annotation-language legend { font-size: var(--font-size-ui-xs); color: var(--muted); margin-bottom: 0.35rem; }
+  .annotation-language label { position: relative; cursor: pointer; }
+  .annotation-language span { display: block; padding: 0.45rem 0.8rem; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-sm); font-size: var(--font-size-ui-sm); }
+  .annotation-language input:checked + span { background: var(--ink); color: var(--bg); }
+  .annotation-language input:focus-visible + span { outline: var(--focus-ring-strong); outline-offset: 3px; }
+  .annotation-language-note { font-size: var(--font-size-ui-sm); color: var(--muted); margin: -0.5rem 0 1.5rem; }
+  .annotation-template-row { margin-bottom: 1.5rem; }
+  .annotation-label { display: block; font-weight: var(--font-weight-strong); margin-bottom: 0.55rem; }
+  .annotation-required { font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-body); color: var(--muted); }
+  .annotation-builder :is(input[type="text"], textarea, select) { width: 100%; min-width: 0; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-sm); padding: 0.75rem; background: var(--bg); color: var(--ink); font: inherit; caret-color: var(--accent); }
+  .annotation-builder :is(textarea, input)::placeholder { color: var(--muted); opacity: 1; }
+  .annotation-builder :is(input, textarea)[aria-invalid="true"] { border-color: var(--color-danger); }
+  .annotation-builder textarea { resize: vertical; min-height: 6.5rem; display: block; }
+  .annotation-color-note { display: flex; align-items: center; gap: 0.85rem; padding-block: 0.5rem; }
+  .annotation-color-note .annotation-dot { width: 1.75rem; height: 1.75rem; }
+  .annotation-color-note strong { color: var(--ink); font-weight: var(--font-weight-medium); }
+  .annotation-field + .annotation-field { margin-top: 1.5rem; }
+  .annotation-field-heading { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; align-items: baseline; }
+  .annotation-count { margin-left: auto; font-size: var(--font-size-ui-xs); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+  .annotation-count.is-over-limit { color: var(--color-danger); font-weight: var(--font-weight-bold); }
+  .annotation-title-input { display: flex; align-items: center; background: var(--bg); border: 1px solid var(--annotation-field-line); border-radius: var(--radius-sm); }
+  .annotation-title-input > span { padding-left: 0.8rem; color: var(--muted); white-space: nowrap; }
+  .annotation-title-input input[type="text"] { border: 0; background: transparent; }
+  .annotation-title-input input:focus-visible { outline: none; }
+  .annotation-title-input:has(input:focus-visible) { outline: var(--focus-ring-strong); outline-offset: 4px; }
+  .annotation-title-input:has([aria-invalid="true"]) { border-color: var(--color-danger); }
+  .annotation-field-footer { display: flex; justify-content: space-between; align-items: start; gap: 0.75rem 1.25rem; margin-top: 0.6rem; }
+  .annotation-field-footer p { margin: 0; max-width: 44ch; font-size: var(--font-size-ui-xs); color: var(--muted); }
+  .annotation-copy { min-width: min(9rem, 100%); max-width: 100%; flex-shrink: 0; padding: 0.55rem 0.8rem; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); font: inherit; font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-medium); cursor: pointer; min-height: 44px; }
+  .annotation-copy:hover:not(:disabled) { background: var(--ink); color: var(--bg); }
+  .annotation-copy:disabled { color: var(--muted); border-color: var(--line); cursor: not-allowed; }
+  .annotation-suggestions-toggle { font: inherit; font-size: var(--font-size-ui-xs); color: var(--ink); background: transparent; border: 0; min-height: 44px; padding: 0.25rem; cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }
+  .annotation-description-input { position: relative; }
+  .annotation-suggestions { position: absolute; inset: auto 0 calc(100% + 0.5rem); z-index: 3; padding: 0.75rem; max-height: 15rem; display: flex; flex-direction: column; overflow: hidden; overscroll-behavior: contain; background: var(--bg); border-radius: var(--radius-md); box-shadow: var(--shadow-panel); }
+  .annotation-suggestions-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.25rem; flex-shrink: 0; }
+  .annotation-suggestions-heading p { font-weight: var(--font-weight-medium); font-size: var(--font-size-ui-sm); margin: 0; }
+  .annotation-suggestions-heading button { font: inherit; font-size: var(--font-size-ui-sm); color: var(--ink); background: transparent; border: 0; padding: 0.5rem; min-height: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }
+  .annotation-suggestions ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; overflow-y: auto; overscroll-behavior: contain; }
+  .annotation-suggestions ul :global(button) { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.3rem 0.8rem; width: 100%; text-align: left; padding: 0.5rem; background: var(--bg); border: 0; border-bottom: 1px solid var(--line); border-radius: 0; color: var(--ink); font: inherit; font-size: var(--font-size-ui-sm); cursor: pointer; min-height: 44px; }
+  .annotation-suggestions :global(button:focus-visible) { outline-offset: -3px; }
+  .annotation-suggestions :global(button:hover:not(:disabled)) { background: var(--color-accent-soft); border-color: var(--accent); }
+  .annotation-suggestions :global(button:disabled) { color: var(--muted); cursor: not-allowed; border-color: var(--line); }
+  .annotation-suggestions :global(small) { font-size: var(--font-size-ui-xs); }
+  .annotation-status { margin: 0.75rem 0; color: var(--accent); font-size: var(--font-size-ui-sm); }
+  .annotation-status:empty { margin: 0; }
+  .annotation-instructions { margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--line); }
+  .annotation-instructions h3 { font-family: var(--font-body); font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-strong); margin: 0 0 0.45rem; }
+  .annotation-instructions p { font-size: var(--font-size-ui-sm); color: var(--muted); margin: 0; max-width: 65ch; }
+  .annotation-instructions p + p { margin-top: 0.5rem; }
+  .annotation-instructions strong { font-weight: var(--font-weight-strong); }
+  @media (max-width: 760px) {
+    .annotation-builder { grid-template-columns: minmax(0, 1fr); }
+    .annotation-categories { display: none; }
+    .annotation-category-mobile { display: block; }
+    .annotation-editor-heading { gap: 0.75rem; }
+    .annotation-editor-heading h2 { display: none; }
+    .annotation-builder { gap: 1rem; padding: 1rem; }
+    .annotation-categories legend { margin-bottom: 0.65rem; }
+    .annotation-category { padding: 0.7rem 0.5rem; gap: 0.6rem; }
+    .annotation-category-hint { grid-column: 1 / -1; margin-top: 0.75rem; }
+    .annotation-check { width: 0.85rem; }
+    .annotation-field-footer { flex-wrap: wrap; }
+  }
+  @media (max-width: 400px) {
+    .annotation-builder { padding: 1rem; }
+    .annotation-category { gap: 0.45rem; }
+    .annotation-category-name { font-size: var(--font-size-ui-xs); }
+  }
+</style>

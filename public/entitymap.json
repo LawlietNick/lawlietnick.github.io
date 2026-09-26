@@ -1,0 +1,350 @@
+{
+  "version": "1.0",
+  "schema": "https://entitymap.org/spec/v1.0",
+  "publisher": {
+    "name": "Niko Karppinen",
+    "url": "https://karppinen.one"
+  },
+  "generated": "2026-08-06T00:00:00Z",
+  "verificationStatus": "generator-draft",
+  "entities": [
+    {
+      "entityId": "e_001",
+      "@type": "WebSite",
+      "name": "Niko Karppinen",
+      "alternateName": "Funky Analytics",
+      "description": "Niko Karppinen's personal consulting website for practical measurement, SEO, analytics and AI-assisted workflows.",
+      "audienceType": "general",
+      "hasChunks": [
+        {
+          "chunkId": "c_001",
+          "text": "I like turning messy tracking setups, scattered reports and unclear site structures into systems people can actually use — to measure results, improve their work and make the next decision with more confidence.",
+          "sourceUrl": "https://karppinen.one/about/",
+          "pageTitle": "About Niko Karppinen",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-08-06T00:00:00Z",
+          "contentType": "definition"
+        },
+        {
+          "chunkId": "c_002",
+          "text": "I help teams improve how they measure, analyze and develop digital work. My work sits between SEO, analytics, technical implementation and practical AI workflows. The goal is simple: clearer decisions, cleaner data and repeatable ways of working.",
+          "sourceUrl": "https://karppinen.one/services/",
+          "pageTitle": "Services",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        }
+      ],
+      "relations": [
+        { "predicate": "OFFERS", "targetId": "e_003", "targetName": "SEO audits and technical SEO" },
+        { "predicate": "OFFERS", "targetId": "e_004", "targetName": "Analytics and measurement design" },
+        { "predicate": "OFFERS", "targetId": "e_005", "targetName": "GTM, consent and tracking implementation" },
+        { "predicate": "OFFERS", "targetId": "e_006", "targetName": "Reporting, BigQuery and analysis" },
+        { "predicate": "OFFERS", "targetId": "e_007", "targetName": "AI-assisted SEO and analytics workflows" },
+        { "predicate": "OFFERS", "targetId": "e_008", "targetName": "Digital operating models" }
+      ]
+    },
+    {
+      "entityId": "e_002",
+      "@type": "Person",
+      "name": "Niko Karppinen",
+      "description": "SEO and web analytics consultant working since 2017 across ecommerce, telecoms, public sector, consumer and B2B. He turns messy tracking and reporting into systems teams can measure and explain.",
+      "audienceType": "general",
+      "hasChunks": [
+        {
+          "chunkId": "c_003",
+          "text": "I have worked with SEO, analytics, and digital marketing since 2017. Over the years, I have worked with ecommerce businesses, telecommunications companies, public-sector organisations, consumer brands, and B2B companies.",
+          "sourceUrl": "https://karppinen.one/about/",
+          "pageTitle": "About Niko Karppinen",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-08-06T00:00:00Z",
+          "contentType": "evidence"
+        },
+        {
+          "chunkId": "c_004",
+          "text": "AI works best when the process is already clear enough for a human to repeat. Without that, it's just a confident intern with access to the printer.",
+          "sourceUrl": "https://karppinen.one/about/",
+          "pageTitle": "About Niko Karppinen",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-08-06T00:00:00Z",
+          "contentType": "example"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "entityId": "e_003",
+      "@type": "Service",
+      "name": "SEO audits and technical SEO",
+      "description": "Technical SEO audits that surface issues, content gaps and site patterns holding organic growth back, delivered as prioritised recommendations.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_005",
+          "text": "Find technical issues, content gaps and site patterns that hold organic growth back. Recommendations come prioritised, not as a 200-row souvenir.",
+          "sourceUrl": "https://karppinen.one/services/",
+          "pageTitle": "Services",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        }
+      ]
+    },
+    {
+      "entityId": "e_004",
+      "@type": "Service",
+      "name": "Analytics and measurement design",
+      "description": "Measurement design that defines what to track and how GA4, the dataLayer and conversion tracking should support decisions.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_006",
+          "text": "Define what needs to be measured, why it matters and how GA4, the dataLayer and conversion tracking should support decisions.",
+          "sourceUrl": "https://karppinen.one/services/",
+          "pageTitle": "Services",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        }
+      ]
+    },
+    {
+      "entityId": "e_005",
+      "@type": "Service",
+      "name": "GTM, consent and tracking implementation",
+      "description": "Planning and implementing GTM, consent logic, conversion tags and marketing pixels so the setup stays understandable after launch.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_007",
+          "text": "Plan and implement GTM, consent logic, conversion tags and marketing pixels so the setup stays understandable after launch.",
+          "sourceUrl": "https://karppinen.one/services/",
+          "pageTitle": "Services",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        }
+      ]
+    },
+    {
+      "entityId": "e_006",
+      "@type": "Service",
+      "name": "Reporting, BigQuery and analysis",
+      "description": "Turning GA4, BigQuery and Data Studio into reporting teams can actually use.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_008",
+          "text": "Turn GA4, BigQuery and Data Studio into reporting people can use without a weekly archaeology session.",
+          "sourceUrl": "https://karppinen.one/services/",
+          "pageTitle": "Services",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        }
+      ]
+    },
+    {
+      "entityId": "e_007",
+      "@type": "Service",
+      "name": "AI-assisted SEO and analytics workflows",
+      "description": "Practical AI-assisted workflows for SEO, analytics QA, audits, documentation and recurring checks, with humans making the decisions.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_009",
+          "text": "Build practical workflows for SEO, analytics QA, audits, documentation and recurring checks, with humans still making the decisions.",
+          "sourceUrl": "https://karppinen.one/services/",
+          "pageTitle": "Services",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        }
+      ]
+    },
+    {
+      "entityId": "e_008",
+      "@type": "Service",
+      "name": "Digital operating models",
+      "description": "Clarifying ownership, handoffs, documentation and repeatable processes across marketing, analytics, content and development.",
+      "audienceType": "executive",
+      "hasChunks": [
+        {
+          "chunkId": "c_010",
+          "text": "Clarify ownership, handoffs, documentation and repeatable processes across marketing, analytics, content and development.",
+          "sourceUrl": "https://karppinen.one/services/",
+          "pageTitle": "Services",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        }
+      ]
+    },
+    {
+      "entityId": "e_009",
+      "@type": "Methodology",
+      "name": "Expert Panel prompt",
+      "description": "A prompt pattern that casts an AI as a roundtable of three experts who debate a question until they reach a practical recommendation.",
+      "audienceType": "general",
+      "hasChunks": [
+        {
+          "chunkId": "c_011",
+          "text": "The “Expert Panel” prompt fixes that. It turns your AI into a small roundtable of three professionals with different incentives who argue, push back, and refine ideas until they reach a practical conclusion. The output feels closer to a real strategy session than a neutral Wikipedia-style overview.",
+          "sourceUrl": "https://karppinen.one/blog/ai-panel-with-experts/",
+          "pageTitle": "Use AI for multi-expert analysis with one prompt",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        },
+        {
+          "chunkId": "c_012",
+          "text": "You act as the director. The AI plays three experts. The value comes from the tension between them.",
+          "sourceUrl": "https://karppinen.one/blog/ai-panel-with-experts/",
+          "pageTitle": "Use AI for multi-expert analysis with one prompt",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "procedure"
+        }
+      ]
+    },
+    {
+      "entityId": "e_010",
+      "@type": "Methodology",
+      "name": "SCQR and Pyramid Principle",
+      "alternateName": "SCQR",
+      "description": "The Situation–Complication–Question–Resolution storyline paired with the Pyramid Principle, used to structure executive presentations.",
+      "audienceType": "executive",
+      "hasChunks": [
+        {
+          "chunkId": "c_013",
+          "text": "The SCQR (Situation–Complication–Question–Resolution) structure is the foundation of a compelling executive narrative. It moves the audience from shared context to a decision point.",
+          "sourceUrl": "https://karppinen.one/blog/mckinsey-style-presentation-chatgpt-gemini/",
+          "pageTitle": "Create McKinsey-style presentation using ChatGPT or Gemini",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        },
+        {
+          "chunkId": "c_014",
+          "text": "That’s why consultants at McKinsey, BCG, and Bain rely on a strict logic framework called the SCQR and Pyramid Principle to structure every presentation. It turns messy findings into a clear narrative that moves from insight to action.",
+          "sourceUrl": "https://karppinen.one/blog/mckinsey-style-presentation-chatgpt-gemini/",
+          "pageTitle": "Create McKinsey-style presentation using ChatGPT or Gemini",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "evidence"
+        }
+      ]
+    },
+    {
+      "entityId": "e_011",
+      "@type": "Methodology",
+      "name": "Donatello Optimization System",
+      "alternateName": "4-D methodology",
+      "description": "A meta-prompt that turns rough inputs into precise prompts using a four-step DECONSTRUCT–DIAGNOSE–DEVELOP–DELIVER method.",
+      "audienceType": "general",
+      "hasChunks": [
+        {
+          "chunkId": "c_015",
+          "text": "The Donatello Optimization System is a powerful \"meta-prompt\" that establishes the AI as a master-level prompt engineer. Its purpose is to take your rough, vague inputs and systematically transform them into highly precise, effective prompts that guarantee better, more reliable results from your LLM.",
+          "sourceUrl": "https://karppinen.one/blog/prompt-optimization-chatgpt/",
+          "pageTitle": "Use prompt optimization system to create better prompts in ChatGPT",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        },
+        {
+          "chunkId": "c_016",
+          "text": "Donatello applies a rigorous 4-step framework and advanced techniques (like Chain-of-Thought or Role Assignment) to your prompt, then outputs the improved version in a clean, easy-to-use format.",
+          "sourceUrl": "https://karppinen.one/blog/prompt-optimization-chatgpt/",
+          "pageTitle": "Use prompt optimization system to create better prompts in ChatGPT",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "procedure"
+        }
+      ]
+    },
+    {
+      "entityId": "e_012",
+      "@type": "Guide",
+      "name": "Cookiebot guide",
+      "description": "A simplified walkthrough for installing Cookiebot and wiring Consent Mode defaults, including where to place the code.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_017",
+          "text": "Should the ConsentDefault section use the visitor's saved Cookiebot choices automatically on every page load?",
+          "sourceUrl": "https://karppinen.one/templates/cookiebot-guide/",
+          "pageTitle": "Cookiebot guide",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "procedure"
+        },
+        {
+          "chunkId": "c_018",
+          "text": "Place the code as high in the <head> as possible. In WordPress, load it before the wp_head hook.",
+          "sourceUrl": "https://karppinen.one/templates/cookiebot-guide/",
+          "pageTitle": "Cookiebot guide",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "procedure"
+        }
+      ],
+      "relations": [
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+      ]
+    },
+    {
+      "entityId": "e_013",
+      "@type": "Guide",
+      "name": "CEO appreciation speech prompt",
+      "description": "A reusable AI prompt for writing a sincere company-wide appreciation speech, with audience, goal and tone as adjustable inputs.",
+      "audienceType": "executive",
+      "hasChunks": [
+        {
+          "chunkId": "c_019",
+          "text": "Writing a company-wide thank-you speech sounds simple until you actually need to do it. The speech has to feel sincere, specific, and leadership-driven. It should recognize the pressure people have carried, connect their work to the company mission, and still look forward with energy.",
+          "sourceUrl": "https://karppinen.one/blog/ceo-appreciation-speech-prompt/",
+          "pageTitle": "CEO appreciation speech prompt for employees",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "definition"
+        },
+        {
+          "chunkId": "c_020",
+          "text": "This prompt is built for CEOs, founders, and leadership teams who need a clear appreciation speech for employees. The useful part is that you can change three inputs before you run it: audience, goal, and tone.",
+          "sourceUrl": "https://karppinen.one/blog/ceo-appreciation-speech-prompt/",
+          "pageTitle": "CEO appreciation speech prompt for employees",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-07-20T08:00:00Z",
+          "contentType": "procedure"
+        }
+      ],
+      "relations": [
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+      ]
+    },
+    {
+      "entityId": "e_014",
+      "@type": "Concept",
+      "name": "AI-assisted digital workflows",
+      "description": "Niko's framing of AI in digital work: practical, repeatable workflows where AI supports decisions but humans stay in the loop.",
+      "audienceType": "general",
+      "hasChunks": [
+        {
+          "chunkId": "c_021",
+          "text": "Tools can surface patterns, but human judgment still decides what matters for the customer, the business, and the brand.",
+          "sourceUrl": "https://karppinen.one/about/",
+          "pageTitle": "About Niko Karppinen",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-08-06T00:00:00Z",
+          "contentType": "definition"
+        }
+      ],
+      "relations": [
+        { "predicate": "COVERS", "targetId": "e_009", "targetName": "Expert Panel prompt" },
+        { "predicate": "COVERS", "targetId": "e_011", "targetName": "Donatello Optimization System" },
+        { "predicate": "COVERS", "targetId": "e_010", "targetName": "SCQR and Pyramid Principle" }
+      ]
+    }
+  ]
+}

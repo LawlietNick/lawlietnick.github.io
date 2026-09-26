@@ -1,0 +1,140 @@
+---
+import { formCategories, formTypes } from "../data/form-types.js";
+
+const groups = formCategories.map((c) => ({
+  ...c,
+  types: formTypes.filter((t) => t.category === c.id),
+  anchor: c.id.toLowerCase(),
+}));
+---
+
+<section class="ftr" aria-labelledby="ftr-title">
+  <h2 class="ftr__title" id="ftr-title">All {formTypes.length} form types</h2>
+
+  <p class="ftr__intro">
+    The whole taxonomy in one place. {formCategories.length} categories, {formTypes.length} types,
+    with the description each one is judged by and the type it is most often mistaken for.
+  </p>
+
+  <nav class="ftr__jump" aria-label="Jump to a category">
+    {groups.map((g) => <a href={`#${g.anchor}`}>{g.id} <span>{g.types.length}</span></a>)}
+  </nav>
+
+  {
+    groups.map((g) => (
+      <section class="ftr__group" id={g.anchor} aria-labelledby={`${g.anchor}-head`}>
+        <h3 class="ftr__head" id={`${g.anchor}-head`}>
+          {g.id} <span class="ftr__action">{g.action}</span>
+        </h3>
+        <p class="ftr__blurb">{g.blurb}</p>
+
+        <dl class="ftr__list">
+          {g.types.map((t) => (
+            <div class="ftr__row">
+              <dt class="ftr__term">
+                {t.type}
+                {t.note.startsWith("SENSITIVE") && <span class="ftr__flag">sensitive</span>}
+              </dt>
+              <dd class="ftr__def">
+                <p>{t.description}.</p>
+                {t.confusedWith && (
+                  <p class="ftr__meta">
+                    Often mistaken for <b>{t.confusedWith}</b>.
+                  </p>
+                )}
+                {t.examples.length > 0 && (
+                  <p class="ftr__meta">Examples of form names: {t.examples.join(" · ")}</p>
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    ))
+  }
+</section>
+
+<style>
+  .ftr {
+    --ftr-flag: light-dark(oklch(52% 0.2 25), oklch(76% 0.15 25));
+    /* Same boundary strength as the picker's controls; --line is only ~1.2:1. */
+    --ftr-chip-line: color-mix(in srgb, var(--ink) 50%, var(--bg));
+    max-width: 72rem;
+    margin-block: var(--section-y-large);
+    font-size: var(--font-size-ui);
+    line-height: var(--line-height-ui);
+  }
+
+  .ftr ::selection { background: var(--pop); color: var(--color-neutral-950); }
+
+  .ftr__title { margin: 0 0 0.75rem; }
+  .ftr__intro { max-width: 58ch; margin: 0 0 1.75rem; color: var(--muted); }
+
+  .ftr__jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .ftr__jump a {
+    display: inline-flex;
+    gap: 0.45rem;
+    align-items: baseline;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--ftr-chip-line);
+    border-radius: 999px;
+    color: var(--ink);
+    font-size: var(--font-size-ui-sm);
+    text-decoration: none;
+  }
+
+  .ftr__jump a:hover { border-color: var(--ink); }
+  .ftr__jump span { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .ftr__group { margin-bottom: 3rem; scroll-margin-top: 2rem; }
+  .ftr__head { margin: 0 0 0.35rem; font-size: clamp(1.35rem, 3cqi, 1.75rem); }
+  .ftr__action { color: var(--muted); font-family: var(--font-body); font-size: var(--font-size-ui); font-weight: var(--font-weight-body); }
+  .ftr__blurb { max-width: 58ch; margin: 0 0 1.25rem; color: var(--muted); font-size: var(--font-size-ui-sm); }
+
+  .ftr__list { margin: 0; }
+
+  /* Same two-column grammar as the picker's steps, so the page reads as one system. */
+  .ftr__row {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: 0.35rem 2.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .ftr__term {
+    margin: 0;
+    color: var(--ink);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: -0.01em;
+  }
+
+  .ftr__flag {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--ftr-flag);
+    font-size: var(--font-size-ui-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .ftr__def { margin: 0; max-width: 60ch; }
+  .ftr__def p { margin: 0; }
+  .ftr__meta { margin-top: 0.3rem !important; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .ftr__meta b { color: var(--ink); font-weight: var(--font-weight-medium); }
+
+  @media (max-width: 52rem) {
+    .ftr__row { grid-template-columns: minmax(0, 1fr); gap: 0.4rem; }
+  }
+
+  @media (pointer: coarse) {
+    .ftr__jump a { min-height: 44px; align-items: center; }
+  }
+</style>

@@ -1,0 +1,233 @@
+---
+import { siteConfig } from "../data/site.js";
+
+const { fi = false } = Astro.props;
+const brand = "Karppinen.one";
+const host = new URL(Astro.site ?? siteConfig.url).host;
+const href = `https://google.com/preferences/source?q=${host}`;
+
+const copy = fi
+  ? {
+      heading: "Haluatko lisää Karppinen.one-sisältöä?",
+      text: "Lisää Karppinen.one Googlen ensisijaiseksi lähteeksi, niin näet enemmän artikkeleitani hakutuloksissa.",
+      label: "Lisää Karppinen.one ensisijaiseksi lähteeksi Googlessa",
+      aria: "Lisää Karppinen.one ensisijaiseksi lähteeksi Google-haussa",
+    }
+  : {
+      heading: "Want more from Karppinen.one?",
+      text: "Make Karppinen.one a preferred source on Google to see more of my articles in your searches.",
+      label: "Add Karppinen.one as a preferred source on Google",
+      aria: "Add Karppinen.one as a preferred source in Google Search",
+    };
+---
+
+<section
+  class="preferred-source"
+  aria-labelledby="preferred-source-heading"
+  data-link-area="end-of-article"
+>
+  <div class="preferred-source__copy">
+    <h2 id="preferred-source-heading">{copy.heading}</h2>
+    <p>{copy.text}</p>
+  </div>
+
+  <a
+    class="preferred-source__link"
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={copy.aria}
+    data-link-area="end-of-article"
+    data-link-type="preferred-source"
+    data-link-level="secondary"
+  >
+    <img
+      src="/icons/google.svg"
+      alt=""
+      width="28"
+      height="28"
+      loading="lazy"
+    />
+    <span>{copy.label}</span>
+  </a>
+</section>
+
+<style>
+  @property --btn-gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .preferred-source {
+    /* Component variables */
+    --source-bg: var(--color-surface);
+    --source-border: var(--line);
+
+    /* Button variables */
+    --btn-bg: var(--bg);
+    --btn-text: var(--ink);
+
+    --btn-primary: #4285f4;
+    --btn-secondary: #ea4335;
+    --btn-accent: #fbbc05;
+    --btn-tertiary: #34a853;
+
+    --btn-border-width: 2px;
+    --btn-radius: var(--radius-md);
+    --btn-font-size: 0.95rem;
+    --btn-padding-block: 0.75rem;
+    --btn-padding-inline: 1rem;
+    --btn-gap: 0.75rem;
+
+    --btn-animation-duration: 2s;
+
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem 1.5rem;
+    overflow: hidden;
+
+    padding: clamp(1.35rem, 4vw, 2rem);
+
+    border: 1px solid var(--source-border);
+    border-radius: var(--radius-lg);
+    background: var(--source-bg);
+  }
+
+  .preferred-source::after {
+    content: "";
+    position: absolute;
+    right: -1rem;
+    bottom: -1rem;
+    width: 9rem;
+    height: 7rem;
+
+    pointer-events: none;
+    opacity: 0.32;
+
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--accent) 45%, transparent) 0 1.2px,
+      transparent 1.6px
+    );
+
+    background-size: 9px 9px;
+
+    -webkit-mask-image: radial-gradient(
+      ellipse at bottom right,
+      #000,
+      transparent 72%
+    );
+
+    mask-image: radial-gradient(
+      ellipse at bottom right,
+      #000,
+      transparent 72%
+    );
+  }
+
+  .preferred-source__copy {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.35rem, 4vw, 1.65rem);
+  }
+
+  p {
+    max-width: 52ch;
+    margin: 0.45rem 0 0;
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+
+  .preferred-source__link {
+    --btn-gradient-angle: 0deg;
+
+    position: relative;
+    z-index: 1;
+    grid-column: 1;
+
+    display: inline-flex;
+    width: fit-content;
+    max-width: 100%;
+    align-items: center;
+    gap: var(--btn-gap);
+
+    padding:
+      var(--btn-padding-block)
+      var(--btn-padding-inline);
+
+    border: var(--btn-border-width) solid transparent;
+    border-radius: var(--btn-radius);
+
+    background:
+      linear-gradient(
+        var(--btn-bg),
+        var(--btn-bg)
+      ) padding-box,
+      conic-gradient(
+        from var(--btn-gradient-angle),
+        var(--btn-primary),
+        var(--btn-secondary),
+        var(--btn-accent),
+        var(--btn-tertiary),
+        var(--btn-primary)
+      ) border-box;
+
+    color: var(--btn-text);
+    font-size: var(--btn-font-size);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .preferred-source__link:hover {
+    animation:
+      preferred-source-gradient
+      var(--btn-animation-duration)
+      linear
+      infinite;
+  }
+
+  .preferred-source__link:focus-visible {
+    outline: var(--focus-ring-strong);
+    outline-offset: 3px;
+  }
+
+  .preferred-source__link img {
+    flex: 0 0 auto;
+  }
+
+  @keyframes preferred-source-gradient {
+    from {
+      --btn-gradient-angle: 0deg;
+    }
+
+    to {
+      --btn-gradient-angle: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .preferred-source__link:hover {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .preferred-source {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .preferred-source__link {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

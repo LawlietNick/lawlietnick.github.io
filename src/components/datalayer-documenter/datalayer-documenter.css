@@ -1,0 +1,644 @@
+.dl-builder {
+  --dl-control: light-dark(oklch(98% 0.006 286), oklch(21% 0.01 286));
+  --dl-paper: light-dark(oklch(99.7% 0.003 286), oklch(19% 0.008 286));
+  --dl-code: light-dark(oklch(95.5% 0.012 286), oklch(15% 0.008 286));
+  container-type: inline-size;
+  margin-block: 1rem 5rem;
+  color: var(--ink);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--font-size-ui);
+  line-height: var(--line-height-ui);
+}
+
+.dl-builder *,
+.dl-builder *::before,
+.dl-builder *::after {
+  box-sizing: border-box;
+}
+
+.dl-builder__privacy {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-panel);
+  font-size: 0.88rem;
+}
+
+.dl-builder__privacy p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.dl-builder__layout {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.dl-controls {
+  display: grid;
+  align-content: start;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--line);
+}
+
+.dl-controls__section {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--dl-control);
+}
+
+.dl-controls__section > .label {
+  margin: 0;
+}
+
+.dl-controls label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.88rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.dl-controls input,
+.dl-controls select {
+  min-height: 2.75rem;
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+}
+
+.dl-controls__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dl-controls__heading p {
+  margin: 0;
+}
+
+.dl-controls__heading span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.dl-selection {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.dl-selection fieldset {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.dl-selection legend {
+  width: 100%;
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+  font-size: 0.73rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.dl-selection label {
+  grid-template-columns: 1.25rem 1fr;
+  align-items: start;
+  gap: 0.55rem;
+  min-height: 2rem;
+  padding-block: 0.25rem;
+  font-weight: var(--font-weight-body);
+}
+
+.dl-selection input[type="checkbox"] {
+  width: 1.1rem;
+  min-height: 1.1rem;
+  margin: 0.12rem 0 0;
+  accent-color: var(--accent);
+}
+
+.dl-export button,
+.dl-section__order button,
+.dl-note button,
+.dl-add-note {
+  min-height: 2.75rem;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--bg);
+  font: inherit;
+  font-weight: var(--font-weight-strong);
+  cursor: pointer;
+  transition: background-color 180ms ease-out, color 180ms ease-out, translate 180ms ease-out;
+}
+
+.dl-export button:hover,
+.dl-add-note:hover {
+  translate: 0 -1px;
+}
+
+.dl-export button:active,
+.dl-add-note:active {
+  translate: 0 1px;
+}
+
+.dl-export button:disabled,
+.dl-section__order button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+  translate: none;
+}
+
+.dl-export .dl-reset {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+.dl-export button:not(.dl-reset) {
+  color: var(--color-neutral-950);
+  background: var(--pop);
+  border-color: color-mix(in srgb, var(--color-neutral-950) 25%, var(--pop));
+  border-radius: var(--radius-md);
+}
+
+.dl-status {
+  min-height: 2.8em;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.dl-document {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--dl-paper);
+}
+
+.dl-document__header {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 5cqi, 3.5rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.dl-document__header dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.dl-document__header dl div {
+  display: grid;
+  grid-template-columns: minmax(6rem, 0.4fr) 1fr;
+  gap: 1rem;
+}
+
+.dl-document__header dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.dl-document__header dd {
+  margin: 0;
+}
+
+.dl-editable {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dl-editable textarea,
+.dl-parameters input,
+.dl-parameters select,
+.dl-parameters textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  resize: vertical;
+}
+
+.dl-editable textarea {
+  display: block;
+  max-width: 100%;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.55rem;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.dl-editable textarea:hover,
+.dl-parameters input:hover,
+.dl-parameters select:hover,
+.dl-parameters textarea:hover {
+  border-color: var(--line);
+  background: var(--color-accent-soft);
+}
+
+.dl-editable textarea:focus,
+.dl-parameters input:focus,
+.dl-parameters select:focus,
+.dl-parameters textarea:focus,
+.dl-controls input:focus,
+.dl-controls select:focus {
+  border-color: var(--accent);
+  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  outline-offset: 2px;
+  background: var(--bg);
+}
+
+.dl-title textarea {
+  min-height: 1.4em;
+  padding: 0.35rem;
+  margin: -0.35rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7cqi, 3.6rem);
+  font-weight: var(--font-weight-strong);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  resize: none;
+  text-wrap: balance;
+}
+
+.dl-project-notes {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.dl-project-notes > span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.dl-empty {
+  padding: 4rem clamp(1.25rem, 5cqi, 3.5rem);
+  text-align: center;
+}
+
+.dl-empty h2 {
+  font-family: var(--font-display);
+}
+
+.dl-empty p {
+  color: var(--muted);
+}
+
+.dl-section {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  border-bottom: 1px solid var(--line);
+}
+
+.dl-section:last-child {
+  border-bottom: 0;
+}
+
+.dl-section__order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1.75rem 0.45rem;
+  border-right: 1px solid var(--line);
+  background: color-mix(in srgb, var(--ink) 2.5%, transparent);
+}
+
+.dl-section__order > span {
+  margin-bottom: 0.35rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.dl-section__order button {
+  width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0;
+  border-color: var(--line);
+  background: transparent;
+  color: var(--ink);
+}
+
+.dl-section__content {
+  display: grid;
+  gap: 1.5rem;
+  min-width: 0;
+  overflow: hidden;
+  padding: clamp(1.5rem, 5cqi, 3.5rem);
+}
+
+.dl-section__content > * {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dl-event-name {
+  width: auto;
+  justify-self: start;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-xs);
+  background: var(--color-accent-soft);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.dl-section-title textarea {
+  min-height: 1.25em;
+  padding: 0.3rem;
+  margin: -0.3rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 4cqi, 2.3rem);
+  font-weight: var(--font-weight-strong);
+  line-height: 1.12;
+  resize: none;
+}
+
+.dl-copy-block {
+  display: grid;
+  gap: 0.25rem;
+  width: 100%;
+  max-width: 72ch;
+}
+
+.dl-copy-block > strong {
+  color: var(--muted);
+  font-size: 0.76rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.dl-copy-block .dl-editable textarea {
+  padding-inline: 0;
+}
+
+.dl-section h3 {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.dl-table-wrap {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.dl-parameters table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.dl-parameters th,
+.dl-parameters td {
+  padding: 0.55rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.dl-parameters th {
+  background: var(--color-accent-panel);
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.dl-parameters tr:last-child td {
+  border-bottom: 0;
+}
+
+.dl-parameters th:nth-child(1) { width: 23%; }
+.dl-parameters th:nth-child(2) { width: 17%; }
+.dl-parameters th:nth-child(3) { width: 16%; }
+
+.dl-parameters input,
+.dl-parameters select,
+.dl-parameters textarea {
+  min-height: 2.3rem;
+  max-width: 100%;
+  padding: 0.35rem;
+}
+
+.dl-code .dl-editable {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--dl-code);
+}
+
+.dl-code textarea {
+  min-height: 11rem;
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  overflow: auto;
+  white-space: pre;
+}
+
+.dl-notes {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.dl-note {
+  display: grid;
+  grid-template-columns: 0.75rem minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.35rem;
+}
+
+.dl-note > span {
+  padding-top: 0.55rem;
+  color: var(--accent);
+}
+
+.dl-note .dl-editable textarea {
+  padding-inline: 0.2rem;
+}
+
+.dl-note button,
+.dl-add-note {
+  min-height: 2.3rem;
+  padding: 0.35rem 0.65rem;
+  border-color: var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.dl-add-note {
+  justify-self: start;
+  margin-left: 1.1rem;
+}
+
+.dl-source {
+  justify-self: start;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.dl-builder button:focus-visible,
+.dl-builder a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@container (min-width: 58rem) {
+  .dl-builder__layout {
+    grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .dl-controls {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-builder button {
+    transition: none;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 18mm;
+  }
+
+  .site-header,
+  .site-footer,
+  .breadcrumb,
+  .dl-builder__privacy,
+  .dl-controls,
+  .dl-section__order,
+  body > footer {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: #1f1f25 !important;
+  }
+
+  .dl-builder,
+  .dl-builder__layout,
+  .dl-document {
+    display: block;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: white;
+    color: #1f1f25;
+  }
+
+  .dl-document__header,
+  .dl-section__content {
+    padding: 0 0 10mm;
+  }
+
+  .dl-section {
+    display: block;
+    break-inside: auto;
+    padding-block: 8mm;
+    border-color: #d8d6df;
+  }
+
+  .dl-editable textarea,
+  .dl-parameters input,
+  .dl-parameters select,
+  .dl-parameters textarea {
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    color: #1f1f25 !important;
+    resize: none;
+  }
+
+  .dl-title textarea,
+  .dl-section-title textarea {
+    padding: 0;
+    margin: 0;
+  }
+
+  .dl-table-wrap {
+    overflow: visible;
+    border-color: #d8d6df;
+  }
+
+  .dl-parameters table {
+    min-width: 0;
+    font-size: 8pt;
+  }
+
+  .dl-code .dl-editable {
+    border-color: #d8d6df;
+    background: #f4f3f8;
+  }
+
+  .dl-code textarea {
+    white-space: pre-wrap;
+  }
+
+  .dl-note button,
+  .dl-add-note,
+  .dl-source {
+    display: none;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}

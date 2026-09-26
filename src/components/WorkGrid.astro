@@ -1,0 +1,29 @@
+---
+const { items } = Astro.props;
+---
+
+<div class="pgrid">
+  {items.map((w) => (
+    <article>
+      <p class="eyebrow">{w.cat}</p>
+      <h3>{w.title}</h3>
+      <p>{w.desc}</p>
+      {w.stack && <div class="byline">{w.stack.map((s) => <span class="tag">{s}</span>)}</div>}
+    </article>
+  ))}
+</div>
+
+<style>
+  .pgrid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; margin-bottom: 3rem; }
+  @container page (min-width: 46rem) {
+    .pgrid { grid-template-columns: repeat(3, 1fr); }
+  }
+  article {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+  }
+  .eyebrow { font-size: var(--font-size-ui-xs); }
+  h3 { margin: 0.6rem 0 0.5rem; font-size: 1.2rem; }
+  article > p:not(.eyebrow) { margin: 0 0 0.75rem; color: var(--muted); font-size: 0.95rem; }
+</style>

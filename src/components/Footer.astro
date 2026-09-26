@@ -1,0 +1,504 @@
+---
+import ButtonLink from "./ButtonLink.astro";
+import LanguageMenu from "./LanguageMenu.astro";
+import { profiles, conceptName, authorName } from "../data/site.js";
+
+const {
+  fi,
+  t,
+  root,
+  aboutHref,
+  feedHref,
+  enLanguageHref,
+  fiLanguageHref,
+  hasLanguageAlternate = true,
+  postWithoutTranslation = false,
+  banner = false,
+} = Astro.props;
+const contactText = fi
+  ? "Valmis kääntämään datasi päätöksiksi?"
+  : "Ready to turn your data into decisions?";
+const servicesHref = fi ? "/fi/palvelut/" : "/services/";
+---
+
+<footer>
+  {banner && (
+    <section class="banner">
+      <div class="banner__surface"></div>
+      <div class="banner__inner">
+        <div class="banner__content">
+          <h2>{t.bannerTitle} <em>{t.bannerAccent}</em></h2>
+          <ButtonLink href="#" label={t.bannerBtn} />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <div class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__grid">
+        <div>
+          <div class="site-footer__brand">
+            <img class="site-footer__brand-logo" src="/nk-logo.svg" alt="" width="300" height="210" loading="lazy" />
+            <p class="site-footer__brand-line">
+              <strong class="site-footer__brand-primary">{authorName}</strong>
+              <span class="site-footer__brand-concept">{conceptName}</span>
+            </p>
+          </div>
+          <p class="site-footer__brand-desc">{t.blurb}</p>
+          <div class="site-footer__social">
+            {profiles.filter((p) => p.footer !== false).map((p) => (
+              <a href={p.url} class="site-footer__social-link" rel="me noopener">{p.name}</a>
+            ))}
+          </div>
+        </div>
+
+        <nav aria-label={t.explore}>
+          <h3 class="site-footer__col-title">{t.explore}</h3>
+          <ul class="site-footer__links">
+            <li><a href={root} class="site-footer__link">{t.home}</a></li>
+            <li><a href={servicesHref} class="site-footer__link">{t.work}</a></li>
+            <li><a href={aboutHref} class="site-footer__link">{t.about}</a></li>
+            <li><a href={root + "#writing"} class="site-footer__link">{t.writing}</a></li>
+          </ul>
+        </nav>
+
+        <div>
+          <h3 class="site-footer__col-title">{t.contact}</h3>
+          <p class="site-footer__contact-text">{contactText}</p>
+          <ButtonLink href="#" label={t.contact} class="site-footer__cta" />
+        </div>
+      </div>
+
+      <div class="site-footer__bottom">
+        <div class="site-footer__legal">
+          <p class="site-footer__copyright">© {new Date().getFullYear()}. {t.rights}</p>
+          <a href={root + "privacy/"} class="site-footer__legal-link">{t.privacy}</a>
+          <a href={feedHref} class="site-footer__legal-link">{t.feed}</a>
+          <a href="/entitymap.html" class="site-footer__legal-link">EntityMap</a>
+        </div>
+
+        <div class="site-footer__controls">
+          <LanguageMenu
+            {fi}
+            {enLanguageHref}
+            {fiLanguageHref}
+            {hasLanguageAlternate}
+            {postWithoutTranslation}
+            placement="footer"
+            idPrefix="footer"
+          />
+
+          <fieldset class="theme-switcher">
+            <legend class="visually-hidden">{fi ? "Väriteema" : "Color theme"}</legend>
+
+            <label class="theme-switcher__option">
+              <input type="radio" name="theme" value="system" />
+              <span class="theme-switcher__label">
+                <svg class="theme-switcher__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="13" rx="1.5"></rect>
+                  <path d="M9 20.5h6M12 17.5v3"></path>
+                </svg>
+                <span class="visually-hidden">{fi ? "Järjestelmä" : "System"}</span>
+              </span>
+            </label>
+
+            <label class="theme-switcher__option">
+              <input type="radio" name="theme" value="light" />
+              <span class="theme-switcher__label">
+                <svg class="theme-switcher__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3.25"></circle>
+                  <path d="M12 2.5v2M12 19.5v2M4.5 12h-2M21.5 12h-2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
+                </svg>
+                <span class="visually-hidden">{fi ? "Vaalea" : "Light"}</span>
+              </span>
+            </label>
+
+            <label class="theme-switcher__option">
+              <input type="radio" name="theme" value="dark" />
+              <span class="theme-switcher__label">
+                <svg class="theme-switcher__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                </svg>
+                <span class="visually-hidden">{fi ? "Tumma" : "Dark"}</span>
+              </span>
+            </label>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer { margin-top: auto; }
+
+  /* ported from blog-layout-astrojs: 3-column footer + bottom bar,
+     theme-aware, with a soft grey light surface and dark surface in dark mode */
+  .site-footer {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    margin-top: 3.5rem;
+    background-color: var(--color-surface);
+    color: var(--ink);
+    border-top: 1px solid var(--line);
+    padding-block: 5rem 2rem;
+  }
+  .site-footer::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    width: clamp(28rem, 52vw, 46rem);
+    aspect-ratio: 10 / 7;
+    translate: -50% -48%;
+    background: url("/nk-logo.svg") center / contain no-repeat;
+    opacity: 0.02;
+    pointer-events: none;
+  }
+  .site-footer__inner {
+    position: relative;
+    width: min(var(--container-wide), 100% - var(--container-gutter));
+    margin-inline: auto;
+  }
+  @media (max-width: 639px) {
+    .site-footer::before {
+      width: 30rem;
+      translate: -50% -44%;
+      opacity: 0.016;
+    }
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding-bottom: 4rem;
+  }
+  @media (min-width: 640px) {
+    .site-footer__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .site-footer__grid { grid-template-columns: 1.5fr 1fr 1.5fr; }
+  }
+  .site-footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .site-footer__brand-logo { height: 2.75rem; width: auto; margin-bottom: 0.75rem; }
+  .site-footer__brand-line {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .site-footer__brand-primary { font-weight: var(--font-weight-bold); }
+  .site-footer__brand-concept {
+    display: block;
+    font-weight: var(--font-weight-body);
+    color: var(--muted);
+  }
+  .site-footer__brand-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 0 1.5rem;
+    max-width: 32ch;
+  }
+  .site-footer__social { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .site-footer__social-link {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  .site-footer__social-link:hover { color: var(--ink); }
+  .site-footer__col-title {
+    font-family: "Roboto Flex", system-ui, sans-serif;  /* UI label, not editorial serif */
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--ink);
+    margin: 0 0 1.5rem;
+  }
+  .site-footer__links {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .site-footer__link {
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  .site-footer__link:hover { color: var(--ink); }
+  .site-footer__contact-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 0 1.25rem;
+  }
+  :global(.site-footer__cta) { font-size: 0.9rem; }
+  .site-footer__bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+  }
+  .site-footer__copyright { margin: 0; font-size: 0.8125rem; color: var(--muted); }
+  .site-footer__legal,
+  .site-footer__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+  .site-footer__controls { justify-content: flex-start; }
+  .site-footer__legal-link {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .site-footer__legal-link:hover { color: var(--ink); }
+  .site-footer__legal-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+  @media (min-width: 760px) {
+    .site-footer__bottom {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 2rem;
+    }
+    .site-footer__controls {
+      justify-content: flex-end;
+      justify-self: end;
+    }
+  }
+  /* three-state segmented control: System | Light | Dark */
+  .theme-switcher {
+    display: inline-grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 2px;
+    margin: 0;
+    padding: 3px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    min-inline-size: 0;
+  }
+  .theme-switcher__option {
+    position: relative;
+    display: flex;
+  }
+  /* radios stay in the tab order and drive :checked/:focus-visible, but are visually hidden */
+  .theme-switcher__option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    margin: 0;
+  }
+  .theme-switcher__label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
+    width: 100%;
+    min-height: 32px;
+    padding-inline: 0.75rem;
+    border-radius: var(--radius-pill);
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color var(--duration-base) var(--ease-out), background-color var(--duration-base) var(--ease-out);
+  }
+  .theme-switcher__icon {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .theme-switcher__option input:hover + .theme-switcher__label {
+    color: var(--ink);
+  }
+  /* selected state uses background + border contrast + weight, not color alone */
+  .theme-switcher__option input:checked + .theme-switcher__label {
+    color: var(--bg);
+    background: var(--ink);
+    font-weight: 700;
+  }
+  .theme-switcher__option input:focus-visible + .theme-switcher__label {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .theme-switcher__label { transition: none; }
+  }
+  /* keep all three options visible on small screens: shrink padding, never hide labels or wrap */
+  @media (max-width: 480px) {
+    .theme-switcher__label {
+      padding-inline: 0.5rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  /* CTA banner: full-bleed dark comic panel. Colour is stripped out of the panel
+     entirely so the yellow .cta is the only saturated thing on it — that contrast
+     is what makes the call to action pop. Same near-black + halftone language as
+     the article hero visual panel (PostHero). */
+  .banner {
+    /* the panel follows the theme: soft grey band in light mode, near-black in dark.
+       everything on it (text, halftone, hairlines) derives from --panel-ink so the
+       two modes stay in step automatically */
+    --panel-bg: light-dark(var(--color-neutral-200), var(--color-neutral-950));
+    --panel-ink: light-dark(var(--color-neutral-950), var(--color-neutral-100));
+
+    container: foot / inline-size;
+    position: relative;
+    isolation: isolate;
+    margin-block: 4rem 0;
+    padding-block: clamp(3rem, 8cqi, 5rem);
+    color: var(--panel-ink);
+  }
+
+  .banner__surface {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+    background: var(--panel-bg);
+    /* in dark mode --bg (17%) is nearly identical to neutral-950 (18%), so these
+       hairlines keep the band readable as its own section rather than dissolving
+       into the page; in light mode they simply firm up the edges */
+    border-block: 1px solid color-mix(in srgb, var(--panel-ink) 12%, transparent);
+  }
+
+  /* halftone dot field, decaying across the panel (ported from PostHero) */
+  .banner__surface::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--panel-ink) 34%, transparent) 0 1.9px,
+      transparent 2.3px
+    );
+    background-size: 12px 12px;
+    mask-image: radial-gradient(ellipse at 82% 18%, black, transparent 62%);
+  }
+
+  /* content stays aligned to the page container while the background runs edge-to-edge */
+  .banner__inner {
+    position: relative;
+    z-index: 2;
+    width: min(var(--container-wide), 100% - var(--container-gutter));
+    margin-inline: auto;
+  }
+  .banner__content { display: grid; gap: 1.75rem; justify-items: start; }
+
+  .banner h2 {
+    margin: 0;
+    font-size: clamp(2rem, 6cqi, 3.4rem);
+    font-weight: 650;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--panel-ink);
+  }
+  /* both lines off-white: yellow is reserved exclusively for the CTA */
+  .banner h2 em { display: block; font-style: normal; }
+
+  .banner :global(.cta) { justify-self: start; padding-inline: 1.7rem; font-size: 1.05rem; }
+</style>
+
+<script>
+  // Three-state theme control (system | light | dark). The render-blocking head
+  // script already resolved the theme before paint; this only handles interaction.
+  type ThemePreference = "system" | "light" | "dark";
+  const STORAGE_KEY = "theme";
+  const allowed: ThemePreference[] = ["system", "light", "dark"];
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function getSystemTheme(): "light" | "dark" {
+    return darkQuery.matches ? "dark" : "light";
+  }
+  function getThemePreference(): ThemePreference {
+    let saved: string | null = null;
+    try { saved = localStorage.getItem(STORAGE_KEY); } catch { /* storage blocked */ }
+    return allowed.includes(saved as ThemePreference) ? (saved as ThemePreference) : "system";
+  }
+  function resolveTheme(preference: ThemePreference): "light" | "dark" {
+    return preference === "system" ? getSystemTheme() : preference;
+  }
+  function syncChecked(preference: ThemePreference): void {
+    document
+      .querySelectorAll<HTMLInputElement>('.theme-switcher input[name="theme"]')
+      .forEach((input) => { input.checked = input.value === preference; });
+  }
+  function applyTheme(preference: ThemePreference): void {
+    const resolvedTheme = resolveTheme(preference);
+    try { localStorage.setItem(STORAGE_KEY, preference); } catch { /* storage blocked */ }
+    const el = document.documentElement;
+    el.dataset.themePreference = preference;
+    el.dataset.theme = resolvedTheme;
+    el.style.colorScheme = resolvedTheme;
+    syncChecked(preference);
+    window.dispatchEvent(
+      new CustomEvent("themechange", { detail: { preference, resolvedTheme } }),
+    );
+  }
+
+  // React to OS changes only while following the system; never overwrite the stored preference.
+  function onSystemChange(): void {
+    if (getThemePreference() !== "system") return;
+    const resolvedTheme = getSystemTheme();
+    const el = document.documentElement;
+    el.dataset.theme = resolvedTheme;
+    el.style.colorScheme = resolvedTheme;
+    window.dispatchEvent(
+      new CustomEvent("themechange", { detail: { preference: "system", resolvedTheme } }),
+    );
+  }
+  // Bind the media listener once, even across repeated Astro page-load events.
+  if (!(window as any).__themeMediaBound) {
+    (window as any).__themeMediaBound = true;
+    darkQuery.addEventListener("change", onSystemChange);
+  }
+
+  // Per-page wiring: check the saved radio and bind change handling to the current fieldset.
+  function initSwitcher(): void {
+    const fieldset = document.querySelector<HTMLFieldSetElement>(".theme-switcher");
+    if (!fieldset) return;
+    syncChecked(getThemePreference());
+    if ((fieldset as any).__themeBound) return;
+    (fieldset as any).__themeBound = true;
+    fieldset.addEventListener("change", (event) => {
+      const target = event.target as HTMLInputElement;
+      if (target?.name === "theme") applyTheme(target.value as ThemePreference);
+    });
+  }
+
+  initSwitcher();
+  document.addEventListener("astro:page-load", initSwitcher);
+
+</script>

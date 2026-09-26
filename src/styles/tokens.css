@@ -1,0 +1,78 @@
+:root {
+  color-scheme: light dark;
+
+  /* Primitive brand colors, stored as OKLCH so light/dark tuning stays predictable. */
+  --color-neutral-950: oklch(18% 0.01 286);
+  --color-neutral-900: oklch(24% 0.01 286);
+  --color-neutral-700: oklch(50% 0.018 286);
+  --color-neutral-500: oklch(68% 0.018 286);
+  --color-neutral-200: oklch(93% 0.006 286);
+  --color-neutral-100: oklch(96% 0.006 286);
+  --color-neutral-050: oklch(99.5% 0.004 286);
+  --color-accent: light-dark(oklch(52% 0.23 286), oklch(72% 0.17 286));
+  --color-pop: oklch(89% 0.16 92);
+  --color-success: light-dark(oklch(60% 0.18 150), oklch(72% 0.2 150));
+  --color-danger: light-dark(oklch(52% 0.19 27), oklch(70% 0.17 25));
+
+  /* Semantic colors. Existing aliases stay as compatibility tokens. */
+  --color-ink: light-dark(var(--color-neutral-950), var(--color-neutral-100));
+  --color-bg: light-dark(var(--color-neutral-050), oklch(17% 0.008 286));
+  --color-muted: light-dark(var(--color-neutral-700), var(--color-neutral-500));
+  --color-line: light-dark(var(--color-neutral-200), oklch(25% 0.008 286));
+  --color-surface: color-mix(in srgb, var(--color-ink) 4%, var(--color-bg));
+  --color-surface-raised: color-mix(in srgb, var(--color-bg) 98%, transparent);
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  --color-accent-panel: color-mix(in srgb, var(--color-accent) 5%, var(--color-bg));
+
+  --ink: var(--color-ink);
+  --bg: var(--color-bg);
+  --muted: var(--color-muted);
+  --line: var(--color-line);
+  --accent: var(--color-accent);
+  --pop: var(--color-pop);
+
+  /* Typography */
+  --font-body: "Roboto Flex", system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-weight-body: 420;
+  --font-weight-medium: 560;
+  --font-weight-strong: 650;
+  --font-weight-bold: 700;
+  --font-size-body: 18px;
+  --line-height-body: 1.65;
+  --font-size-ui: 1rem;
+  --font-size-ui-sm: 0.875rem;
+  --font-size-ui-xs: 0.8rem; /* floor for small labels: 12.8px */
+  --line-height-ui: 1.5;
+  --tracking-label: 0.08em;
+  --tracking-eyebrow: 0.2em;
+
+  /* Layout and spacing */
+  --container-width: 68rem;
+  --container-wide: 100rem;
+  --container-gutter: 2.5rem;
+  --section-y: 4rem;
+  --section-y-large: 5rem;
+  --split-gap: 2.5rem;
+  --split-gap-wide: 4.5rem;
+
+  /* Shape and depth */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --shadow-panel: 0 24px 60px color-mix(in srgb, var(--ink) 12%, transparent);
+  --shadow-pop: 0 1px 0 color-mix(in srgb, var(--color-neutral-950) 18%, transparent);
+
+  /* Interaction */
+  --duration-fast: 150ms;
+  --duration-base: 180ms;
+  --ease-standard: ease;
+  --ease-out: ease-out;
+  --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
+  --focus-ring: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  --focus-ring-strong: 3px solid color-mix(in srgb, var(--accent) 55%, transparent);
+}

@@ -1,0 +1,66 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import ToolHero from "../../components/ToolHero.astro";
+import GtmContainerBuilder from "../../components/gtm-builder/GtmContainerBuilder";
+
+const title = "GTM container builder";
+const summary = "Choose the GA4 ecommerce events you need and download a ready-to-import GTM container with the right dependencies included automatically.";
+---
+
+<Base title={title} description={summary} alternate={{ lang: "fi", href: "/fi/tyokalut/" }}>
+  <Breadcrumb
+    crumbs={[
+      { label: "Home", href: "/", icon: true },
+      { label: "Tools", href: "/tools/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">No tag setup maze. Pick events, add your GA4 ID, and export.</p>
+  </ToolHero>
+
+  <div class="gtm-tool-shell wide-band">
+    {/* client:only, not client:load — SSR'd markup would accept clicks before hydration and swallow them */}
+    <GtmContainerBuilder client:only="react" />
+  </div>
+
+  <section class="about gtm-usage">
+    <div>
+      <p class="eyebrow">Before publishing</p>
+      <h2>Import is the start of the review</h2>
+    </div>
+    <div>
+      <ol>
+        <li>Add your GA4 measurement ID, company suffix, currency, and container name.</li>
+        <li>Select the ecommerce event tags your implementation supports.</li>
+        <li>Copy or download the GTM import JSON.</li>
+        <li>Import it into a GTM workspace and review the proposed changes.</li>
+        <li>Use GTM Preview, test the data layer, and verify consent behavior before publishing.</li>
+      </ol>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .gtm-tool-shell {
+    margin-bottom: 2rem;
+  }
+
+  .gtm-usage {
+    padding-top: 3rem;
+  }
+
+  .gtm-usage h2 {
+    max-width: 14ch;
+  }
+
+  .gtm-usage ol {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+</style>

@@ -1,0 +1,21 @@
+---
+const { items = [], variant = "numbered", class: className = "" } = Astro.props;
+const listClass = variant === "arrow" ? "formats-list" : "process-list";
+const patternClass = variant === "arrow" ? "pattern-list--arrow" : "pattern-list--numbered";
+const classes = ["pattern-list", listClass, patternClass, className].filter(Boolean);
+---
+
+<ul class:list={classes}>
+  {items.map((item) => (
+    <li>
+      {typeof item === "string" ? (
+        item
+      ) : (
+        <div>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </div>
+      )}
+    </li>
+  ))}
+</ul>

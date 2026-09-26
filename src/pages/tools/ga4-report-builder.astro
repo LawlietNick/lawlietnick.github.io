@@ -1,0 +1,55 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import ToolHero from "../../components/ToolHero.astro";
+import Ga4ReportBuilder from "../../components/ga4-report-builder/Ga4ReportBuilder";
+
+const title = "GA4 report builder";
+const summary = "Build a custom GA4 detail report from scratch or apply a ready-made template, then open it directly in your property.";
+---
+
+<Base title={title} description={summary} alternate={{ lang: "fi", href: "/fi/tyokalut/" }}>
+  <Breadcrumb
+    crumbs={[
+      { label: "Home", href: "/", icon: true },
+      { label: "Tools", href: "/tools/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">No GA4 data is requested or stored. The builder creates a report-editor link from the settings you choose.</p>
+  </ToolHero>
+
+  <div class="report-tool-shell wide-band">
+    <Ga4ReportBuilder client:only="react" />
+  </div>
+
+  <section class="about report-usage">
+    <div>
+      <p class="eyebrow">Before saving</p>
+      <h2>Use the template as a starting point</h2>
+    </div>
+    <div>
+      <ol>
+        <li>Choose a template or edit the dimensions, metrics, filter, sort, and charts.</li>
+        <li>Add the numeric property ID from GA4 Admin.</li>
+        <li>Open the generated report in GA4 and confirm the fields are compatible.</li>
+        <li>Select Save in GA4 to add the report to the property library.</li>
+      </ol>
+      <p>Creating and saving reports requires Editor or Administrator access to the GA4 property.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .report-tool-shell {
+    margin-bottom: 2rem;
+  }
+
+  .report-usage { padding-top: 3rem; }
+  .report-usage h2 { max-width: 15ch; }
+  .report-usage ol { display: grid; gap: .7rem; margin-top: 0; padding-left: 1.25rem; }
+  .report-usage p:last-child { color: var(--muted); }
+
+</style>

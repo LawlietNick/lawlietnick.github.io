@@ -1,0 +1,64 @@
+---
+// Credibility strip shown near the top of every service page and the hub.
+// Verified facts only (About page): years active, sectors, breadth of work.
+// No invented clients, logos, awards, testimonials or metrics, and no claim
+// about the delivery model (work is often delivered via an agency).
+const { fi = false } = Astro.props;
+
+const items = fi
+  ? [
+      { big: "Vuodesta 2017", small: "SEO:n ja analytiikan parissa" },
+      { big: "Verkkokauppa · teleala · julkinen sektori · B2B", small: "Toimialat, joiden kanssa olen työskennellyt" },
+      { big: "SEO, analytiikka & seuranta", small: "Yksi asiantuntija koko mittausketjulle" },
+    ]
+  : [
+      { big: "Since 2017", small: "Working in SEO and analytics" },
+      { big: "Ecommerce · telecom · public sector · B2B", small: "Sectors worked across" },
+      { big: "SEO, analytics & tracking", small: "Across the whole measurement stack" },
+    ];
+---
+
+<section class="service-proof surface" aria-label={fi ? "Uskottavuus" : "Credibility"}>
+  {
+    items.map((item) => (
+      <div class="service-proof__item">
+        <strong>{item.big}</strong>
+        <span>{item.small}</span>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .service-proof {
+    display: grid;
+    gap: 1.25rem 2rem;
+    padding: 1.5rem 1.75rem;
+    margin-block: 1.5rem;
+  }
+  @container page (min-width: 40rem) {
+    .service-proof {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: start;
+    }
+    .service-proof__item + .service-proof__item {
+      border-left: 1px solid var(--line);
+      padding-left: 2rem;
+    }
+  }
+  .service-proof__item {
+    display: grid;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+  .service-proof__item strong {
+    font-weight: var(--font-weight-strong);
+    font-size: 1rem;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .service-proof__item span {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+</style>

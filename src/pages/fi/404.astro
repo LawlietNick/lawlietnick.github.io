@@ -1,0 +1,15 @@
+---
+import Base from "../../layouts/Base.astro";
+import NotFound from "../../components/NotFound.astro";
+
+Astro.response.status = 404;
+---
+
+<Base
+  title="Sivua ei löytynyt"
+  documentTitle="Sivua ei löytynyt | Karppinen.one"
+  description="Pyydettyä sivua ei löytynyt."
+  noindex
+>
+  <NotFound fi />
+</Base>

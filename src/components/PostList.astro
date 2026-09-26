@@ -1,0 +1,351 @@
+---
+import { categoryLabel } from "../data/categories.js";
+import BlogImage from "./BlogImage.astro";
+const { posts = [], fi = false, title, allHref, allLabel } = Astro.props;
+const [featured, ...supporting] = posts.slice(0, 3);
+
+const dateLabel = (date) =>
+  new Date(date).toLocaleDateString(fi ? "fi-FI" : "en-US", { dateStyle: "medium" });
+const isoDate = (date) => new Date(date).toISOString().slice(0, 10);
+const readTime = (minutes) => fi ? `${minutes} min` : `${minutes} min read`;
+const category = (post) => categoryLabel(post.category, fi) ?? (fi ? "Analytiikka" : "Analytics");
+const imageAlt = (post) =>
+  post.imageAlt ?? (fi ? `Kuva artikkelille ${post.title}` : `Image for ${post.title}`);
+const latestLabel = fi ? "Uusin juttu" : "Latest issue";
+---
+
+<section class="recent-posts" id="writing" data-link-area="recent-posts">
+  <header class="recent-posts__header">
+    <h2>{title}</h2>
+    <span class="recent-posts__rule" aria-hidden="true"></span>
+    {allHref && (
+      <a
+        class="recent-posts__archive"
+        href={allHref}
+        data-link-area="recent-posts"
+        data-link-type="article-archive"
+        data-link-level="secondary"
+      >
+        {allLabel}<span aria-hidden="true"> →</span>
+      </a>
+    )}
+  </header>
+
+  {featured && (
+    <div class="recent-posts__layout">
+      <article class="featured-post">
+        <a
+          class="featured-post__link"
+          href={featured.url}
+          aria-label={featured.title}
+          data-link-area="recent-posts"
+          data-link-type="featured-article"
+          data-link-level="primary"
+        >
+          <div class:list={["featured-post__media", { "featured-post__media--fallback": !featured.image }]}>
+            {featured.image ? (
+              <BlogImage
+                src={featured.image}
+                alt={imageAlt(featured)}
+                width="960"
+                height="540"
+                widths={[480, 720, 960]}
+                sizes="(min-width: 58rem) 40rem, 100vw"
+                loading="lazy"
+              />
+            ) : (
+              <span class="featured-post__placeholder" aria-hidden="true"></span>
+            )}
+            <span class="featured-post__latest" aria-hidden="true">{latestLabel}</span>
+          </div>
+
+          <div class="featured-post__body">
+            <div class="recent-posts__meta">
+              <time datetime={isoDate(featured.date)}>{dateLabel(featured.date)}</time>
+              <span aria-hidden="true">·</span>
+              <span>{readTime(featured.minutes)}</span>
+            </div>
+            <h3>{featured.title}</h3>
+            <p>{featured.description}</p>
+            <div class="recent-posts__category"><span class="tag">{category(featured)}</span></div>
+          </div>
+        </a>
+      </article>
+
+      {supporting.length > 0 && (
+        <div class="recent-posts__supporting">
+          {supporting.map((post) => (
+            <article class="supporting-post">
+              <a
+                class="supporting-post__link"
+                href={post.url}
+                aria-label={post.title}
+                data-link-area="recent-posts"
+                data-link-type="article-card"
+                data-link-level="secondary"
+              >
+                <div class="recent-posts__meta">
+                  <time datetime={isoDate(post.date)}>{dateLabel(post.date)}</time>
+                  <span aria-hidden="true">·</span>
+                  <span>{readTime(post.minutes)}</span>
+                </div>
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+                <div class="recent-posts__category"><span class="tag">{category(post)}</span></div>
+              </a>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+</section>
+
+<style>
+  .recent-posts {
+    container: recent-posts / inline-size;
+    margin-bottom: var(--section-y);
+  }
+
+  .recent-posts__header {
+    display: grid;
+    grid-template-columns: auto minmax(2rem, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    margin-block: 3rem 1.5rem;
+  }
+
+  .recent-posts__header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+  }
+
+  .recent-posts__rule {
+    height: 1px;
+    background: var(--line);
+  }
+
+  .recent-posts__archive {
+    color: var(--accent);
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+  }
+
+  .recent-posts__archive:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .recent-posts__archive:focus-visible,
+  .featured-post__link:focus-visible,
+  .supporting-post__link:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .recent-posts__layout {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .featured-post,
+  .supporting-post {
+    min-width: 0;
+  }
+
+  .featured-post__link,
+  .supporting-post__link {
+    position: relative;
+  }
+
+  .featured-post__link::before,
+  .supporting-post__link::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    inset: 0 0 auto auto;
+    width: 8rem;
+    height: 6rem;
+    pointer-events: none;
+    opacity: 0;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--accent) 55%, transparent) 0 1.5px,
+      transparent 1.8px
+    );
+    background-size: 9px 9px;
+    -webkit-mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
+  }
+
+  .featured-post__link:is(:hover, :focus-visible)::before,
+  .supporting-post__link:is(:hover, :focus-visible)::before {
+    opacity: 1;
+  }
+
+  .featured-post__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .featured-post__media {
+    position: relative;
+    min-width: 0;
+  }
+
+  .featured-post__media:not(.featured-post__media--fallback) {
+    aspect-ratio: 16 / 9;
+    border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+  }
+
+  .featured-post__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+  }
+
+  .featured-post__media--fallback {
+    min-height: 7rem;
+    border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+    background: var(--color-surface);
+  }
+
+  .featured-post__placeholder {
+    display: block;
+    min-height: 7rem;
+  }
+
+  .featured-post__latest {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: clamp(1rem, 4vw, 1.5rem);
+    padding: 0.45rem 0.75rem;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-xs);
+    background: var(--bg);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: var(--font-size-ui-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+    transform: translateY(-50%);
+  }
+
+  .featured-post__body,
+  .supporting-post__link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: clamp(1.1rem, 3vw, 1.5rem);
+  }
+
+  .supporting-post__link {
+    height: 100%;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .featured-post__body {
+    flex: 1;
+  }
+
+  .recent-posts__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .recent-posts h3 {
+    margin: 0;
+  }
+
+  .featured-post h3 {
+    font-size: clamp(1.45rem, 3.5cqi, 1.85rem);
+  }
+
+  .supporting-post h3 {
+    font-size: clamp(1.15rem, 2.5cqi, 1.35rem);
+  }
+
+  .featured-post__link:hover h3,
+  .supporting-post__link:hover h3 {
+    color: var(--accent);
+  }
+
+  .recent-posts article p {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 0.92rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .recent-posts__category {
+    margin-top: auto;
+    padding-top: 0.35rem;
+  }
+
+  .recent-posts__supporting {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  @container recent-posts (min-width: 38rem) {
+    .recent-posts__supporting {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @container recent-posts (min-width: 58rem) {
+    .recent-posts__layout {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: stretch;
+    }
+
+    .recent-posts__supporting {
+      grid-template-columns: 1fr;
+      grid-auto-rows: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .recent-posts__header {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .recent-posts__rule {
+      order: 3;
+      width: 100%;
+    }
+
+    .recent-posts__archive {
+      margin-left: auto;
+    }
+
+    .featured-post__body,
+    .supporting-post__link {
+      padding: 1rem;
+    }
+  }
+</style>

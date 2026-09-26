@@ -1,0 +1,23 @@
+---
+import Base from "../../../layouts/Base.astro";
+import BlogListing from "../../../components/BlogListing.astro";
+
+const withTrailingSlash = (path) => (path.endsWith("/") ? path : `${path}/`);
+const posts = Object.values(import.meta.glob("./*.md", { eager: true }))
+  .filter((p) => !p.frontmatter.draft && !p.frontmatter.noindex)
+  .map((p) => ({
+    ...p.frontmatter,
+    url: withTrailingSlash(p.url),
+    minutes: Math.max(1, Math.round(p.rawContent().split(/\s+/).length / 200)),
+  }))
+  .sort((a, b) => new Date(b.date) - new Date(a.date));
+---
+
+<Base title="Kirjoitukset" description="Ajatuksia analytiikasta, mittaamisesta, hakukoneoptimoinnista ja tekoälyn käytännön hyödyntämisestä digityössä." schemaPageType="blog-index" schemaItems={posts}>
+  <BlogListing
+    posts={posts}
+    fi={true}
+    heroTitle="Kirjoitukset"
+    intro="Ajatuksia analytiikasta, mittaamisesta, hakukoneoptimoinnista ja tekoälyn käytännön hyödyntämisestä digityössä."
+  />
+</Base>

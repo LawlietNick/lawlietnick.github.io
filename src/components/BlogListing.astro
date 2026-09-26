@@ -1,0 +1,120 @@
+---
+// Blog listing: hero + featured newest post (large) + uniform card grid.
+// Cards support an optional `image` frontmatter field; without it, an accent placeholder shows.
+import ArticleCard from "./ArticleCard.astro";
+import BlogImage from "./BlogImage.astro";
+import { categoryLabel } from "../data/categories.js";
+
+const { posts, fi = false, eyebrow, heroTitle, intro } = Astro.props;
+const [featured, ...rest] = posts;
+
+const dateFmt = (d) => new Date(d).toLocaleDateString(fi ? "fi-FI" : "en-US", { dateStyle: "medium" });
+const iso = (d) => new Date(d).toISOString().slice(0, 10);
+const mins = (m) => (fi ? `${m} min` : `${m} min read`);
+const featuredTag = categoryLabel(featured?.category, fi);
+---
+
+<section class="blog-list">
+  <header class="blog-list__hero wide-band">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{heroTitle}</h1>
+    {intro && <p class="blog-list__intro">{intro}</p>}
+  </header>
+
+  {featured && (
+    <a class="blog-featured" href={featured.url}>
+      <div class="blog-media">
+        {featured.image
+          ? <BlogImage src={featured.image} alt="" widths={[480, 720, 960]} sizes="(min-width: 46rem) 55vw, 100vw" loading="lazy" />
+          : <span class="blog-media__ph" aria-hidden="true"></span>}
+      </div>
+      <div class="blog-featured__body">
+        <div class="meta">
+          <time datetime={iso(featured.date)}>{dateFmt(featured.date)}</time>
+          <span>·</span>
+          <span>{mins(featured.minutes)}</span>
+        </div>
+        <h2>{featured.title}</h2>
+        <p>{featured.description}</p>
+        {featuredTag && <span class="tag">{featuredTag}</span>}
+      </div>
+    </a>
+  )}
+
+  {rest.length > 0 && (
+    <div class="blog-grid">
+      {rest.map((post) => <ArticleCard {post} {fi} />)}
+    </div>
+  )}
+</section>
+
+<style>
+  .blog-list { container: bloglist / inline-size; display: grid; gap: 2rem; }
+  .blog-list__hero { padding-block: 1rem 1.5rem; }
+  .blog-list__hero h1 { margin: 0.5rem 0 0; }
+  .blog-list__intro { margin: 0.75rem 0 0; max-width: 52ch; color: var(--muted); font-size: 1.05rem; }
+
+  /* featured: newest post, larger */
+  .blog-featured {
+    position: relative;
+    display: grid; gap: 0;
+    text-decoration: none; color: inherit;
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+    overflow: hidden; background: var(--bg);
+    transition: border-color var(--duration-base) var(--ease-standard);
+  }
+  @container bloglist (min-width: 44rem) {
+    .blog-featured { grid-template-columns: 1.2fr 1fr; }
+    .blog-featured .blog-media { min-height: 100%; }
+  }
+  .blog-featured:is(:hover, :focus-visible) { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+  .blog-featured .blog-media { min-height: 15rem; }
+  .blog-featured__body { display: flex; flex-direction: column; gap: 0.8rem; padding: 2rem; }
+  .blog-featured__body h2 { margin: 0; font-size: clamp(1.5rem, 3.2cqi, 2.1rem); }
+  .blog-featured__body p { margin: 0; color: var(--muted); }
+
+  /* uniform card grid */
+  .blog-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+  @container bloglist (min-width: 34rem) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+  @container bloglist (min-width: 54rem) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
+  .blog-featured::before {
+    content: "";
+    position: absolute; z-index: 2; inset: 0 0 auto auto;
+    width: 8rem; height: 6rem;
+    pointer-events: none;
+    opacity: 0;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--accent) 55%, transparent) 0 1.5px,
+      transparent 1.8px
+    );
+    background-size: 9px 9px;
+    -webkit-mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+  .blog-featured:is(:hover, :focus-visible)::before { opacity: 1; }
+
+  /* media: image fills, else an accent placeholder (dot + hatch) */
+  .blog-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .blog-media__ph {
+    display: block; width: 100%; height: 100%;
+    background:
+      radial-gradient(circle at 30% 32%, color-mix(in srgb, var(--accent) 45%, transparent) 0 0.4rem, transparent 0.5rem),
+      repeating-linear-gradient(45deg, color-mix(in srgb, var(--accent) 12%, transparent) 0 2px, transparent 2px 10px),
+      color-mix(in srgb, var(--accent) 6%, var(--bg));
+  }
+
+  .meta { display: flex; gap: 0.5rem; align-items: center; color: var(--muted); font-size: 0.82rem; font-weight: 500; }
+  .tag {
+    margin-top: auto; align-self: flex-start;
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    color: var(--accent);
+    padding: 0.1rem 0.6rem; border-radius: var(--radius-pill);
+    font-size: 0.8rem; font-weight: 500;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-featured::before { transition: none; }
+  }
+</style>

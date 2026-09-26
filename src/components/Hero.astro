@@ -1,0 +1,127 @@
+---
+// Home hero: a wide two-panel band — headline/CTA panel + tall feature image —
+// mirroring the blog post hero (article-hero__grid) proportions (3fr / 2fr).
+// Self-contained bilingual copy — the homepage just passes `fi`.
+import { Picture } from "astro:assets";
+import ButtonLink from "./ButtonLink.astro";
+// ponytail: replace this file (keep the size) with a real photo, then rebuild.
+// Swapping the image means rewriting `featureAlt` in both languages below.
+import featureImg from "../assets/hero/feature.jpeg";
+
+const { fi = false } = Astro.props;
+
+const c = fi
+  ? {
+      pre: "Selkeämpää mittaamista. ", mark: "Parempia", post: " päätöksiä.",
+      concept: "Funky Analytics",
+      lead: "Niko Karppinen auttaa tiimejä parantamaan analytiikkaa, hakukonenäkyvyyttä ja digitaalista mittaamista.",
+      ctaPrimary: "Tehdään yhteistyötä", ctaPrimaryHref: "/fi/palvelut/",
+      ctaSecondary: "Lue kirjoituksia", ctaSecondaryHref: "/fi/blog/",
+      featureAlt: "Niko Karppinen osoittaa kohti kameraa kosmisen tähtitaustan edessä",
+    }
+  : {
+      pre: "Clearer measurement. ", mark: "Better", post: " decisions.",
+      concept: "Funky Analytics",
+      lead: "Niko Karppinen helps teams improve analytics, search visibility and digital measurement.",
+      ctaPrimary: "Work with me", ctaPrimaryHref: "/services/",
+      ctaSecondary: "Read articles", ctaSecondaryHref: "/blog/",
+      featureAlt: "Niko Karppinen pointing towards the camera against a cosmic star background",
+    };
+---
+
+<section class="hero editorial-hero wide-band">
+  <div class="hero-grid">
+    <div class="hero-card editorial-hero__panel hero-card--main">
+      <h1>{c.pre}<span class="brand-mark">{c.mark}</span>{c.post}</h1>
+      <p class="hero__concept">{c.concept}</p>
+      <p class="hero__lead">{c.lead}</p>
+      <div class="hero__ctas">
+        <ButtonLink href={c.ctaPrimaryHref} label={c.ctaPrimary} />
+        <ButtonLink href={c.ctaSecondaryHref} label={c.ctaSecondary} variant="secondary" />
+      </div>
+    </div>
+
+    <div class="hero-card editorial-hero__panel editorial-hero__visual hero-card--feature">
+      <Picture class="hero-feature__img" src={featureImg} alt={c.featureAlt} widths={[400, 600, 900]} sizes="(min-width: 46rem) 28rem, 92vw" loading="eager" fetchpriority="high" />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* width comes from .wide-band (patterns.css) */
+  .hero {
+    container: hero / inline-size;
+  }
+
+  /* two-panel band, same proportions as the blog article hero */
+  .hero-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-areas: "main" "feature";
+  }
+  @container page (min-width: 46rem) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      grid-template-areas: "main feature";
+    }
+  }
+
+  .hero-card {
+    min-width: 0;
+  }
+
+  /* main headline panel — airy, text-led */
+  .hero-card--main {
+    grid-area: main;
+    position: relative;
+    display: flex; flex-direction: column; gap: 1.35rem;
+    min-height: clamp(18rem, 32cqi, 24rem);
+    padding: clamp(1.75rem, 4cqi, 3rem);
+  }
+  /* halftone internal corner shadow — bold Ben-Day dots in the top-right,
+     rotated and faded inward via a corner-anchored ellipse mask */
+  .hero-card--main::before {
+    content: ""; position: absolute; z-index: 0; pointer-events: none;
+    top: -34px; right: -26px;
+    width: min(58%, 380px); height: min(52%, 280px);
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--ink) 42%, transparent) 0 2px,
+      transparent 2.4px
+    );
+    background-size: 12px 12px;
+    -webkit-mask-image: radial-gradient(ellipse at top right,
+      #000 0%, rgba(0,0,0,0.85) 12%, rgba(0,0,0,0.28) 38%, transparent 58%);
+    mask-image: radial-gradient(ellipse at top right,
+      #000 0%, rgba(0,0,0,0.85) 12%, rgba(0,0,0,0.28) 38%, transparent 58%);
+    transform: rotate(-4deg);
+  }
+  .hero-card--main > * { position: relative; z-index: 1; }
+  .hero-card--main h1 {
+    margin: 0;
+    max-width: 15ch;
+    font-size: clamp(2.2rem, 6cqi, 3.75rem);
+    line-height: 1.04;
+  }
+  .hero__concept {
+    margin: -0.25rem 0 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: var(--font-weight-strong);
+  }
+  .hero__lead { margin: 0; max-width: 44ch; color: var(--muted); font-size: 1.05rem; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+
+  /* tall feature panel — portrait is the anchor */
+  .hero-card--feature {
+    grid-area: feature;
+    position: relative;
+    min-height: clamp(22rem, 40cqi, 27rem);
+  }
+  .hero-feature__img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block;
+  }
+</style>

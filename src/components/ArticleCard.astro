@@ -1,0 +1,150 @@
+---
+import { categoryLabel } from "../data/categories.js";
+import BlogImage from "./BlogImage.astro";
+const { post, fi = false, tracking = false } = Astro.props;
+const category = categoryLabel(post.category, fi);
+const date = new Date(post.date);
+const dateLabel = date.toLocaleDateString(fi ? "fi-FI" : "en-US", { dateStyle: "medium" });
+const isoDate = date.toISOString().slice(0, 10);
+const minutes = Math.max(1, post.minutes ?? 1);
+const readTime = fi ? `${minutes} min` : `${minutes} min read`;
+const imageAlt = post.imageAlt ?? (fi ? `Kuva artikkelille ${post.title}` : `Image for ${post.title}`);
+---
+
+<a
+  class="article-card"
+  href={post.url}
+  data-link-area={tracking ? "related-articles" : undefined}
+  data-link-type={tracking ? "article-card" : undefined}
+  data-link-level={tracking ? "secondary" : undefined}
+>
+  <div class="article-card__media">
+    {post.image ? (
+      <BlogImage src={post.image} alt={imageAlt} width="640" height="400" widths={[320, 480, 640]} sizes="(min-width: 46rem) 20rem, 100vw" loading="lazy" />
+    ) : (
+      <span class="article-card__placeholder" aria-hidden="true"></span>
+    )}
+  </div>
+  <div class="article-card__body">
+    <div class="article-card__meta">
+      <time datetime={isoDate}>{dateLabel}</time>
+      <span aria-hidden="true">·</span>
+      <span>{readTime}</span>
+    </div>
+    <h3>{post.title}</h3>
+    <p>{post.description}</p>
+    {category && <span class="tag article-card__tag">{category}</span>}
+  </div>
+</a>
+
+<style>
+  .article-card {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--ease-standard);
+  }
+
+  .article-card:is(:hover, :focus-visible) {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  }
+
+  .article-card:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .article-card::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    inset: 0 0 auto auto;
+    width: 8rem;
+    height: 6rem;
+    pointer-events: none;
+    opacity: 0;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--accent) 55%, transparent) 0 1.5px,
+      transparent 1.8px
+    );
+    background-size: 9px 9px;
+    -webkit-mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  .article-card:is(:hover, :focus-visible)::before {
+    opacity: 1;
+  }
+
+  .article-card__media {
+    aspect-ratio: 16 / 10;
+  }
+
+  .article-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .article-card__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(
+        circle at 30% 32%,
+        color-mix(in srgb, var(--accent) 45%, transparent) 0 0.4rem,
+        transparent 0.5rem
+      ),
+      repeating-linear-gradient(
+        45deg,
+        color-mix(in srgb, var(--accent) 12%, transparent) 0 2px,
+        transparent 2px 10px
+      ),
+      color-mix(in srgb, var(--accent) 6%, var(--bg));
+  }
+
+  .article-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 1.25rem;
+  }
+
+  .article-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  /* category pill sits at the card bottom so pills align across uneven cards */
+  .article-card__tag {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+</style>

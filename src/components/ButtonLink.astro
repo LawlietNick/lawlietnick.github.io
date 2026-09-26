@@ -1,0 +1,17 @@
+---
+const {
+  href = "#",
+  label,
+  variant = "primary",
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const classes = ["cta", variant && `cta--${variant}`, className].filter(Boolean);
+---
+
+<a href={href} class:list={classes} {...rest}>
+  <span class="cta__surface">
+    <slot>{label}</slot>
+  </span>
+</a>

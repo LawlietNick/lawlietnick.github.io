@@ -1,0 +1,34 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import ToolHero from "../../components/ToolHero.astro";
+import FormTypePicker from "../../components/FormTypePicker.astro";
+import FormTypeReference from "../../components/FormTypeReference.astro";
+import { formTypes } from "../../data/form-types.js";
+
+const title = "Form name builder";
+const summary = `Answer one question about your form and get a consistent value to track it with, from a controlled list of ${formTypes.length} types.`;
+---
+
+<Base title={title} description={summary}>
+  <Breadcrumb
+    crumbs={[
+      { label: "Home", href: "/", icon: true },
+      { label: "Tools", href: "/tools/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">
+      Name a form yourself and reporting depends on whoever named it. <em>Contact</em>,
+      <em>Get in Touch</em> and <em>Contact Form EN</em> become three rows instead of one.
+      A form type fixes that above the name.
+    </p>
+  </ToolHero>
+
+  <div class="wide-band">
+    <FormTypePicker />
+    <FormTypeReference />
+  </div>
+</Base>

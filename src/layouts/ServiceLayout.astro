@@ -1,0 +1,210 @@
+---
+// Layout for the service pages that live as markdown under src/pages/services
+// and src/pages/fi/palvelut. The markdown frontmatter drives the hero, proof,
+// FAQ and next-steps; the markdown body renders in the prose slot.
+import Base from "./Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import ButtonLink from "../components/ButtonLink.astro";
+import PatternList from "../components/PatternList.astro";
+import ServiceProof from "../components/ServiceProof.astro";
+import SplitSection from "../components/SplitSection.astro";
+
+const fm = Astro.props.frontmatter ?? {};
+const fi = Astro.url.pathname.startsWith("/fi");
+const slug = Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "";
+
+const faq = fm.faq ?? [];
+const nextSteps = fm.nextSteps ?? [];
+const t = fi
+  ? {
+      home: "Etusivu", homeHref: "/fi/", services: "Palvelut", servicesHref: "/fi/palvelut/",
+      reassure: "Sinun ei tarvitse selvittää syytä ensin. Kuvaile mikä tuntuu pieleltä, niin ensimmäinen vastaus ehdottaa järkevää aloituskohtaa.",
+      faqEyebrow: "Ennen kuin kysyt", faqTitle: "Yleisiä kysymyksiä",
+      nextEyebrow: "Kun otat yhteyttä", nextTitle: "Mitä tapahtuu seuraavaksi",
+      contactEyebrow: "Työskennellään yhdessä",
+      contactCopy: "Kerro lyhyesti, mitä haluat parantaa, niin vastaan ehdotuksella etenemisestä.",
+      contactBtn: "Ota yhteyttä", ctaDefault: "Aloita projekti",
+      formatFixed: "Rajattu projekti", formatMonthly: "Jatkuva tuki", subject: "yhteydenotto",
+    }
+  : {
+      home: "Home", homeHref: "/", services: "Services", servicesHref: "/services/",
+      reassure: "You do not need to diagnose the cause first. Describe what feels off and the first reply suggests a sensible starting point.",
+      faqEyebrow: "Before you ask", faqTitle: "Common questions",
+      nextEyebrow: "After you get in touch", nextTitle: "What happens next",
+      contactEyebrow: "Work with me",
+      contactCopy: "Send the site or tool and a short note on what you are trying to improve. You do not need to work out the technical cause first.",
+      contactBtn: "Get in touch", ctaDefault: "Start a project",
+      formatFixed: "Fixed project", formatMonthly: "Monthly support", subject: "enquiry",
+    };
+
+const ctaHref =
+  fm.ctaHref ?? `mailto:nicknoir@gmail.com?subject=${encodeURIComponent(`${fm.title} — ${t.subject}`)}`;
+const ctaLabel = fm.ctaLabel ?? t.ctaDefault;
+const contactMethod = ctaHref.startsWith("mailto:") ? "email" : "form";
+// tracking-ready attributes — no analytics vendor is wired yet, so these are hooks only
+const cta = (position) => ({
+  "data-cta": "service-contact",
+  "data-service": slug,
+  "data-cta-position": position,
+  "data-contact-method": contactMethod,
+});
+
+const formatLabel = fm.format === "monthly" ? t.formatMonthly : t.formatFixed;
+
+---
+
+<Base title={fm.metaTitle ?? fm.title} description={fm.metaDescription ?? fm.summary} schemaPageType="service" alternate={fm.alternate}>
+  <div class="wide-band">
+    <Breadcrumb
+      fi={fi}
+      crumbs={[
+        { label: t.home, href: t.homeHref, icon: true },
+        { label: t.services, href: t.servicesHref },
+        { label: fm.title },
+      ]}
+    />
+
+    <SplitSection variant="about" class="services-hero">
+      <Fragment slot="title">
+        <p class="eyebrow">{formatLabel}</p>
+        <h1>{fm.title}</h1>
+      </Fragment>
+      <Fragment slot="copy">
+        <p class="service-lead">{fm.summary}</p>
+        <ButtonLink href={ctaHref} label={ctaLabel} {...cta("hero")} />
+        <p class="service-reassure">{t.reassure}</p>
+      </Fragment>
+    </SplitSection>
+  </div>
+
+  <ServiceProof fi={fi} />
+
+  <div class="prose service-body">
+    <slot />
+  </div>
+
+  {
+    faq.length > 0 && (
+      <SplitSection id="faq" eyebrow={t.faqEyebrow} title={t.faqTitle}>
+        <div class="faq">
+          {faq.map((item) => (
+            <details class="faq__item">
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </SplitSection>
+    )
+  }
+
+  {
+    nextSteps.length > 0 && (
+      <SplitSection id="next" eyebrow={t.nextEyebrow} title={t.nextTitle}>
+        <PatternList items={nextSteps} variant="numbered" />
+      </SplitSection>
+    )
+  }
+
+  <SplitSection variant="contact" eyebrow={t.contactEyebrow} title={ctaLabel}>
+    <p>{t.contactCopy}</p>
+    <ButtonLink href={ctaHref} label={t.contactBtn} {...cta("footer")} />
+  </SplitSection>
+</Base>
+
+<style>
+  .service-lead {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .service-reassure {
+    margin-top: 1rem;
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* scannable service body: tighter rhythm than an article, multi-column scope lists */
+  .service-body {
+    max-inline-size: none;
+    margin-inline: 0;
+    padding-block: 2rem 1rem;
+  }
+  .service-body :global(p),
+  .service-body :global(ol) {
+    max-inline-size: 72ch;
+  }
+  .service-body :global(h2) {
+    font-size: clamp(1.4rem, 3.2cqi, 1.9rem);
+    margin-block: 2.5rem 1rem;
+  }
+  .service-body :global(h3) {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-strong);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-block: 1.75rem 0.75rem;
+  }
+  .service-body :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin-block: 2.5rem;
+  }
+  /* long scope/checklist bullet lists flow into columns so they scan, not scroll */
+  .service-body :global(ul) {
+    columns: 2;
+    column-gap: 2.5rem;
+    gap: 0.35rem 2.5rem;
+  }
+  .service-body :global(li) {
+    break-inside: avoid;
+  }
+  @container page (max-width: 34rem) {
+    .service-body :global(ul) { columns: 1; }
+  }
+
+  /* FAQ accordion — native details, works without JS */
+  .faq {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .faq__item {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    padding: 0 1.25rem;
+  }
+  .faq__item summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 1rem 0;
+    font-weight: var(--font-weight-strong);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary::after {
+    content: "+";
+    color: var(--accent);
+    font-size: 1.4rem;
+    line-height: 1;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .faq__item[open] summary::after { transform: rotate(45deg); }
+  .faq__item summary:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+  .faq__item > p {
+    margin: 0;
+    padding-bottom: 1.1rem;
+    color: var(--muted);
+    max-width: 66ch;
+  }
+</style>

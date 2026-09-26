@@ -1,0 +1,605 @@
+.gtm-builder {
+  /* clip, not hidden: `hidden` makes this a scroll container and silently kills the sticky summary */
+  overflow: visible;
+  color: var(--ink);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--font-size-ui);
+  line-height: var(--line-height-ui);
+}
+
+.gtm-builder *,
+.gtm-builder *::before,
+.gtm-builder *::after {
+  box-sizing: border-box;
+}
+
+.gtm-builder :is(button, input, select, textarea) {
+  font: inherit;
+}
+
+.gtm-builder :is(button, input, select, textarea):focus-visible {
+  outline: var(--focus-ring-strong);
+  outline-offset: 2px;
+}
+
+.gtm-builder button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.gtm-builder__privacy {
+  min-height: 3.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1.5rem;
+  background: var(--color-accent-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.gtm-builder__privacy::before {
+  content: "";
+  inline-size: 0.65rem;
+  block-size: 0.65rem;
+  flex: 0 0 auto;
+  background: oklch(66% 0.16 150);
+  border-radius: var(--radius-pill);
+}
+
+.gtm-builder__privacy p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.gtm-builder__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.gtm-builder__layout > main {
+  min-width: 0;
+  border-block: 1px solid var(--line);
+}
+
+.gtm-builder__section {
+  padding: 1.5rem clamp(1rem, 3vw, 2rem) 2rem;
+}
+
+.gtm-builder__section + .gtm-builder__section {
+  border-top: 1px solid var(--line);
+}
+
+.gtm-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gtm-section-heading > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.gtm-section-heading > div:first-child > span {
+  inline-size: 1.8rem;
+  block-size: 1.8rem;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: var(--color-neutral-950);
+  background: var(--pop);
+  border: 1px solid color-mix(in srgb, var(--color-neutral-950) 25%, var(--pop));
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.gtm-section-heading h2,
+.gtm-summary h2 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.gtm-section-heading > p {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--font-size-ui-sm);
+  text-align: right;
+}
+
+.gtm-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.gtm-setting,
+.gtm-filename {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.gtm-setting label,
+.gtm-setting--note > span,
+.gtm-filename label {
+  font-size: var(--font-size-ui-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.gtm-setting input,
+.gtm-setting select,
+.gtm-filename input {
+  width: 100%;
+  min-height: 2.55rem;
+  padding: 0.55rem 0.65rem;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--ink) 25%, var(--line));
+  border-radius: var(--radius-sm);
+}
+
+.gtm-setting input:hover,
+.gtm-setting select:hover,
+.gtm-filename input:hover {
+  border-color: color-mix(in srgb, var(--ink) 50%, var(--line));
+}
+
+.gtm-setting__hint {
+  color: var(--muted);
+  font-size: var(--font-size-ui-xs);
+}
+
+/* :user-invalid only matches after the visitor has interacted, so empty fields stay quiet on load */
+.gtm-setting__error {
+  display: none;
+  color: var(--color-danger);
+  font-size: var(--font-size-ui-xs);
+}
+
+.gtm-setting input:user-invalid {
+  border-color: var(--color-danger);
+}
+
+.gtm-setting:has(input:user-invalid) .gtm-setting__error {
+  display: block;
+}
+
+.gtm-setting:has(input:user-invalid) .gtm-setting__hint {
+  display: none;
+}
+
+.gtm-setting--note p {
+  min-height: 2.55rem;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  color: var(--muted);
+  background: var(--color-surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-ui-sm);
+}
+
+.gtm-setting--note code {
+  margin: 0 0.2em;
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+.gtm-tag-settings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.gtm-presets {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.gtm-presets button,
+.gtm-export-actions button,
+.gtm-reset {
+  min-height: 2.75rem;
+  padding: 0.4rem 0.7rem;
+  color: var(--ink);
+  background: var(--color-surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-ui-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.gtm-presets button:hover,
+.gtm-export-actions button:hover:not(:disabled),
+.gtm-reset:hover {
+  background: var(--color-accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+}
+
+.gtm-tags {
+  width: 100%;
+  margin-top: 1.25rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.gtm-tags thead th {
+  padding: 0 0.6rem 0.5rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  vertical-align: bottom;
+}
+
+.gtm-tags tbody :is(th, td) {
+  padding: 0.6rem;
+  border-bottom: 1px solid var(--line);
+  font-weight: inherit;
+  vertical-align: middle;
+}
+
+.gtm-tags tbody tr:not(.gtm-tags__group):hover {
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+
+.gtm-tags tbody th {
+  min-width: 0;
+}
+
+/* Stage heading rows. The top padding is what gives each group its breathing space. */
+.gtm-tags .gtm-tags__group th {
+  padding: 1.9rem 0.6rem 0.4rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.gtm-tags tbody:first-of-type .gtm-tags__group th {
+  padding-top: 0.9rem;
+}
+
+.gtm-tags__group div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gtm-tags__group span:last-child {
+  letter-spacing: 0;
+}
+
+.gtm-tags tbody th label {
+  display: grid;
+  gap: 0.12rem;
+  cursor: pointer;
+}
+
+.gtm-tags strong {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-ui-sm);
+  overflow-wrap: anywhere;
+}
+
+.gtm-tags small {
+  color: var(--muted);
+  font-size: var(--font-size-ui-xs);
+}
+
+.gtm-tags__description {
+  max-width: 26ch;
+  color: var(--muted);
+  font-size: var(--font-size-ui-sm);
+}
+
+.gtm-tags__select {
+  width: 1px;
+  text-align: center;
+}
+
+/* Padded so the whole cell area is a hit target, not just the 1.45rem box */
+.gtm-tags__box {
+  display: inline-grid;
+  place-items: center;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+}
+
+.gtm-tags__select input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+}
+
+.gtm-need {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+.gtm-need--required {
+  color: var(--bg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.gtm-need--essential {
+  color: var(--color-neutral-950);
+  background: var(--pop);
+  border-color: color-mix(in srgb, var(--color-neutral-950) 25%, var(--pop));
+}
+
+.gtm-need--recommended {
+  background: var(--color-surface);
+}
+
+.gtm-need--optional {
+  color: var(--muted);
+  border-color: transparent;
+}
+
+.gtm-tags__select input:focus-visible + .gtm-event__check {
+  outline: var(--focus-ring-strong);
+  outline-offset: 2px;
+}
+
+.gtm-event__check {
+  inline-size: 1.45rem;
+  block-size: 1.45rem;
+  display: inline-grid;
+  place-items: center;
+  color: transparent;
+  background: var(--bg);
+  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, var(--line));
+  border-radius: var(--radius-xs);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.gtm-tags__select input:checked + .gtm-event__check {
+  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.gtm-tags .gtm-tags__required label,
+.gtm-tags .gtm-tags__required .gtm-event__check {
+  cursor: default;
+}
+
+.gtm-summary {
+  min-width: 0;
+  padding: 1.5rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+
+.gtm-summary__inner {
+  position: sticky;
+  top: 1rem;
+}
+
+.gtm-summary__eyebrow {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.gtm-summary__intro {
+  margin: 0.55rem 0 1.1rem;
+  color: var(--muted);
+  font-size: var(--font-size-ui-sm);
+}
+
+.gtm-summary dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+}
+
+.gtm-summary dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.gtm-summary dt {
+  color: var(--muted);
+}
+
+.gtm-summary dd {
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+}
+
+.gtm-filename {
+  margin-bottom: 0.85rem;
+}
+
+.gtm-messages {
+  margin: 0.75rem 0;
+  padding: 0.7rem 0.8rem 0.7rem 1.65rem;
+  color: oklch(45% 0.1 75);
+  background: color-mix(in srgb, var(--pop) 18%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--pop) 45%, var(--line));
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-ui-sm);
+}
+
+/* A to-do list, not an error: export is already gated by the disabled buttons. */
+.gtm-messages--todo {
+  padding: 0.7rem 0.8rem;
+  color: var(--ink);
+  background: var(--bg);
+  border-color: var(--line);
+}
+
+.gtm-messages--todo p {
+  margin: 0 0 0.35rem;
+  color: var(--muted);
+  font-weight: var(--font-weight-bold);
+}
+
+.gtm-messages--todo ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+}
+
+.gtm-export-actions {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.gtm-export-actions .gtm-primary {
+  min-height: 2.9rem;
+  color: var(--color-neutral-950);
+  background: var(--pop);
+  border-color: color-mix(in srgb, var(--color-neutral-950) 28%, var(--pop));
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-ui-sm);
+}
+
+.gtm-export-actions .gtm-primary:hover:not(:disabled) {
+  translate: 0 -1px;
+  background: var(--pop);
+}
+
+.gtm-preview {
+  margin-top: 0.9rem;
+}
+
+.gtm-preview summary {
+  color: var(--muted);
+  font-size: var(--font-size-ui-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.gtm-preview textarea {
+  width: 100%;
+  min-height: 18rem;
+  margin-top: 0.55rem;
+  padding: 0.65rem;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-ui-xs);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.gtm-reset {
+  width: 100%;
+  margin-top: 1rem;
+  color: var(--muted);
+  background: transparent;
+}
+
+.gtm-status {
+  min-height: 2.4rem;
+  display: flex;
+  align-items: center;
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  font-size: var(--font-size-ui-sm);
+}
+
+@media (max-width: 60rem) {
+  .gtm-builder__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gtm-summary__inner {
+    position: static;
+  }
+
+  .gtm-summary dl {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .gtm-summary dl div {
+    display: grid;
+    gap: 0.2rem;
+  }
+}
+
+@media (max-width: 42rem) {
+  .gtm-builder__privacy,
+  .gtm-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .gtm-builder__privacy p,
+  .gtm-section-heading > p {
+    text-align: left;
+  }
+
+  .gtm-settings-grid,
+  .gtm-tag-settings {
+    grid-template-columns: 1fr;
+  }
+
+  /* Drop Type (1st) and Description (3rd); Tag / Necessity / box fit without side-scrolling.
+     The stage heading rows are `th` inside tbody, so they are untouched. */
+  .gtm-tags :is(thead th, tbody td):nth-child(1),
+  .gtm-tags :is(thead th, tbody td):nth-child(3) {
+    display: none;
+  }
+
+  .gtm-section-heading--events {
+    align-items: stretch;
+  }
+
+  .gtm-presets {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .gtm-summary dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gtm-export-actions .gtm-primary:hover:not(:disabled) {
+    translate: 0;
+  }
+}

@@ -1,0 +1,771 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2026-07-27 04:25:06",
+    "containerVersion": {
+        "path": "accounts/3970267315/containers/259452728/versions/0",
+        "accountId": "3970267315",
+        "containerId": "259452728",
+        "containerVersionId": "0",
+        "container": {
+            "path": "accounts/3970267315/containers/259452728",
+            "accountId": "3970267315",
+            "containerId": "259452728",
+            "name": "Simplified Ecom",
+            "publicId": "GTM-MBZ4ZJZ3",
+            "usageContext": [
+                "WEB"
+            ],
+            "fingerprint": "1785126244836",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/3970267315/containers/259452728/workspaces?apiLink=container",
+            "features": {
+                "supportUserPermissions": true,
+                "supportEnvironments": true,
+                "supportWorkspaces": true,
+                "supportGtagConfigs": false,
+                "supportBuiltInVariables": true,
+                "supportClients": false,
+                "supportFolders": true,
+                "supportTags": true,
+                "supportTemplates": true,
+                "supportTriggers": true,
+                "supportVariables": true,
+                "supportVersions": true,
+                "supportZones": true,
+                "supportTransformations": false
+            },
+            "tagIds": [
+                "GTM-MBZ4ZJZ3"
+            ]
+        },
+        "tag": [
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "tagId": "45",
+                "name": "GA4 - Page View - All Pages",
+                "type": "googtag",
+                "priority": {
+                    "type": "INTEGER",
+                    "value": "99999"
+                },
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "tagId",
+                        "value": "{{CONST - GA4 ID - G-ABCDEFGHIJK - COMPANYNAME}}"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "configSettingsTable",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "tag_name"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "GA4 - Page View - All Pages"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "send_page_view"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785126157857",
+                "firingTriggerId": [
+                    "2147479573"
+                ],
+                "parentFolderId": "24",
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NOT_SET"
+                }
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "tagId": "55",
+                "name": "GA4 - Ecommerce Event - Supported Events",
+                "type": "gaawe",
+                "priority": {
+                    "type": "INTEGER",
+                    "value": "99990"
+                },
+                "notes": "# Purpose:\nSends supported GA4 ecommerce events through one shared GA4 Event tag.\n\nThe GA4 event name is taken dynamically from the GTM built-in {{Event}} variable.\n\n# Use:\nUsed to send the following ecommerce events to GA4:\n\n- `add_payment_info`\n- `add_shipping_info`\n- `add_to_cart`\n- `add_to_wishlist`\n- `begin_checkout`\n- `purchase`\n- `remove_from_cart`\n- `select_item`\n- `select_promotion`\n- `view_cart`\n- `view_item`\n- `view_item_list`\n- `view_promotion`\n\n# Trigger conditions:\nFires when one of the assigned ecommerce Custom Event triggers is received.\n\n# Expected data:\nA valid GA4 ecommerce object matching the incoming event.\n\nCommon parameters include:\n\n- currency\n- value\n- items\n\nEvent-specific parameters may include:\n\n- `add_payment_info` → payment_type\n- `add_shipping_info` → shipping_tier\n- `purchase` → transaction_id, tax, shipping, affiliation, coupon\n- `select_item` → item_list_id, item_list_name\n- `view_item_list` → item_list_id, item_list_name\n- `select_promotion` → promotion_id, promotion_name, creative_name, creative_slot\n- `view_promotion` → promotion_id, promotion_name, creative_name, creative_slot\n\nExample:\ndataLayer.push({\n  event: \"add_to_cart\",\n  ecommerce: {\n    currency: \"EUR\",\n    value: 29.90,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 1\n      }\n    ]\n  }\n});\n\n# Notes:\n- Uses {{Event}} as the GA4 event name.\n- Sends ecommerce data directly from the `ecommerce` object in the Data Layer.\n- Fires only for the Custom Event triggers assigned to this tag.\n- Do not create separate GA4 tags for the same events, as this can cause duplicate events.\n- Each event must include the parameters expected for that event.\n- Clear the previous ecommerce object before each ecommerce event when old data could remain in the Data Layer.\n- `add_to_cart` and `remove_from_cart` should reflect completed cart changes, not button clicks alone.\n- `add_to_wishlist` should fire only after the product has been added successfully.\n- `begin_checkout` should fire when the checkout process starts.\n- `add_shipping_info` should fire after the shipping method is confirmed.\n- `add_payment_info` should fire after the payment method is confirmed.\n- `view_item_list` and `view_promotion` should fire when the content is actually shown to the user.\n- `select_item` and `select_promotion` should fire from confirmed user interactions.\n- `purchase` must fire only once per transaction.\n- `transaction_id` must be unique and must not contain any PII.\n- Consider storage-based purchase deduplication using `transaction_id`.\n- Validate every supported event in GTM Preview and GA4 DebugView before publishing.",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "sendEcommerceData",
+                        "value": "true"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "getEcommerceDataFrom",
+                        "value": "dataLayer"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "{{Event}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "measurementIdOverride",
+                        "value": "{{CONST - GA4 ID - G-ABCDEFGHIJK - COMPANYNAME}}"
+                    }
+                ],
+                "fingerprint": "1785126148511",
+                "firingTriggerId": [
+                    "21",
+                    "18",
+                    "31",
+                    "28",
+                    "66",
+                    "15",
+                    "62",
+                    "56",
+                    "70",
+                    "14",
+                    "9",
+                    "68",
+                    "71"
+                ],
+                "parentFolderId": "24",
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NOT_SET"
+                }
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "9",
+                "name": "Custom Event - View Item (Product Page)",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "view_item"
+                            }
+                        ]
+                    }
+                ],
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{CJS - Same page referrer}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "true"
+                            },
+                            {
+                                "type": "BOOLEAN",
+                                "key": "negate",
+                                "value": "true"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785083009913",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a product detail page is viewed.\n\n# Use:\nUsed to fire GA4 `view_item` events.\n\n# Trigger conditions:\nEvent equals \"view_item\"\n\n# Expected data:\nSingle item in ecommerce.items\n\nExample:\ndataLayer.push({\n  event: \"view_item\",\n  ecommerce: {\n    currency: \"EUR\",\n    value: 29.90,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90\n      }\n    ]\n  }\n});\n\n# Notes:\nShould fire on product page load.\nAvoid duplicate firing on reload."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "14",
+                "name": "Custom Event - View Cart",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "view_cart"
+                            }
+                        ]
+                    }
+                ],
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{CJS - Same page referrer}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "true"
+                            },
+                            {
+                                "type": "BOOLEAN",
+                                "key": "negate",
+                                "value": "true"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785083009914",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when the user views the cart.\n\n# Use:\nUsed to fire GA4 `view_cart` events to track cart visibility and user intent before checkout.\n\n# Trigger conditions:\nEvent equals \"view_cart\"\n\n# Expected data:\necommerce.items array representing current cart contents\n\nExample:\ndataLayer.push({\n  event: \"view_cart\",\n  ecommerce: {\n    currency: \"EUR\",\n    value: 59.80,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 2\n      }\n    ]\n  }\n});\n\n# Notes:\n- Should fire when the cart page or cart view is loaded.\n- Should reflect the current state of the cart at the time of viewing.\n- Avoid firing on minor UI updates (e.g. quantity changes) unless the cart is fully re-rendered.\n- Ensure items array matches the actual cart contents.\n- Consider deduplication if the cart page can reload or be revisited."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "15",
+                "name": "Custom Event - Begin Checkout",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "begin_checkout"
+                            }
+                        ]
+                    }
+                ],
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{CJS - Same page referrer}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "true"
+                            },
+                            {
+                                "type": "BOOLEAN",
+                                "key": "negate",
+                                "value": "true"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785083009914",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when checkout process starts.\n\n# Use:\nUsed to fire GA4 `begin_checkout` events.\n\n# Trigger conditions:\nEvent equals \"begin_checkout\"\n\n# Expected data:\nFull cart items\n\nExample:\ndataLayer.push({\n  event: \"begin_checkout\",\n  ecommerce: {\n    currency: \"EUR\",\n    value: 59.80,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 2\n      }\n    ]\n  }\n});\n\n# Notes:\nShould fire once when entering checkout.\nAvoid duplicates on reload."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "18",
+                "name": "Custom Event - Add Payment Info",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "add_payment_info"
+                            }
+                        ]
+                    }
+                ],
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{CJS - Same page referrer}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "true"
+                            },
+                            {
+                                "type": "BOOLEAN",
+                                "key": "negate",
+                                "value": "true"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785083009914",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when payment method is added.\n\n# Use:\nUsed to fire GA4 `add_payment_info` events.\n\n# Trigger conditions:\nEvent equals \"add_payment_info\"\n\n# Expected data:\nPayment type and items\n\nExample:\ndataLayer.push({\n  event: \"add_payment_info\",\n  ecommerce: {\n    payment_type: \"credit_card\",\n    currency: \"EUR\",\n    value: 59.80,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 2\n      }\n    ]\n  }\n});\n\n# Notes:\nShould fire after user confirms payment method."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "21",
+                "name": "Custom Event - Purchase (Order/Transaction Completed)",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "purchase"
+                            }
+                        ]
+                    }
+                ],
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{CJS - Same page referrer}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "true"
+                            },
+                            {
+                                "type": "BOOLEAN",
+                                "key": "negate",
+                                "value": "true"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785083009920",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a transaction is completed.\n\n# Use:\nUsed to fire GA4 `purchase` events.\n\n# Trigger conditions:\nEvent equals \"purchase\"\n\n# Expected data:\nFull ecommerce object including transaction_id\n\nExample:\ndataLayer.push({\n  event: \"purchase\",\n  ecommerce: {\n    transaction_id: \"ORDER-100245\",\n    value: 64.70,\n    currency: \"EUR\",\n    tax: 4.90,\n    shipping: 5.00,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 2\n      }\n    ]\n  }\n});\n\n# Notes:\nMust fire only once per transaction.\ntransaction_id is used for deduplication."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "28",
+                "name": "Custom Event - Add to Cart",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "add_to_cart"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785083009921",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a product is added to cart.\n\n# Use:\nUsed to fire GA4 `add_to_cart` events.\n\n# Trigger conditions:\nEvent equals \"add_to_cart\"\n\n# Expected data:\nItems added to cart\n\nExample:\ndataLayer.push({\n  event: \"add_to_cart\",\n  ecommerce: {\n    currency: \"EUR\",\n    value: 29.90,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 1\n      }\n    ]\n  }\n});\n\n# Notes:\nShould reflect actual cart update, not just click."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "31",
+                "name": "Custom Event - Add Shipping Info",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "add_shipping_info"
+                            }
+                        ]
+                    }
+                ],
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{CJS - Same page referrer}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "true"
+                            },
+                            {
+                                "type": "BOOLEAN",
+                                "key": "negate",
+                                "value": "true"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785083009922",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when shipping method is selected.\n\n# Use:\nUsed to fire GA4 `add_shipping_info` events.\n\n# Trigger conditions:\nEvent equals \"add_shipping_info\"\n\n# Expected data:\nShipping tier and items\n\nExample:\ndataLayer.push({\n  event: \"add_shipping_info\",\n  ecommerce: {\n    shipping_tier: \"Express\",\n    currency: \"EUR\",\n    value: 59.80,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 2\n      }\n    ]\n  }\n});\n\n# Notes:\nShould fire after shipping selection."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "56",
+                "name": "Custom Event - Remove from Cart",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "remove_from_cart"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785125893644",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a product is removed from cart.\n\n# Use:\nUsed to fire GA4 `remove_from_cart` events.\n\n# Trigger conditions:\nEvent equals \"remove_from_cart\"\n\n# Expected data:\nItems removed from cart\n\nExample:\ndataLayer.push({\n  event: \"remove_from_cart\",\n  ecommerce: {\n    currency: \"EUR\",\n    value: 29.90,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 1\n      }\n    ]\n  }\n});\n\n# Notes:\nShould reflect actual removal action."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "62",
+                "name": "Custom Event - Select Item",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "select_item"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785125893644",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a user selects a product from a list.\n\n# Use:\nUsed to fire GA4 `select_item` events.\n\n# Trigger conditions:\nEvent equals \"select_item\"\n\n# Expected data:\nSelected item with list context\n\nExample:\ndataLayer.push({\n  event: \"select_item\",\n  ecommerce: {\n    item_list_name: \"Search Results\",\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        index: 1\n      }\n    ]\n  }\n});\n\n# Notes:\nShould include list context.\nUsually tied to product click."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "66",
+                "name": "Custom Event - Add to Wishlist",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "add_to_wishlist"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785125893645",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a user adds a product to their wishlist.\n\n# Use:\nUsed to fire GA4 `add_to_wishlist` events to track product interest outside of the purchase funnel.\n\n# Trigger conditions:\nEvent equals \"add_to_wishlist\"\n\n# Expected data:\necommerce.items array with the selected product\n\nExample:\ndataLayer.push({\n  event: \"add_to_wishlist\",\n  ecommerce: {\n    currency: \"EUR\",\n    value: 29.90,\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        quantity: 1\n      }\n    ]\n  }\n});\n\n# Notes:\n- Should fire only when a product is actually added to the wishlist.\n- Should not fire on page load or when viewing wishlist items.\n- Ensure items array contains accurate product data."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "68",
+                "name": "Custom Event - View Item List",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "view_item_list"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785125893645",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a product list is viewed.\n\n# Use:\nUsed to fire GA4 `view_item_list` events for product list impressions.\n\n# Trigger conditions:\nEvent equals \"view_item_list\"\n\n# Expected data:\necommerce.items array with list context\n\nExample:\ndataLayer.push({\n  event: \"view_item_list\",\n  ecommerce: {\n    item_list_name: \"Search Results\",\n    item_list_id: \"search_results\",\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90,\n        item_list_name: \"Search Results\",\n        index: 1\n      }\n    ]\n  }\n});\n\n# Notes:\nShould fire once per list view.\nEnsure list metadata is included for attribution."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "70",
+                "name": "Custom Event - Select Promotion",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "select_promotion"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785125893645",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a user clicks or selects a promotion.\n\n# Use:\nUsed to fire GA4 `select_promotion` events to measure engagement with internal promotions (e.g. banners, hero sections, campaign blocks).\n\n# Trigger conditions:\nEvent equals \"select_promotion\"\n\n# Expected data:\n- promotion_id → String\n- promotion_name → String\n- creative_name → String\n- creative_slot → String\n- items → Array (optional, if tied to products)\n\nExample:\ndataLayer.push({\n  event: \"select_promotion\",\n  ecommerce: {\n    promotion_id: \"summer_sale_2025\",\n    promotion_name: \"Summer Sale\",\n    creative_name: \"Homepage Banner v1\",\n    creative_slot: \"homepage_top\",\n    items: [...]\n  }\n});\n\n# Notes:\n- Should fire when a user clicks or interacts with a promotion.\n- Should not fire on promotion visibility (use `view_promotion` for impressions).\n- Ensure promotion_id remains consistent across all related events.\n- Use together with promotion_name, creative_name, and creative_slot for full attribution.\n- Consider deduplication if multiple clicks can fire rapidly."
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "triggerId": "71",
+                "name": "Custom Event - View Promotion",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "view_promotion"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1785125893645",
+                "parentFolderId": "6",
+                "notes": "# Purpose:\nTriggers when a promotion is viewed by the user.\n\n# Use:\nUsed to fire GA4 `view_promotion` events to measure promotion impressions.\n\n# Trigger conditions:\nEvent equals \"view_promotion\"\n\n# Expected data:\n- promotion_id → String\n- promotion_name → String\n- creative_name → String\n- creative_slot → String\n- items → Array (optional, if tied to products)\n\nExample:\ndataLayer.push({\n  event: \"view_promotion\",\n  ecommerce: {\n    promotion_id: \"summer_sale_2025\",\n    promotion_name: \"Summer Sale\",\n    creative_name: \"Homepage Banner v1\",\n    creative_slot: \"homepage_top\",\n    items: [\n      {\n        item_id: \"SKU123\",\n        item_name: \"Blue T-Shirt\",\n        price: 29.90\n      }\n    ]\n  }\n});\n\n# Notes:\n- Should fire when the promotion is visible to the user (e.g. on page load or when scrolled into view).\n- Should not fire on user interaction (use `select_promotion` for clicks).\n- Ensure promotion_id remains consistent across view_promotion and select_promotion events.\n- Use together with promotion_name, creative_name, and creative_slot for full attribution.\n- Consider deduplication if promotions can re-render or appear multiple times during the session."
+            }
+        ],
+        "variable": [
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "variableId": "8",
+                "name": "CJS - Same page referrer",
+                "type": "jsm",
+                "notes": "Detects if the current page load was caused by a browser refresh (reload).\n\nWhy this matters:\n* Some setups (e.g. WordPress, plugins, or AJAX flows) can trigger duplicate events when the page reloads. This function helps you identify that case so you can block duplicate GTM tags.",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "/**\n * Detects if the current page load was caused by a browser refresh (reload).\n *\n * Returns:\n * true  → page was reloaded (same page)\n * false → not a reload (different page or first visit)\n */\nfunction() {\n  // Get navigation performance entries (modern browsers)\n  var navEntries = performance.getEntriesByType(\"navigation\");\n\n  // Modern browsers\n  if (navEntries && navEntries.length > 0) {\n    if (navEntries[0].type === \"reload\") {\n      return true;\n    } else {\n      return false;\n    }\n  }\n\n  // Fallback for older browsers\n  if (performance.navigation) {\n    if (performance.navigation.type === 1) {\n      return true; // reload\n    } else {\n      return false;\n    }\n  }\n\n  // Default: not a reload\n  return false;\n}"
+                    }
+                ],
+                "fingerprint": "1785083009913",
+                "parentFolderId": "3",
+                "formatValue": {}
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "variableId": "22",
+                "name": "CONST - GA4 ID - G-ABCDEFGHIJK - COMPANYNAME",
+                "type": "c",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "value",
+                        "value": "G-ABCDEFGHIJK"
+                    }
+                ],
+                "fingerprint": "1785124871383",
+                "parentFolderId": "5",
+                "formatValue": {}
+            }
+        ],
+        "folder": [
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "folderId": "3",
+                "name": "02 - Variables",
+                "fingerprint": "1785083009912"
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "folderId": "5",
+                "name": "01 - Pixel IDs and settings",
+                "fingerprint": "1785083009912"
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "folderId": "6",
+                "name": "02 - Triggers",
+                "fingerprint": "1785083009912"
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "folderId": "24",
+                "name": "04 - Statistical (Analytics)",
+                "fingerprint": "1785083009920"
+            }
+        ],
+        "builtInVariable": [
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "type": "PAGE_URL",
+                "name": "Page URL"
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "type": "PAGE_HOSTNAME",
+                "name": "Page Hostname"
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "type": "PAGE_PATH",
+                "name": "Page Path"
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "type": "REFERRER",
+                "name": "Referrer"
+            },
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "type": "EVENT",
+                "name": "Event"
+            }
+        ],
+        "fingerprint": "1785126306598",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/3970267315/containers/259452728/versions/0?apiLink=version",
+        "customTemplate": [
+            {
+                "accountId": "3970267315",
+                "containerId": "259452728",
+                "templateId": "19",
+                "name": "GA4 Ecom Items - DLV Version 1",
+                "fingerprint": "1785083009914",
+                "templateData": "___TERMS_OF_SERVICE___\n\nBy creating or modifying this file you agree to Google Tag Manager's Community\nTemplate Gallery Developer Terms of Service available at\nhttps://developers.google.com/tag-manager/gallery-tos (or such other URL as\nGoogle may provide), as modified from time to time.\n\n\n___INFO___\n\n{\n  \"type\": \"MACRO\",\n  \"id\": \"cvt_PLH7K\",\n  \"version\": 1,\n  \"displayName\": \"GA4 Ecom Items - DLV Version 1\",\n  \"description\": \"Returns GA4 Ecommerce Items \\u0026 Standard Ecommerce Parameters (ex. payment_type) as Data Layer Variable Version 1. This ensures that GTM will only access the most recent Item push into the Data Layer.\",\n  \"categories\": [\n    \"ANALYTICS\",\n    \"UTILITY\",\n    \"TAG_MANAGEMENT\"\n  ],\n  \"containerContexts\": [\n    \"WEB\"\n  ],\n  \"brand\": {\n    \"displayName\": \"gtm-templates-knowit-experience\",\n    \"id\": \"github.com_gtm-templates-knowit-experience\"\n  }\n}\n\n\n___TEMPLATE_PARAMETERS___\n\n[\n  {\n    \"type\": \"SELECT\",\n    \"name\": \"ecomParam\",\n    \"displayName\": \"Standard Ecommerce Parameters\",\n    \"selectItems\": [\n      {\n        \"value\": \"items\",\n        \"displayValue\": \"items\"\n      },\n      {\n        \"value\": \"item_list_id\",\n        \"displayValue\": \"item_list_id\"\n      },\n      {\n        \"value\": \"item_list_name\",\n        \"displayValue\": \"item_list_name\"\n      },\n      {\n        \"value\": \"creative_name\",\n        \"displayValue\": \"creative_name\"\n      },\n      {\n        \"value\": \"creative_slot\",\n        \"displayValue\": \"creative_slot\"\n      },\n      {\n        \"value\": \"promotion_id\",\n        \"displayValue\": \"promotion_id\"\n      },\n      {\n        \"value\": \"promotion_name\",\n        \"displayValue\": \"promotion_name\"\n      },\n      {\n        \"value\": \"location_id\",\n        \"displayValue\": \"location_id\"\n      },\n      {\n        \"value\": \"payment_type\",\n        \"displayValue\": \"payment_type\"\n      },\n      {\n        \"value\": \"shipping_tier\",\n        \"displayValue\": \"shipping_tier\"\n      },\n      {\n        \"value\": \"transaction_id\",\n        \"displayValue\": \"transaction_id\"\n      },\n      {\n        \"value\": \"affiliation\",\n        \"displayValue\": \"affiliation\"\n      },\n      {\n        \"value\": \"coupon\",\n        \"displayValue\": \"coupon\"\n      },\n      {\n        \"value\": \"value\",\n        \"displayValue\": \"value\"\n      },\n      {\n        \"value\": \"shipping\",\n        \"displayValue\": \"shipping\"\n      },\n      {\n        \"value\": \"tax\",\n        \"displayValue\": \"tax\"\n      }\n    ],\n    \"simpleValueType\": true,\n    \"help\": \"Select Standard Ecommerce Parameter. If you select ex. \\u003cstrong\\u003eitems\\u003c/strong\\u003e parameter, \\u003cstrong\\u003eecommerce.items\\u003c/strong\\u003e will be returned as Data Layer Version 1.\",\n    \"alwaysInSummary\": true\n  },\n  {\n    \"type\": \"CHECKBOX\",\n    \"name\": \"removeNullfromItems\",\n    \"checkboxText\": \"Remove null or empty Values from Items\",\n    \"simpleValueType\": true,\n    \"help\": \"If items has null values (ex. \\u003cstrong\\u003eitem_category2: null\\u003c/strong\\u003e), these values can be reported as a \\\"null\\\" string in GA4.\\n\\u003cbr /\\u003e\\u003cbr /\\u003e\\nBy ticking this box, \\u003cstrong\\u003enull\\u003c/strong\\u003e \\u0026 \\u003cstrong\\u003eempty\\u003c/strong\\u003e values will be replaced with \\u003cstrong\\u003eundefined\\u003c/strong\\u003e, and discarded from being sent from GTM to GA4.\",\n    \"enablingConditions\": [\n      {\n        \"paramName\": \"ecomParam\",\n        \"paramValue\": \"items\",\n        \"type\": \"EQUALS\"\n      }\n    ],\n    \"alwaysInSummary\": true\n  }\n]\n\n\n___SANDBOXED_JS_FOR_WEB_TEMPLATE___\n\nconst dataLayer = require('copyFromDataLayer');\nlet ecom = dataLayer('ecommerce', 1);\n\nif(ecom) {\n  switch(data.ecomParam) {\n    case 'item_list_id':\n      ecom = ecom.item_list_id;\n       break;\n    case 'item_list_name':\n      ecom = ecom.item_list_name;\n    break;\n    case 'creative_name':\n      ecom = ecom.creative_name;\n      break;\n    case 'creative_slot':\n      ecom = ecom.creative_slot;\n      break;\n    case 'promotion_id':\n      ecom = ecom.promotion_id;\n      break;\n    case 'promotion_name':\n      ecom = ecom.promotion_name;\n      break;\n    case 'location_id':\n      ecom = ecom.location_id;\n      break;\n    case 'payment_type':\n      ecom = ecom.payment_type;\n      break;\n    case 'shipping_tier':\n      ecom = ecom.shipping_tier;\n      break;\n    case 'transaction_id':\n      ecom = ecom.transaction_id;\n      break;\n    case 'affiliation':\n      ecom = ecom.affiliation;\n      break;\n    case 'coupon':\n      ecom = ecom.coupon;\n      break;\n    case 'value':\n      ecom = ecom.value;\n      break;\n    case 'shipping':\n      ecom = ecom.shipping;\n      break;\n    case 'tax':\n      ecom = ecom.tax;\n      break;\n    default:\n      ecom = ecom.items;\n    }\n      if(data.removeNullfromItems && ecom) {\n        ecom.forEach(function(object){\n          for(let key in object) {\n            if(object[key] === null || object[key] === '')\n              object[key] = undefined;\n            }\n      });\n  }\n  return ecom;\n}\nreturn undefined;\n\n\n___WEB_PERMISSIONS___\n\n[\n  {\n    \"instance\": {\n      \"key\": {\n        \"publicId\": \"read_data_layer\",\n        \"versionId\": \"1\"\n      },\n      \"param\": [\n        {\n          \"key\": \"keyPatterns\",\n          \"value\": {\n            \"type\": 2,\n            \"listItem\": [\n              {\n                \"type\": 1,\n                \"string\": \"ecommerce.*\"\n              }\n            ]\n          }\n        }\n      ]\n    },\n    \"clientAnnotations\": {\n      \"isEditedByUser\": true\n    },\n    \"isRequired\": true\n  }\n]\n\n\n___TESTS___\n\nscenarios: []\n\n\n___NOTES___\n\nCreated on 8/6/2021, 4:27:14 PM\n\n\n",
+                "galleryReference": {
+                    "host": "github.com",
+                    "owner": "gtm-templates-knowit-experience",
+                    "repository": "gtm-ga4-ecom-items-dlv-version-1-variable",
+                    "version": "9c9d8bdf3974b4d038a13259cbefe827c2d6e4ee",
+                    "signature": "db35ad287a231f49e356ec58c3d79c9fe832d889d23752e288bd6607c5c1e685",
+                    "galleryTemplateId": "PLH7K"
+                }
+            }
+        ]
+    }
+}

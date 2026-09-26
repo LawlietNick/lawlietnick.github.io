@@ -1,0 +1,894 @@
+{
+  "astro.config.mjs": {
+    "mtime": 1789966660100.8196,
+    "hash": "876b5249644a3fc2563c141fec8cc7d6"
+  },
+  "scripts/generate-hero-placeholders.mjs": {
+    "mtime": 1783662513918.7078,
+    "hash": "0d433f05a865e61b51ed8691bbaac9e5"
+  },
+  "scripts/generate-og.mjs": {
+    "mtime": 1786044996796.3782,
+    "hash": "68f3a5330245391b28ea6e578be08355"
+  },
+  "src/components/AboutIntro.astro": {
+    "mtime": 1789929105830.5337,
+    "hash": "6eefe31ee99c44b7471e42588a4bbbfb"
+  },
+  "src/components/AskAI.astro": {
+    "mtime": 1784490853573.4404,
+    "hash": "80b6b35004f3aa15c420b27431328abe"
+  },
+  "src/components/Badge.astro": {
+    "mtime": 1783578418472.6636,
+    "hash": "6d20f028ee907b21450b976d3f01c569"
+  },
+  "src/components/BlogListing.astro": {
+    "mtime": 1785161831304.7732,
+    "hash": "ae3981ae392912588c827cb5a17074e6"
+  },
+  "src/components/ButtonLink.astro": {
+    "mtime": 1784895987688.2527,
+    "hash": "74e5672e712c5c2c05f441b3742b4fff"
+  },
+  "src/components/Footer.astro": {
+    "mtime": 1786643403102.6284,
+    "hash": "e2f9318e33e404a80823602bbada9f40"
+  },
+  "src/components/Header.astro": {
+    "mtime": 1790432488353.5874,
+    "hash": "a61f830f9c8add6d40ec5ccf0cf1e327"
+  },
+  "src/components/Hero.astro": {
+    "mtime": 1789301048035.8196,
+    "hash": "614a53e883102dbe98eeed888b531475"
+  },
+  "src/components/PatternList.astro": {
+    "mtime": 1783578418395.9634,
+    "hash": "861f8ab576508d5f041253a77060ab16"
+  },
+  "src/components/PostHero.astro": {
+    "mtime": 1790102712531.3057,
+    "hash": "d5a14a75eb223ad8d4097b097d172baf"
+  },
+  "src/components/PostList.astro": {
+    "mtime": 1789301038787.004,
+    "hash": "d1a370891bbb22361cb1e1f220577cb6"
+  },
+  "src/components/Postscript.astro": {
+    "mtime": 1784532430576.9834,
+    "hash": "fe38a52befe48fd4b723f7b6a4a62d53"
+  },
+  "src/components/Schema.astro": {
+    "mtime": 1790226186824.8254,
+    "hash": "6d809c36acd5140d0db079a6ff58d6bc"
+  },
+  "src/components/Services.astro": {
+    "mtime": 1786045238173.8113,
+    "hash": "9f2039f031a5d21995481685b742afae"
+  },
+  "src/components/SplitSection.astro": {
+    "mtime": 1783578688208.3428,
+    "hash": "c8b1398ef17aaea239c78ab461e94471"
+  },
+  "src/components/TableOfContents.astro": {
+    "mtime": 1789926701918.4387,
+    "hash": "148a61a91dab9a4a30cce3792d9f6eae"
+  },
+  "src/components/WorkGrid.astro": {
+    "mtime": 1789301038788.2031,
+    "hash": "cf6d3a14d3982c07ba3af3fa960aada9"
+  },
+  "src/data/site.js": {
+    "mtime": 1790232860217.4038,
+    "hash": "1a65b80aef63a9a63bec2f341f3405f7"
+  },
+  "src/data/toolkit.js": {
+    "mtime": 1789231319586.65,
+    "hash": "74ca17850fafa0005886c2dcb9f31f12"
+  },
+  "src/data/work.js": {
+    "mtime": 1783578275123.939,
+    "hash": "dd1d8e675e077c6c0559ef60fc072382"
+  },
+  "src/layouts/Base.astro": {
+    "mtime": 1790232866187.0195,
+    "hash": "0f16b0a6eb21a37cba48c5d6995b14c3"
+  },
+  "src/pages/404.astro": {
+    "mtime": 1784635640860.7234,
+    "hash": "0fa83bff8418824f3bb0e5c948063694"
+  },
+  "src/pages/[toolkit].astro": {
+    "mtime": 1789231319586.8372,
+    "hash": "53b56bf86d6d1543633bdd924a163fa7"
+  },
+  "src/pages/about.astro": {
+    "mtime": 1786047893848.4504,
+    "hash": "f239082f3880709ad0a88a4982ce39d9"
+  },
+  "src/pages/blog/index.astro": {
+    "mtime": 1789233542253.0383,
+    "hash": "8c2c78e995632fdd029b70ddb06a7181"
+  },
+  "src/pages/design-system.astro": {
+    "mtime": 1789224266057.11,
+    "hash": "e80b45f7b2b5aaed91befa8921abba46"
+  },
+  "src/pages/fi/[toolkit].astro": {
+    "mtime": 1789231329651.8755,
+    "hash": "1637ac663db4ec9b60661f8127765b6f"
+  },
+  "src/pages/fi/about.astro": {
+    "mtime": 1783533700656.5876,
+    "hash": "b338303d203191d3279fd173e02c466a"
+  },
+  "src/pages/fi/blog/index.astro": {
+    "mtime": 1789233542253.138,
+    "hash": "dc44f6ba158e74dde8849b75397e447e"
+  },
+  "src/pages/fi/index.astro": {
+    "mtime": 1789922802469.2617,
+    "hash": "304acc17e6d2d3dd2c90e2daace81729"
+  },
+  "src/pages/fi/minusta.astro": {
+    "mtime": 1786076500134.4075,
+    "hash": "4eeedb97bc1b794f852066d87caf7ae6"
+  },
+  "src/pages/fi/palvelut.astro": {
+    "mtime": 1789227011668.4194,
+    "hash": "459b67acb82070c6863cb3299b30b2f4"
+  },
+  "src/pages/fi/privacy.astro": {
+    "mtime": 1789231319585.8813,
+    "hash": "528a7a22018d3faca3be0adf20e07786"
+  },
+  "src/pages/index.astro": {
+    "mtime": 1789922802424.903,
+    "hash": "8c162684a08d448e025eaf0c8f38447c"
+  },
+  "src/pages/privacy.astro": {
+    "mtime": 1789231319585.5845,
+    "hash": "8efdff04f19156ad17480553ad037ea7"
+  },
+  "src/pages/services.astro": {
+    "mtime": 1789227011621.7588,
+    "hash": "7fcf6b0c9ef87a77f9d08e3bcf1c2248"
+  },
+  "src/pages/sitemap.xml.js": {
+    "mtime": 1789231113425.427,
+    "hash": "3e3477c2875264fcb45128b16a142f84"
+  },
+  "src/utils/language-links.js": {
+    "mtime": 1790360803597.2786,
+    "hash": "fadf7ac6c72f994495ca47a766af96a0"
+  },
+  "test/language-links.test.mjs": {
+    "mtime": 1789224265836.0557,
+    "hash": "653f290a0eb6b4693a738fbc26131718"
+  },
+  "CLAUDE.md": {
+    "mtime": 1783861569756.1887,
+    "hash": "43933251c7da7a98da7b57cd858902b1"
+  },
+  "DESIGN.md": {
+    "mtime": 1790432548658.9724,
+    "hash": "9e3f7f3980bc443521a714a348555fe5"
+  },
+  "PRODUCT.md": {
+    "mtime": 1783578243531.611,
+    "hash": "f3ed4e26f705aa72338d579e42d2d8d5"
+  },
+  "src/pages/blog/ai-panel-with-experts.md": {
+    "mtime": 1790233442457.3906,
+    "hash": "04ceaffd9010484b5a5610de8763cb38"
+  },
+  "src/pages/blog/mckinsey-style-presentation-chatgpt-gemini.md": {
+    "mtime": 1790233442458.7373,
+    "hash": "9cde9b8b1305bd8d4b53470da48ef6d5"
+  },
+  "src/pages/blog/prompt-optimization-chatgpt.md": {
+    "mtime": 1790233442459.3591,
+    "hash": "c33ebd3eb22b435f0ad6d512c054e5be"
+  },
+  "src/pages/fi/blog/asiantuntijapaneeli-yhdella-promptilla.md": {
+    "mtime": 1790233442458.0786,
+    "hash": "dfb5860bd4ebf2c82f749b8bbe9daad2"
+  },
+  "public/icons/google.svg": {
+    "mtime": 1783714969671.7522,
+    "hash": "c75e85633b2ea2449c6e333bb1ebe22a"
+  },
+  "public/nk-logo.svg": {
+    "mtime": 1783367128443.0918,
+    "hash": "be9f4df5a28417d880cbbceafda53cfd"
+  },
+  "public/og-default.png": {
+    "mtime": 1786045000051.7007,
+    "hash": "5afb348af2b0f5e047b407937de618a8"
+  },
+  "src/assets/hero/feature.jpeg": {
+    "mtime": 1783628941273.7515,
+    "hash": "8350f6bc3c238b08f44fc9a3ec47a46a"
+  },
+  "src/components/Breadcrumb.astro": {
+    "mtime": 1790232864184.566,
+    "hash": "26265e748b6073dc4b8cbf566027bec2"
+  },
+  "src/utils/schema.ts": {
+    "mtime": 1790232868118.125,
+    "hash": "79a070b8ea291f7a5beadaacba7ef926"
+  },
+  "test/schema.test.ts": {
+    "mtime": 1790233146052.087,
+    "hash": "131ae1efcddf0fdcccc0861e1d413534"
+  },
+  "src/content.config.ts": {
+    "mtime": 1784912888385.1812,
+    "hash": "166705d8b7838443212bb227b3257665"
+  },
+  "src/pages/atom.xml.ts": {
+    "mtime": 1784394610341.366,
+    "hash": "fc9bc59ecccba0fc2de6cb21440de868"
+  },
+  "src/pages/fi/atom.xml.ts": {
+    "mtime": 1784394611753.1306,
+    "hash": "8aff06645a7c859d8dd1df55055f1e53"
+  },
+  "src/utils/feed-entries.ts": {
+    "mtime": 1789233542251.9797,
+    "hash": "dd40da8b177c0692590e45bfaac6424c"
+  },
+  "src/utils/feed.ts": {
+    "mtime": 1785351746626.0535,
+    "hash": "04748593b97a9f1c25f2c113329dd38e"
+  },
+  "test/feed-entries.test.ts": {
+    "mtime": 1784394617158.4436,
+    "hash": "9350ece7322fdc8abc371de080e0b904"
+  },
+  "public/images/blog/ai-panel-with-experts.jpeg": {
+    "mtime": 1784364825894.6643,
+    "hash": "ac14d99be2b65ec07ed60f53392ea5fa"
+  },
+  "public/images/blog/cookiebot-guide.jpeg": {
+    "mtime": 1784364825956.8345,
+    "hash": "0b498527b277b9eeb907c180ee8e23d9"
+  },
+  "public/images/blog/mckinsey-style-presentation-chatgpt-gemini.jpeg": {
+    "mtime": 1784364826014.4602,
+    "hash": "f8ad81e86a7bbb9b8d5fd935c7a4325c"
+  },
+  "public/images/blog/prompt-optimization-chatgpt.jpeg": {
+    "mtime": 1784364986331.024,
+    "hash": "10be2edcf4e04aed60b6d80daac7c05a"
+  },
+  "src/assets/about/portrait.jpeg": {
+    "mtime": 1783848541187.0542,
+    "hash": "6d4ae895fc777fb3d66ac3bcad5d010f"
+  },
+  "src/pages/blog/tester-post.md": {
+    "mtime": 1790233139793.808,
+    "hash": "35a3b7b4f9ccf4de885dd770bf1c554c"
+  },
+  "public/images/blog/example-parts.jpeg": {
+    "mtime": 1784404764239.706,
+    "hash": "b2e90653d6860ff9a2b7779b9d18fb9c"
+  },
+  "public/images/blog/examples/example-landscape.jpeg": {
+    "mtime": 1784404243287.9268,
+    "hash": "d37e7b0d5731a3840edb03eeacd11af8"
+  },
+  "public/images/blog/examples/example-portrait.jpeg": {
+    "mtime": 1784404376061.0542,
+    "hash": "0d46b88df4ea7416aeea0cd63820781c"
+  },
+  "public/images/blog/examples/example-wide.jpeg": {
+    "mtime": 1784404376033.1313,
+    "hash": "51e41c3b164780b9119459c64397920b"
+  },
+  "src/utils/feed-xml.ts": {
+    "mtime": 1784452702159.0122,
+    "hash": "18ae4962e9e558dc7be65dcdd18e0f5e"
+  },
+  "test/feed-xml.test.ts": {
+    "mtime": 1784452702455.0825,
+    "hash": "9372ea88e2046c29beac3ad6b7990bf1"
+  },
+  "src/components/ArticleCard.astro": {
+    "mtime": 1784733046627.8567,
+    "hash": "3d8c1f40466a05927d38a8c23062713d"
+  },
+  "src/components/PreferredSourceCTA.astro": {
+    "mtime": 1787808056700.8687,
+    "hash": "b7072b3d6e171cd4c058eb80a449c0c4"
+  },
+  "src/components/RelatedArticles.astro": {
+    "mtime": 1784735983768.395,
+    "hash": "763b368050c71e9f06903d644763eb5a"
+  },
+  "src/utils/recent-posts.ts": {
+    "mtime": 1789233542252.4414,
+    "hash": "12b575435149d9515c4e8a3ce5fe233a"
+  },
+  "src/utils/related-posts.ts": {
+    "mtime": 1789233542252.7275,
+    "hash": "e9da02aca582d80567c3cfaf16005c37"
+  },
+  "test/recent-posts.test.ts": {
+    "mtime": 1784496829914.3066,
+    "hash": "09e86f118662506f076a42bf766c1ecc"
+  },
+  "test/related-posts.test.ts": {
+    "mtime": 1784492552238.9224,
+    "hash": "1cda2a4e57613c3af4b7324d24001589"
+  },
+  "src/pages/fi/blog/mckinsey-tyylinen-esitys-chatgpt-gemini.md": {
+    "mtime": 1790233442459.0803,
+    "hash": "19162642f2d9a2d3a45e15df5e35fcaf"
+  },
+  "src/pages/fi/blog/promptien-optimointijarjestelma-chatgpt.md": {
+    "mtime": 1790233442459.7788,
+    "hash": "161192fdb7c54bde442b4007b0ac84fc"
+  },
+  "src/data/categories.js": {
+    "mtime": 1790233446525.8748,
+    "hash": "8dea460d54a21b400e05e3c1af9eaf17"
+  },
+  "cookiebot-banner-style/cookiebanner.js": {
+    "mtime": 1784918529617.262,
+    "hash": "b31bffb4909e3f449c4cfb9feb6c9d62"
+  },
+  "playwright.config.ts": {
+    "mtime": 1785152038126.2202,
+    "hash": "b4019b787f32202674799ebbdfd2b521"
+  },
+  "scripts/validate-content.mjs": {
+    "mtime": 1790364510728.5193,
+    "hash": "83ee81aaa9920a520b58dff5e94cf87c"
+  },
+  "src/assets/tools/cookie-banner/banner.js": {
+    "mtime": 1784919803176.9346,
+    "hash": "b31bffb4909e3f449c4cfb9feb6c9d62"
+  },
+  "src/components/BlogImage.astro": {
+    "mtime": 1784735983678.2283,
+    "hash": "92c0993be443f0f666a5c523ea152ac7"
+  },
+  "src/components/CookieBannerStyler.astro": {
+    "mtime": 1785352318339.162,
+    "hash": "66ea76d6a173b6c594adb6cdc8d82f9c"
+  },
+  "src/components/MetricQualityChecker.astro": {
+    "mtime": 1785329947511.9753,
+    "hash": "ab575a3f864cb9508d509912027a883c"
+  },
+  "src/components/NotFound.astro": {
+    "mtime": 1784733120466.4148,
+    "hash": "5c15445938ed012da4549f276beaaa75"
+  },
+  "src/components/ServiceCard.astro": {
+    "mtime": 1785160980995.3506,
+    "hash": "39cbb54a143a633891ae360a3f69b3dd"
+  },
+  "src/components/ServiceGroups.astro": {
+    "mtime": 1784892141376.6472,
+    "hash": "fc4d1948cb40432960d388415defe36d"
+  },
+  "src/components/ServiceProof.astro": {
+    "mtime": 1784897070292.5203,
+    "hash": "8021cc744070aba0c9f8f2dd8fcee90f"
+  },
+  "src/components/gtm-builder/GtmContainerBuilder.tsx": {
+    "mtime": 1785160705835.451,
+    "hash": "522d43f54fb4b69f0b610281200a86c0"
+  },
+  "src/components/gtm-builder/engine.ts": {
+    "mtime": 1785127125102.6702,
+    "hash": "c8bdfee3e8afdc0b202f61ec661f3f5b"
+  },
+  "src/data/interactive-tools.js": {
+    "mtime": 1790360803547.6538,
+    "hash": "a3a01222e40832a224640cede807f9ab"
+  },
+  "src/layouts/ServiceLayout.astro": {
+    "mtime": 1789227133590.4226,
+    "hash": "62632a6066bf25c0c1a78ff3a6d60273"
+  },
+  "src/pages/fi/404.astro": {
+    "mtime": 1784581040436.5903,
+    "hash": "e741cafcd429ddf1a800fd012da020ef"
+  },
+  "src/pages/fi/tyokalut/mittarin-laatutarkistus.astro": {
+    "mtime": 1785329541207.3682,
+    "hash": "7ba3d6e3686e6b9839a49665bc1572f3"
+  },
+  "src/pages/tools/cookie-banner-styler.astro": {
+    "mtime": 1789227581355.2441,
+    "hash": "f36068cde60dac0f8202c10a1794a892"
+  },
+  "src/pages/tools/gtm-container-builder.astro": {
+    "mtime": 1785328376650.427,
+    "hash": "ef805bc3d6643b5ae9dbba921cef9d53"
+  },
+  "src/pages/tools/metric-quality-checker.astro": {
+    "mtime": 1785328377035.8096,
+    "hash": "c6da20acb0afa4967e4c7214b4697ed0"
+  },
+  "src/utils/blog-image.ts": {
+    "mtime": 1784733008945.026,
+    "hash": "f3d5aa1fc98947bd09e1cb49c539b67f"
+  },
+  "src/utils/metric-quality.js": {
+    "mtime": 1785074969468.2754,
+    "hash": "2fc547290f9759831cf18977dcb4cfe4"
+  },
+  "test/e2e/gtm-export.spec.ts": {
+    "mtime": 1785127219994.6255,
+    "hash": "1dc963d745fc678f0657cbd963a3d0e2"
+  },
+  "test/gtm/component.test.tsx": {
+    "mtime": 1785127233878.4316,
+    "hash": "3cc9ef21ec2a0b263e2bee7494c65ec4"
+  },
+  "test/gtm/engine.test.ts": {
+    "mtime": 1785127219792.6572,
+    "hash": "6eaee64a882fbd4f2c4a7f2651ac7fef"
+  },
+  "test/gtm/setup.ts": {
+    "mtime": 1785081836037.9966,
+    "hash": "c5854e7b157fbc39a9b6b3c55d04a1d6"
+  },
+  "test/metric-quality.test.mjs": {
+    "mtime": 1785074981430.2607,
+    "hash": "4563b40dd76c8a7020cab2f9dae835f6"
+  },
+  "vitest.config.ts": {
+    "mtime": 1785151478701.5947,
+    "hash": "fd6e4ba26421b3970ca60c2396030c3c"
+  },
+  "cookiebot-banner-style/cookiebanner.html": {
+    "mtime": 1784918498816.9653,
+    "hash": "7ce8ce3afdf94b7037e07a86dc0974c5"
+  },
+  "design_for_claude.md": {
+    "mtime": 1784734154328.741,
+    "hash": "7129cf7a29fe60ec24440ad46470d7ca"
+  },
+  "initial-service-pages/README.md": {
+    "mtime": 1784881848000,
+    "hash": "409a7ab0e3c0715742bcfbb799498c13"
+  },
+  "initial-service-pages/consent-mode-implementation.md": {
+    "mtime": 1784881848000,
+    "hash": "f33b4f161e38a816fd401d4fa3f6b090"
+  },
+  "initial-service-pages/digital-analysis-package.md": {
+    "mtime": 1784881848000,
+    "hash": "d10410a7a73b7f08962451996bf5f8f1"
+  },
+  "initial-service-pages/google-analytics-audit.md": {
+    "mtime": 1784881848000,
+    "hash": "6c770c7e0ac40dd39256eb5f8d9dd106"
+  },
+  "initial-service-pages/keyword-research.md": {
+    "mtime": 1784881848000,
+    "hash": "bbe07aafa7eefa24f730b4c30fb38a66"
+  },
+  "initial-service-pages/monthly-seo.md": {
+    "mtime": 1784881848000,
+    "hash": "25908e2e79758b09d8b9a9dd38f6eaec"
+  },
+  "initial-service-pages/server-side-tracking.md": {
+    "mtime": 1784881848000,
+    "hash": "8a4dbef25fe5d9026a0d0389eb055a89"
+  },
+  "initial-service-pages/tag-manager-audit.md": {
+    "mtime": 1784881848000,
+    "hash": "201b69598298ef2a8ae9ed2583277448"
+  },
+  "initial-service-pages/tailor-made-dashboard.md": {
+    "mtime": 1784881848000,
+    "hash": "9ee96a4264714104f408b328d8799984"
+  },
+  "initial-service-pages/technical-seo-audit.md": {
+    "mtime": 1784881848000,
+    "hash": "3468a1b76c66ba82163f65f7fd5beaec"
+  },
+  "initial-service-pages/tracking-implementation-plan.md": {
+    "mtime": 1784881848000,
+    "hash": "337d2c08c57cdc913d876fc1a4ddfb26"
+  },
+  "public/entitymap.html": {
+    "mtime": 1789231795512.5188,
+    "hash": "c3b20b68b7b15c50b3daa8721b90cf67"
+  },
+  "src/assets/tools/cookie-banner/banner.html": {
+    "mtime": 1784919803176.522,
+    "hash": "7ce8ce3afdf94b7037e07a86dc0974c5"
+  },
+  "src/pages/fi/blog/tekstin-tasaus-saavutettavuus.md": {
+    "mtime": 1790233442456.2764,
+    "hash": "5990fa6d9942c339a1e37e973fef904e"
+  },
+  "src/pages/fi/palvelut/avainsanatutkimus.md": {
+    "mtime": 1789226626647.623,
+    "hash": "ba2a7d3391172c6afcfc700803c538f7"
+  },
+  "src/pages/fi/palvelut/consent-mode-toteutus.md": {
+    "mtime": 1789228678011.109,
+    "hash": "50b01299b350d86a162a03cb85667aa9"
+  },
+  "src/pages/fi/palvelut/digitaalisen-analyysin-paketti.md": {
+    "mtime": 1789226955826.7522,
+    "hash": "a670eb667d63a71aa351b31afc108c3c"
+  },
+  "src/pages/fi/palvelut/google-analytics-auditointi.md": {
+    "mtime": 1789226716030.078,
+    "hash": "f9e248097d7869da25aaff211ac6e01c"
+  },
+  "src/pages/fi/palvelut/jatkuva-seo.md": {
+    "mtime": 1789226626767.9038,
+    "hash": "3b8eba74f8dd73ea888ce3d26c0e8347"
+  },
+  "src/pages/fi/palvelut/raataloity-dashboard.md": {
+    "mtime": 1789226907319.306,
+    "hash": "89077b9b83482e4ba88f66dcc8ce70ce"
+  },
+  "src/pages/fi/palvelut/server-side-seuranta.md": {
+    "mtime": 1789226907218.1267,
+    "hash": "4ee06ab39536a6744ea01680c703cf03"
+  },
+  "src/pages/fi/palvelut/seurannan-toteutussuunnitelma.md": {
+    "mtime": 1789226811411.3584,
+    "hash": "f6e0b299d4dcd187c56bfe04178bdd8d"
+  },
+  "src/pages/fi/palvelut/tag-manager-auditointi.md": {
+    "mtime": 1789226716204.9622,
+    "hash": "34fd37a988e43e370de5f041aae3c2c5"
+  },
+  "src/pages/fi/palvelut/tekninen-seo-auditointi.md": {
+    "mtime": 1789226458064.8098,
+    "hash": "9b81d3aaf1c916dc870c951c6974bbd8"
+  },
+  "src/pages/services/consent-mode-implementation.md": {
+    "mtime": 1789228604966.0984,
+    "hash": "53010e3222553b1ce560e6c293ee1a2f"
+  },
+  "src/pages/services/digital-analysis-package.md": {
+    "mtime": 1789226955776.958,
+    "hash": "54cb0192836accc0b43b98c8c4a7ad47"
+  },
+  "src/pages/services/google-analytics-audit.md": {
+    "mtime": 1789226715975.7715,
+    "hash": "090c9fa6a48229108a2f5b8ae6f24074"
+  },
+  "src/pages/services/keyword-research.md": {
+    "mtime": 1789226626592.1177,
+    "hash": "8786082126b93f58ce9fee97e89eeaee"
+  },
+  "src/pages/services/monthly-seo.md": {
+    "mtime": 1789226626703.721,
+    "hash": "99ea00b1022837037939190d67237099"
+  },
+  "src/pages/services/server-side-tracking.md": {
+    "mtime": 1789226907174.0964,
+    "hash": "6a42bd93aeebbe849090579c2b680a6b"
+  },
+  "src/pages/services/tag-manager-audit.md": {
+    "mtime": 1789226716125.7844,
+    "hash": "5ffdb9dfae701ba8b75becd0361fd63b"
+  },
+  "src/pages/services/tailor-made-dashboard.md": {
+    "mtime": 1789226907269.5461,
+    "hash": "e76e42d0838f941edf0c0bb83c1f6c83"
+  },
+  "src/pages/services/technical-seo-audit.md": {
+    "mtime": 1789226458011.9106,
+    "hash": "b780278c2572c5c49163dac937f4f126"
+  },
+  "src/pages/services/tracking-implementation-plan.md": {
+    "mtime": 1789226811367.076,
+    "hash": "3fc9193664e911db27986f45cb5bb1ef"
+  },
+  "public/images/blog/tekstin-tasaus-katseen-paluuliike.jpeg": {
+    "mtime": 1784730249279.3933,
+    "hash": "29caeca52c10bcbc7f8ad786c5915c8f"
+  },
+  "public/images/blog/tekstin-tasaus-mobiili.jpeg": {
+    "mtime": 1784730472424.2666,
+    "hash": "5d448ff22a3033f08fcca9edc3315114"
+  },
+  "public/images/blog/tekstin-tasaus-saavutettavuus.jpeg": {
+    "mtime": 1784653754319.4434,
+    "hash": "bd913e81ea3787b7288c8698ffe83637"
+  },
+  "public/images/tools/gtm-container-builder/overview.png": {
+    "mtime": 1785082633654.607,
+    "hash": "a9ad7add0f8760521d81d1d4a1283f06"
+  },
+  "src/assets/blog/ai-panel-with-experts.jpeg": {
+    "mtime": 1784732995720.0376,
+    "hash": "ac14d99be2b65ec07ed60f53392ea5fa"
+  },
+  "src/assets/blog/cookiebot-guide.jpeg": {
+    "mtime": 1784732995720.2317,
+    "hash": "0b498527b277b9eeb907c180ee8e23d9"
+  },
+  "src/assets/blog/example-parts.jpeg": {
+    "mtime": 1784732995720.898,
+    "hash": "b2e90653d6860ff9a2b7779b9d18fb9c"
+  },
+  "src/assets/blog/mckinsey-style-presentation-chatgpt-gemini.jpeg": {
+    "mtime": 1784732995720.439,
+    "hash": "f8ad81e86a7bbb9b8d5fd935c7a4325c"
+  },
+  "src/assets/blog/prompt-optimization-chatgpt.jpeg": {
+    "mtime": 1784732995719.7915,
+    "hash": "10be2edcf4e04aed60b6d80daac7c05a"
+  },
+  "src/assets/blog/tekstin-tasaus-saavutettavuus.jpeg": {
+    "mtime": 1784732995720.6545,
+    "hash": "bd913e81ea3787b7288c8698ffe83637"
+  },
+  "src/assets/not-found/kone-robot.png": {
+    "mtime": 1784580972200.998,
+    "hash": "118cb4924351630320c26289d00d9d9d"
+  },
+  "src/assets/not-found/skyline.png": {
+    "mtime": 1784581470823.7092,
+    "hash": "89a5891f0008c313a0f016d860b35e2e"
+  },
+  "src/components/ToolHero.astro": {
+    "mtime": 1785161908101.3213,
+    "hash": "88e10355567dabf0968d5343d91a87c7"
+  },
+  "src/components/datalayer-documenter/DataLayerDocumenter.tsx": {
+    "mtime": 1785153297641.3625,
+    "hash": "ed24fc5e60ad225c8acc6d8dcbfdf9db"
+  },
+  "src/components/datalayer-documenter/engine.test.ts": {
+    "mtime": 1785159634744.6985,
+    "hash": "a2e724c34ac2ddb76bff81dca2058437"
+  },
+  "src/components/datalayer-documenter/engine.ts": {
+    "mtime": 1786044886715.7554,
+    "hash": "0f96e5baf9ac6040fa51de5a2e6da9d3"
+  },
+  "src/pages/fi/tyokalut/datalayer-dokumentaatiogeneraattori.astro": {
+    "mtime": 1785328376819.9275,
+    "hash": "e6b328d9f100dfd9507515abdb4ba928"
+  },
+  "test/e2e/datalayer-documenter.spec.ts": {
+    "mtime": 1785151478783.2576,
+    "hash": "4ede69475ee14f590eb7ab4fbe471114"
+  },
+  "src/data/gtm-templates/README.md": {
+    "mtime": 1785127220094.228,
+    "hash": "42d116888384e185cf0f63259d0e7379"
+  },
+  "src/pages/blog/text-alignment-accessibility.md": {
+    "mtime": 1790233442454.9438,
+    "hash": "3336549ab0130848ab3f27c925c5cf06"
+  },
+  "public/nk-logo-docx.png": {
+    "mtime": 1785153225958.4062,
+    "hash": "7ccadccde07d1674a91acd06a8e70d7d"
+  },
+  "src/components/LocaleList.astro": {
+    "mtime": 1785180256485.363,
+    "hash": "ccb4cfa354482cd5743cf6e1e23b5b3c"
+  },
+  "src/components/Appearances.astro": {
+    "mtime": 1789301038788.5845,
+    "hash": "c9ba09e760e38b6a90f7886eb000055e"
+  },
+  "src/components/LanguageMenu.astro": {
+    "mtime": 1789301038785.564,
+    "hash": "f5df1fea4cd72e37dda3c04493a8bf71"
+  },
+  "src/components/ga4-report-builder/Ga4ReportBuilder.tsx": {
+    "mtime": 1785503892218.5442,
+    "hash": "95d13742b7d1d26b516ce765c8418d8b"
+  },
+  "src/components/ga4-report-builder/engine.ts": {
+    "mtime": 1785503892126.9302,
+    "hash": "6cd73d30235d9555ab3fe7ace0282b47"
+  },
+  "src/data/appearances.js": {
+    "mtime": 1785400427164.1677,
+    "hash": "e681e40ce7dc34922f09e0ad824b752f"
+  },
+  "src/pages/tools/ga4-report-builder.astro": {
+    "mtime": 1785328376737.5693,
+    "hash": "45bcdce2f83035805406259d2fc7fcb1"
+  },
+  "test/e2e/metric-quality-checker.spec.ts": {
+    "mtime": 1785329541294.803,
+    "hash": "dc24b2801d1a62282d22e1212cf2eb91"
+  },
+  "test/gtm/ga4-report-engine.test.ts": {
+    "mtime": 1785503892307.5352,
+    "hash": "cb20f0538d9e27dc1573f5637e91cacc"
+  },
+  "docs/structured-data.md": {
+    "mtime": 1786044929353.7786,
+    "hash": "837ade7d7ab68248a77098a17d72d077"
+  },
+  "src/pages/fi/blog/mika-on-algoritmi.md": {
+    "mtime": 1790233442460.0815,
+    "hash": "c6aa4a93787b7290c0417c48372dce64"
+  },
+  "src/pages/fi/toteutusmallit/cookiebot-opas.md": {
+    "mtime": 1790233460685.085,
+    "hash": "4f3fd368f78c2b15a0e2856cbbf4bfe8"
+  },
+  "src/pages/templates/cookiebot-guide.md": {
+    "mtime": 1790233442461.6592,
+    "hash": "649e724fbbd2f365224b75e5404e12f5"
+  },
+  "src/pages/templates/openai-ads-pixel-shopify.md": {
+    "mtime": 1790233442461.054,
+    "hash": "f17a9c0fd6a454f24c650ba6e79edd20"
+  },
+  "public/images/blog/chatgpt-pixel-shopify-installation.jpeg": {
+    "mtime": 1789053252102.7786,
+    "hash": "853af138341534918d4adfbf9b007c56"
+  },
+  "src/pages/llms.txt.ts": {
+    "mtime": 1789231357251.1592,
+    "hash": "24509cd49231f53ac263f2ede4808f18"
+  },
+  "src/assets/blog/what-is-an-algorithm-input-rules-decision.jpeg": {
+    "mtime": 1789231748394.7903,
+    "hash": "a64bf463179286ac127482723b056067"
+  },
+  "src/assets/blog/chatgpt-pixel-shopify-installation.jpeg": {
+    "mtime": 1789231748395.2285,
+    "hash": "853af138341534918d4adfbf9b007c56"
+  },
+  "public/ai.txt": {
+    "mtime": 1789232182596.673,
+    "hash": "ed6a5726153e8b92a477610bf34b5641"
+  },
+  "test/e2e/cookiebot-guide.spec.ts": {
+    "mtime": 1790097898256.899,
+    "hash": "053c189140f07b24383dda044e5adb53"
+  },
+  "src/components/FormTypePicker.astro": {
+    "mtime": 1790363847056.107,
+    "hash": "6f8c1660f70c2bb3597a44ab6bb6a41f"
+  },
+  "src/data/form-types.js": {
+    "mtime": 1790365568107.2637,
+    "hash": "dcdb703a93ab7b9429d5043461bbcbf5"
+  },
+  "src/components/FormTypeReference.astro": {
+    "mtime": 1789912768916.6865,
+    "hash": "1d64b1a47201afc17c4701b636b85c5e"
+  },
+  "src/pages/templates/hubspot-form-tracking-gtm.md": {
+    "mtime": 1790364527722.0454,
+    "hash": "f0806c8d3ced2542bdda347e106e1696"
+  },
+  "public/images/blog/hubspot-form-submission-tracking-gtm.jpeg": {
+    "mtime": 1789925276150.7463,
+    "hash": "b4af7d80008d65727883ddcadf4c80a1"
+  },
+  "src/assets/blog/hubspot-form-submission-tracking-gtm.jpeg": {
+    "mtime": 1789925295838.4395,
+    "hash": "b4af7d80008d65727883ddcadf4c80a1"
+  },
+  "to be used/hubspot-form-submission-tracking-gtm.jpeg": {
+    "mtime": 1789925208385.4883,
+    "hash": "b4af7d80008d65727883ddcadf4c80a1"
+  },
+  "public/images/blog/what-is-an-algorithm-steps-and-process.jpeg": {
+    "mtime": 1789928920457.1982,
+    "hash": "b41eddc22bbb6b36ba7f2894ab54f3e8"
+  },
+  "to be used/what-is-an-algorithm-examples-algorithm-vs-process.jpeg": {
+    "mtime": 1789928815756.3098,
+    "hash": "b41eddc22bbb6b36ba7f2894ab54f3e8"
+  },
+  "src/assets/blog/what-is-an-algorithm-steps-and-process.jpeg": {
+    "mtime": 1789931750647.5625,
+    "hash": "b41eddc22bbb6b36ba7f2894ab54f3e8"
+  },
+  "src/pages/tools/form-name-builder.astro": {
+    "mtime": 1789966659977.402,
+    "hash": "508faab822966782e98a0a9314af652e"
+  },
+  "src/scripts/content-enhancements.ts": {
+    "mtime": 1790185037369.217,
+    "hash": "68ff0ab2050f40b39673e6a5044f9c1e"
+  },
+  "test/cookiebot-guide.test.mjs": {
+    "mtime": 1790097898206.6406,
+    "hash": "2ca30b5ddf7dfd91f3746de2e3f50a95"
+  },
+  "test/e2e/base-layout.spec.ts": {
+    "mtime": 1790185302247.1782,
+    "hash": "487f578fae2f231a84fa4897ece2c59e"
+  },
+  "src/pages/blog/content-consumption-metrics.md": {
+    "mtime": 1790233139796.0305,
+    "hash": "1a3fa9cc32aeb45d1f7f1be882ba4d8c"
+  },
+  "src/pages/blog/marketing-automation-flows.md": {
+    "mtime": 1790233442457.0889,
+    "hash": "1137a2233212acaf11c3f4c3c108b635"
+  },
+  "src/pages/fi/blog/sivujen-luokittelu-analytiikassa.md": {
+    "mtime": 1790452099168.3083,
+    "hash": "e761142009bfc11be8deda226d93e4fc"
+  },
+  "public/images/blog/content-consumption-metrics.jpeg": {
+    "mtime": 1790192109797.8162,
+    "hash": "944677ba2f3a1d105ce9c57fe206d5ce"
+  },
+  "public/images/blog/marketing-automation-workflows-b2b-ecommerce.jpeg": {
+    "mtime": 1790105499623.8916,
+    "hash": "a187e6ddeac4b9d9ca0784ae25ef4a16"
+  },
+  "public/images/blog/page-classification-for-website-analytics.jpeg": {
+    "mtime": 1790277653283.7307,
+    "hash": "b0418244b62ebd516eb14d14a9860971"
+  },
+  "src/assets/blog/content-consumption-metrics.jpeg": {
+    "mtime": 1790192109801.6711,
+    "hash": "944677ba2f3a1d105ce9c57fe206d5ce"
+  },
+  "src/assets/blog/marketing-automation-workflows-b2b-ecommerce.jpeg": {
+    "mtime": 1790105499685.5342,
+    "hash": "a187e6ddeac4b9d9ca0784ae25ef4a16"
+  },
+  "src/assets/blog/page-classification-for-website-analytics.jpeg": {
+    "mtime": 1790277653283.7307,
+    "hash": "b0418244b62ebd516eb14d14a9860971"
+  },
+  "to be used/are-people-reading-your-articles-content-metrics.jpeg": {
+    "mtime": 1790192004419.3396,
+    "hash": "944677ba2f3a1d105ce9c57fe206d5ce"
+  },
+  "to be used/marketing-automation-workflows-b2b-ecommerce.jpeg": {
+    "mtime": 1790105368344.584,
+    "hash": "a187e6ddeac4b9d9ca0784ae25ef4a16"
+  },
+  "src/components/Ga4AnnotationBuilder.astro": {
+    "mtime": 1790442125321.9749,
+    "hash": "787e344f7d1bdba902361a183e07c926"
+  },
+  "src/data/ga4-annotations.js": {
+    "mtime": 1790443006459.6267,
+    "hash": "d65a3524e9263d5dc49080cf7612bae8"
+  },
+  "src/pages/fi/tyokalut/ga4-annotaatiot.astro": {
+    "mtime": 1790415402955.6296,
+    "hash": "69d382a0346a26c03c6c997f5298a50e"
+  },
+  "test/e2e/ga4-annotations.spec.ts": {
+    "mtime": 1790415402955.7822,
+    "hash": "cf5607fde6dbf569d4ca40e926d06c68"
+  },
+  "test/ga4-annotations.test.mjs": {
+    "mtime": 1790415233334.1042,
+    "hash": "94358e2e0add4b17072a168d21702fe3"
+  },
+  "test/e2e/header-reflow.spec.ts": {
+    "mtime": 1790432353048.9668,
+    "hash": "1d2ae691e6ef1fd5cbba6496f05b306e"
+  },
+  "public/images/blog/sivutyyppi-ja-paaaihe.jpeg": {
+    "mtime": 1790452093151.4875,
+    "hash": "57a63c9d56e04460fb246e528338d8dd"
+  },
+  "to be used/page-type-primary-category-classification.jpeg": {
+    "mtime": 1790451958262.915,
+    "hash": "8ad0f005816feb8292ee24f7b3fc8206"
+  },
+  "to be used/verkkosivujen-sivutyyppi-paaihe-luokittelu.jpeg": {
+    "mtime": 1790451830788.0461,
+    "hash": "57a63c9d56e04460fb246e528338d8dd"
+  }
+}

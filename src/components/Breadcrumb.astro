@@ -1,0 +1,85 @@
+---
+// Visible breadcrumb trail for blog posts: Home › Thoughts › [post title]. Bilingual,
+// theme-aware. The current page (post) is rendered as plain text, not a link.
+// Pairs with the BreadcrumbList JSON-LD emitted from Schema.astro (same labels/URLs).
+// Pages can pass an explicit `crumbs` array; blog posts fall back to the Home › Thoughts › title trail.
+import { toolkit } from "../data/toolkit.js";
+import { siteConfig } from "../data/site.js";
+
+const { fm, fi = false, crumbs: crumbsProp } = Astro.props;
+
+const blog = siteConfig.blogs.thoughts[fi ? "fi" : "en"];
+const t = fi
+  ? { label: "Murupolku", home: "Etusivu", homeHref: "/fi/", blog: blog.name, blogHref: blog.path }
+  : { label: "Breadcrumb", home: "Home", homeHref: "/", blog: blog.name, blogHref: blog.path };
+
+const toolkitCategory = toolkit.find((category) => {
+  const slug = fi ? category.fiSlug ?? category.slug : category.slug;
+  return Astro.url.pathname.startsWith(fi ? `/fi/${slug}/` : `/${slug}/`);
+});
+const toolkitSlug = toolkitCategory && (fi ? toolkitCategory.fiSlug ?? toolkitCategory.slug : toolkitCategory.slug);
+const crumbs = crumbsProp ?? [
+  { label: t.home, href: t.homeHref, icon: true },
+  toolkitCategory
+    ? {
+        label: fi ? toolkitCategory.fi.label : toolkitCategory.en.label,
+        href: fi ? `/fi/${toolkitSlug}/` : `/${toolkitSlug}/`,
+      }
+    : { label: t.blog, href: t.blogHref },
+  { label: fm.title },
+];
+---
+
+<!-- wide-band so the trail lines up with the hero on every page type; a no-op when already nested in one -->
+<nav class="breadcrumb wide-band" aria-label={t.label}>
+  <ol>
+    {crumbs.map((c, i) => (
+      <li>
+        {c.href ? (
+          <a href={c.href} class={c.icon ? "breadcrumb__home" : undefined} aria-label={c.icon ? c.label : undefined}>
+            {c.icon ? (
+              <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="currentColor">
+                <path d="M1 6V15H6V11C6 9.89543 6.89543 9 8 9C9.10457 9 10 9.89543 10 11V15H15V6L8 0L1 6Z" />
+              </svg>
+            ) : (
+              c.label
+            )}
+          </a>
+        ) : (
+          <span aria-current="page">{c.label}</span>
+        )}
+        {i < crumbs.length - 1 && <span class="breadcrumb__sep" aria-hidden="true">›</span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  /* margin-block only — the inline margin belongs to .wide-band */
+  .breadcrumb { margin-block: 1.5rem 0; }
+  .breadcrumb ol {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+    font-size: 0.85rem; line-height: 1.4; color: var(--muted);
+  }
+  .breadcrumb li { display: inline-flex; align-items: center; gap: 0.4rem; min-width: 0; }
+  .breadcrumb a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+  .breadcrumb a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .breadcrumb a:focus-visible {
+    outline: 2px solid var(--pop);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+  .breadcrumb__home { display: inline-flex; align-items: center; }
+  .breadcrumb__home svg { display: block; }
+  .breadcrumb [aria-current="page"] { color: var(--ink); }
+  .breadcrumb__sep { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+</style>

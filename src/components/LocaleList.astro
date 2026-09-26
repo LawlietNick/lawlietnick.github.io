@@ -1,0 +1,95 @@
+---
+// Inline locale list: both languages are always visible and the current one is
+// marked with aria-current, so nobody has to guess where a single toggle leads.
+// Each link carries `lang` (how to pronounce it) as well as `hreflang` (what it
+// points at) — without `lang` a screen reader says "Suomi" in an English voice.
+// The visible label is the short code; the readable name follows as
+// visually-hidden text so the accessible name still contains the visible one
+// (WCAG 2.5.3 Label in Name).
+const {
+  fi = false,
+  enLanguageHref,
+  fiLanguageHref,
+  postWithoutTranslation = false,
+  class: className = "",
+} = Astro.props;
+
+const locales = [
+  { code: "EN", name: "English", lang: "en", href: enLanguageHref, current: !fi },
+  { code: "FI", name: "Suomi", lang: "fi", href: fiLanguageHref, current: fi },
+];
+
+// when a page has no translation the link lands on that language's homepage,
+// so it is not a genuine alternate and the detour is worth announcing
+const caveat = (locale) =>
+  postWithoutTranslation && !locale.current
+    ? locale.lang === "fi"
+      ? " (käännöstä ei ole, avaa suomenkielisen etusivun)"
+      : " (translation unavailable, opens the English homepage)"
+    : null;
+---
+
+<nav class:list={["locale-list", className]} aria-label={fi ? "Kielivalinta" : "Language selection"}>
+  <ul>
+    {locales.map((locale) => (
+      <li>
+        <a
+          class="locale-list__link"
+          href={locale.href}
+          lang={locale.lang}
+          hreflang={locale.lang}
+          rel={postWithoutTranslation ? undefined : "alternate"}
+          aria-current={locale.current ? "page" : undefined}
+        >{locale.code}<span class="visually-hidden"> — {locale.name}{caveat(locale)}</span></a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .locale-list ul {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* separator between the codes, not part of either link's name */
+  .locale-list li + li::before {
+    content: "·";
+    margin-right: 0.15rem;
+    color: color-mix(in srgb, var(--muted) 55%, transparent);
+  }
+  .locale-list li {
+    display: flex;
+    align-items: center;
+  }
+
+  /* padding, not just text: a bare "FI" is a 13px-wide tap target (WCAG 2.5.8) */
+  .locale-list__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    padding: 0 0.35rem;
+    border-radius: var(--radius-xs);
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+  .locale-list__link:hover {
+    color: var(--ink);
+  }
+  .locale-list__link[aria-current="page"] {
+    color: var(--ink);
+  }
+  .locale-list__link:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+</style>

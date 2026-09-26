@@ -1,0 +1,17 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "types": ["vitest/globals"]
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "src/**/*",
+    "test/gtm/**/*",
+    "playwright.config.ts",
+    "vitest.config.ts"
+  ],
+  "exclude": ["dist", "test/*.test.*"]
+}

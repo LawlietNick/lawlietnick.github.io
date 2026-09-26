@@ -1,0 +1,335 @@
+---
+// About-page intro block (reinterpreted from plake-astrojs /about):
+// two-column hero + dark pull-quote + "what I'm doing now". Bilingual, theme-aware.
+import { Picture } from "astro:assets";
+import ButtonLink from "./ButtonLink.astro";
+import portrait from "../assets/about/portrait.jpeg";
+import { siteConfig } from "../data/site.js";
+
+const { fi = false } = Astro.props;
+
+const c = fi
+  ? {
+      pre: "Hei, olen ", accent: "Niko Karppinen", post: ".",
+      tagline: "Autan tiimejä tekemään digitaalisesta työstä mitattavaa ja helpommin kehitettävää.",
+      lead: "Pidän siitä, että sotkuisista seuranta-asetuksista, hajanaisista raporteista ja epäselvistä sivustorakenteista syntyy järjestelmiä, joita ihmiset voivat oikeasti käyttää — tulosten mittaamiseen, työn kehittämiseen ja seuraavan päätöksen tekemiseen varmemmin.",
+      cta1: "Lue kirjoituksiani", cta1Href: "/fi/blog/",
+      cta2: "Ota yhteyttä", cta2Href: "mailto:nicknoir@gmail.com",
+      status: "Vapaana valikoituihin projekteihin", stat: "Vuodesta 2017",
+      employerLabel: "Työskentelen yrityksessä",
+      portraitAlt: "Niko Karppinen hymyilee kädet ristissä vaaleassa neulepuserossa vaalean seinän edessä",
+      quote: "Tekoäly toimii parhaiten, kun prosessi on jo niin selkeä, että ihminen voi toistaa sen. Ilman sitä se on vain itsevarma harjoittelija, jolla on pääsy tulostimelle.",
+      nowHeading: "Mitä teen juuri nyt",
+      now: [
+        "Konsultoin mittaamista, SEO:ta ja teknisiä toteutuksia.",
+        "Rakennan käytännöllisiä työkaluja ja toistettavia työnkulkuja.",
+        "Kirjoitan SEO:sta, analytiikasta, tekoälystä ja digitaalisten järjestelmien toiminnasta.",
+      ],
+    }
+  : {
+      pre: "Hi, I'm ", accent: "Niko Karppinen", post: ".",
+      tagline: "I help teams make digital work measurable and easier to improve.",
+      lead: "I like turning messy tracking setups, scattered reports and unclear site structures into systems people can actually use — to measure results, improve their work and make the next decision with more confidence.",
+      cta1: "Read my writing", cta1Href: "/blog/",
+      cta2: "Get in touch", cta2Href: "mailto:nicknoir@gmail.com",
+      status: "Available for selected projects", stat: "Since 2017",
+      employerLabel: "Working at",
+      portraitAlt: "Niko Karppinen smiling with arms folded, wearing a cream knit jumper against a pale wall",
+      quote: "AI works best when the process is already clear enough for a human to repeat. Without that, it's just a confident intern with access to the printer.",
+      nowHeading: "What I'm doing now",
+      now: [
+        "Consulting on measurement, SEO, and technical implementation.",
+        "Building practical tools and repeatable workflows.",
+        "Writing about SEO, analytics, AI, and how digital systems work.",
+      ],
+    };
+---
+
+<section class="about-hero">
+  <div class="about-hero__copy">
+    <h1 class="about-hero__title">{c.pre}<em>{c.accent}</em>{c.post}</h1>
+    <p class="about-hero__tagline">{c.tagline}</p>
+    <p class="about-hero__lead">{c.lead}</p>
+    <a class="about-employer" href={siteConfig.person.employerUrl}>
+      <span class="about-employer__monogram" aria-hidden="true">{siteConfig.person.employerMonogram}</span>
+      <span class="about-employer__details">
+        <span class="about-employer__label">{c.employerLabel}</span>
+        <strong>{siteConfig.person.employerName}</strong>
+        <span class="about-employer__role">{siteConfig.person.jobTitle}</span>
+      </span>
+      <span class="about-employer__arrow" aria-hidden="true">↗</span>
+    </a>
+    <div class="about-hero__ctas">
+      <ButtonLink href={c.cta1Href} label={c.cta1} />
+      <ButtonLink href={c.cta2Href} label={c.cta2} variant="secondary" />
+    </div>
+  </div>
+
+  <div class="about-hero__media">
+    <div class="about-hero__frame">
+      <Picture src={portrait} alt={c.portraitAlt} widths={[360, 540, 720]} sizes="(min-width: 46rem) 22rem, 80vw" />
+    </div>
+    <span class="about-badge about-badge--status">
+      <span class="about-badge__dot" aria-hidden="true"></span>{c.status}
+    </span>
+    <span class="about-badge about-badge--stat">{c.stat}</span>
+  </div>
+</section>
+
+<blockquote class="about-quote" data-quote-scrub>
+  <p>{c.quote.split(" ").map((w) => (<Fragment><span class="qw">{w}</span>{" "}</Fragment>))}</p>
+</blockquote>
+
+<section class="about-now">
+  <h2>{c.nowHeading}</h2>
+  <ul class="about-now__list">
+    {c.now.map((item) => <li>{item}</li>)}
+  </ul>
+</section>
+
+<style>
+  /* ---- hero: copy + tilted portrait ---- */
+  .about-hero {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+    padding-block: 1.5rem 3rem;
+  }
+  @container page (min-width: 46rem) {
+    .about-hero { grid-template-columns: 1.35fr 1fr; gap: 4rem; }
+  }
+  .about-hero__title {
+    margin: 0 0 1.5rem;
+    font-size: clamp(2.2rem, 6cqi, 3.7rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .about-hero__title em { font-style: italic; color: var(--accent); }
+  .about-hero__tagline {
+    margin: 0 0 1rem;
+    max-width: 40ch;
+    font-size: clamp(1.2rem, 2.6cqi, 1.5rem);
+    line-height: 1.4;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .about-hero__lead {
+    margin: 0 0 1.25rem;
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.65;
+  }
+  .about-employer {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.85rem;
+    align-items: center;
+    overflow: hidden;
+    width: min(100%, 32rem);
+    margin: 0 0 2rem;
+    padding: 0.8rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    color: var(--ink);
+    background: var(--color-accent-panel);
+    text-decoration: none;
+    transition: border-color var(--duration-base) var(--ease-standard);
+  }
+  .about-employer::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0 0 auto auto;
+    width: 8rem;
+    height: 6rem;
+    pointer-events: none;
+    opacity: 0;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--accent) 55%, transparent) 0 1.5px,
+      transparent 1.8px
+    );
+    background-size: 9px 9px;
+    -webkit-mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+  .about-employer:is(:hover, :focus-visible) {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  }
+  .about-employer:is(:hover, :focus-visible)::before {
+    opacity: 1;
+  }
+  .about-employer:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+  }
+  .about-employer > * {
+    position: relative;
+    z-index: 1;
+  }
+  .about-employer__monogram {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+    border-radius: var(--radius-sm);
+    color: var(--accent);
+    background: var(--bg);
+    font-size: 0.85rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-label);
+  }
+  .about-employer__details {
+    display: grid;
+    min-width: 0;
+    line-height: 1.25;
+  }
+  .about-employer__label {
+    margin-bottom: 0.2rem;
+    color: var(--muted);
+    font-size: var(--font-size-ui-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+  .about-employer__details strong,
+  .about-employer__role {
+    overflow-wrap: anywhere;
+  }
+  .about-employer__role {
+    margin-top: 0.2rem;
+    color: var(--muted);
+    font-size: var(--font-size-ui-sm);
+  }
+  .about-employer__arrow {
+    align-self: start;
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: var(--font-weight-bold);
+  }
+  .about-hero__ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+
+  .about-hero__media { position: relative; justify-self: center; width: min(22rem, 100%); }
+  .about-hero__frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-lg);
+    transform: rotate(2deg);
+    background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  }
+  .about-hero__frame :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .about-badge {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--ink) 14%, transparent);
+    font-size: 0.85rem; font-weight: 600; color: var(--ink);
+    white-space: nowrap;
+  }
+  .about-badge--status { bottom: -0.85rem; left: -1.1rem; transform: rotate(-3deg); }
+  .about-badge--status { max-width: calc(100% + 1rem); white-space: normal; line-height: 1.25; }
+  .about-badge--stat { top: -0.75rem; right: -0.85rem; transform: rotate(4deg); }
+  .about-badge__dot {
+    width: 0.55rem; height: 0.55rem; border-radius: 50%;
+    background: var(--color-success);
+    animation: about-pulse 2s var(--ease-out) infinite;
+  }
+  @keyframes about-pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success) 55%, transparent); }
+    70% { box-shadow: 0 0 0 7px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  /* ---- dark pull-quote ---- */
+  .about-quote {
+    margin: 1rem 0 2.5rem;
+    padding: clamp(2.25rem, 6cqi, 4rem);
+    border-radius: var(--radius-lg);
+    background: #16161a;
+    color: #fff;
+  }
+  .about-quote p {
+    margin: 0;
+    max-width: 34ch;
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(1.4rem, 3.8cqi, 2.4rem);
+    line-height: 1.35;
+  }
+  /* word-by-word fill is scroll-scrubbed in JS (opacity + subtle rise per word) */
+  .about-quote .qw {
+    display: inline-block;
+    will-change: opacity, transform;
+  }
+
+  /* ---- what I'm doing now ---- */
+  .about-now {
+    padding-block: 2rem 3rem;
+    border-top: 1px solid var(--line);
+  }
+  .about-now h2 { margin: 0 0 1.5rem; font-size: clamp(1.6rem, 4cqi, 2.2rem); }
+  .about-now__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .about-now__list li {
+    display: flex; gap: 0.75rem; align-items: baseline;
+    font-size: 1.05rem; line-height: 1.55; color: var(--ink);
+  }
+  .about-now__list li::before { content: "→"; color: var(--accent); font-weight: 700; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-badge__dot { animation: none; }
+    .about-quote .qw { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  // scroll-scrubbed word fill: each word ramps faint -> solid (+ a subtle rise) as the
+  // quote travels through the viewport, tracking scroll position. No-JS/reduced-motion = full text.
+  // Re-init per client navigation; scroll/resize live on the persisted window, so drop the
+  // previous page's handler first to avoid leaking a listener per navigation.
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  let quoteScrollHandler = null;
+  const initQuoteScrub = () => {
+    if (quoteScrollHandler) {
+      removeEventListener("scroll", quoteScrollHandler);
+      removeEventListener("resize", quoteScrollHandler);
+      quoteScrollHandler = null;
+    }
+    const quote = document.querySelector("[data-quote-scrub]");
+    if (quote && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const words = [...quote.querySelectorAll(".qw")];
+    const N = words.length;
+    const BAND = 6; // how many words are mid-fill at once (softer front)
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const rect = quote.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const p = clamp((vh * 0.8 - rect.top) / (vh * 0.5), 0, 1);
+      const lead = p * (N + BAND);
+      for (let i = 0; i < N; i++) {
+        const wp = clamp((lead - i) / BAND, 0, 1);
+        words[i].style.opacity = (0.16 + 0.84 * wp).toFixed(3);
+        words[i].style.transform = `translateY(${((1 - wp) * 0.4).toFixed(2)}em)`;
+      }
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    quoteScrollHandler = onScroll;
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll, { passive: true });
+    update();
+    }
+  };
+  document.addEventListener("astro:page-load", initQuoteScrub);
+</script>

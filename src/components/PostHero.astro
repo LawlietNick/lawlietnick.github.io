@@ -1,0 +1,236 @@
+---
+import BlogImage from "./BlogImage.astro";
+const { fm, fi = false } = Astro.props;
+---
+
+<section class="article-hero__grid">
+  <div class="article-hero__intro-panel">
+    {fm.date && (
+      <p class="article-hero__date">
+        {fm.updatedDate && <>{fi ? "Julkaistu " : "Published "}</>}
+        <time datetime={new Date(fm.date).toISOString().slice(0, 10)}>{new Date(fm.date).toLocaleDateString(fi ? "fi-FI" : "en-US", { dateStyle: "long" })}</time>
+        {fm.updatedDate && <>
+          <span aria-hidden="true"> · </span>{fi ? "Päivitetty " : "Updated "}
+          <time datetime={new Date(fm.updatedDate).toISOString().slice(0, 10)}>{new Date(fm.updatedDate).toLocaleDateString(fi ? "fi-FI" : "en-US", { dateStyle: "long" })}</time>
+        </>}
+      </p>
+    )}
+    <h1 class="article-hero__title">{fm.title}</h1>
+    {fm.description && <p class="article-hero__description">{fm.description}</p>}
+  </div>
+
+  {fm.image ? (
+    <figure
+      class="article-hero__visual-panel article-hero__visual-panel--image"
+      aria-hidden={fm.imageAlt ? undefined : "true"}
+    >
+      <BlogImage src={fm.image} alt={fm.imageAlt ?? ""} widths={[400, 600, 900]} sizes="(min-width: 46rem) 30rem, 100vw" loading="eager" fetchpriority="high" />
+      {fm.imageCredit && <figcaption class="article-hero__credit">{fm.imageCredit}</figcaption>}
+    </figure>
+  ) : (
+    <div class="article-hero__visual-panel" aria-hidden="true">
+      <span class="article-hero__visual-shape"></span>
+      <span class="article-hero__visual-lines"></span>
+    </div>
+  )}
+</section>
+
+<style>
+  .article-hero__grid {
+    display: grid;
+    gap: 1.25rem;
+    margin-block: 1.25rem 0;
+  }
+
+  /* left: article intro panel (~60%) / right: visual panel (~40%) */
+  @container page (min-width: 46rem) {
+    .article-hero__grid {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
+  }
+
+  .article-hero__intro-panel {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.25rem;
+    min-height: clamp(16rem, 30cqi, 24rem);
+    padding: clamp(1.75rem, 4cqi, 3.25rem);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  /* subtle halftone: top-right corner, faded, never behind the text column */
+  .article-hero__intro-panel::before {
+    content: "";
+    position: absolute;
+    top: -1.5rem;
+    right: -1.5rem;
+    width: min(42%, 15rem);
+    height: min(46%, 11rem);
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--ink) 26%, transparent) 0 1.6px,
+      transparent 2px
+    );
+    background-size: 11px 11px;
+    mask-image: radial-gradient(ellipse at top right, black, transparent 66%);
+  }
+
+  /* second halftone: bottom-left corner, even quieter */
+  .article-hero__intro-panel::after {
+    content: "";
+    position: absolute;
+    bottom: -1.5rem;
+    left: -1.5rem;
+    width: min(34%, 11rem);
+    height: min(38%, 8rem);
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--ink) 18%, transparent) 0 1.5px,
+      transparent 1.9px
+    );
+    background-size: 12px 12px;
+    mask-image: radial-gradient(ellipse at bottom left, black, transparent 62%);
+  }
+
+  .article-hero__intro-panel > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* date: quiet metadata above the title, never competes with the headline */
+  .article-hero__date {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .article-hero__title {
+    max-width: 20ch;
+    margin: 0;
+    font-size: clamp(2.2rem, 4.4cqi, 3.6rem);
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .article-hero__description {
+    max-width: 52ch;
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+
+  /* right: dark comic panel */
+  .article-hero__visual-panel {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    margin: 0; /* strip default figure margins */
+    min-height: 16rem;
+    background: var(--color-neutral-950);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  @container page (min-width: 46rem) {
+    .article-hero__visual-panel {
+      min-height: 100%;
+    }
+  }
+
+  /* halftone dot field across the dark background */
+  .article-hero__visual-panel::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-neutral-100) 44%, transparent) 0 1.9px,
+      transparent 2.3px
+    );
+    background-size: 12px 12px;
+    mask-image: radial-gradient(ellipse at 80% 22%, black, transparent 58%);
+  }
+
+  /* purple tilted oval with a yellow outline */
+  .article-hero__visual-shape {
+    position: absolute;
+    z-index: 2;
+    right: 12%;
+    bottom: 26%;
+    width: 56%;
+    aspect-ratio: 1.7;
+    border: 3px solid var(--pop);
+    border-radius: 50%;
+    background: var(--accent);
+    rotate: -12deg;
+    pointer-events: none;
+  }
+
+  /* yellow diagonal motion lines below the shape (gradient stripes, no shadows) */
+  .article-hero__visual-lines {
+    position: absolute;
+    z-index: 2;
+    left: 12%;
+    bottom: 12%;
+    width: 44%;
+    height: 33px;
+    rotate: -24deg;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--pop) 0 3px,
+      transparent 3px 15px
+    );
+    border-radius: var(--radius-pill);
+    pointer-events: none;
+  }
+
+  /* photo credit: quiet pill in the image corner */
+  .article-hero__credit {
+    position: absolute;
+    z-index: 2;
+    right: 0.75rem;
+    bottom: 0.6rem;
+    margin: 0;
+    padding: 0.15rem 0.55rem;
+    font-size: var(--font-size-ui-xs);
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(10, 8, 26, 0.6);
+    border-radius: var(--radius-pill);
+  }
+
+  .article-hero__visual-panel img {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* with a real image, drop the dot field so the photo reads clean */
+  .article-hero__visual-panel--image::before {
+    background-image: none;
+    background: linear-gradient(0deg, rgba(10, 8, 26, 0.5), transparent 45%);
+    mask-image: none;
+  }
+
+  /* mobile: slightly lighter borders, everything already stacks */
+  @media (max-width: 40rem) {
+    .article-hero__intro-panel,
+    .article-hero__visual-panel {
+      border-width: 1.5px;
+    }
+  }
+</style>

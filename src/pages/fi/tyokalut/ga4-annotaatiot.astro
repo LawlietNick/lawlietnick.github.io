@@ -1,0 +1,34 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ToolHero from "../../../components/ToolHero.astro";
+import Ga4AnnotationBuilder from "../../../components/Ga4AnnotationBuilder.astro";
+
+const title = "GA4-annotaatiotyökalu";
+const summary = "Kirjaa muutos, jonka haluat muistaa dataa tulkitessasi. Valitse tapahtumapohja, täydennä teksti ja kopioi valmis merkintä Google Analytics 4:ään.";
+---
+
+<Base title={title} description={summary}>
+  <Breadcrumb fi crumbs={[{ label: "Etusivu", href: "/fi/", icon: true }, { label: "Työkalut", href: "/fi/tyokalut/" }, { label: title }]} />
+  <div class="annotation-hero"><ToolHero title={title} summary={summary} /></div>
+  <div class="wide-band"><Ga4AnnotationBuilder /></div>
+  <section class="annotation-guide">
+    <h2>Hyvä merkintä auttaa myös myöhemmin</h2>
+    <p>Kirjoita otsikkoon, mitä tapahtui. Täydennä kuvaukseen kohde, muutoksen syy tai huomio datan tulkintaan. Erota tavoite havaitusta vaikutuksesta: kampanjan aloitus ei vielä kerro sen tuloksista.</p>
+    <p>Otsikkoon mahtuu 60 merkkiä ja kuvaukseen 150. <a href="https://support.google.com/analytics/answer/15884203?hl=fi" target="_blank" rel="noopener noreferrer">Katso Googlen ohje annotaatioiden lisäämiseen.</a></p>
+  </section>
+</Base>
+
+<style>
+  .annotation-hero :global(.tool-hero > div) { min-width: 0; overflow-wrap: anywhere; }
+  .annotation-hero :global(.tool-hero) { margin-bottom: 1.5rem; padding-block: 1.5rem; }
+  @media (max-width: 760px) {
+    .annotation-hero :global(.tool-hero) { gap: 0.75rem; padding-block: 0.75rem; margin-bottom: 1rem; }
+    .annotation-hero :global(h1) { font-size: 2rem; }
+    .annotation-hero :global(.tool-hero__lead) { font-size: 1rem; line-height: 1.5; margin-bottom: 0; }
+  }
+  .annotation-guide { max-width: 65ch; margin: 0 0 var(--section-y-large); }
+  .annotation-guide h2 { margin-top: 0; }
+  .annotation-guide p { color: var(--muted); }
+  .annotation-guide a { color: var(--accent); text-underline-offset: 0.2em; }
+</style>

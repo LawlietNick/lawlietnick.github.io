@@ -1,0 +1,49 @@
+---
+// Groups linked service cards under a labelled heading per group.
+// `items` are pre-shaped { group, order, icon, title, summary, href } objects;
+// grouping + sorting happens here so both language hubs stay a one-liner.
+import ServiceCard from "./ServiceCard.astro";
+
+const { items = [], groupLabels = {}, order = [] } = Astro.props;
+
+const groups = order
+  .map((key) => ({
+    key,
+    label: groupLabels[key],
+    items: items
+      .filter((item) => item.group === key)
+      .sort((a, b) => a.order - b.order),
+  }))
+  .filter((group) => group.items.length);
+---
+
+{
+  groups.map((group) => (
+    <section class="service-group">
+      <h2 class="section-title">{group.label}</h2>
+      <div class="service-group__grid">
+        {group.items.map((item) => (
+          <ServiceCard
+            href={item.href}
+            icon={item.icon}
+            title={item.title}
+            summary={item.summary}
+          />
+        ))}
+      </div>
+    </section>
+  ))
+}
+
+<style>
+  .service-group__grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+  @container page (min-width: 46rem) {
+    .service-group__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,7 @@
+---
+const { label, class: className = "" } = Astro.props;
+---
+
+<span class:list={["badge", className].filter(Boolean)}>
+  <slot>{label}</slot>
+</span>

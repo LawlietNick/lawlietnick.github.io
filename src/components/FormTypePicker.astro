@@ -1,0 +1,470 @@
+---
+import { formCategories, formTypes } from "../data/form-types.js";
+
+const config = { types: formTypes, categories: formCategories };
+---
+
+<div class="ftp" data-form-type-picker>
+  <script type="application/json" data-ftp-config set:html={JSON.stringify(config)} />
+
+  <p class="ftp__intro">
+    Answer two questions about your form, give it a name, and you get one consistent value to track
+    it with — the same value every time, whoever builds the next form.
+  </p>
+
+  <div class="ftp__steps">
+    <div class="ftp__step">
+      <label class="ftp__label" for="ftp-cat">What is someone doing when they fill it in?</label>
+      <div class="ftp__field">
+        <div class="ftp__select">
+          <select id="ftp-cat" data-cat aria-describedby="ftp-cat-note"></select>
+        </div>
+        <p class="ftp__note" id="ftp-cat-note" data-cat-note></p>
+      </div>
+    </div>
+
+    <div class="ftp__step">
+      <label class="ftp__label" for="ftp-type">Which kind, exactly?</label>
+      <div class="ftp__field">
+        <div class="ftp__select">
+          <select id="ftp-type" data-type disabled aria-describedby="ftp-type-note"></select>
+        </div>
+        <div class="ftp__note" id="ftp-type-note" data-type-note aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="ftp__step">
+      <label class="ftp__label" for="ftp-name">What do you call this form?</label>
+      <div class="ftp__field">
+        <input id="ftp-name" type="text" data-name aria-describedby="ftp-name-note" placeholder="General Contact" autocomplete="off" spellcheck="false" />
+        <div class="ftp__note" id="ftp-name-note">
+          <p>Your own name for this exact form. Optional — but it is what tells two contact forms apart.</p>
+          <p class="ftp__strip" data-strip hidden>A colon and a vertical bar separate the three parts, so they are removed from the name.</p>
+          <p class="ftp__ex" data-ex hidden></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ftp__out">
+    <p class="ftp__outlabel">Full form name <code>form_full_name</code></p>
+    <output class="ftp__value" data-value for="ftp-cat ftp-type ftp-name"></output>
+    <p class="ftp__key">what it is &nbsp;·&nbsp; which kind &nbsp;·&nbsp; your own name for it</p>
+
+    <div class="ftp__act">
+      <button type="button" class="cta" data-copy hidden><span class="cta__surface">Copy value</span></button>
+      <p class="ftp__wait" data-wait>Pick a category and a kind to finish the value.</p>
+    </div>
+
+    <details class="ftp__snippet" data-snippet hidden>
+      <summary>dataLayer snippet</summary>
+      <pre><code data-code></code></pre>
+      <button type="button" class="ftp__link" data-copy-code>Copy snippet</button>
+    </details>
+  </div>
+</div>
+
+<script>
+  import { formValue } from "../data/form-types.js";
+
+  document.querySelectorAll("[data-form-type-picker]").forEach((root) => {
+    const { types, categories } = JSON.parse(root.querySelector("[data-ftp-config]").textContent);
+    const el = (s) => root.querySelector(s);
+
+    const nameEl = el("[data-name]");
+    const catEl = el("[data-cat]");
+    const typeEl = el("[data-type]");
+    const catNote = el("[data-cat-note]");
+    const typeNote = el("[data-type-note]");
+    const valueEl = el("[data-value]");
+    const copyEl = el("[data-copy]");
+    const waitEl = el("[data-wait]");
+    const exEl = el("[data-ex]");
+    const stripEl = el("[data-strip]");
+    const snippetEl = el("[data-snippet]");
+    const codeEl = el("[data-code]");
+
+    const label = (t) => (t.category === t.type ? t.type : `${t.category} ${t.type}`);
+    const inCat = (id) => types.filter((t) => t.category === id);
+    const selected = () => types.find((t) => t.id === typeEl.value) || null;
+    const actionable = (note) => /^(SENSITIVE|Exclude|Required|Review trigger)/.test(note);
+
+    /* A disabled placeholder option never becomes the selection, which renders
+       the closed select blank. Keep it selectable and check the value instead. */
+    function option(value, text, into) {
+      const o = document.createElement("option");
+      o.value = value;
+      o.textContent = text;
+      into.append(o);
+      return o;
+    }
+
+    option("", "Choose one…", catEl);
+    categories.forEach((c) => option(c.id, `${c.id} — ${c.action}`, catEl));
+    catEl.selectedIndex = 0;
+
+    function fillTypes() {
+      typeEl.innerHTML = "";
+      if (!catEl.value) {
+        option("", "Choose a category first", typeEl);
+        typeEl.disabled = true;
+        typeEl.selectedIndex = 0;
+        return;
+      }
+      option("", "Choose one…", typeEl);
+      inCat(catEl.value).forEach((t) =>
+        option(t.id, t.note.startsWith("SENSITIVE") ? `${t.type} — sensitive` : t.type, typeEl)
+      );
+      typeEl.disabled = false;
+      typeEl.selectedIndex = 0;
+    }
+
+    function paintCatNote() {
+      const c = categories.find((x) => x.id === catEl.value);
+      catNote.textContent = c
+        ? `${c.hint}. For example: ${c.examples.toLowerCase()}.`
+        : "Describe the visitor's action, not the form's title. Eleven to choose from.";
+    }
+
+    function paintTypeNote() {
+      const t = selected();
+      if (!t) {
+        typeNote.innerHTML = `<p>${
+          catEl.value
+            ? `${inCat(catEl.value).length} kinds of ${catEl.value.toLowerCase()} form. Pick one to see when it applies.`
+            : "Waiting on the question above."
+        }</p>`;
+        return;
+      }
+      const sensitive = t.note.startsWith("SENSITIVE");
+      typeNote.innerHTML =
+        `<p>${t.description}.</p>` +
+        (t.confusedWith
+          ? `<p>Most often mistaken for <button type="button" class="ftp__link" data-goto>${t.confusedWith}</button>.</p>`
+          : "") +
+        (actionable(t.note)
+          ? `<p class="ftp__warn ${sensitive ? "is-alert" : ""}"><b>${
+              sensitive ? "Handle with care" : "Note"
+            }</b> ${t.note.replace(/^SENSITIVE - /, "").replace(/^./, (m) => m.toUpperCase())}</p>`
+          : "");
+
+      typeNote.querySelector("[data-goto]")?.addEventListener("click", () => {
+        const target = types.find((x) => label(x) === t.confusedWith);
+        if (!target) return;
+        catEl.value = target.category;
+        fillTypes();
+        typeEl.value = target.id;
+        paintAll();
+        typeEl.focus();
+      });
+    }
+
+    const part = (text, open) =>
+      `<span class="ftp__v${open ? " is-open" : ""}">${text.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c])}</span>`;
+
+    function paintValue() {
+      const t = selected();
+      const typed = nameEl.value.trim();
+      // The delimiters separate the three parts, so they cannot survive inside
+      // one. Show the cleaned name, and say so rather than silently differing
+      // from what gets copied.
+      const name = typed.replace(/[|:]/g, "").replace(/\s+/g, " ").trim();
+      stripEl.hidden = name === typed;
+      valueEl.innerHTML =
+        part(catEl.value || "category", !catEl.value) +
+        `<i aria-hidden="true">:</i>` +
+        part(t ? t.type : "kind", !t) +
+        `<i aria-hidden="true">|</i>` +
+        part(name || "your name for it", !name);
+
+      copyEl.hidden = !t;
+      waitEl.hidden = Boolean(t);
+      snippetEl.hidden = !t;
+      if (!t) return;
+
+      const value = formValue(t.category, t.type, name);
+      copyEl.dataset.value = value;
+      codeEl.textContent = [
+        "window.dataLayer = window.dataLayer || [];",
+        "window.dataLayer.push({",
+        "  event: 'form_submit',",
+        `  form_full_name: '${value.replace(/'/g, "\\'")}',`,
+        "  form_id: form.id || form.name,",
+        "});",
+      ].join("\n");
+    }
+
+    function paintExamples() {
+      const t = selected();
+      exEl.hidden = !t || !t.examples.length;
+      if (exEl.hidden) return;
+      exEl.innerHTML = "Examples of form names: ";
+      t.examples.forEach((e, i) => {
+        if (i) exEl.append(document.createTextNode(" · "));
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "ftp__link";
+        b.textContent = e;
+        b.addEventListener("click", () => {
+          nameEl.value = e;
+          paintValue();
+          nameEl.focus();
+        });
+        exEl.append(b);
+      });
+    }
+
+    function paintAll() {
+      paintCatNote();
+      paintTypeNote();
+      paintExamples();
+      paintValue();
+    }
+
+    async function copy(text, btn, done) {
+      const html = btn.innerHTML;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.innerHTML = done;
+      } catch {
+        btn.innerHTML = done.replace(/>[^<]*</, ">Select and copy manually<");
+      }
+      setTimeout(() => (btn.innerHTML = html), 1800);
+    }
+
+    catEl.addEventListener("change", () => {
+      fillTypes();
+      paintAll();
+    });
+    typeEl.addEventListener("change", paintAll);
+    nameEl.addEventListener("input", paintValue);
+    copyEl.addEventListener("click", (e) =>
+      copy(e.currentTarget.dataset.value, e.currentTarget, "<span class='cta__surface'>Copied</span>")
+    );
+    el("[data-copy-code]").addEventListener("click", (e) => copy(codeEl.textContent, e.currentTarget, "Copied"));
+
+    fillTypes();
+    paintAll();
+  });
+</script>
+
+<style>
+  .ftp {
+    --ftp-alert: light-dark(oklch(52% 0.2 25), oklch(76% 0.15 25));
+    /* Control boundaries need 3:1; the page's --line token is ~1.2:1. */
+    --ftp-field-line: color-mix(in srgb, var(--ink) 50%, var(--bg));
+    max-width: 72rem;
+    margin-block: 1.5rem var(--section-y-large);
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    border-radius: var(--radius-lg);
+    background: var(--color-accent-panel);
+    font-size: var(--font-size-ui);
+    line-height: var(--line-height-ui);
+  }
+
+  .ftp ::selection { background: var(--pop); color: var(--color-neutral-950); }
+  .ftp :global(:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+  .ftp__intro { max-width: 56ch; margin: 0 0 2.25rem; color: var(--muted); }
+
+  /* Three parallel columns: each holds its own question, control and notes,
+     so the whole dependency is visible at once instead of scrolled through. */
+  .ftp__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 0 2rem;
+  }
+
+  /* A rule per column works in three columns and when they wrap to one, so the
+     layout needs no width query to stay legible at large text sizes. */
+  .ftp__step {
+    min-width: 0;
+    padding: 1.4rem 0 1.6rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .ftp__label {
+    display: block;
+    margin: 0 0 0.6rem;
+    min-height: 2lh;
+    color: var(--ink);
+    font-size: 1.05rem;
+    font-weight: var(--font-weight-strong);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .ftp input[type="text"] {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--ftp-field-line);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    caret-color: var(--accent);
+  }
+
+  .ftp input::placeholder { color: var(--muted); opacity: 0.75; }
+
+  .ftp__select { position: relative; }
+
+  .ftp__select::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0.9rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-70%) rotate(45deg);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  .ftp select {
+    appearance: none;
+    width: 100%;
+    padding: 0.65rem 2.1rem 0.65rem 0.8rem;
+    border: 1px solid var(--ftp-field-line);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .ftp select:hover:not(:disabled),
+  .ftp input[type="text"]:hover { border-color: var(--ink); }
+  .ftp select:disabled { color: var(--muted); cursor: not-allowed; }
+
+  /* Descriptions read at full muted strength — a lighter tint disappears in
+     light mode, which is exactly what made this column look empty. */
+  .ftp__note,
+  .ftp__note :global(p) { margin: 0 0 0.65rem; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .ftp__note :global(p:last-child) { margin-bottom: 0; }
+  .ftp__note { margin-top: 0.75rem; }
+
+  @media (max-width: 62rem) {
+    .ftp__step { grid-template-columns: minmax(0, 1fr); gap: 0.7rem; padding: 1.5rem 0; }
+  }
+
+  .ftp :global(.ftp__warn) {
+    margin-top: 0.75rem !important;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--ink) 4%, transparent);
+  }
+
+  .ftp :global(.ftp__warn b) {
+    margin-right: 0.4rem;
+    color: var(--ink);
+    text-transform: uppercase;
+    font-size: var(--font-size-ui-xs);
+    letter-spacing: 0.06em;
+  }
+
+  .ftp :global(.ftp__warn.is-alert) {
+    border-color: color-mix(in srgb, var(--ftp-alert) 45%, var(--line));
+    background: color-mix(in srgb, var(--ftp-alert) 9%, transparent);
+    color: var(--ink);
+  }
+
+  .ftp :global(.ftp__warn.is-alert b) { color: var(--ftp-alert); }
+
+  .ftp__ex { line-height: 1.9; }
+  .ftp :global(.ftp__strip) { color: var(--ink); }
+
+  .ftp__out { padding-top: 2.5rem; }
+
+  .ftp__outlabel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    align-items: baseline;
+    margin: 0 0 0.75rem;
+    color: var(--muted);
+    font-size: var(--font-size-ui-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* The key the value is pushed under, for anyone wiring up GTM. */
+  .ftp__outlabel code {
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-body);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* Reads as a readout, not as another paragraph: its own surface, one border,
+     no shadow. <output> is inline by default, hence the explicit display. */
+  .ftp__value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.6rem;
+    align-items: baseline;
+    margin: 0;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--ink) 4%, var(--bg));
+    font-family: var(--font-mono);
+    font-size: clamp(1.1rem, 3.2cqi, 1.5rem);
+  }
+
+  .ftp__value :global(.ftp__v) {
+    padding-bottom: 3px;
+    border-bottom: 2px solid var(--pop);
+    color: var(--ink);
+  }
+
+  .ftp__value :global(.ftp__v.is-open) {
+    border-bottom-color: var(--line);
+    color: var(--muted);
+  }
+
+  .ftp__value :global(i) { color: var(--muted); font-style: normal; }
+
+  .ftp__key { margin: 0.6rem 0 0; padding-inline: 0.1rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+
+  .ftp__act { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; margin-top: 1.75rem; }
+  .ftp__wait { margin: 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
+
+  .ftp :global(.ftp__link) {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .ftp :global(.ftp__link:hover) { color: var(--accent); }
+
+  .ftp__snippet { margin-top: 2.25rem; }
+  .ftp__snippet summary { cursor: pointer; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .ftp__snippet summary:hover { color: var(--ink); }
+
+  .ftp__snippet pre {
+    overflow-x: auto;
+    margin: 0.9rem 0;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-ui-xs);
+  }
+
+  @media (pointer: coarse) {
+    .ftp :global(.ftp__link) { padding-block: 0.35rem; }
+    .ftp select,
+    .ftp input[type="text"] { min-height: 44px; }
+  }
+</style>

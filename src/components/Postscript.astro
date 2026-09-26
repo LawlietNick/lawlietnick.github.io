@@ -1,0 +1,183 @@
+---
+// Static article readout. Values are calculated by the article layout; this
+// component only formats and presents them.
+const {
+  words = 0,
+  headings = 0,
+  readTime = 0,
+  links = 0,
+  codeBlocks = 0,
+  images = 0,
+  fi = false,
+} = Astro.props;
+
+const copy = fi
+  ? {
+      title: "Jutun erittely",
+      labels: {
+        words: "SANAT",
+        headings: "OTSIKOT",
+        readTime: "LUKUAIKA",
+        links: "LINKIT",
+        codeBlocks: "KOODILOHKOT",
+        images: "KUVAT",
+      },
+      comments: {
+        words: "Kelpo määrä tekstiä.",
+        headings: "Väljä rakenne.",
+        readTime: "Selviät kyllä.",
+        links: links === 0 ? "Rohkea valinta." : "Polkuja jonnekin.",
+        codeBlocks: codeBlocks === 0 ? "Et tarvitse terminaalia." : "Hieman teknistä.",
+        images: images === 0 ? "Sekin on rohkea valinta." : "Visuaalista todistusaineistoa mukana.",
+      },
+    }
+  : {
+      title: "Issue breakdown",
+      labels: {
+        words: "WORDS",
+        headings: "HEADINGS",
+        readTime: "READ TIME",
+        links: "LINKS",
+        codeBlocks: "CODE BLOCKS",
+        images: "IMAGES",
+      },
+      comments: {
+        words: "Respectable amount of text.",
+        headings: "Loose structure.",
+        readTime: "You’ll survive.",
+        links: links === 0 ? "Bold choice." : "Paths to somewhere.",
+        codeBlocks: codeBlocks === 0 ? "No terminal required." : "Mildly technical.",
+        images: images === 0 ? "Also bold." : "Visual evidence included.",
+      },
+    };
+
+const fmt = (value) => new Intl.NumberFormat(fi ? "fi-FI" : "en-US").format(value);
+const items = [
+  { label: copy.labels.words, value: fmt(words), comment: copy.comments.words },
+  { label: copy.labels.headings, value: fmt(headings), comment: copy.comments.headings },
+  { label: copy.labels.readTime, value: `${fmt(readTime)} min`, comment: copy.comments.readTime },
+  { label: copy.labels.links, value: fmt(links), comment: copy.comments.links },
+  { label: copy.labels.codeBlocks, value: fmt(codeBlocks), comment: copy.comments.codeBlocks },
+  { label: copy.labels.images, value: fmt(images), comment: copy.comments.images },
+];
+---
+
+<section class="article-telemetry" aria-labelledby="article-telemetry-title">
+  <h2 id="article-telemetry-title" class="article-telemetry__title">{copy.title}</h2>
+  <dl class="article-telemetry__stats">
+    {items.map((item) => (
+      <div class="article-telemetry__row">
+        <dt>{item.label}</dt>
+        <dd class="article-telemetry__value">{item.value}</dd>
+        <dd class="article-telemetry__comment">{item.comment}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  .article-telemetry {
+    --telemetry-background: var(--bg);
+    position: relative;
+    margin: 4rem 0 2rem;
+    padding: 2rem clamp(1.5rem, 5vw, 2rem) 0.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--telemetry-background);
+  }
+
+  .article-telemetry__title {
+    position: absolute;
+    top: 0;
+    left: clamp(1.5rem, 4vw, 4rem);
+    margin: 0;
+    padding: 0.7rem 1.25rem;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-xs);
+    background: var(--telemetry-background);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: clamp(0.9rem, 3vw, 1.05rem);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+    transform: translateY(-50%);
+  }
+
+  .article-telemetry__stats {
+    margin: 0;
+  }
+
+  .article-telemetry__row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) minmax(6rem, 0.7fr) minmax(12rem, 1.8fr);
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0.35rem;
+  }
+
+  .article-telemetry__row + .article-telemetry__row {
+    border-top: 1px solid var(--line);
+  }
+
+  .article-telemetry dt,
+  .article-telemetry dd {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .article-telemetry dt,
+  .article-telemetry__value {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .article-telemetry dt {
+    font-size: 0.82rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .article-telemetry__value {
+    font-size: clamp(1.55rem, 5vw, 2rem);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .article-telemetry__comment {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+    line-height: 1.35;
+  }
+
+  @media (max-width: 34rem) {
+    .article-telemetry {
+      margin-top: 3.5rem;
+      padding: 1.8rem 1rem 0.25rem;
+    }
+
+    .article-telemetry__title {
+      left: 1rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.82rem;
+    }
+
+    .article-telemetry__row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.45rem 1rem;
+      padding: 0.9rem 0.15rem;
+    }
+
+    .article-telemetry__value {
+      font-size: 1.45rem;
+      text-align: right;
+    }
+
+    .article-telemetry__comment {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

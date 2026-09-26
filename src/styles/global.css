@@ -1,0 +1,1810 @@
+@font-face {
+  font-family: "Roboto Flex";
+  src: url("/fonts/roboto-flex.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* solid background on the root too (not just body): during a view-transition the
+     root cross-fade dips below full opacity mid-way, and a transparent html lets the
+     browser's default canvas flash through — very visible in dark mode */
+  background: var(--bg);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font: var(--font-size-body) / var(--line-height-body) var(--font-body);
+  font-weight: var(--font-weight-body);
+  color: var(--ink);
+  background: var(--bg);
+  /* inherited by all content: avoids orphans and awkward last lines.
+     Headings use text-wrap: balance instead (browsers cap balance at ~6
+     lines, so it would silently no-op on real paragraphs). */
+  text-wrap: pretty;
+}
+
+.container {
+  width: min(var(--container-width), 100% - var(--container-gutter));
+  margin-inline: auto;
+}
+
+a {
+  color: inherit;
+}
+
+strong,
+b {
+  font-weight: 520;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 620;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  scroll-margin-top: 5.5rem; /* clear the sticky header on anchor jumps */
+}
+
+h1 {
+  font-weight: var(--font-weight-bold);
+  font-variation-settings: "opsz" 144, "WONK" 1;
+}
+
+/* fluid editorial scale — one serif voice h1–h6, every level visibly distinct.
+   Component-level sizes (hero title, section titles, cards) override these. */
+h1 { font-size: clamp(2.4rem, 5vw, 3.4rem); }
+h2 { font-size: clamp(1.7rem, 3.2vw, 2rem); }
+h3 { font-size: clamp(1.4rem, 2.6vw, 1.6rem); }
+h4 { font-size: 1.3rem; }
+h5 { font-size: 1.15rem; }
+h6 { font-size: 1.05rem; }
+
+/* small serif needs extra weight and looser leading to still read as a heading
+   (body text is 18px sans at weight 420 — these stay unmistakably headings) */
+h4,
+h5,
+h6 {
+  font-weight: var(--font-weight-strong);
+  line-height: 1.3;
+}
+
+time,
+.meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+main {
+  container: page / inline-size;
+}
+
+main:focus {
+  outline: none;
+}
+
+.skip {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  padding: 0.6rem 1.1rem;
+  background: var(--pop);
+  color: var(--color-neutral-950);
+  border: 3px solid var(--color-neutral-950);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  transform: translateY(calc(-100% - 2rem));
+}
+
+.skip:focus-visible {
+  transform: translateY(0);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* view-transition pseudo-elements aren't matched by * above; kill their
+     animations too so page navigation is an instant swap (no fade/morph) */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+@media print {
+  @page {
+    margin: 18mm;
+  }
+
+  .article-page {
+    display: block;
+    min-height: auto;
+    color: #000;
+    background: #fff;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  .article-page :is(.skip, .mobile-nav-overlay, .breadcrumb, .ask-ai,
+    .toc, .copy, .article-telemetry, .article-ending, .related-articles,
+    .site-footer, .article-hero__visual-panel),
+  .article-page .prose :is(form, fieldset, button, input, select, textarea,
+    iframe, embed, object, video, audio) {
+    display: none !important;
+  }
+
+  .article-page .site-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    display: block;
+    background: transparent;
+    border: 0;
+  }
+
+  .article-page .site-header__inner {
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .article-page .site-header__inner > :not(.site-header__logo) {
+    display: none !important;
+  }
+
+  .article-page .site-header__logo img {
+    width: auto;
+    height: 14mm;
+  }
+
+  .article-page .container,
+  .article-page .post-layout,
+  .article-page .post-main,
+  .article-page .prose,
+  .article-page .wide-band,
+  .article-page .article-hero__grid,
+  .article-page .article-hero__intro-panel {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    color: #000;
+    background: #fff;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .article-page .article-hero__intro-panel::before,
+  .article-page .article-hero__intro-panel::after {
+    content: none;
+  }
+
+  .article-page .article-hero__date {
+    margin-bottom: 0.35rem;
+    color: #444;
+  }
+
+  .article-page .article-hero__title {
+    max-width: none;
+    margin: 0;
+    padding-right: 30mm;
+    font-size: 26pt;
+  }
+
+  .article-page .article-hero__description {
+    max-width: none;
+    margin: 0.5rem 0 1.5rem;
+    color: #333;
+    font-size: 12pt;
+  }
+
+  .article-page .prose {
+    font-size: 11pt;
+  }
+
+  .article-page :is(h2, h3, h4, h5, h6) {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .article-page .prose :is(figure, table, blockquote, pre, .comic-quote) {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .article-page .prose :is(figure, img, table, pre, blockquote) {
+    max-width: 100%;
+    color: #000;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .article-page .prose :is(img, picture) {
+    max-height: 230mm;
+  }
+
+  .article-page .prose pre {
+    padding: 0.75rem;
+    border: 1px solid #bbb;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .article-page .prose table {
+    display: table;
+    overflow: visible;
+    border-collapse: collapse;
+  }
+
+  .article-page .prose :is(th, td) {
+    border: 1px solid #bbb;
+  }
+
+  .article-page .prose a[href^="http"]:not(.print-source a)::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    overflow-wrap: anywhere;
+  }
+
+  .print-source {
+    display: block;
+    margin: 1.5rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid #bbb;
+    color: #444;
+    font-size: 9pt;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media screen {
+  .print-source {
+    display: none;
+  }
+}
+
+/* One-off visual language for the Finnish "Mikä on algoritmi?" article. */
+.algorithm-definition,
+.algorithm-examples,
+.algorithm-machine,
+.inventory-example,
+.process-comparison,
+.algorithm-reminder {
+  --algorithm-violet: light-dark(oklch(52% 0.2 286), oklch(72% 0.15 286));
+  --algorithm-mint: light-dark(oklch(91% 0.1 157), oklch(30% 0.06 157));
+  --algorithm-yellow: light-dark(oklch(94% 0.13 96), oklch(29% 0.05 96));
+  --algorithm-rose: light-dark(oklch(93% 0.07 18), oklch(29% 0.05 18));
+}
+
+.prose :is(.algorithm-definition, .algorithm-examples, .algorithm-machine, .inventory-example, .process-comparison) {
+  width: 100%;
+  max-width: 100%;
+}
+
+.algorithm-definition {
+  margin-block: clamp(2rem, 5vw, 3.5rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.algorithm-definition__label {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+  font-size: var(--font-size-ui-sm);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.algorithm-flow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.algorithm-flow li {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem 0.8rem;
+  align-items: center;
+  min-width: 0;
+  padding: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--algorithm-violet) 30%, var(--line));
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+
+.algorithm-flow li:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  z-index: 1;
+  right: -1.45rem;
+  color: var(--algorithm-violet);
+  font-size: 1.4rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.algorithm-flow span {
+  grid-row: 1 / 3;
+  color: var(--algorithm-violet);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.algorithm-flow strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+
+.algorithm-flow small {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.algorithm-examples {
+  margin-block: 2rem 3rem;
+  border-block: 2px solid var(--ink);
+}
+
+.algorithm-examples > div {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.65fr) 1.35fr;
+  gap: 1.5rem;
+  align-items: baseline;
+  padding: 1rem 0.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.algorithm-examples > div:last-child {
+  border-bottom: 0;
+}
+
+.algorithm-examples span {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: var(--font-weight-strong);
+}
+
+.algorithm-examples p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.algorithm-machine {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 1rem;
+  margin-block: 2rem 3rem;
+}
+
+.algorithm-machine > * {
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.algorithm-machine > section:first-child {
+  grid-row: span 2;
+  background: var(--algorithm-yellow);
+}
+
+.algorithm-machine__rules {
+  background: var(--algorithm-mint);
+}
+
+.algorithm-machine__result {
+  background: var(--algorithm-rose);
+}
+
+.algorithm-machine__eyebrow {
+  margin: 0 0 0.55rem;
+  color: var(--algorithm-violet);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+
+.algorithm-machine h3,
+.algorithm-machine__result p:last-child {
+  margin: 0;
+}
+
+.algorithm-machine :is(ul, ol) {
+  margin-bottom: 0;
+}
+
+.inventory-example {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 1fr;
+  margin-block: 2rem 3rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+}
+
+.inventory-example > div {
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.inventory-example > div + div {
+  border-left: 1px solid var(--line);
+}
+
+.inventory-example__stock strong {
+  display: block;
+  color: var(--algorithm-violet);
+  font-family: var(--font-display);
+  font-size: clamp(3.8rem, 9vw, 6.5rem);
+  line-height: 0.9;
+}
+
+.inventory-example__stock > span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.inventory-example dl {
+  margin: 1.5rem 0 0;
+}
+
+.inventory-example dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.inventory-example :is(dt, dd) {
+  margin: 0;
+}
+
+.inventory-example dd {
+  font-weight: var(--font-weight-strong);
+}
+
+.inventory-example__calculation {
+  background: var(--algorithm-yellow);
+}
+
+.inventory-example__calculation p:not(:first-child) {
+  margin-block: 1.25rem 0;
+}
+
+.inventory-example__decision {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--algorithm-mint);
+}
+
+.inventory-example__decision strong {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1;
+}
+
+.inventory-example__decision p:last-child {
+  margin-bottom: 0;
+}
+
+.process-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-block: 2rem 3rem;
+}
+
+.process-comparison > section {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.process-comparison > section:first-child {
+  background: var(--algorithm-yellow);
+}
+
+.process-comparison > section:last-child {
+  background: var(--algorithm-mint);
+}
+
+.process-comparison h3 {
+  margin-top: 0;
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+}
+
+.process-comparison ol {
+  padding: 0;
+  list-style: none;
+  counter-reset: process;
+}
+
+.process-comparison ol li {
+  display: flex;
+  gap: 0.75rem;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  counter-increment: process;
+}
+
+.process-comparison ol li::before {
+  content: counter(process, decimal-leading-zero);
+  color: var(--algorithm-violet);
+  font-weight: var(--font-weight-bold);
+}
+
+.process-comparison dl div {
+  padding-block: 0.7rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+}
+
+.process-comparison :is(dt, dd) {
+  margin: 0;
+}
+
+.process-comparison dt {
+  font-weight: var(--font-weight-strong);
+}
+
+.process-comparison dd {
+  color: var(--muted);
+}
+
+.algorithm-reminder {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem;
+  align-items: center;
+  margin-block: 2rem 3rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--algorithm-rose);
+}
+
+.algorithm-reminder__mark {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  aspect-ratio: 1;
+  margin: 0;
+  border-radius: 50%;
+  color: var(--color-neutral-100);
+  background: var(--algorithm-violet);
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.algorithm-reminder :is(h3, p) {
+  margin: 0;
+}
+
+@media (max-width: 46rem) {
+  .algorithm-flow,
+  .algorithm-machine,
+  .inventory-example,
+  .process-comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .algorithm-flow li:not(:last-child)::after {
+    right: auto;
+    bottom: -1.45rem;
+    left: 50%;
+    transform: rotate(90deg);
+  }
+
+  .algorithm-machine > section:first-child {
+    grid-row: auto;
+  }
+
+  .inventory-example > div + div {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .algorithm-examples > div {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}
+
+@media print {
+  .prose :is(.algorithm-definition, .algorithm-examples, .algorithm-machine, .inventory-example, .process-comparison) {
+    break-inside: avoid;
+  }
+}
+
+.notfound {
+  text-align: center;
+  padding-block: 6rem;
+}
+
+.notfound h1 {
+  font-size: clamp(3rem, 10cqi, 6rem);
+  margin: 0.5rem 0 1rem;
+}
+
+.notfound p {
+  color: var(--muted);
+  max-width: 40ch;
+  margin: 0 auto 2rem;
+}
+
+/* post body: reading column centered on the page; TOC floats in the left gutter */
+.post-layout {
+  width: 100%;
+  display: grid;
+  align-items: start;
+}
+@media (min-width: 60rem) {
+  /* symmetric side columns keep the article centered whether or not a TOC exists;
+     the TOC sits in the left gutter and never shifts the content */
+  .post-layout:has([data-toc]) {
+    --post-band-width: min(var(--container-wide), calc(100vw - var(--container-gutter)));
+    width: var(--post-band-width);
+    margin-inline: calc((100% - var(--post-band-width)) / 2);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 42rem) minmax(0, 1fr);
+  }
+  .post-layout:has([data-toc]) .toc {
+    grid-column: 1;
+    justify-self: start;
+    width: min(18rem, 100%);
+    padding-right: 2rem;
+    padding-top: 1.5rem;   /* match the article's top padding so both start on the same line */
+  }
+  .post-layout:has([data-toc]) .post-main {
+    grid-column: 2;
+  }
+}
+.post-main { min-width: 0; }
+
+.article-ending {
+  width: 100%;
+  max-width: 42rem;
+  margin: clamp(2.5rem, 6vw, 4rem) auto 0;
+}
+
+.prose {
+  width: 100%;
+  max-inline-size: 70ch;
+  margin-inline: auto;
+  padding-block: 1.5rem 3rem;
+  overflow-wrap: break-word;
+}
+
+.prose > h1:first-child {
+  display: none;
+}
+
+/* figures and quotes sit flush with the text column — no UA 40px indents */
+.prose figure,
+.prose blockquote {
+  margin-inline: 0;
+}
+
+/* the figure is the panel: caption lives inside the panel border with the
+   image, so the pair reads as one unit. Shrinkwraps to the image, but can
+   still break out to the same wide cap as bare images. */
+.prose figure {
+  width: max-content;
+  max-width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+/* the panel chrome moved to the figure — strip it from the wrapped image */
+.prose figure img {
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+}
+
+.prose figcaption {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.prose :is(iframe, embed, object) {
+  border: 0;
+}
+
+.prose img {
+  display: block;
+  min-width: 100px;
+  min-height: 100px;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  background-color: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+/* Astro's <Picture> wraps the <img> in <picture>; make that wrapper transparent
+   to layout so existing `.foo img` sizing/aspect-ratio rules keep applying. */
+picture { display: contents; }
+
+/* opt-in wide image: breaks out past the text column toward the page edge.
+   Markdown can't put a class on ![](), so mark it with raw HTML in the .md:
+     <img class="bleed" src="/x.png" alt="…" />
+     <figure class="bleed"><img src="/x.png" alt="…" /><figcaption>…</figcaption></figure> */
+.prose :is(img, figure).bleed {
+  max-width: min(100rem, calc(50vw + 50% - var(--container-gutter) / 2));
+}
+
+/* broken images: pseudo-elements render on an <img> only when it fails to
+   load, so this styles just the failure state — hatched surface with the
+   alt text centered. Loaded images are untouched. */
+.prose img {
+  position: relative;
+}
+
+.prose img::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 14px,
+      color-mix(in srgb, var(--muted) 10%, transparent) 14px 15px
+    ),
+    var(--color-surface);
+}
+
+.prose img::after {
+  content: "⚠ " attr(alt);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  padding: 1.25rem;
+  border-radius: inherit;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+}
+
+/* first visible element sits flush with the padding — whether it's a heading,
+   a paragraph, or the element after the hidden duplicate <h1> */
+.prose > :first-child,
+.prose > h1:first-child + * {
+  margin-top: 0;
+}
+
+/* article heading rhythm: generous space above, tight below, so each heading
+   binds to the content it introduces */
+.prose :is(h2, h3, h4, h5, h6) {
+  margin-block: 2.2rem 0.8rem;
+}
+
+/* content links: multiline comic highlight with a delayed yellow underline.
+   `.content-links` opts any block outside prose (e.g. tool pages) into the same style. */
+:is(.prose, .content-links) a {
+  --link-hover-color: light-dark(oklch(44% 0.22 286), oklch(64% 0.16 286));
+  --link-hover-background: color-mix(in oklab, var(--accent) 11%, var(--bg));
+  --link-underline-thickness: 0.075em;
+  --link-shadow-offset: 0.075em;
+  --link-ease: cubic-bezier(0.45, 0, 0.2, 1);
+
+  display: inline;
+  padding: 0.02em 0.04em 0.13em;
+  color: var(--accent);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  background-color: transparent;
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(var(--pop), var(--pop));
+  background-repeat: no-repeat;
+  background-position:
+    left calc(100% - var(--link-shadow-offset)),
+    right 100%;
+  background-size:
+    100% var(--link-underline-thickness),
+    0% var(--link-underline-thickness);
+  border-radius: 0.08em;
+  box-shadow: 0 0 0 transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition:
+    color 900ms var(--link-ease),
+    background-color 900ms var(--link-ease),
+    background-size 1400ms var(--link-ease) 180ms,
+    background-position 0ms linear,
+    box-shadow 1400ms var(--link-ease) 180ms;
+}
+
+:is(.prose, .content-links) a:is(:hover, :focus-visible) {
+  color: var(--link-hover-color);
+  background-color: var(--link-hover-background);
+  background-position:
+    left calc(100% - var(--link-shadow-offset)),
+    left 100%;
+  background-size:
+    100% var(--link-underline-thickness),
+    100% var(--link-underline-thickness);
+  box-shadow: 0 var(--link-shadow-offset) 0 var(--pop);
+  transition:
+    color 520ms var(--link-ease),
+    background-color 520ms var(--link-ease),
+    background-size 700ms var(--link-ease) 120ms,
+    background-position 0ms linear,
+    box-shadow 700ms var(--link-ease) 120ms;
+}
+
+:is(.prose, .content-links) a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.prose :is(sup, sub) {
+  position: relative;
+  vertical-align: baseline;
+  font-size: 0.72em;
+  line-height: 0;
+  font-weight: var(--font-weight-medium);
+  color: color-mix(in srgb, var(--accent) 78%, var(--ink));
+}
+
+.prose sup {
+  top: -0.45em;
+}
+
+.prose sub {
+  bottom: -0.15em;
+}
+
+.prose p cite {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--font-weight-medium);
+  color: color-mix(in srgb, var(--accent) 35%, var(--ink));
+}
+
+/* inline code family: mono chips that sit in a text line. Excludes code inside
+   <pre> blocks (which keep their own block styling). code = literal/input
+   (accent-tinted); samp = program output (neutral, outlined). */
+.prose :not(pre) > code,
+.prose samp {
+  padding: 0.12em 0.4em;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  overflow-wrap: break-word;
+}
+
+.prose :not(pre) > code {
+  color: var(--accent);
+  background: var(--color-accent-soft);
+}
+
+.prose samp {
+  color: var(--ink);
+  /* inset outline reads as "output" without inflating the line box like a border */
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.prose kbd {
+  --kbd-background: light-dark(var(--bg), var(--color-neutral-700));
+  --kbd-border: light-dark(var(--color-neutral-500), var(--color-neutral-900));
+  --kbd-text: light-dark(var(--ink), var(--color-neutral-100));
+
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid var(--kbd-border);
+  border-bottom-width: 3px;
+  border-radius: var(--radius-sm);
+  color: var(--kbd-text);
+  background-color: var(--kbd-background);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 8%, transparent);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-strong);
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.prose abbr[title][tabindex] {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2rem;
+  margin-block: -0.25rem;
+  padding-inline: 0.2rem;
+  color: color-mix(in srgb, var(--accent) 70%, var(--ink));
+  font-weight: var(--font-weight-medium);
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.2em;
+  cursor: help;
+}
+
+.prose abbr[title][tabindex]:is(:hover, :focus)::after {
+  content: attr(title);
+  position: absolute;
+  z-index: 10;
+  bottom: calc(100% + 0.4rem);
+  left: 0;
+  width: max-content;
+  max-width: min(18rem, calc(100vw - var(--container-gutter)));
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-neutral-700);
+  border-radius: var(--radius-sm);
+  color: var(--color-neutral-100);
+  background: var(--color-neutral-900);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.35;
+  white-space: normal;
+  text-align: left;
+  pointer-events: none;
+}
+
+.prose abbr[title][tabindex]:focus-visible {
+  outline: var(--focus-ring-strong);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.prose pre {
+  position: relative;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 1.25rem;
+  padding-top: 1rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono); /* match the inline code chips */
+  font-size: 0.85rem;
+}
+
+.prose pre[data-language="mermaid"] {
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+  margin-block: 1.25rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  overflow-x: auto;
+  color: #f7f4fa !important;
+  background: #1c1921 !important;
+  border: 1px solid #3b3544;
+  border-radius: var(--radius-md);
+  white-space: normal;
+}
+
+.prose pre[data-language="mermaid"] svg {
+  display: block;
+  width: 100%;
+  min-width: 22rem;
+  max-width: 42rem;
+  height: auto;
+}
+
+.prose pre[data-language="mermaid"] .node:is(.browserTitle, .backendTitle) .nodeLabel {
+  font-size: 1rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* formula panels: same border/radius/surface as figures and code blocks.
+   Font stays the browser's native math font (Cambria Math / STIX Two Math /
+   Latin Modern Math) — overriding it breaks fraction and radical layout. */
+.prose math {
+  display: block;
+  margin-block: 1.5rem;
+  padding: 0.75rem 1.00rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--ink);
+  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
+  text-align: center;
+}
+
+.prose math mtext {
+  color: var(--muted);
+  letter-spacing: 0.01em;
+  word-spacing: 0.14em;
+}
+
+.prose math mo {
+  color: var(--accent);
+}
+
+/* a unit right after a number ("800 words") is part of that value, not a
+   separate label — keep it the same color as the number instead of muting it.
+   Browsers trim the mtext's own leading space at the math-layout level, so
+   the gap has to come from margin instead. */
+.prose math mn + mtext {
+  margin-inline-start: 0.25em;
+  color: var(--ink);
+}
+
+/* MathML atoms (mfrac, mrow) don't line-wrap — a long fraction just gets
+   wider. Shrink to fit narrow screens first; overflow-x above is the
+   fallback for whatever still doesn't fit. */
+@media (max-width: 32rem) {
+  .prose math {
+    padding-inline: 0.6rem;
+    font-size: clamp(0.8rem, 0.6rem + 2vw, 1rem);
+  }
+}
+
+.copy {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  font: inherit;
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-950);
+  background: var(--pop);
+  border: 2px solid var(--color-neutral-950);
+  border-radius: var(--radius-xs);
+  padding: 0.15rem 0.6rem;
+  cursor: pointer;
+}
+
+/* Long code stays copyable while only its opening lines are visible. Without
+   JavaScript the full block remains visible as the safe fallback. */
+.prose .code-accordion {
+  position: relative;
+  margin-block: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: clip;
+}
+
+.prose .code-accordion button.code-accordion__toggle {
+  width: 100%;
+  min-height: 3rem;
+  margin: 0;
+  padding: 0.85rem 1.25rem;
+  color: var(--ink);
+  background: var(--color-accent-soft);
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.prose .code-accordion button.code-accordion__toggle:hover:not(:disabled) {
+  translate: 0 0;
+}
+
+.prose .code-accordion__content > pre {
+  margin: 0;
+  border-radius: 0;
+}
+
+.prose .code-accordion[data-ready="true"] .code-accordion__content {
+  position: relative;
+  max-height: 12rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.prose .code-accordion[data-ready="true"] .code-accordion__content::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 3rem;
+  background: linear-gradient(transparent, #24292e);
+  pointer-events: none;
+}
+
+.prose .code-accordion[data-ready="true"][data-expanded="true"] .code-accordion__content {
+  max-height: none;
+}
+
+.prose .code-accordion[data-ready="true"][data-expanded="true"] .code-accordion__content::after {
+  display: none;
+}
+
+/* tables as crisp comic panels: ink border + rounded corners like the hero
+   cards; separate borders (not collapse) so the radius can clip cleanly */
+.prose table {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-block: 2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+}
+
+.prose caption {
+  padding: 0.5rem 0.9rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.prose th {
+  text-align: left;
+  font-size: var(--font-size-ui-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  background: var(--color-accent-panel);
+}
+
+/* only the column-header row gets the heavy divider; row headers in the body
+   keep the same 1px rhythm as their td neighbors */
+.prose thead th {
+  border-bottom: 2px solid var(--ink);
+}
+
+.prose :is(th, td) {
+  padding: 0.65rem 0.9rem;
+  vertical-align: top;
+}
+
+.prose td,
+.prose tbody th {
+  border-bottom: 1px solid var(--line);
+}
+
+/* the panel border closes the table — no doubled line under the last row */
+.prose tbody tr:last-child :is(td, th) {
+  border-bottom: 0;
+}
+
+.prose td:first-child {
+  font-weight: 600;
+}
+
+.prose tbody tr:nth-child(odd) {
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+}
+
+.prose table.worker-configuration {
+  table-layout: fixed;
+}
+
+.prose table.worker-configuration .worker-configuration__label {
+  display: none;
+}
+
+@media (max-width: 32rem) {
+  .prose table {
+    table-layout: fixed;
+    font-size: 0.82rem;
+  }
+
+  .prose :is(th, td) {
+    padding: 0.55rem 0.45rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 40rem) {
+  .prose table.worker-configuration {
+    display: block;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .prose table.worker-configuration thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .prose table.worker-configuration tbody {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .prose table.worker-configuration tr {
+    display: grid;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .prose table.worker-configuration td {
+    display: grid;
+    grid-template-columns: minmax(5.75rem, 0.8fr) minmax(0, 1.6fr);
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    overflow-wrap: anywhere;
+  }
+
+  .prose table.worker-configuration td .worker-configuration__label {
+    display: block;
+    color: var(--muted);
+    font-size: var(--font-size-ui-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .prose table.worker-configuration tr td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.prose .comic-quote {
+  position: relative;
+  margin-block: 2.5rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  background: var(--color-accent-panel);
+  overflow-wrap: anywhere;
+}
+
+.prose .comic-quote::before {
+  content: "“";
+  position: absolute;
+  top: 0.7rem;
+  left: clamp(1rem, 3vw, 1.5rem);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+}
+
+.prose .comic-quote p {
+  margin: 0;
+  padding-inline-start: 2.25rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  font-weight: var(--font-weight-strong);
+  line-height: 1.4;
+}
+
+.prose .comic-quote__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding-inline-start: 2.25rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-strong);
+  color: var(--muted);
+}
+
+.prose .comic-quote__footer::before {
+  content: "↳";
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.prose .comic-quote cite {
+  font-style: normal;
+}
+
+@media (max-width: 32rem) {
+  .prose .comic-quote {
+    padding: 1.15rem 1rem;
+  }
+
+  .prose .comic-quote::before {
+    top: 0.6rem;
+    left: 1rem;
+    font-size: 2.2rem;
+  }
+}
+
+/* FAQ-style accordion: question left, accent chevron right, flat card */
+.prose details {
+  margin-block: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+
+.prose summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-block-size: 3rem;
+  padding: 0.85rem 1.25rem;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  list-style: none;
+  border-radius: calc(var(--radius-md) - 1px); /* hug the card's inner corners */
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+/* hover wash on the question row; an open panel keeps the same wash on top */
+.prose summary:hover,
+.prose details[open] summary {
+  background: var(--color-accent-soft);
+}
+
+.prose details[open] summary {
+  border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
+}
+
+.prose summary::-webkit-details-marker {
+  display: none;
+}
+
+.prose summary::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: -0.25rem;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.prose details[open] summary::after {
+  margin-top: 0.25rem;
+  transform: rotate(-135deg);
+}
+
+.prose summary:focus-visible {
+  outline: var(--focus-ring-strong);
+  outline-offset: 3px;
+}
+
+.prose details[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.prose details > :not(summary) {
+  margin-inline: 1.25rem; /* align answer text with the summary padding */
+}
+
+.prose details > table {
+  width: calc(100% - 2.5rem);
+}
+
+.prose details > :last-child {
+  margin-bottom: 1rem;
+}
+
+/* ---- forms: panel fieldsets + token-driven controls ---- */
+
+.prose fieldset {
+  margin: 0 0 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-panel); /* faint lavender wash, in the accent family */
+}
+
+/* nested groups (radios, checkboxes) read as inner panels */
+.prose fieldset fieldset {
+  margin-block: 1rem;
+  background: var(--bg);
+}
+
+/* legend sits naturally in the panel edge and uses the fieldset's opaque fill */
+.prose legend {
+  max-inline-size: calc(100% - 1rem);
+  margin-inline-start: 0.5rem;
+  padding: 0.35rem clamp(0.75rem, 2cqi, 1.25rem);
+  color: var(--ink);
+  background: inherit;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 2cqi, 1.25rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-transform: none;
+}
+
+.prose fieldset fieldset > legend {
+  margin-inline-start: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 1rem;
+}
+
+.prose .form-field {
+  display: grid;
+  gap: 0.4rem;
+  margin-block: 1rem;
+}
+
+.prose .form-field > label {
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-strong);
+}
+
+.prose .form-field small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.prose .form-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-block: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+/* when the whole row is a label, the entire row is a comfortable click target */
+.prose label.form-choice {
+  cursor: pointer;
+}
+
+.prose label.form-choice:hover {
+  background: var(--color-accent-soft);
+}
+
+/* the chosen option lifts out of the group — obvious at a glance */
+.prose .form-choice:has(:checked) {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: var(--color-accent-soft);
+}
+
+/* markdown task lists (- [ ]) borrow the .form-choice row treatment so a
+   checklist reads as part of the same system as the form panels */
+.prose .contains-task-list {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.prose .task-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-block: 0.25rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+/* only promise a click target once the script has enabled the boxes */
+.prose .task-list-item:not(:has(:disabled)) {
+  cursor: pointer;
+}
+
+.prose .task-list-item:not(:has(:disabled)):hover {
+  background: var(--color-accent-soft);
+}
+
+/* done items recede without being struck through */
+.prose .task-list-item:has(:checked) {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: var(--color-accent-soft);
+  color: var(--muted);
+}
+
+.prose :is(input, select, textarea) {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  accent-color: var(--accent); /* radios, checkboxes, range in brand purple */
+}
+
+/* boxed text-like controls; radio/checkbox/range/color/file draw their own UI.
+   :where() keeps specificity flat so state rules ([aria-invalid], [readonly]) win */
+.prose :is(
+  input:where(:not([type="radio"], [type="checkbox"], [type="range"], [type="color"], [type="file"])),
+  select,
+  textarea
+) {
+  width: min(100%, 26rem);
+  min-block-size: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, var(--line));
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.prose :is(input, select, textarea):hover:not(:disabled, [readonly]) {
+  border-color: color-mix(in srgb, var(--ink) 60%, var(--line));
+}
+
+.prose :is(input, textarea)::placeholder {
+  color: var(--muted);
+}
+
+.prose textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.prose select[multiple] {
+  height: auto;
+}
+
+/* comic radios + checkboxes: chunky ink outline, hard offset shadow, and a
+   snappy pop when the mark appears */
+.prose :is(input[type="radio"], input[type="checkbox"]) {
+  appearance: none;
+  flex: 0 0 auto;
+  display: grid;
+  place-content: center;
+  inline-size: 1.3rem;
+  block-size: 1.3rem;
+  margin: 0;
+  border: 2px solid var(--ink);
+  background: var(--bg);
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--ink) 22%, transparent);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.prose input[type="radio"] { border-radius: var(--radius-pill); }
+.prose input[type="checkbox"] { border-radius: var(--radius-xs); }
+
+.prose :is(input[type="radio"], input[type="checkbox"])::before {
+  content: "";
+  transform: scale(0);
+  transition: transform var(--duration-base) var(--ease-snap);
+}
+
+.prose input[type="radio"]::before {
+  inline-size: 0.62rem;
+  block-size: 0.62rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+}
+
+.prose input[type="checkbox"]::before {
+  inline-size: 0.8rem;
+  block-size: 0.8rem;
+  /* a bold check drawn as a rotated corner, knocked out in the panel color */
+  background: var(--bg);
+  clip-path: polygon(14% 47%, 0 61%, 40% 100%, 100% 22%, 86% 10%, 38% 72%);
+}
+
+.prose input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.prose input[type="radio"]:checked { border-color: var(--accent); }
+
+.prose :is(input[type="radio"], input[type="checkbox"]):checked::before {
+  transform: scale(1);
+}
+
+/* the mark presses in on click, like the CTA */
+.prose :is(input[type="radio"], input[type="checkbox"]):active:not(:disabled) {
+  box-shadow: 0 0 0 color-mix(in srgb, var(--ink) 22%, transparent);
+  translate: 2px 2px;
+}
+
+/* disabled: flat and greyed — no ink outline, no raised shadow, muted fill, so
+   it clearly reads as inert rather than a clickable control */
+.prose :is(input[type="radio"], input[type="checkbox"]):disabled {
+  border: 2px solid color-mix(in srgb, var(--muted) 35%, transparent);
+  background: color-mix(in srgb, var(--muted) 12%, var(--color-surface));
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.prose :is(input[type="radio"], input[type="checkbox"]):disabled::before {
+  background: color-mix(in srgb, var(--muted) 60%, transparent);
+}
+
+/* dim the whole choice row (label text included) when its control is disabled */
+.prose .form-choice:has(:disabled) {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prose :is(input[type="radio"], input[type="checkbox"])::before {
+    transition: none;
+  }
+}
+
+.prose input[type="range"] {
+  width: min(100%, 26rem);
+}
+
+.prose input[type="color"] {
+  inline-size: 3.25rem;
+  block-size: 2.3rem;
+  padding: 3px;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, var(--line));
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.prose input[type="file"] {
+  width: min(100%, 26rem);
+  font-size: 0.9rem;
+}
+
+.prose input[type="file"]::file-selector-button {
+  margin-right: 0.75rem;
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, var(--line));
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+/* field states */
+.prose :is(input, select, textarea, button):focus-visible {
+  outline: var(--focus-ring-strong);
+  outline-offset: 2px;
+}
+
+.prose :is(input, textarea)[readonly] {
+  background: var(--color-surface);
+  color: var(--muted);
+}
+
+.prose :is(input, select, textarea, button):disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.prose [aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
+.prose .form-field p[role="alert"] {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-medium);
+}
+
+/* buttons follow the site CTA family (.cta / .cta--secondary geometry and
+   colors). Default = the regular secondary button; only a submit inside a
+   button group steps up to the primary pop CTA — a button standing alone
+   stays regular. Injected code-copy buttons keep their own chip style. */
+.prose button:not(.copy) {
+  min-height: 2.75rem;
+  padding: 0.65rem 1.35rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-100);
+  background: var(--color-neutral-900);
+  border: 2px solid var(--color-neutral-500);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: translate var(--duration-fast) var(--ease-out);
+}
+
+.prose form button[type="submit"]:not(:only-child) {
+  color: var(--color-neutral-950);
+  background: var(--pop);
+  border-color: var(--pop);
+}
+
+.prose button:not(.copy):hover:not(:disabled) {
+  translate: -2px -2px; /* same lift as the .cta hover */
+}
+
+.prose .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block: 1.5rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prose button:not(.copy):hover:not(:disabled) {
+    translate: 0 0;
+  }
+}

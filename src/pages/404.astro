@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+import NotFound from "../components/NotFound.astro";
+
+Astro.response.status = 404;
+---
+
+<Base
+  title="Page not found"
+  documentTitle="Page not found | Karppinen.one"
+  description="The requested page could not be found."
+  noindex
+>
+  {/* Static build emits one catch-all 404.html; when it is served for a missing
+      /fi/* path, hand off to the Finnish 404 so the language matches. Runs in
+      <head> before the body paints, so there is no flash of English. */}
+  <script slot="head" is:inline>
+    if (location.pathname.startsWith("/fi/")) location.replace("/fi/404/");
+  </script>
+  <NotFound />
+</Base>

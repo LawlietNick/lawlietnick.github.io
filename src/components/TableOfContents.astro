@@ -1,0 +1,173 @@
+---
+// Server-rendered TOC from Astro's markdown `headings` prop (no client HTML parsing).
+// Anchors work with zero JS (Astro stamps matching ids on headings).
+// The client script adds scroll-spy + a collapse toggle that works on desktop and mobile.
+const { headings = [], fi = false } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const label = fi ? "Tällä sivulla" : "On this page";
+---
+
+{items.length >= 2 && (
+  <nav class="toc" aria-label={label} data-toc>
+    <button class="toc__toggle" type="button" aria-expanded="true" aria-controls="toc-list">
+      <span>{label}</span>
+      <span class="toc__chevron" aria-hidden="true"></span>
+    </button>
+    <ul id="toc-list" class="toc__list">
+      {items.map((h) => (
+        <li>
+          <a href={`#${h.slug}`} class="toc__link" data-depth={h.depth} data-target={h.slug}>{h.text}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc { font-size: 0.9rem; }
+  @media (min-width: 60rem) {
+    .toc {
+      position: sticky;
+      top: 5.5rem;
+      align-self: start;
+      /* never taller than the viewport below the sticky header;
+         the list scrolls on its own when entries overflow */
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100dvh - 6.5rem);
+    }
+    .toc__list {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      min-height: 0;
+    }
+  }
+  .toc__toggle {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+    width: 100%; padding: 0 0 0.4rem;
+    background: none; border: 0; cursor: pointer;
+    font: inherit; font-weight: 700; font-size: var(--font-size-ui-xs);
+    text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
+  }
+  .toc__chevron {
+    width: 0.5rem; height: 0.5rem;
+    border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg); transition: transform var(--duration-fast) var(--ease-standard);
+  }
+  .toc__toggle[aria-expanded="false"] .toc__chevron { transform: rotate(-45deg); }
+  .toc__list {
+    position: relative;
+    list-style: none; margin: 0.6rem 0 0; padding: 0;
+    display: grid; gap: 0.35rem;
+    border-left: 1px solid var(--line);
+  }
+  .toc__list::after {
+    content: "";
+    position: absolute;
+    top: var(--active-top, 0);
+    left: -1px;
+    width: 2px;
+    height: var(--active-height, 0);
+    background: var(--accent);
+    transition: top var(--duration-fast) var(--ease-standard), height var(--duration-fast) var(--ease-standard);
+    pointer-events: none;
+  }
+  .toc__list[hidden] { display: none; }
+  .toc__link {
+    display: block; margin-left: -1px;
+    padding: 0.12rem 0 0.12rem 0.9rem;
+    text-decoration: none; color: var(--muted); line-height: 1.4;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  .toc__link[data-depth="3"] { padding-left: 1.7rem; font-size: 0.85rem; }
+  .toc__link:hover { color: var(--ink); }
+  /* color only — no weight change, so active text never rewraps */
+  .toc__link.is-active { color: var(--accent); }
+</style>
+
+<script>
+  // Re-init on every client navigation (astro:page-load also fires on first load).
+  // scroll/resize are bound to the persisted window, so drop the previous page's
+  // handler before binding this page's to avoid leaking a listener per navigation.
+  let tocScrollHandler = null;
+  const initToc = () => {
+    if (tocScrollHandler) {
+      removeEventListener("scroll", tocScrollHandler);
+      removeEventListener("resize", tocScrollHandler);
+      tocScrollHandler = null;
+    }
+    const toc = document.querySelector("[data-toc]");
+    if (toc) {
+    const toggle = toc.querySelector(".toc__toggle");
+    const list = toc.querySelector(".toc__list");
+    const links = [...toc.querySelectorAll(".toc__link")];
+
+    // collapse toggle (desktop + mobile, same control)
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      list.hidden = open;
+    });
+
+    // start collapsed on narrow screens
+    if (matchMedia("(max-width: 60rem)").matches) {
+      toggle.setAttribute("aria-expanded", "false");
+      list.hidden = true;
+    }
+
+    // A section runs from its heading to the next heading. Highlight every
+    // section that overlaps the visible viewport below the sticky header.
+    const headings = links
+      .map((l) => document.getElementById(l.dataset.target))
+      .filter(Boolean);
+    const OFFSET = 88; // px; matches h2/h3 scroll-margin-top (sticky header)
+    let lastActive = "";
+    const spy = () => {
+      const viewportBottom = innerHeight;
+      // a page can hide a section (e.g. a picker that swaps branches); a hidden
+      // heading has no box, so its rect reads as top 0 and would always match
+      const visible = headings.filter((heading) => heading.offsetHeight > 0);
+      const activeIds = visible.filter((heading, index) => {
+        const top = heading.getBoundingClientRect().top;
+        const next = visible[index + 1];
+        const bottom = next ? next.getBoundingClientRect().top : document.documentElement.scrollHeight - scrollY;
+        return bottom > OFFSET && top < viewportBottom;
+      }).map((heading) => heading.id);
+      const activeSet = new Set(activeIds);
+      links.forEach((link) => link.classList.toggle("is-active", activeSet.has(link.dataset.target)));
+
+      const activeLinks = links.filter((link) => activeSet.has(link.dataset.target));
+      const first = activeLinks[0];
+      const last = activeLinks.at(-1);
+      list.style.setProperty("--active-top", first ? `${first.offsetTop}px` : "0px");
+      list.style.setProperty("--active-height", first && last ? `${last.offsetTop + last.offsetHeight - first.offsetTop}px` : "0px");
+
+      // when the list scrolls on its own (long TOC, short viewport), keep the
+      // active range in view — scroll only the list, never the page
+      const activeKey = activeIds.join("|");
+      if (activeKey !== lastActive) {
+        lastActive = activeKey;
+        if (first && last && !list.hidden && list.scrollHeight > list.clientHeight) {
+          const lr = list.getBoundingClientRect();
+          const firstRect = first.getBoundingClientRect();
+          const lastRect = last.getBoundingClientRect();
+          if (firstRect.top < lr.top) list.scrollTo({ top: list.scrollTop + firstRect.top - lr.top, behavior: "smooth" });
+          else if (lastRect.bottom > lr.bottom) list.scrollTo({ top: list.scrollTop + lastRect.bottom - lr.bottom, behavior: "smooth" });
+        }
+      }
+    };
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; spy(); });
+    };
+    tocScrollHandler = onScroll;
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll, { passive: true });
+    spy();
+    }
+  };
+  document.addEventListener("astro:page-load", initToc);
+</script>

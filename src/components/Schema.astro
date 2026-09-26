@@ -1,0 +1,57 @@
+---
+import portrait from "../assets/about/portrait.jpeg";
+import { getImage } from "astro:assets";
+import { buildSchemaGraph } from "../utils/schema";
+import { authorName } from "../data/site.js";
+
+const {
+  fm,
+  fi = false,
+  title,
+  description,
+  pageType,
+  items = [],
+  stats,
+  hasTranslation,
+  translatedPath,
+} = Astro.props;
+
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : undefined;
+const generatedPortrait = await getImage({ src: portrait, format: "webp" });
+const generatedPersonImage = Astro.site ? {
+  src: new URL(generatedPortrait.src, Astro.site).href,
+  width: generatedPortrait.attributes.width,
+  height: generatedPortrait.attributes.height,
+  alt: authorName,
+} : undefined;
+// Keep the root homepage graph intentionally limited to WebPage, WebSite and Person.
+const personImage = Astro.url.pathname === "/" ? undefined : generatedPersonImage;
+const pageImage = Astro.url.pathname === "/fi/" || pageType === "about"
+  ? personImage
+  : undefined;
+
+const schema = canonicalUrl
+  ? buildSchemaGraph({
+      canonicalUrl,
+      pathname: Astro.url.pathname,
+      title,
+      description,
+      language: fi ? "fi" : "en",
+      pageType,
+      frontmatter: fm,
+      items,
+      stats,
+      personImage,
+      pageImage,
+      hasTranslation,
+      translatedPath,
+    })
+  : undefined;
+const serializedSchema = schema
+  ? JSON.stringify(schema).replace(/</g, "\\u003c")
+  : undefined;
+---
+
+{serializedSchema && <script type="application/ld+json" set:html={serializedSchema} />}

@@ -1,0 +1,22 @@
+---
+import Base from "../../layouts/Base.astro";
+import BlogListing from "../../components/BlogListing.astro";
+
+const withTrailingSlash = (path) => (path.endsWith("/") ? path : `${path}/`);
+const posts = Object.values(import.meta.glob("./*.md", { eager: true }))
+  .filter((p) => !p.frontmatter.draft && !p.frontmatter.noindex)
+  .map((p) => ({
+    ...p.frontmatter,
+    url: withTrailingSlash(p.url),
+    minutes: Math.max(1, Math.round(p.rawContent().split(/\s+/).length / 200)),
+  }))
+  .sort((a, b) => new Date(b.date) - new Date(a.date));
+---
+
+<Base title="Thoughts" description="Notes on analytics, measurement, SEO, and the practical use of AI in digital work." schemaPageType="blog-index" schemaItems={posts}>
+  <BlogListing
+    posts={posts}
+    heroTitle="Thoughts"
+    intro="Notes on analytics, measurement, SEO, and the practical use of AI in digital work."
+  />
+</Base>

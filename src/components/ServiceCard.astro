@@ -1,0 +1,151 @@
+---
+// Linked service card — the primary conversion entry point on the hub.
+// Distinct from the flat front-page work cards: a comic panel sitting on the
+// site's signature halftone-dot offset shadow (same motif as the CTA button),
+// which pops and blurs on hover/focus. All colours are theme tokens.
+const { href, icon, title, summary } = Astro.props;
+---
+
+<a href={href} class="service-card">
+  <span class="service-card__icon" aria-hidden="true">{icon}</span>
+  <span class="service-card__title">{title}</span>
+  <span class="service-card__summary">{summary}</span>
+  <span class="service-card__more" aria-hidden="true">→</span>
+</a>
+
+<style>
+  .service-card {
+    /* halftone offset shadow — reuses the CTA's dot motif */
+    --ht-color: light-dark(var(--color-neutral-500), var(--color-neutral-700));
+    --ht-dot-size: 1.5px;
+    --ht-gap: 8px;
+    --ht-shift-x: 7px;
+    --ht-shift-y: 9px;
+    --ht-hover-shift-x: 16px;
+    --ht-hover-shift-y: 18px;
+
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+    min-width: 0;
+    padding: 1.6rem 1.5rem 1.4rem;
+    color: var(--ink);
+    text-decoration: none;
+    translate: 0 0;
+    transition: translate var(--duration-base) var(--ease-snap);
+  }
+
+  /* the panel — a solid layer above the dots */
+  .service-card::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    border: 2px solid var(--ink);
+    transition: border-color var(--duration-base) var(--ease-out);
+  }
+
+  /* the dotted shadow, one layer lower and shifted down-right so it peeks out */
+  .service-card::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    pointer-events: none;
+    border-radius: var(--radius-md);
+    background-image: radial-gradient(
+      circle,
+      var(--ht-color) 0 var(--ht-dot-size),
+      transparent calc(var(--ht-dot-size) + 0.2px)
+    );
+    background-size: var(--ht-gap) var(--ht-gap);
+    opacity: 0.45;
+    filter: blur(0);
+    translate: var(--ht-shift-x) var(--ht-shift-y);
+    transition:
+      translate var(--duration-base) var(--ease-snap),
+      opacity var(--duration-base) var(--ease-out),
+      filter var(--duration-base) var(--ease-out);
+  }
+
+  .service-card:is(:hover, :focus-visible) {
+    translate: -3px -3px;
+  }
+  .service-card:is(:hover, :focus-visible)::before {
+    border-color: var(--accent);
+  }
+  .service-card:is(:hover, :focus-visible)::after {
+    translate: var(--ht-hover-shift-x) var(--ht-hover-shift-y);
+    opacity: 0.55;
+    filter: blur(2px);
+  }
+  .service-card:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 5px;
+  }
+  .service-card:active {
+    translate: 2px 2px;
+  }
+  .service-card:active::before {
+    border-color: var(--ink);
+  }
+  .service-card:active::after {
+    translate: 0 0;
+    opacity: 0;
+    filter: blur(0);
+  }
+
+  .service-card__icon {
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 14%, var(--bg));
+    color: var(--accent);
+    display: grid;
+    place-content: center;
+    font-size: 1.3rem;
+    transition:
+      background var(--duration-base) var(--ease-out),
+      color var(--duration-base) var(--ease-out);
+  }
+  .service-card:is(:hover, :focus-visible) .service-card__icon {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .service-card__title {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-strong);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 1.02rem;
+    line-height: 1.25;
+    margin-top: 0.45rem;
+  }
+  .service-card__summary {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .service-card__more {
+    margin-top: 0.35rem;
+    color: var(--accent);
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: translate var(--duration-base) var(--ease-snap);
+  }
+  .service-card:is(:hover, :focus-visible) .service-card__more {
+    translate: 0.3em 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-card,
+    .service-card::after,
+    .service-card__more { transition: none; }
+    .service-card:is(:hover, :focus-visible) { translate: 0 0; }
+  }
+</style>

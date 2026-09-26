@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import { toolkit } from "../data/toolkit.js";
+import { interactiveTools } from "../data/interactive-tools.js";
+
+// item markdown per category (add a category dir and its entries appear here)
+const itemGlobs = {
+  tools: import.meta.glob("./tools/*.md", { eager: true }),
+  templates: import.meta.glob("./templates/*.md", { eager: true }),
+};
+
+export function getStaticPaths() {
+  return toolkit.map((item) => ({ params: { toolkit: item.slug }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const c = item.en;
+const mdItems = Object.entries(itemGlobs[item.slug] ?? {}).map(([path, mod]) => ({
+  ...mod.frontmatter,
+  href: `/${item.slug}/${path.split("/").pop().replace(/\.md$/, "")}/`,
+}));
+const interactive = interactiveTools
+  .filter((t) => t.category === item.slug && t.en)
+  .map((t) => ({ ...t.en, icon: t.icon, order: t.order ?? 0, href: `/${item.slug}/${t.slug}/` }));
+const items = [...mdItems, ...interactive].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+const empty = items.length === 0;
+---
+
+<Base title={c.label} documentTitle={c.documentTitle} description={c.desc} schemaPageType="toolkit" noindex={empty}>
+  <section class="about toolkit-hero wide-band">
+    <div>
+      <h1>{c.label}</h1>
+    </div>
+    <div>
+      <p>{c.desc}</p>
+      {empty && <p class="toolkit-empty">This collection is being put together. Check back soon.</p>}
+    </div>
+  </section>
+
+  {
+    !empty && (
+      <div class="toolkit-grid">
+        {items.map((entry) => (
+          <ServiceCard href={entry.href} icon={entry.icon ?? "✦"} title={entry.title} summary={entry.summary} />
+        ))}
+      </div>
+    )
+  }
+</Base>
+
+<style>
+  .toolkit-empty {
+    color: var(--muted);
+  }
+  .toolkit-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    margin-block: 1.5rem 3rem;
+  }
+  @container page (min-width: 46rem) {
+    .toolkit-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

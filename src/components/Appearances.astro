@@ -1,0 +1,126 @@
+---
+import Badge from "./Badge.astro";
+import { appearances } from "../data/appearances.js";
+
+const { fi = false } = Astro.props;
+const language = fi ? "fi" : "en";
+const t = fi
+  ? {
+      title: "Esiintymiset ja julkaisut",
+      intro: "Jaan ajatuksia artikkelien, koulutusten, webinaarien ja podcastien kautta, erityisesti SEO:sta, analytiikasta, mittaamisesta ja tekoälyn käytännön hyödyntämisestä digityössä.",
+      link: "Kuuntele jakso Spotifyssa",
+    }
+  : {
+      title: "Talks, podcasts, publications",
+      intro: "I share ideas through articles, training, webinars and podcasts, especially around SEO, analytics, measurement and the practical use of AI in digital work.",
+      link: "Listen on Spotify",
+    };
+const dateFormat = new Intl.DateTimeFormat(fi ? "fi-FI" : "en-GB", {
+  day: "numeric",
+  month: fi ? "numeric" : "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+const languageNames = new Intl.DisplayNames([language], { type: "language" });
+---
+
+<section class="appearances" id="proof" aria-labelledby="appearances-title">
+  <header class="appearances__intro">
+    <h2 id="appearances-title">{t.title}</h2>
+    <p>{t.intro}</p>
+  </header>
+
+  <div class="appearances__list">
+    {appearances.map((appearance) => (
+      <article class="appearance">
+        <div class="appearance__meta">
+          <time datetime={appearance.datePublished}>{dateFormat.format(new Date(appearance.datePublished))}</time>
+          <Badge class="appearance__type">Podcast</Badge>
+          <span class="appearance__language">{languageNames.of(appearance.inLanguage)}</span>
+        </div>
+        <div class="appearance__body">
+          <h3>{appearance.name}</h3>
+          <p>{appearance[language].description}</p>
+          <a class="appearance__link" href={appearance.url}>
+            {t.link} <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .appearances {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: 4rem;
+    border-top: 1px solid var(--line);
+  }
+  .appearances__intro h2 {
+    margin: 0 0 1.25rem;
+    font-size: clamp(1.8rem, 4.5cqi, 2.7rem);
+  }
+  .appearances__intro p {
+    max-width: 36rem;
+    margin: 0;
+  }
+  .appearances__list { border-top: 1px solid var(--line); }
+  .appearance {
+    display: grid;
+    gap: 0.75rem;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .appearance__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--muted);
+    font-size: var(--font-size-ui-xs);
+    font-weight: 560;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .appearance__language {
+    color: var(--muted);
+    font-weight: var(--font-weight-body);
+    letter-spacing: normal;
+    text-transform: none;
+  }
+  .appearance__body h3 {
+    margin: 0;
+    font-size: clamp(1.25rem, 3cqi, 1.55rem);
+  }
+  .appearance__body p {
+    max-width: 58ch;
+    margin: 0.5rem 0 0.9rem;
+    color: var(--muted);
+  }
+  .appearance__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--accent);
+    font-weight: 650;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+    transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out);
+  }
+  .appearance__link span { transition: transform var(--duration-base) var(--ease-snap); }
+  .appearance__link:hover { text-decoration-color: currentColor; }
+  .appearance__link:hover span { transform: translateX(0.2rem); }
+  .appearance__link:focus-visible {
+    outline: 3px solid var(--pop);
+    outline-offset: 4px;
+    border-radius: var(--radius-xs);
+  }
+  @container page (min-width: 46rem) {
+    .appearances {
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4.5rem;
+    }
+  }
+</style>

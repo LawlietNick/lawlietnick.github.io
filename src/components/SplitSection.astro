@@ -1,0 +1,31 @@
+---
+const {
+  id,
+  eyebrow,
+  title,
+  variant = "page",
+  class: className = "",
+} = Astro.props;
+
+const isAbout = variant === "about";
+const isContact = variant === "contact";
+const sectionClasses = [
+  isAbout ? "about" : "page-section",
+  isContact && "page-section--contact",
+  className,
+].filter(Boolean);
+const titleClass = isAbout ? undefined : "page-section__title";
+const copyClass = isAbout ? undefined : "page-section__copy";
+const hasCopySlot = Astro.slots.has("copy");
+---
+
+<section id={id} class:list={sectionClasses}>
+  <div class={titleClass}>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    {title && <h2>{title}</h2>}
+    <slot name="title" />
+  </div>
+  <div class={copyClass}>
+    {hasCopySlot ? <slot name="copy" /> : <slot />}
+  </div>
+</section>

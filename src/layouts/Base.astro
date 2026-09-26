@@ -1,0 +1,298 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PostHero from "../components/PostHero.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import TableOfContents from "../components/TableOfContents.astro";
+import AskAI from "../components/AskAI.astro";
+import PreferredSourceCTA from "../components/PreferredSourceCTA.astro";
+import RelatedArticles from "../components/RelatedArticles.astro";
+import Postscript from "../components/Postscript.astro";
+import Schema from "../components/Schema.astro";
+import { ClientRouter } from "astro:transitions";
+import { getCollection } from "astro:content";
+import { resolveLanguageLinks } from "../utils/language-links.js";
+import { selectRelatedPosts } from "../utils/related-posts.ts";
+import { siteConfig, siteName } from "../data/site.js";
+import "../styles/tokens.css";
+import "../styles/global.css";
+import "../styles/patterns.css";
+
+const fm = Astro.props.frontmatter;
+const { title, description = "", documentTitle } = fm ?? Astro.props;
+// pages/posts pass a page-specific title; the brand suffix is appended here (one place)
+const fullTitle = documentTitle ?? (title ? `${title} | ${siteName}` : siteName);
+const { schemaPageType, schemaItems = [] } = Astro.props;
+const { banner = false } = Astro.props; // pages opt in to the footer CTA banner
+const { noindex = false } = fm ?? Astro.props;  // markdown pages carry it in frontmatter
+const headings = Astro.props.headings ?? [];  // markdown layout gives this; .astro pages don't
+
+// Render the Markdown slot once for both the statistics and the article body.
+// compiledContent() uses precompiled HTML too, but can repeat image resolution.
+const articleHtml = fm ? await Astro.slots.render("default") : "";
+let stats = null;
+if (fm) {
+  const html = articleHtml;
+  const text = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const words = text ? text.split(" ").length : 0;
+  const count = (re) => (html.match(re) || []).length;
+  stats = {
+    words,
+    headings: count(/<h[23][\s>]/gi),
+    readTime: Math.max(1, Math.round(words / 200)),
+    links: count(/<a[\s>]/gi),
+    codeBlocks: count(/<pre[\s>]/gi),
+    images: count(/<img[\s>]/gi),
+  };
+}
+
+const fi = Astro.url.pathname.startsWith("/fi");
+let relatedPosts = [];
+if (fm) {
+  // Reuse the metadata/body store; importing page modules also pulls in layouts.
+  const posts = await getCollection(fi ? "blogFi" : "blog");
+  const language: "fi" | "en" = fi ? "fi" : "en";
+  const postCandidates = posts.map(({ id, data }) => ({
+    ...data,
+    slug: id,
+    language,
+    url: `${fi ? "/fi" : ""}/blog/${id}/`,
+  }));
+  relatedPosts = selectRelatedPosts(
+    {
+      ...fm,
+      slug: Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "",
+      language,
+      date: new Date(fm.date),
+      url: Astro.url.pathname,
+    },
+    postCandidates,
+  ).map((post) => {
+    const body = posts.find(({ id }) => id === post.slug)?.body ?? "";
+    return {
+      ...post,
+      // Only count words for the cards that will actually be displayed.
+      minutes: Math.max(1, Math.round(body.split(/\s+/).length / 200)),
+    };
+  });
+}
+const t = fi
+  ? {
+      home: "Etusivu", work: "Palvelut", about: "Minusta", writing: siteConfig.blogs.thoughts.fi.name, toolkit: "Työkalupakki", contact: "Ota yhteyttä",
+      bannerTitle: "Onko dataongelma?", bannerAccent: "Kapinoidaan.", bannerBtn: "Aloita keskustelu",
+      explore: "Sivusto", language: "Kieli / Language", social: "Muualla", privacy: "Tietosuojaseloste",
+      blurb: "Analytiikan ammattilainen. Käännän sotkuisen datan päätöksiksi.",
+      rights: "Kaikki oikeudet pidätetään.",
+      feed: "Atom-syöte",
+    }
+  : {
+      home: "Home", work: "Services", about: "About", writing: siteConfig.blogs.thoughts.en.name, toolkit: "Toolkit", contact: "Get in touch",
+      bannerTitle: "Have a data problem?", bannerAccent: "Let’s rebel.", bannerBtn: "Start a consultation",
+      explore: "Explore", language: "Language / Kieli", social: "Elsewhere", privacy: "Privacy Policy",
+      blurb: "Analytics professional. I turn messy data into decisions.",
+      rights: "All rights reserved.",
+      feed: "Atom Feed",
+    };
+const root = fi ? "/fi/" : "/";
+const aboutHref = fi ? "/fi/minusta/" : "/about/";
+const feedHref = fi ? "/fi/atom.xml" : siteConfig.website.atomFeedPath;
+
+const currentPath = Astro.url.pathname;
+// pages that own their EN<->FI pairing (services/tools layouts) pass it in directly
+const { alternate } = Astro.props;
+const {
+  enPath,
+  fiPath,
+  hasLanguageAlternate,
+  postWithoutTranslation,
+} = resolveLanguageLinks({ currentPath, isFinnish: fi, frontmatter: fm, alternate });
+const enLanguageHref = noindex ? (fi ? "/" : currentPath) : enPath;
+const fiLanguageHref = noindex ? (fi ? currentPath : "/fi/") : fiPath;
+const effectiveHasLanguageAlternate = noindex ? false : hasLanguageAlternate;
+const effectivePostWithoutTranslation = noindex ? true : postWithoutTranslation;
+const hreflang = Astro.site && effectiveHasLanguageAlternate;
+
+// social share image: per-page frontmatter `image` wins, else the site default
+const ogImage = Astro.site
+  ? new URL(fm?.image ?? "/og-default.png", Astro.site).href
+  : undefined;
+const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang={fi ? "fi" : "en"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      content="#f4f2ed"
+      media="(prefers-color-scheme: light)"
+      data-theme-color="light"
+    />
+    <meta
+      name="theme-color"
+      content="#111111"
+      media="(prefers-color-scheme: dark)"
+      data-theme-color="dark"
+    />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <meta
+      name="robots"
+      content={noindex
+        ? "noindex,nofollow"
+        : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+    />
+    <!-- Open Graph / social -->
+    <meta property="og:title" content={documentTitle ?? title ?? siteName} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content={fm ? "article" : "website"} />
+    <meta property="og:locale" content={fi ? "fi_FI" : "en_US"} />
+    <meta property="og:site_name" content={siteName} />
+    {ogUrl && <meta property="og:url" content={ogUrl} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+    {fm?.date && <meta property="article:published_time" content={new Date(fm.date).toISOString()} />}
+    {fm?.updatedDate && <meta property="article:modified_time" content={new Date(fm.updatedDate).toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    <Schema
+      {fm}
+      {fi}
+      {title}
+      {description}
+      pageType={schemaPageType}
+      items={schemaItems}
+      {stats}
+      hasTranslation={effectiveHasLanguageAlternate}
+      translatedPath={fi ? enLanguageHref : fiLanguageHref}
+    />
+    <!-- links -->
+    {Astro.site && <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />}
+    {hreflang && <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site)} />}
+    {hreflang && <link rel="alternate" hreflang="fi" href={new URL(fiPath, Astro.site)} />}
+    {hreflang && <link rel="alternate" hreflang="x-default" href={new URL(enPath, Astro.site)} />}
+    <link rel="alternate" type="application/atom+xml" title={siteConfig.website.name} href={Astro.site ? new URL(feedHref, Astro.site).href : feedHref} />
+    <link rel="prefetch" href="/ai.txt" />
+
+    <!-- resource hints -->
+    <link rel="preload" href="/fonts/roboto-flex.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- favicons -->
+    <link rel="icon" href="/nk-logo.svg" />
+    <!-- scripts: theme init is intentionally render-blocking (end-of-head still runs before first paint) -->
+    <script is:inline>
+      // Resolve the theme preference (system|light|dark) before first paint to avoid a flash,
+      // and re-apply after every view-transition swap: ClientRouter replaces the <html>
+      // attributes with the incoming server-rendered document, which has no theme attributes
+      // (they are client-set), so without this the theme resets to system on each navigation.
+      (() => {
+        const syncThemeColor = (preference, resolvedTheme) => {
+          document.querySelectorAll('meta[name="theme-color"][data-theme-color]').forEach((meta) => {
+            const theme = meta.dataset.themeColor;
+            meta.media = preference === "system"
+              ? `(prefers-color-scheme: ${theme})`
+              : theme === resolvedTheme ? "all" : "not all";
+          });
+        };
+        const applyTheme = () => {
+          const allowed = ["system", "light", "dark"];
+          let saved = null;
+          try { saved = localStorage.getItem("theme"); } catch (e) { /* storage blocked */ }
+          const preference = allowed.includes(saved) ? saved : "system";
+          const systemIsDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const resolvedTheme = preference === "system" ? (systemIsDark ? "dark" : "light") : preference;
+          const el = document.documentElement;
+          el.dataset.themePreference = preference;
+          el.dataset.theme = resolvedTheme;
+          el.style.colorScheme = resolvedTheme;
+          syncThemeColor(preference, resolvedTheme);
+        };
+        applyTheme();
+        window.addEventListener("themechange", (event) => {
+          const { preference, resolvedTheme } = event.detail ?? {};
+          if (["system", "light", "dark"].includes(preference) && ["light", "dark"].includes(resolvedTheme)) {
+            syncThemeColor(preference, resolvedTheme);
+          }
+        });
+        // fires before paint on each ClientRouter navigation
+        document.addEventListener("astro:after-swap", applyTheme);
+      })();
+    </script>
+    <ClientRouter />
+    <slot name="head" />
+  </head>
+  <body class:list={{ "article-page": fm }}>
+    <a class="skip" href="#main">{fi ? "Siirry sisältöön" : "Skip to content"}</a>
+    <Header
+      {fi}
+      {t}
+      {root}
+      {aboutHref}
+      {enLanguageHref}
+      {fiLanguageHref}
+      hasLanguageAlternate={effectiveHasLanguageAlternate}
+      postWithoutTranslation={effectivePostWithoutTranslation}
+    />
+
+    <main class="container" id="main" tabindex="-1">
+      {fm ? (
+        <>
+          <div class="wide-band">
+            <Breadcrumb {fm} {fi} />
+          </div>
+          <article>
+            <div class="wide-band">
+              <PostHero {fm} {fi} />
+              <AskAI url={ogUrl} title={title} {fi} />
+            </div>
+            <div class="post-layout">
+              <TableOfContents headings={headings} {fi} />
+              <div class="post-main">
+                <article class="prose" data-no-copy={fm?.category === "templates" ? "" : undefined}><Fragment set:html={articleHtml} /></article>
+                {ogUrl && (
+                  <p class="print-source">
+                    {fi ? "Lähde:" : "Source:"} <a href={ogUrl}>{ogUrl}</a>
+                  </p>
+                )}
+                {stats && <Postscript {...stats} {fi} />}
+              </div>
+            </div>
+          </article>
+          <div class="article-ending">
+            <PreferredSourceCTA {fi} />
+          </div>
+          <RelatedArticles posts={relatedPosts} {fi} heading={fm.relatedHeading} />
+        </>
+      ) : (
+        <slot />
+      )}
+    </main>
+
+    <Footer
+      {fi}
+      {t}
+      {root}
+      {aboutHref}
+      {feedHref}
+      {enLanguageHref}
+      {fiLanguageHref}
+      hasLanguageAlternate={effectiveHasLanguageAlternate}
+      postWithoutTranslation={effectivePostWithoutTranslation}
+      {banner}
+    />
+
+    <script>
+      // Check the DOM, not just fm: tools can have copyable code blocks too.
+      document.addEventListener("astro:page-load", async () => {
+        const root = document.body;
+        if (!root.querySelector("pre, [data-code-accordion], .contains-task-list, .prose :disabled")) return;
+        const { enhanceContent } = await import("../scripts/content-enhancements");
+        if (root.isConnected) enhanceContent(root);
+      });
+    </script>
+  </body>
+</html>

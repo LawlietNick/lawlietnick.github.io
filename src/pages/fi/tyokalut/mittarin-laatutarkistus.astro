@@ -1,0 +1,28 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ToolHero from "../../../components/ToolHero.astro";
+import MetricQualityChecker from "../../../components/MetricQualityChecker.astro";
+
+const title = "Mittarin laatutarkistus";
+const summary = "Arvioi mittarin laatua kahdeksalla käytännön kysymyksellä. Saat arvion siitä, onko mittari koristeellinen, diagnostinen, päätöksentekoa tukeva vai liiketoimintakriittinen.";
+---
+
+<Base title={title} description={summary} alternate={{ lang: "en", href: "/tools/metric-quality-checker/" }}>
+  <Breadcrumb
+    fi
+    crumbs={[
+      { label: "Etusivu", href: "/fi/", icon: true },
+      { label: "Työkalut", href: "/fi/tyokalut/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">Hyvä mittari ansaitsee huomion parantamalla päätöksiä, ei vain olemalla helppo laskea.</p>
+  </ToolHero>
+
+  <div class="wide-band">
+    <MetricQualityChecker fi />
+  </div>
+</Base>

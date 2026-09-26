@@ -1,0 +1,28 @@
+---
+// One place for the Picture-or-plain-img branch. If the image has a src/assets
+// copy, render Astro's <Picture> (webp + responsive widths); otherwise fall
+// back to the original public <img>. `...rest` forwards the caller's props —
+// crucially the injected `data-astro-cid-*` scope token — onto the real <img>
+// so each consumer's scoped `.container img { … }` sizing rules still match.
+import { Picture } from "astro:assets";
+import { blogImage } from "../utils/blog-image.ts";
+
+const {
+  src,
+  alt = "",
+  widths,
+  sizes,
+  width,
+  height,
+  loading = "lazy",
+  fetchpriority = "auto",
+  ...rest
+} = Astro.props;
+const asset = blogImage(src);
+---
+
+{asset ? (
+  <Picture src={asset} {alt} {widths} {sizes} {loading} {fetchpriority} {...rest} />
+) : (
+  <img {src} {alt} {width} {height} {loading} {fetchpriority} {...rest} />
+)}
