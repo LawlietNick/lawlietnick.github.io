@@ -1,6 +1,6 @@
 {
   "astro.config.mjs": {
-    "mtime": 1790453131691.2239,
+    "mtime": 1790453549812.8713,
     "hash": "c849a1281a74d7ee1878481b44dfec39"
   },
   "scripts/generate-hero-placeholders.mjs": {
@@ -36,8 +36,8 @@
     "hash": "e2f9318e33e404a80823602bbada9f40"
   },
   "src/components/Header.astro": {
-    "mtime": 1790432488353.5874,
-    "hash": "a61f830f9c8add6d40ec5ccf0cf1e327"
+    "mtime": 1790454643798.4722,
+    "hash": "aec41b08c4ff06c7531e3c5809c0f437"
   },
   "src/components/Hero.astro": {
     "mtime": 1789301048035.8196,
@@ -84,8 +84,8 @@
     "hash": "1a65b80aef63a9a63bec2f341f3405f7"
   },
   "src/data/toolkit.js": {
-    "mtime": 1789231319586.65,
-    "hash": "74ca17850fafa0005886c2dcb9f31f12"
+    "mtime": 1790454575608.4116,
+    "hash": "0b5241445e86c1aa76808b76d8d4829d"
   },
   "src/data/work.js": {
     "mtime": 1783578275123.939,
@@ -268,7 +268,7 @@
     "hash": "6d4ae895fc777fb3d66ac3bcad5d010f"
   },
   "src/pages/blog/tester-post.md": {
-    "mtime": 1790453131697.3809,
+    "mtime": 1790453549816.4521,
     "hash": "17722185db50c4878b3d57827ee130b0"
   },
   "public/images/blog/example-parts.jpeg": {
@@ -332,7 +332,7 @@
     "hash": "b4019b787f32202674799ebbdfd2b521"
   },
   "scripts/validate-content.mjs": {
-    "mtime": 1790453131691.5933,
+    "mtime": 1790453549813.1138,
     "hash": "2193c500bef9f05456c9490d12d8e7e0"
   },
   "src/assets/tools/cookie-banner/banner.js": {
@@ -496,7 +496,7 @@
     "hash": "7ce8ce3afdf94b7037e07a86dc0974c5"
   },
   "src/pages/fi/blog/tekstin-tasaus-saavutettavuus.md": {
-    "mtime": 1790453131700.0542,
+    "mtime": 1790453549817.4792,
     "hash": "96935861c00f6151bf2a210b5acf10f8"
   },
   "src/pages/fi/palvelut/avainsanatutkimus.md": {
@@ -648,7 +648,7 @@
     "hash": "42d116888384e185cf0f63259d0e7379"
   },
   "src/pages/blog/text-alignment-accessibility.md": {
-    "mtime": 1790453131697.7966,
+    "mtime": 1790453549816.8916,
     "hash": "ed82b446017e7d7688dd4ce0c3cb9d35"
   },
   "public/nk-logo-docx.png": {
@@ -800,7 +800,7 @@
     "hash": "1137a2233212acaf11c3f4c3c108b635"
   },
   "src/pages/fi/blog/sivujen-luokittelu-analytiikassa.md": {
-    "mtime": 1790453131699.6301,
+    "mtime": 1790453549817.2166,
     "hash": "5cb78642d951433074cbf649f6f0d6ae"
   },
   "public/images/blog/content-consumption-metrics.jpeg": {
@@ -876,8 +876,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1790452155897.2927,
-    "hash": "7405f0ee0ecbfd0d480100b30ed88bc4"
+    "mtime": 1790453549811.2715,
+    "hash": "7d29166dcf0e7269860ac0cad64f7583"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -906,5 +906,29 @@
   ".impeccable/review/ga4-mobile.png": {
     "mtime": 1790432515921.0376,
     "hash": "69696bc1fc1fd0c2e4d2e03bda5e7cea"
+  },
+  "src/assets/blog/examples/example-landscape.jpeg": {
+    "mtime": 1790453549813.51,
+    "hash": "d37e7b0d5731a3840edb03eeacd11af8"
+  },
+  "src/assets/blog/examples/example-portrait.jpeg": {
+    "mtime": 1790453549813.9333,
+    "hash": "0d46b88df4ea7416aeea0cd63820781c"
+  },
+  "src/assets/blog/examples/example-wide.jpeg": {
+    "mtime": 1790453549814.3413,
+    "hash": "51e41c3b164780b9119459c64397920b"
+  },
+  "src/assets/blog/sivutyyppi-ja-paaaihe.jpeg": {
+    "mtime": 1790453549814.8105,
+    "hash": "57a63c9d56e04460fb246e528338d8dd"
+  },
+  "src/assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg": {
+    "mtime": 1790453549815.4727,
+    "hash": "29caeca52c10bcbc7f8ad786c5915c8f"
+  },
+  "src/assets/blog/tekstin-tasaus-mobiili.jpeg": {
+    "mtime": 1790453549816.052,
+    "hash": "5d448ff22a3033f08fcca9edc3315114"
   }
 }

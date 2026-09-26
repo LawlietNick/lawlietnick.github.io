@@ -1,25 +1,24 @@
 # Graph Report - .  (2026-09-26)
 
 ## Corpus Check
-- 227 files · ~467,422 words
-- Verdict: corpus is large enough that graph structure adds value.
+- Large corpus: 233 files · ~510,838 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
 
 ## Summary
-- 403 nodes · 691 edges · 15 communities detected
+- 405 nodes · 697 edges · 15 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
-- Edge kinds: contains: 282 · imports_from: 145 · MODIFIES: 118 · imports: 102 · calls: 42 · ON_BRANCH: 2
+- Edge kinds: contains: 282 · imports_from: 145 · MODIFIES: 120 · imports: 102 · calls: 42 · ON_BRANCH: 5 · PARENT_OF: 1
 
 
 ## Input Scope
 - Requested: auto
 - Resolved: committed (source: default-auto)
-- Included files: 227 · Candidates: 261
-- Excluded: 0 untracked · 26245 ignored · 1 sensitive · 6 missing committed
+- Included files: 233 · Candidates: 261
+- Excluded: 0 untracked · 26248 ignored · 1 sensitive · 0 missing committed
 - Recommendation: Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder.
 
 ## Graph Freshness
-- Built from Git commit: `ac99fdc`
+- Built from Git commit: `50b19e2`
 - Compare this hash to `git rev-parse HEAD` before trusting freshness-sensitive graph output.
 ## God Nodes (most connected - your core abstractions)
 1. `buildSelectedContainer()` - 9 edges
@@ -39,8 +38,8 @@
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.06
-Nodes (8): article-image-optimization, main, ac99fdc Baseline before article image optimization, enhancedRoots, now, imgs, RecentPost, selectRecentPosts()
+Cohesion: 0.05
+Nodes (10): article-image-optimization, claude/sweet-lamport-b36507, main, 50b19e2 Optimize article content images at build time, ac99fdc Baseline before article image optimization, enhancedRoots, now, imgs (+2 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.09
@@ -113,7 +112,7 @@ Nodes (2): bg, logoWhite
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `siteConfig` connect `Community 2` to `Community 9`, `Community 10`, `Community 6`?**
+- **Why does `siteConfig` connect `Community 2` to `Community 0`, `Community 9`, `Community 10`, `Community 6`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Why does `toolkit` connect `Community 10` to `Community 2`?**
   _High betweenness centrality (0.001) - this node is a cross-community bridge._
@@ -122,8 +121,8 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `logoWhite`, `bg`, `root` to the rest of the system?**
   _99 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.05658263305322129 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05268414481897628 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.08603145235892692 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.07807807807807808 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08095238095238096 - nodes in this community are weakly interconnected._
