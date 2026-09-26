@@ -92,7 +92,9 @@ Keskitetyssä kappaleessa jokainen rivi alkaa eri kohdasta. Yhden rivinvaihdon k
 [WebAIMin typografiaohjeen](https://webaim.org/techniques/textlayout/) mukaan vasemmalle tasattu teksti on lähes aina helpoin ratkaisu vasemmalta oikealle luettavissa kielissä. Myös British Dyslexia Association suosittelee vasemmalle tasausta ilman molempien reunojen tasausta, jotta rivien alut ja loput löytyvät helpommin ja sanavälit säilyvät tasaisina.
 
 <figure>
-  <img src="/images/blog/tekstin-tasaus-katseen-paluuliike.jpeg" alt="Kaavio katseen paluuliikkeestä. Keskitetyssä tekstissä katse palaa vaihteleviin aloituskohtiin, vasemmalle tasatussa tekstissä samalle pystylinjalle, vaikka rivien pituudet vaihtelevat." width="1536" height="1024" loading="lazy" decoding="async">
+
+![Kaavio katseen paluuliikkeestä. Keskitetyssä tekstissä katse palaa vaihteleviin aloituskohtiin, vasemmalle tasatussa tekstissä samalle pystylinjalle, vaikka rivien pituudet vaihtelevat.](@assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg)
+
   <figcaption>Vasemmalla keskitetty teksti, jossa seuraavan rivin aloituskohta vaihtuu. Oikealla vasemmalle tasattu teksti, jossa katse voi palata aina samaan linjaan.</figcaption>
 </figure>
 
@@ -127,7 +129,9 @@ Kun tila kapenee, rivejä ja epäsäännöllisiä aloituskohtia syntyy enemmän.
 Sama tapahtuu, kun käyttäjä suurentaa tekstiä. Siksi tasausta ei kannata hyväksyä vain leveän työpöytänäkymän perusteella.
 
 <figure>
-  <img src="/images/blog/tekstin-tasaus-mobiili.jpeg" alt="Keskitetyn ja vasemmalle tasatun tekstin vertailu työpöytä- ja mobiilinäkymissä. Keskitetyn tekstin epätasainen rivinalku korostuu mobiilissa." width="1536" height="1024" loading="lazy" decoding="async">
+
+![Keskitetyn ja vasemmalle tasatun tekstin vertailu työpöytä- ja mobiilinäkymissä. Keskitetyn tekstin epätasainen rivinalku korostuu mobiilissa.](@assets/blog/tekstin-tasaus-mobiili.jpeg)
+
   <figcaption>Vasemmalla keskitetty teksti ja oikealla vasemmalle tasattu teksti. Mobiilissa keskitetyn tekstin epätasainen vasen reuna korostuu.</figcaption>
 </figure>
 

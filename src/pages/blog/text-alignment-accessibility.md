@@ -92,7 +92,9 @@ In a centered paragraph, every line begins in a different place. The extra effor
 According to [WebAIM's guidance on typographical layout](https://webaim.org/techniques/textlayout/), left-aligned text is almost always the easiest option for left-to-right languages. The British Dyslexia Association also recommends left alignment without full justification, making line starts and endings easier to find while keeping word spacing consistent.
 
 <figure>
-  <img src="/images/blog/tekstin-tasaus-katseen-paluuliike.jpeg" alt="Diagram of the eye's return sweep. With centered text, the eye returns to changing starting points; with left-aligned text, it returns to the same vertical line even though line lengths vary." width="1536" height="1024" loading="lazy" decoding="async">
+
+![Diagram of the eye's return sweep. With centered text, the eye returns to changing starting points; with left-aligned text, it returns to the same vertical line even though line lengths vary.](@assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg)
+
   <figcaption>Centered text on the left, where the next line begins in a different place each time. Left-aligned text on the right, where the eye can always return to the same line.</figcaption>
 </figure>
 
@@ -127,7 +129,9 @@ As the available space narrows, there are more lines and more irregular starting
 The same thing happens when a user enlarges the text. Alignment should not be approved based only on a wide desktop view.
 
 <figure>
-  <img src="/images/blog/tekstin-tasaus-mobiili.jpeg" alt="Comparison of centered and left-aligned text in desktop and mobile views. The uneven line starts of centered text become more pronounced on mobile." width="1536" height="1024" loading="lazy" decoding="async">
+
+![Comparison of centered and left-aligned text in desktop and mobile views. The uneven line starts of centered text become more pronounced on mobile.](@assets/blog/tekstin-tasaus-mobiili.jpeg)
+
   <figcaption>Centered text on the left and left-aligned text on the right. The uneven left edge of centered text becomes more pronounced on mobile.</figcaption>
 </figure>
 

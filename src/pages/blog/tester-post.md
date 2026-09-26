@@ -465,32 +465,23 @@ A very long URL should wrap or overflow safely:
 ## Images and figures
 
 <figure>
-  <img
-    src="/images/blog/examples/example-landscape.jpeg"
-    alt="A descriptive example landscape image"
-    width="1200"
-    height="800"
-  >
+
+![A descriptive example landscape image](@assets/blog/examples/example-landscape.jpeg)
+
   <figcaption>An example landscape image caption.</figcaption>
 </figure>
 
 <figure>
-  <img
-    src="/images/blog/examples/example-portrait.jpeg"
-    alt="A descriptive example portrait image"
-    width="800"
-    height="1200"
-  >
+
+![A descriptive example portrait image](@assets/blog/examples/example-portrait.jpeg)
+
   <figcaption>An example portrait image caption.</figcaption>
 </figure>
 
 <figure>
-  <img
-    src="/images/blog/examples/example-wide.jpeg"
-    alt="A descriptive example wide image"
-    width="1600"
-    height="600"
-  >
+
+![A descriptive example wide image](@assets/blog/examples/example-wide.jpeg)
+
   <figcaption>An example wide image caption.</figcaption>
 </figure>
 

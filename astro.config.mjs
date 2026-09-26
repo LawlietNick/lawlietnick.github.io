@@ -7,6 +7,9 @@ export default defineConfig({
   integrations: [react()],
   trailingSlash: "always",
   prefetch: { prefetchAll: true },   // prefetch internal links on hover/tap
+  // markdown ![]() images from src/assets get webp + srcset/sizes; components
+  // that pass their own widths/sizes keep them (Astro only fills gaps)
+  image: { layout: "constrained" },
   redirects: {
     "/work": "/services/",
     "/fi/work": "/fi/palvelut/",

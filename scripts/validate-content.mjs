@@ -170,6 +170,18 @@ for (const type of types) {
         }
       }
 
+      // Body images are optimized only as ![alt](@assets/…) — a raw <img> or a
+      // public /images/blog path ships the full jpeg, and a raw <img> with a
+      // relative path is emitted untouched and 404s. Silent too, so check here.
+      for (const [tag, src] of source.matchAll(/<img\b[^>]*?\bsrc="([^"]*)"/g)) {
+        if (src.startsWith("/images/blog/") || !/^(\/|https?:|data:)/.test(src)) {
+          errors.push(`${rel}: ${tag.slice(0, 60)}… — use ![alt](@assets/blog/…) so Astro optimizes it.`);
+        }
+      }
+      for (const [, src] of source.matchAll(/!\[[^\]]*\]\((\/images\/blog\/[^)\s]+)/g)) {
+        errors.push(`${rel}: ![](${src}) is not optimized — move it to src/assets/blog and use @assets/blog/….`);
+      }
+
       type.extra?.(data, lang, rel, errors);
       entries.set(routeFor(file), { file: rel, lang, data });
     }

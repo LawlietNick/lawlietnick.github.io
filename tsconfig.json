@@ -4,7 +4,8 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "resolveJsonModule": true,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "paths": { "@assets/*": ["./src/assets/*"] }
   },
   "include": [
     ".astro/types.d.ts",

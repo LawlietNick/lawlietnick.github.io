@@ -46,7 +46,9 @@ Päivähoitopaikan ja rakennusluvan hakeminen ovat molemmat palvelusivuja, vaikk
 Sivutyyppi ja pääaihe eivät siis ole vaihtoehtoja toisilleen, vaan jokainen sivu saa molemmat. Kahden erillisen tiedon avulla raportissa voidaan tarkastella sekä samantyyppisiä sivuja että saman aiheen sisältöjä.
 
 <figure>
-  <img src="/images/blog/sivutyyppi-ja-paaaihe.jpeg" alt="Sivutyyppi ja pääaihe muodostavat kaksi eri ulottuvuutta, joiden avulla verkkosivut voidaan luokitella." width="1536" height="1024" loading="lazy" decoding="async">
+
+![Sivutyyppi ja pääaihe muodostavat kaksi eri ulottuvuutta, joiden avulla verkkosivut voidaan luokitella.](@assets/blog/sivutyyppi-ja-paaaihe.jpeg)
+
 </figure>
 
 Teknisessä toteutuksessa sivutyypin kenttä voi olla nimeltään `page_type` ja pääaiheen kenttä `primary_category`. Sisältöä tehdessä riittää, että ymmärrät suomenkieliset käsitteet ja osaat valita sivulle sopivat vaihtoehdot.

@@ -773,6 +773,11 @@ main:focus {
   background: none;
 }
 
+/* markdown wraps ![]() inside <figure> in a <p>; keep it from adding a gap */
+.prose figure > p {
+  margin: 0;
+}
+
 .prose figcaption {
   margin-top: 0.75rem;
   color: var(--muted);
@@ -788,7 +793,8 @@ main:focus {
   display: block;
   min-width: 100px;
   min-height: 100px;
-  width: auto;
+  /* no `width: auto`: the width attribute must win so the box is reserved
+     at the right size before a lazy image loads (no layout shift) */
   max-width: 100%;
   height: auto;
   margin-inline: 0;

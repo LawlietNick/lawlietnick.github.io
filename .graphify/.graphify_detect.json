@@ -122,6 +122,11 @@
       "vitest.config.ts"
     ],
     "document": [
+      ".claude/CLAUDE.md",
+      ".claude/skills/graphify/SKILL.md",
+      ".graphify/GRAPH_REPORT.md",
+      ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md",
+      ".impeccable/surfaces/src-pages-fi-tyokalut-ga4-annotaatiot-astro.md",
       "CLAUDE.md",
       "DESIGN.md",
       "PRODUCT.md",
@@ -183,23 +188,22 @@
     ],
     "paper": [],
     "image": [
+      ".impeccable/review/ga4-desktop-dark.png",
+      ".impeccable/review/ga4-desktop.png",
+      ".impeccable/review/ga4-mobile-dark.png",
+      ".impeccable/review/ga4-mobile-initial.png",
+      ".impeccable/review/ga4-mobile.png",
       "public/icons/google.svg",
       "public/images/blog/ai-panel-with-experts.jpeg",
       "public/images/blog/chatgpt-pixel-shopify-installation.jpeg",
       "public/images/blog/content-consumption-metrics.jpeg",
       "public/images/blog/cookiebot-guide.jpeg",
       "public/images/blog/example-parts.jpeg",
-      "public/images/blog/examples/example-landscape.jpeg",
-      "public/images/blog/examples/example-portrait.jpeg",
-      "public/images/blog/examples/example-wide.jpeg",
       "public/images/blog/hubspot-form-submission-tracking-gtm.jpeg",
       "public/images/blog/marketing-automation-workflows-b2b-ecommerce.jpeg",
       "public/images/blog/mckinsey-style-presentation-chatgpt-gemini.jpeg",
       "public/images/blog/page-classification-for-website-analytics.jpeg",
       "public/images/blog/prompt-optimization-chatgpt.jpeg",
-      "public/images/blog/sivutyyppi-ja-paaaihe.jpeg",
-      "public/images/blog/tekstin-tasaus-katseen-paluuliike.jpeg",
-      "public/images/blog/tekstin-tasaus-mobiili.jpeg",
       "public/images/blog/tekstin-tasaus-saavutettavuus.jpeg",
       "public/images/blog/what-is-an-algorithm-steps-and-process.jpeg",
       "public/images/tools/gtm-container-builder/overview.png",
@@ -232,26 +236,38 @@
     ],
     "video": []
   },
-  "total_files": 223,
-  "total_words": 479776,
+  "total_files": 227,
+  "total_words": 467422,
   "needs_graph": true,
   "warning": null,
   "skipped_sensitive": [
     "src/styles/tokens.css"
   ],
-  "graphifyignore_patterns": 0,
+  "graphifyignore_patterns": 12,
+  "git": {
+    "source_owner": "git",
+    "source_hash": "ac99fdc300d1ebeacb47b1162915f9d88b564611",
+    "branches": [
+      "article-image-optimization",
+      "main"
+    ],
+    "max_commits": 200,
+    "active_within_days": 30
+  },
   "scope": {
     "requested_mode": "auto",
-    "resolved_mode": "all",
+    "resolved_mode": "committed",
     "source": "default-auto",
     "root": ".",
-    "candidate_count": null,
-    "included_count": 223,
+    "git_root": ".",
+    "head": "ac99fdc300d1ebeacb47b1162915f9d88b564611",
+    "candidate_count": 261,
+    "included_count": 227,
     "excluded_untracked_count": 0,
-    "excluded_ignored_count": 0,
+    "excluded_ignored_count": 26245,
     "excluded_sensitive_count": 1,
-    "missing_committed_count": 0,
+    "missing_committed_count": 6,
     "warnings": [],
-    "recommendation": null
+    "recommendation": "Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder."
   }
 }
