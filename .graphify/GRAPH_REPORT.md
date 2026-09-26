@@ -1,24 +1,24 @@
 # Graph Report - .  (2026-09-26)
 
 ## Corpus Check
-- Large corpus: 233 files · ~511,084 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
+- Large corpus: 233 files · ~511,116 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
 
 ## Summary
-- 408 nodes · 708 edges · 16 communities detected
+- 409 nodes · 712 edges · 16 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
-- Edge kinds: contains: 282 · imports_from: 145 · MODIFIES: 125 · imports: 102 · calls: 42 · ON_BRANCH: 8 · PARENT_OF: 4
+- Edge kinds: contains: 282 · imports_from: 145 · MODIFIES: 127 · imports: 102 · calls: 42 · ON_BRANCH: 9 · PARENT_OF: 5
 
 
 ## Input Scope
 - Requested: auto
 - Resolved: committed (source: default-auto)
 - Included files: 233 · Candidates: 261
-- Excluded: 0 untracked · 26253 ignored · 1 sensitive · 0 missing committed
+- Excluded: 0 untracked · 26255 ignored · 1 sensitive · 0 missing committed
 - Recommendation: Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder.
 
 ## Graph Freshness
-- Built from Git commit: `1ca05d5`
+- Built from Git commit: `0421511`
 - Compare this hash to `git rev-parse HEAD` before trusting freshness-sensitive graph output.
 ## God Nodes (most connected - your core abstractions)
 1. `buildSelectedContainer()` - 9 edges
@@ -71,8 +71,8 @@ Cohesion: 0.13
 Nodes (17): annotationCategories, annotationDateGuidance, characterCount(), commonSuggestions, getDescriptionSuggestions(), hasPlaceholder(), normalize(), phrase() (+9 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.14
-Nodes (4): main, 1b5b266 Broaden toolkit copy beyond analytics, 1ca05d5 Match mega menu link heights within a grid row, 824dc06 Unify desktop mega menus into one layout
+Cohesion: 0.15
+Nodes (5): main, 0421511 Add short navSummary lines for services in the mega menu, 1b5b266 Broaden toolkit copy beyond analytics, 1ca05d5 Match mega menu link heights within a grid row, 824dc06 Unify desktop mega menus into one layout
 
 ### Community 10 - "Community 10"
 Cohesion: 0.12

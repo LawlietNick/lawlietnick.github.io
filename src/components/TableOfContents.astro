@@ -121,7 +121,7 @@ const label = fi ? "Tällä sivulla" : "On this page";
     const headings = links
       .map((l) => document.getElementById(l.dataset.target))
       .filter(Boolean);
-    const OFFSET = 88; // px; matches h2/h3 scroll-margin-top (sticky header)
+    const OFFSET = 88; // px; matches html scroll-padding-top (sticky header)
     let lastActive = "";
     const spy = () => {
       const viewportBottom = innerHeight;

@@ -18,6 +18,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem; /* clear the sticky header on every anchor jump (#id links) */
   /* solid background on the root too (not just body): during a view-transition the
      root cross-fade dips below full opacity mid-way, and a transparent html lets the
      browser's default canvas flash through — very visible in dark mode */
@@ -70,7 +71,6 @@ h6 {
   line-height: 1.15;
   letter-spacing: -0.015em;
   text-wrap: balance;
-  scroll-margin-top: 5.5rem; /* clear the sticky header on anchor jumps */
 }
 
 h1 {
