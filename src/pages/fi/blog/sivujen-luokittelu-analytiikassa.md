@@ -100,8 +100,16 @@ Sivun onnistumista arvioidaan sen tavoitteen mukaan. Päivähoidon palvelusivull
 
 Kun luokittelu on otettu käyttöön, päivähoitopaikan hakemista käsittelevän sivun julkaisemisen pitäisi näyttää suunnilleen tältä:
 
-> **Sivutyyppi:** [Palvelu]  
-> **Pääaihe:** [Varhaiskasvatus ja koulutus]
+<dl class="classification-example">
+  <div class="classification-row">
+    <dt class="classification-label">Sivutyyppi</dt>
+    <dd class="classification-value">Palvelu</dd>
+  </div>
+  <div class="classification-row">
+    <dt class="classification-label">Pääaihe</dt>
+    <dd class="classification-value">Varhaiskasvatus ja koulutus</dd>
+  </div>
+</dl>
 
 Valitset sopivat vaihtoehdot valmiista luetteloista. Jos sivutyyppi voidaan päätellä luotettavasti sivuston rakenteesta tai sisältötyypistä, järjestelmä voi asettaa sen automaattisesti. Muissa tapauksissa valitset sivutyypin itse.
 

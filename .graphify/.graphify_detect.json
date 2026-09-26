@@ -243,16 +243,16 @@
     "video": []
   },
   "total_files": 233,
-  "total_words": 511116,
+  "total_words": 511138,
   "needs_graph": true,
-  "warning": "Large corpus: 233 files · ~511,116 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
+  "warning": "Large corpus: 233 files · ~511,138 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
   "skipped_sensitive": [
     "src/styles/tokens.css"
   ],
   "graphifyignore_patterns": 12,
   "git": {
     "source_owner": "git",
-    "source_hash": "0421511ef1b10d535cc43cc1ffcadc3093060278",
+    "source_hash": "9f56ebe6cefef7a86e942d82686cd11a462482c6",
     "branches": [
       "claude/sweet-lamport-b36507",
       "main"
@@ -266,11 +266,11 @@
     "source": "default-auto",
     "root": ".",
     "git_root": ".",
-    "head": "0421511ef1b10d535cc43cc1ffcadc3093060278",
+    "head": "9f56ebe6cefef7a86e942d82686cd11a462482c6",
     "candidate_count": 261,
     "included_count": 233,
     "excluded_untracked_count": 0,
-    "excluded_ignored_count": 26255,
+    "excluded_ignored_count": 26481,
     "excluded_sensitive_count": 1,
     "missing_committed_count": 0,
     "warnings": [],

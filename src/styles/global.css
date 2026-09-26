@@ -752,6 +752,41 @@ main:focus {
   margin-inline: 0;
 }
 
+/* label → value example (e.g. a CMS field preview): quiet info box, not a form */
+.prose .classification-example {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1.5rem;
+  margin-inline: 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-xs);
+  background: var(--color-surface);
+}
+
+.prose .classification-row {
+  display: contents;
+}
+
+.prose .classification-label {
+  font-weight: var(--font-weight-strong);
+}
+
+.prose .classification-value {
+  margin: 0;
+}
+
+@media (max-width: 30rem) {
+  .prose .classification-example {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+
+  .prose .classification-row + .classification-row .classification-label {
+    margin-top: 0.5rem;
+  }
+}
+
 /* the figure is the panel: caption lives inside the panel border with the
    image, so the pair reads as one unit. Shrinkwraps to the image, but can
    still break out to the same wide cap as bare images. */
