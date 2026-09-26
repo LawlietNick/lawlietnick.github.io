@@ -10,13 +10,13 @@ export const toolkit = [
       // documentTitle overrides the SERP title only; the nav + h1 keep the short label
       documentTitle: "Analytics & SEO Toolkit | Niko Karppinen",
       navDesc: "GTM builder, dataLayer docs, metric scoring and Cookiebot styling.",
-      desc: "Free tools for analytics work: build GTM containers, generate dataLayer documentation, score metric quality and style Cookiebot consent banners.",
+      desc: "Free tools for analytics, SEO and web work: build GTM containers, generate dataLayer documentation, score metric quality and style Cookiebot consent banners.",
     },
     fi: {
       label: "Työkalut",
       documentTitle: "Analytiikan ja SEO:n työkalupakki | Niko Karppinen",
       navDesc: "GTM-rakentaja, dataLayer-dokumentaatio, mittareiden pisteytys ja Cookiebot-tyylit.",
-      desc: "Ilmaisia työkaluja analytiikkatyöhön: rakenna GTM-säiliöitä, generoi dataLayer-dokumentaatio, pisteytä mittareita ja muotoile Cookiebot-banneri.",
+      desc: "Ilmaisia työkaluja analytiikkaan, hakukoneoptimointiin ja verkkosivutyöhön: rakenna GTM-säiliöitä, generoi dataLayer-dokumentaatio, pisteytä mittareita ja muotoile Cookiebot-banneri.",
     },
   },
   {
