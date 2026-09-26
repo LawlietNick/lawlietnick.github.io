@@ -500,6 +500,8 @@ const showDesktopCta = false;
   .site-header__mega-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; align-content: start; }
   .site-header__mega-link {
     display: block;
+    height: 100%;                        /* fill the grid row so neighbours match */
+    box-sizing: border-box;
     padding: 0.65rem 0.95rem;
     border-radius: var(--radius-lg);
     text-decoration: none;
