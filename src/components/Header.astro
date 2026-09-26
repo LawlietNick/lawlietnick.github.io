@@ -110,7 +110,7 @@ const showDesktopCta = false;
                         <li>
                           <a href={service.href} class="site-header__mega-link" aria-current={isActive(service.href) ? "page" : undefined}>
                             <span class="site-header__mega-link-label">{service.title}</span>
-                            <span class="site-header__mega-link-text">{service.summary}</span>
+                            <span class="site-header__mega-link-text">{service.navSummary ?? service.summary}</span>
                           </a>
                         </li>
                       ))}
@@ -268,7 +268,7 @@ const showDesktopCta = false;
                         aria-current={isActive(service.href) ? "page" : undefined}
                       >
                         <span class="mobile-nav-overlay__link-label">{service.title}</span>
-                        <span class="mobile-nav-overlay__link-text">{service.summary}</span>
+                        <span class="mobile-nav-overlay__link-text">{service.navSummary ?? service.summary}</span>
                       </a>
                     </li>
                   ))}

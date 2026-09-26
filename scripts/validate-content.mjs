@@ -20,6 +20,7 @@ const serviceSchema = z
     order: z.number(),
     icon: z.string().min(1),
     summary: z.string().min(1),
+    navSummary: z.string().max(60).optional(), // short line for the nav menus
     format: z.enum(["fixed", "monthly"]),
     deliverables: z.array(z.string()).optional(),
     ctaLabel: z.string().min(1).optional(),

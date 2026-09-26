@@ -36,8 +36,8 @@
     "hash": "e2f9318e33e404a80823602bbada9f40"
   },
   "src/components/Header.astro": {
-    "mtime": 1790454837194.983,
-    "hash": "6522cb0614b3399f1f05fd873bfbcb91"
+    "mtime": 1790455072326.8376,
+    "hash": "bd0d88aeb260ece655e34dad07e64258"
   },
   "src/components/Hero.astro": {
     "mtime": 1789301048035.8196,
@@ -332,8 +332,8 @@
     "hash": "b4019b787f32202674799ebbdfd2b521"
   },
   "scripts/validate-content.mjs": {
-    "mtime": 1790453549813.1138,
-    "hash": "2193c500bef9f05456c9490d12d8e7e0"
+    "mtime": 1790455072327.1238,
+    "hash": "a44ace856eaf2439c8ee80e94e64d603"
   },
   "src/assets/tools/cookie-banner/banner.js": {
     "mtime": 1784919803176.9346,
@@ -500,84 +500,84 @@
     "hash": "96935861c00f6151bf2a210b5acf10f8"
   },
   "src/pages/fi/palvelut/avainsanatutkimus.md": {
-    "mtime": 1789226626647.623,
-    "hash": "ba2a7d3391172c6afcfc700803c538f7"
+    "mtime": 1790455072322.339,
+    "hash": "feafc25c034f5d510b93e034c8c41053"
   },
   "src/pages/fi/palvelut/consent-mode-toteutus.md": {
-    "mtime": 1789228678011.109,
-    "hash": "50b01299b350d86a162a03cb85667aa9"
+    "mtime": 1790455072323.6497,
+    "hash": "25da1c706102e38c3017ed1d484ca319"
   },
   "src/pages/fi/palvelut/digitaalisen-analyysin-paketti.md": {
-    "mtime": 1789226955826.7522,
-    "hash": "a670eb667d63a71aa351b31afc108c3c"
+    "mtime": 1790455072324.4155,
+    "hash": "32ba48f38cab10e4ced968f339cb51f6"
   },
   "src/pages/fi/palvelut/google-analytics-auditointi.md": {
-    "mtime": 1789226716030.078,
-    "hash": "f9e248097d7869da25aaff211ac6e01c"
+    "mtime": 1790455072322.908,
+    "hash": "35bfe5493bfd8885b75ed4a2bcb18ef4"
   },
   "src/pages/fi/palvelut/jatkuva-seo.md": {
-    "mtime": 1789226626767.9038,
-    "hash": "3b8eba74f8dd73ea888ce3d26c0e8347"
+    "mtime": 1790455072322.6245,
+    "hash": "2146291735f46519b990b82e39d85c42"
   },
   "src/pages/fi/palvelut/raataloity-dashboard.md": {
-    "mtime": 1789226907319.306,
-    "hash": "89077b9b83482e4ba88f66dcc8ce70ce"
+    "mtime": 1790455072324.2224,
+    "hash": "f044c303e2248603e7c7b83de461c5dc"
   },
   "src/pages/fi/palvelut/server-side-seuranta.md": {
-    "mtime": 1789226907218.1267,
-    "hash": "4ee06ab39536a6744ea01680c703cf03"
+    "mtime": 1790455072323.9407,
+    "hash": "97d7575fc862ca4e5c8bdba9f24bde5d"
   },
   "src/pages/fi/palvelut/seurannan-toteutussuunnitelma.md": {
-    "mtime": 1789226811411.3584,
-    "hash": "f6e0b299d4dcd187c56bfe04178bdd8d"
+    "mtime": 1790455072323.3926,
+    "hash": "7ca710a6747c01ddfae5ac562fa14358"
   },
   "src/pages/fi/palvelut/tag-manager-auditointi.md": {
-    "mtime": 1789226716204.9622,
-    "hash": "34fd37a988e43e370de5f041aae3c2c5"
+    "mtime": 1790455072323.1016,
+    "hash": "d8a0b2ade4650a084b9ef41c6ab448b0"
   },
   "src/pages/fi/palvelut/tekninen-seo-auditointi.md": {
-    "mtime": 1789226458064.8098,
-    "hash": "9b81d3aaf1c916dc870c951c6974bbd8"
+    "mtime": 1790455072321.9932,
+    "hash": "8d30b56a8a3dc60e055e604691998f3c"
   },
   "src/pages/services/consent-mode-implementation.md": {
-    "mtime": 1789228604966.0984,
-    "hash": "53010e3222553b1ce560e6c293ee1a2f"
+    "mtime": 1790455072326.0386,
+    "hash": "51e69af754ae4f9d522b62b32f2d970a"
   },
   "src/pages/services/digital-analysis-package.md": {
-    "mtime": 1789226955776.958,
-    "hash": "54cb0192836accc0b43b98c8c4a7ad47"
+    "mtime": 1790455072326.581,
+    "hash": "b74b7296a6842221e8210c6623768067"
   },
   "src/pages/services/google-analytics-audit.md": {
-    "mtime": 1789226715975.7715,
-    "hash": "090c9fa6a48229108a2f5b8ae6f24074"
+    "mtime": 1790455072325.3745,
+    "hash": "7654acd63f88935902ed18e05907662b"
   },
   "src/pages/services/keyword-research.md": {
-    "mtime": 1789226626592.1177,
-    "hash": "8786082126b93f58ce9fee97e89eeaee"
+    "mtime": 1790455072324.9263,
+    "hash": "49c10791cb11b44e02dfe3fcf63c0b13"
   },
   "src/pages/services/monthly-seo.md": {
-    "mtime": 1789226626703.721,
-    "hash": "99ea00b1022837037939190d67237099"
+    "mtime": 1790455072325.1458,
+    "hash": "f59c09ca17c48fa0caa4a6a96131647f"
   },
   "src/pages/services/server-side-tracking.md": {
-    "mtime": 1789226907174.0964,
-    "hash": "6a42bd93aeebbe849090579c2b680a6b"
+    "mtime": 1790455072326.177,
+    "hash": "1b1988d7120a7a1c143d3174edfc7ff9"
   },
   "src/pages/services/tag-manager-audit.md": {
-    "mtime": 1789226716125.7844,
-    "hash": "5ffdb9dfae701ba8b75becd0361fd63b"
+    "mtime": 1790455072325.6008,
+    "hash": "854f7cb08ed4f53cc633ceaa77ae8511"
   },
   "src/pages/services/tailor-made-dashboard.md": {
-    "mtime": 1789226907269.5461,
-    "hash": "e76e42d0838f941edf0c0bb83c1f6c83"
+    "mtime": 1790455072326.445,
+    "hash": "264403acc114a8d09c7f1d4ca1059d08"
   },
   "src/pages/services/technical-seo-audit.md": {
-    "mtime": 1789226458011.9106,
-    "hash": "b780278c2572c5c49163dac937f4f126"
+    "mtime": 1790455072324.7043,
+    "hash": "b384f2c746dc17e50d502983de9a77f1"
   },
   "src/pages/services/tracking-implementation-plan.md": {
-    "mtime": 1789226811367.076,
-    "hash": "3fc9193664e911db27986f45cb5bb1ef"
+    "mtime": 1790455072325.817,
+    "hash": "3f022319a8d405b726a4b0ea4c1ea2c4"
   },
   "public/images/blog/tekstin-tasaus-saavutettavuus.jpeg": {
     "mtime": 1784653754319.4434,
@@ -876,8 +876,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1790454807504.8115,
-    "hash": "b3f6d9d7ee93c42d373dcd69c36a5670"
+    "mtime": 1790454947783.341,
+    "hash": "bcdea708b7c1e29e4778d508d6b946f1"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
