@@ -1,12 +1,11 @@
 ---
 // Layout for the service pages that live as markdown under src/pages/services
-// and src/pages/fi/palvelut. The markdown frontmatter drives the hero, proof,
+// and src/pages/fi/palvelut. The markdown frontmatter drives the hero,
 // FAQ and next-steps; the markdown body renders in the prose slot.
 import Base from "./Base.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
 import ButtonLink from "../components/ButtonLink.astro";
 import PatternList from "../components/PatternList.astro";
-import ServiceProof from "../components/ServiceProof.astro";
 import SplitSection from "../components/SplitSection.astro";
 
 const fm = Astro.props.frontmatter ?? {};
@@ -18,7 +17,7 @@ const nextSteps = fm.nextSteps ?? [];
 const t = fi
   ? {
       home: "Etusivu", homeHref: "/fi/", services: "Palvelut", servicesHref: "/fi/palvelut/",
-      reassure: "Sinun ei tarvitse selvittää syytä ensin. Kuvaile mikä tuntuu pieleltä, niin ensimmäinen vastaus ehdottaa järkevää aloituskohtaa.",
+      reassure: "Sinun ei tarvitse tietää syytä etukäteen. Kerro, mikä ei tunnu toimivan oikein, niin ehdotan ensimmäisessä vastauksessani järkevää aloituskohtaa.",
       faqEyebrow: "Ennen kuin kysyt", faqTitle: "Yleisiä kysymyksiä",
       nextEyebrow: "Kun otat yhteyttä", nextTitle: "Mitä tapahtuu seuraavaksi",
       contactEyebrow: "Työskennellään yhdessä",
@@ -76,8 +75,6 @@ const formatLabel = fm.format === "monthly" ? t.formatMonthly : t.formatFixed;
       </Fragment>
     </SplitSection>
   </div>
-
-  <ServiceProof fi={fi} />
 
   <div class="prose service-body">
     <slot />
