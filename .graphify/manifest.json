@@ -92,8 +92,8 @@
     "hash": "dd1d8e675e077c6c0559ef60fc072382"
   },
   "src/layouts/Base.astro": {
-    "mtime": 1790232866187.0195,
-    "hash": "0f16b0a6eb21a37cba48c5d6995b14c3"
+    "mtime": 1790519119524.303,
+    "hash": "cb069c113fac3693b0f3206f8a5f140c"
   },
   "src/pages/404.astro": {
     "mtime": 1784635640860.7234,
@@ -496,8 +496,8 @@
     "hash": "7ce8ce3afdf94b7037e07a86dc0974c5"
   },
   "src/pages/fi/blog/tekstin-tasaus-saavutettavuus.md": {
-    "mtime": 1790453549817.4792,
-    "hash": "96935861c00f6151bf2a210b5acf10f8"
+    "mtime": 1790457154834.165,
+    "hash": "396dcf0180c9b5d77c01b39c1fc2c191"
   },
   "src/pages/fi/palvelut/avainsanatutkimus.md": {
     "mtime": 1790455072322.339,
@@ -588,28 +588,28 @@
     "hash": "a9ad7add0f8760521d81d1d4a1283f06"
   },
   "src/assets/blog/ai-panel-with-experts.jpeg": {
-    "mtime": 1784732995720.0376,
-    "hash": "ac14d99be2b65ec07ed60f53392ea5fa"
+    "mtime": 1790490778089.7808,
+    "hash": "ad30af205d82cd886658d37e7da01780"
   },
   "src/assets/blog/cookiebot-guide.jpeg": {
-    "mtime": 1784732995720.2317,
-    "hash": "0b498527b277b9eeb907c180ee8e23d9"
+    "mtime": 1790490899180.5322,
+    "hash": "e926b5e9f107e00972ce78d125d8b47c"
   },
   "src/assets/blog/example-parts.jpeg": {
     "mtime": 1784732995720.898,
     "hash": "b2e90653d6860ff9a2b7779b9d18fb9c"
   },
   "src/assets/blog/mckinsey-style-presentation-chatgpt-gemini.jpeg": {
-    "mtime": 1784732995720.439,
-    "hash": "f8ad81e86a7bbb9b8d5fd935c7a4325c"
+    "mtime": 1790490981013.335,
+    "hash": "61de310c5853aca25ec850924c85a354"
   },
   "src/assets/blog/prompt-optimization-chatgpt.jpeg": {
     "mtime": 1784732995719.7915,
     "hash": "10be2edcf4e04aed60b6d80daac7c05a"
   },
   "src/assets/blog/tekstin-tasaus-saavutettavuus.jpeg": {
-    "mtime": 1784732995720.6545,
-    "hash": "bd913e81ea3787b7288c8698ffe83637"
+    "mtime": 1790491235257.5054,
+    "hash": "fd9d49500a98ea01454b5184fd308843"
   },
   "src/assets/not-found/kone-robot.png": {
     "mtime": 1784580972200.998,
@@ -719,13 +719,9 @@
     "mtime": 1789231357251.1592,
     "hash": "24509cd49231f53ac263f2ede4808f18"
   },
-  "src/assets/blog/what-is-an-algorithm-input-rules-decision.jpeg": {
-    "mtime": 1789231748394.7903,
-    "hash": "a64bf463179286ac127482723b056067"
-  },
   "src/assets/blog/chatgpt-pixel-shopify-installation.jpeg": {
-    "mtime": 1789231748395.2285,
-    "hash": "853af138341534918d4adfbf9b007c56"
+    "mtime": 1790490808678.0955,
+    "hash": "c908caf05c5ed1d74c41470a6252e0e8"
   },
   "public/ai.txt": {
     "mtime": 1789232182596.673,
@@ -792,15 +788,15 @@
     "hash": "487f578fae2f231a84fa4897ece2c59e"
   },
   "src/pages/blog/content-consumption-metrics.md": {
-    "mtime": 1790233139796.0305,
-    "hash": "1a3fa9cc32aeb45d1f7f1be882ba4d8c"
+    "mtime": 1790519119524.6074,
+    "hash": "2cb2178841171adbd74bc49459e0d322"
   },
   "src/pages/blog/marketing-automation-flows.md": {
     "mtime": 1790233442457.0889,
     "hash": "1137a2233212acaf11c3f4c3c108b635"
   },
   "src/pages/fi/blog/sivujen-luokittelu-analytiikassa.md": {
-    "mtime": 1790456330002.445,
+    "mtime": 1790456429980.6082,
     "hash": "092f2fa4fa72205da73e7192f93c6308"
   },
   "public/images/blog/content-consumption-metrics.jpeg": {
@@ -876,8 +872,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1790455921838.816,
-    "hash": "360eb061a10bda21ecee791899bbbf94"
+    "mtime": 1790520226854.0308,
+    "hash": "f34a7c6647a97b5c9ce7179c133108d6"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -924,11 +920,11 @@
     "hash": "57a63c9d56e04460fb246e528338d8dd"
   },
   "src/assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg": {
-    "mtime": 1790453549815.4727,
-    "hash": "29caeca52c10bcbc7f8ad786c5915c8f"
+    "mtime": 1790490331378.202,
+    "hash": "95f36ea490ab6b4cd20b5b33bde8c861"
   },
   "src/assets/blog/tekstin-tasaus-mobiili.jpeg": {
-    "mtime": 1790453549816.052,
-    "hash": "5d448ff22a3033f08fcca9edc3315114"
+    "mtime": 1790490487506.8767,
+    "hash": "db1ba4c263e95a2657e57852bb930468"
   }
 }

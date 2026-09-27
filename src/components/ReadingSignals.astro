@@ -1,0 +1,390 @@
+---
+// Live demo of the reading model described in /blog/content-consumption-metrics/.
+// Rendered only when the post's frontmatter sets `readingSignals: true`.
+// Start/Midpoint/End are lines at their real positions in the article body;
+// the time threshold and estimated read appear as short-lived toasts.
+const { fi = false } = Astro.props;
+const markers = [
+  // [event, position, label before, label after the event fires]
+  ["article_scroll_started", "0%", fi ? "Artikkelin alku" : "Article start", fi ? "Artikkelin skrollaus alkoi" : "Article scroll started"],
+  ["article_midpoint_reached", "50%", fi ? "Artikkelin puoliväli" : "Article midpoint", fi ? "Artikkelin puoliväli saavutettu" : "Article midpoint reached"],
+  ["article_end_reached", "100%", fi ? "Artikkelin loppu" : "Article end", fi ? "Artikkelin loppu saavutettu" : "Article end reached"],
+];
+---
+
+<div class="reading-markers" data-reading-markers aria-hidden="true">
+  {markers.map(([type, top, text, done]) => (
+    <span class="reading-marker" data-signal={type} data-done={done} style={`top: ${top}`}>{text}</span>
+  ))}
+</div>
+<div
+  class="reading-toasts"
+  role="status"
+  aria-live="polite"
+  data-reading-toasts
+  data-article_time_threshold_reached={fi ? "Lukuajan kynnys saavutettu" : "Time threshold reached"}
+  data-estimated_article_read={fi ? "Arvioitu artikkelin luku" : "Estimated article read"}
+></div>
+
+<style>
+  /* the markers are moved into the article body on load; 0/50/100 % match the
+     tracker's own top, midpoint and endpoint and follow any height change */
+  :global(article.prose:has(.reading-markers)) { position: relative; }
+  .reading-markers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .reading-marker {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed var(--line);
+    text-align: right;
+    font-size: var(--font-size-ui-xs);
+    line-height: 1.6;
+    color: var(--muted);
+    transition: color var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard);
+  }
+  /* bleed past the text column into the empty right gutter */
+  @media (min-width: 60rem) {
+    .reading-marker { right: calc(-1 * min(10rem, (100vw - 42rem) / 2 - 1rem)); }
+  }
+  .reading-marker.is-done {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .reading-toasts {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    pointer-events: none;
+  }
+  .reading-toasts :global(.reading-toast) {
+    margin: 0;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    color: var(--accent);
+    font-size: var(--font-size-ui-sm);
+    box-shadow: var(--shadow-panel);
+    animation: reading-toast 4s var(--ease-standard) forwards;
+  }
+  @keyframes reading-toast {
+    0% { opacity: 0; transform: translateY(0.5rem); }
+    8%, 85% { opacity: 1; transform: none; }
+    100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reading-toasts :global(.reading-toast) { animation: none; }
+  }
+  @media (max-width: 59.99rem) {
+    .reading-toasts { right: 50%; transform: translateX(50%); align-items: center; }
+  }
+
+  @media print { .reading-markers, .reading-toasts { display: none; } }
+</style>
+
+<script>
+  /* The content-reading tracker from the article, adapted to this site:
+   * - contentArea is the article body only (main#main also holds the hero,
+   *   CTA and related posts, which would push midpoint/end too far down)
+   * - no excluded elements: nothing trails the readable text inside .prose
+   * - SPA history hooks replaced by Astro's ClientRouter page events
+   * - each pushed event also lights up its line or shows a toast
+   */
+  const contentArea = "article.prose";
+  const readingSpeed = 250; // words per minute
+  const callbackTime = 100; // milliseconds
+  const minimumVisibleTextHeight = 20; // pixels
+  const markerOffset = 100; // px a fired midpoint/end line must be above the viewport bottom before it lights up
+
+  // Visual only: the event has already been pushed; the line waits until it is
+  // comfortably on screen. Start lights up at once.
+  function paintMarkers(markers: Element) {
+    markers.querySelectorAll<HTMLElement>("[data-fired]:not(.is-done)").forEach((marker) => {
+      if (
+        marker.dataset.signal === "article_scroll_started" ||
+        marker.getBoundingClientRect().top <= viewportHeight() - markerOffset
+      ) {
+        marker.classList.add("is-done");
+        marker.textContent = marker.dataset.done ?? "";
+      }
+    });
+  }
+
+  const readableTextSelector =
+    "p, h1, h2, h3, h4, h5, h6, li, blockquote, figcaption, td, th, pre, code";
+  const ignoredContentSelector =
+    "button, input, select, textarea, label, nav, aside, form, script, style, noscript, template, iframe";
+
+  const viewportHeight = () => window.innerHeight || document.documentElement.clientHeight || 0;
+  const viewportWidth = () => window.innerWidth || document.documentElement.clientWidth || 0;
+  const isPageActive = () => document.visibilityState === "visible" && document.hasFocus();
+
+  function removeMatches(root: Element, selector: string) {
+    root.querySelectorAll(selector).forEach((el) => el.remove());
+  }
+
+  function processedClone(content: Element) {
+    const clone = content.cloneNode(true) as Element;
+    removeMatches(clone, ignoredContentSelector);
+    return clone;
+  }
+
+  function countWords(content: Element) {
+    const clone = processedClone(content);
+    // only the highest readable ancestor, so <blockquote><p> counts once
+    const text = [...clone.querySelectorAll(readableTextSelector)]
+      .filter((node) => !node.parentElement?.closest(readableTextSelector))
+      .map((node) => node.textContent || "")
+      .join(" ")
+      .trim();
+    return text ? text.split(/\s+/).filter(Boolean).length : 0;
+  }
+
+  function countImageUnits(content: Element) {
+    // a figure or picture with several images counts as one unit; +1 s each
+    const units = new Set(
+      [...processedClone(content).querySelectorAll("img")].map(
+        (img) => img.closest("figure") || img.closest("picture") || img,
+      ),
+    );
+    return units.size;
+  }
+
+  function readableTextElements(content: Element) {
+    return [...content.querySelectorAll(readableTextSelector)].filter((node) => {
+      let parent = node.parentElement;
+      while (parent && parent !== content) {
+        if (parent.matches(ignoredContentSelector)) return false;
+        parent = parent.parentElement;
+      }
+      const clone = node.cloneNode(true) as Element;
+      removeMatches(clone, ignoredContentSelector);
+      return (clone.textContent || "").replace(/\s+/g, " ").trim() !== "";
+    });
+  }
+
+  function start(content: Element, markers: Element, toasts: Element) {
+    const wordCount = countWords(content);
+    if (!wordCount) return null;
+    const estimatedArticleReadingTime =
+      Math.round((wordCount / readingSpeed) * 60) + countImageUnits(content);
+    if (estimatedArticleReadingTime <= 0) return null;
+    // short articles can't show progression; skip once per page view
+    if (content.getBoundingClientRect().height <= viewportHeight()) return null;
+
+    const textElements = readableTextElements(content);
+    const s = {
+      disposed: false,
+      completed: false,
+      scrollStarted: false,
+      midpointReached: false,
+      endReached: false,
+      timeThresholdReached: false,
+      readingStarted: false,
+      accumulated: 0,
+      activeSince: null as number | null,
+      lastScrollY: window.scrollY,
+      locationTimer: 0,
+      thresholdInterval: 0,
+      readingStartInterval: 0,
+    };
+
+    const readingTimeMs = () =>
+      s.accumulated + (s.activeSince !== null ? performance.now() - s.activeSince : 0);
+
+    function pushEvent(type: string) {
+      if (s.disposed) return;
+      const data: Record<string, unknown> = {
+        event: "content_reading",
+        content_reading_type: type,
+        estimated_article_reading_time: estimatedArticleReadingTime,
+      };
+      if (type === "estimated_article_read") {
+        data.article_reading_time = Math.round(readingTimeMs() / 1000);
+      }
+      ((window as any).dataLayer ||= []).push(data);
+      const marker = markers.querySelector<HTMLElement>(`[data-signal="${type}"]`);
+      if (marker) {
+        marker.dataset.fired = "";
+        paintMarkers(markers);
+      }
+      const toast = toasts.getAttribute(`data-${type}`);
+      if (toast) {
+        const p = toasts.appendChild(document.createElement("p"));
+        p.className = "reading-toast";
+        p.textContent = `✓ ${toast}`;
+        setTimeout(() => p.remove(), 4000);
+      }
+    }
+
+    function pause() {
+      if (s.activeSince === null) return;
+      s.accumulated += performance.now() - s.activeSince;
+      s.activeSince = null;
+    }
+
+    function resume() {
+      if (s.disposed || !s.readingStarted || !isPageActive() || s.activeSince !== null) return;
+      s.activeSince = performance.now();
+    }
+
+    function startReadingTime() {
+      if (s.disposed || s.readingStarted || !isPageActive()) return;
+      s.readingStarted = true;
+      s.activeSince = performance.now();
+      clearInterval(s.readingStartInterval);
+      s.thresholdInterval = window.setInterval(checkTimeThreshold, callbackTime);
+    }
+
+    function hasVisibleReadableText() {
+      const vh = viewportHeight();
+      const vw = viewportWidth();
+      return textElements.some((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.width <= 0 || r.height <= 0 || r.right <= 0 || r.left >= vw) return false;
+        if (Math.min(r.bottom, vh) - Math.max(r.top, 0) < minimumVisibleTextHeight) return false;
+        const style = getComputedStyle(el);
+        // opacity: 0 is allowed; entrance animations use it
+        return style.display !== "none" && style.visibility !== "hidden" && style.visibility !== "collapse";
+      });
+    }
+
+    function checkReadingStart() {
+      if (s.disposed || s.readingStarted || !isPageActive()) return;
+      if (hasVisibleReadableText()) startReadingTime();
+    }
+
+    function checkArticlePosition() {
+      if (s.disposed) return;
+      const rect = content.getBoundingClientRect();
+      const vh = viewportHeight();
+      // reached = inside the viewport or already above it (anchors, restored scroll)
+      if (!s.midpointReached && rect.top + rect.height / 2 <= vh) {
+        s.midpointReached = true;
+        pushEvent("article_midpoint_reached");
+      }
+      if (!s.endReached && rect.top + rect.height <= vh) {
+        s.endReached = true;
+        pushEvent("article_end_reached");
+        maybeComplete();
+      }
+    }
+
+    function checkTimeThreshold() {
+      if (s.disposed || s.timeThresholdReached || !s.readingStarted) return;
+      if (readingTimeMs() >= estimatedArticleReadingTime * 1000) {
+        s.timeThresholdReached = true;
+        pushEvent("article_time_threshold_reached");
+        clearInterval(s.thresholdInterval);
+        maybeComplete();
+      }
+    }
+
+    function maybeComplete() {
+      // order doesn't matter: end and time can happen either way round
+      if (s.disposed || s.completed || !s.endReached || !s.timeThresholdReached) return;
+      pushEvent("estimated_article_read");
+      s.completed = true;
+      cleanup();
+    }
+
+    function scheduleLocationCheck() {
+      clearTimeout(s.locationTimer);
+      s.locationTimer = window.setTimeout(() => {
+        checkArticlePosition();
+        checkReadingStart();
+      }, callbackTime);
+    }
+
+    function onScroll() {
+      if (s.disposed) return;
+      const moved = Math.abs(window.scrollY - s.lastScrollY) > 1;
+      s.lastScrollY = window.scrollY;
+      if (moved) {
+        // fires on the scroll that first brings ≥20 px of article text into view
+        if (!s.scrollStarted && isPageActive() && hasVisibleReadableText()) {
+          s.scrollStarted = true;
+          pushEvent("article_scroll_started");
+          startReadingTime();
+        }
+        if (!s.readingStarted) checkReadingStart();
+      }
+      scheduleLocationCheck();
+    }
+
+    const onResize = () => !s.disposed && scheduleLocationCheck();
+    const onFocus = () => !s.disposed && (s.readingStarted ? resume() : checkReadingStart());
+    const onVisibility = () => {
+      if (s.disposed) return;
+      if (document.visibilityState === "hidden") return pause();
+      s.readingStarted ? resume() : checkReadingStart();
+    };
+
+    function cleanup() {
+      if (s.disposed) return;
+      pause();
+      s.disposed = true;
+      document.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("focus", onFocus);
+      window.removeEventListener("blur", pause);
+      document.removeEventListener("visibilitychange", onVisibility);
+      clearTimeout(s.locationTimer);
+      clearInterval(s.thresholdInterval);
+      clearInterval(s.readingStartInterval);
+    }
+
+    document.addEventListener("scroll", onScroll);
+    window.addEventListener("resize", onResize);
+    window.addEventListener("focus", onFocus);
+    window.addEventListener("blur", pause);
+    document.addEventListener("visibilitychange", onVisibility);
+    // catches text that becomes visible without a scroll (layout shifts, anchors)
+    s.readingStartInterval = window.setInterval(checkReadingStart, callbackTime);
+
+    checkArticlePosition();
+    checkReadingStart();
+    return cleanup;
+  }
+
+  let cleanup: (() => void) | null = null;
+  document.addEventListener("astro:page-load", () => {
+    const markers = document.querySelector("[data-reading-markers]");
+    const toasts = document.querySelector("[data-reading-toasts]");
+    const content = document.querySelector(contentArea);
+    if (!markers || !toasts || !content) return;
+    content.append(markers);
+    // ClientRouter keeps `window` between pages, so drop the previous visit's
+    // events to start each page view clean.
+    // ponytail: in-place splice is fine without GTM; with GTM, leave dataLayer alone
+    const dataLayer: Record<string, unknown>[] = (window as any).dataLayer ?? [];
+    for (let i = dataLayer.length - 1; i >= 0; i--) {
+      if (dataLayer[i]?.event === "content_reading") dataLayer.splice(i, 1);
+    }
+    // own listener: the tracker disposes itself after the estimated read
+    const paint = () => paintMarkers(markers);
+    window.addEventListener("scroll", paint, { passive: true });
+    window.addEventListener("resize", paint);
+    const stop = start(content, markers, toasts);
+    cleanup = () => {
+      stop?.();
+      window.removeEventListener("scroll", paint);
+      window.removeEventListener("resize", paint);
+    };
+  });
+  document.addEventListener("astro:before-swap", () => {
+    cleanup?.();
+    cleanup = null;
+  });
+</script>
