@@ -27,6 +27,14 @@ citations:
   - name: "The influence of line spacing and text alignment on visual search of web pages"
     url: "https://doi.org/10.1016/j.displa.2007.04.003"
     type: "ScholarlyArticle"
+  - name: "Mobile Survey Design Research - Experiment 13: Text Alignment"
+    url: "https://www.census.gov/library/working-papers/2022/adrm/rsm2022-05.html"
+  - name: "Investigating Effects of Typographic Variables on Webpage Reading Through Eye Movements"
+    url: "https://doi.org/10.1038/s41598-019-49051-x"
+    type: "ScholarlyArticle"
+  - name: "An eight experiment sequence to determine reading equality"
+    url: "https://doi.org/10.1016/S0378-7206(98)00059-7"
+    type: "ScholarlyArticle"
   - name: "Web Content Accessibility Guidelines (WCAG) 2.2"
     url: "https://www.w3.org/TR/WCAG22/"
   - name: "Understanding Success Criterion 1.4.8: Visual Presentation"
@@ -91,10 +99,13 @@ Keskitetyssä kappaleessa jokainen rivi alkaa eri kohdasta. Yhden rivinvaihdon k
 
 [WebAIMin typografiaohjeen](https://webaim.org/techniques/textlayout/) mukaan vasemmalle tasattu teksti on lähes aina helpoin ratkaisu vasemmalta oikealle luettavissa kielissä. Myös British Dyslexia Association suosittelee vasemmalle tasausta ilman molempien reunojen tasausta, jotta rivien alut ja loput löytyvät helpommin ja sanavälit säilyvät tasaisina.
 
+W3C:n Low Vision Accessibility Task Force -työryhmän [täydentävä ohje](https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Supplemental_Guidance%3A_Text_Justification) nostaa esiin saman mekanismin. Usean rivin keskitetty teksti tekee seuraavan rivin aloituskohdasta vaihtelevan, mikä voi vaikeuttaa tasaisen lukurytmin säilyttämistä. Ohje on informatiivinen suositus, ei itsenäinen WCAG-vaatimus.
+
 <figure>
-
-![Kaavio katseen paluuliikkeestä. Keskitetyssä tekstissä katse palaa vaihteleviin aloituskohtiin, vasemmalle tasatussa tekstissä samalle pystylinjalle, vaikka rivien pituudet vaihtelevat.](@assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg)
-
+  <img
+    src="/src/assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg"
+    alt="Kaavio katseen paluuliikkeestä. Keskitetyssä tekstissä katse palaa vaihteleviin aloituskohtiin, vasemmalle tasatussa tekstissä samalle pystylinjalle, vaikka rivien pituudet vaihtelevat."
+  />
   <figcaption>Vasemmalla keskitetty teksti, jossa seuraavan rivin aloituskohta vaihtuu. Oikealla vasemmalle tasattu teksti, jossa katse voi palata aina samaan linjaan.</figcaption>
 </figure>
 
@@ -104,11 +115,15 @@ Digitaalisesta sisällöstä etsitään usein otsikoita, avainsanoja ja kohtaa, 
 
 Vasemmalle tasattu sisältö muodostaa selkeän linjan, jota pitkin katse voi edetä. Jos otsikot, ingressit ja kappaleet on kaikki keskitetty, niiden aloituskohdat vaihtelevat. Sivun rakenne on silloin vaikeampi hahmottaa yhdellä silmäyksellä.
 
-### Ymmärtäminen
+### Lukunopeus ja ymmärtäminen
 
-Vaikeammin seurattava rakenne voi viedä huomiota sisällöltä. Suoraa näyttöä siitä, että keskitetty tasaus yksin heikentäisi aina luetun ymmärtämistä, ei silti ole perusteltua väittää tämän lähdejoukon perusteella.
+Luettavuus, lukunopeus ja luetun ymmärtäminen eivät ole sama asia. Tekstin asettelu voi tehdä lukemisesta visuaalisesti työläämpää ilman, että ero näkyy suoraan lukunopeudessa tai siinä, kuinka hyvin sisältö muistetaan.
 
-Tarkempi johtopäätös on, että monirivinen keskitetty teksti voi vaikeuttaa seuraavan rivin löytämistä ja hidastaa lukemista. Vaikutus todennäköisesti kasvaa tekstimäärän, zoomauksen ja kapean näkymän myötä. Tästä ei seuraa, että jokainen keskitetty otsikko olisi vaikeasti ymmärrettävä.
+U.S. Census Bureau vertasi vuonna 2022 mobiilissa vasemmalle tasattua ja keskitettyä tekstiä 30 osallistujalla. [Tutkimuksessa](https://www.census.gov/library/working-papers/2022/adrm/rsm2022-05.html) ei havaittu tilastollisesti merkitsevää eroa lukunopeudessa tai luetun ymmärtämisessä. Ymmärtämisen mediaanitulos oli molemmissa versioissa 66,67 prosenttia. Sen sijaan 80 prosenttia osallistujista piti vasemmalle tasattua versiota parempana, ja tutkijat suosittelivat vasemmalle tasausta älypuhelimella esitettävissä kyselyissä.
+
+Tulos on tärkeä rajaus. Keskitetystä tekstistä ei ole perusteltua sanoa, että se automaattisesti hidastaa lukemista tai heikentää ymmärtämistä. Perustellumpi väite on, että monirivinen keskitys tekee rivien aloituskohdista epäsäännöllisiä ja voi lisätä seuraavan rivin löytämiseen tarvittavaa visuaalista työtä.
+
+Kun tekstipalsta kapenee tai käyttäjä suurentaa tekstiä, sama sisältö jakautuu useammalle riville. Keskitetyssä tekstissä tämä tarkoittaa samalla useampia vaihtelevia rivinaloituskohtia. Tästä ei silti seuraa, että jokainen keskitetty otsikko tai lyhyt nosto olisi vaikeasti ymmärrettävä.
 
 ## Mitä tutkimus kertoo tekstin tasauksesta?
 
@@ -116,22 +131,29 @@ Jonathan Ling ja Paul van Schaik tutkivat rivivälin ja tekstin tasauksen vaikut
 
 Havainto nostaa esiin hyödyllisen eron:
 
-> Esteettinen mieltymys ei aina kerro, kuinka tehokkaasti sisältöä pystytään käyttämään.
+> *Esteettinen mieltymys ei aina kerro, kuinka tehokkaasti sisältöä pystytään käyttämään.*
 
-Suoraa tutkimusta keskitetyn ja vasemmalle tasatun leipätekstin vaikutuksista juuri sähköposteissa, verkkosivuilla ja PDF-dokumenteissa on rajallisesti. Käytännön suositus perustuu tutkimuksen lisäksi typografisiin periaatteisiin sekä WebAIMin, W3C:n ja muiden saavutettavuustoimijoiden ohjeisiin. Väite ”keskitetty teksti heikentää aina ymmärtämistä” olisi siis liian ehdoton.
+Keskitetyn ja vasemmalle tasatun tekstin suorempi vertailu löytyy U.S. Census Bureaun vuoden 2022 mobiilitutkimuksesta. Siinä lukunopeudessa tai ymmärtämisessä ei löytynyt tilastollisesti merkitsevää eroa, mutta 80 prosenttia osallistujista suosi vasemmalle tasattua versiota. Tämä erottaa toisistaan mitatun suorituksen ja käyttäjän kokemuksen: vasemmalle tasaus voi tuntua selkeämmältä, vaikka pienessä kokeessa ero ei näkyisi lukunopeudessa tai ymmärtämistuloksissa.
+
+Vuonna 2019 Scientific Reportsissa julkaistu [silmänliiketutkimus](https://doi.org/10.1038/s41598-019-49051-x) tarkasteli todellisten verkkosivujen useita typografisia ominaisuuksia yhtä aikaa. Suurempi vasemmalle tasatun tekstin osuus liittyi pienempään fiksaatiomäärään. Tutkijat tulkitsivat vasemmalle tasauksen helpottavan lukemista tämän mittarin perusteella. Tutkimus ei silti ollut puhdas koe, jossa sama sisältö olisi näytetty vain keskitettynä ja vasemmalle tasattuna, joten sitä ei pidä käyttää suorana mittauksena keskityksen aiheuttamasta nopeuserosta.
+
+Myös molempiin reunoihin tasattua tekstiä koskeva tutkimus muistuttaa siitä, etteivät erot lukunopeudessa ole yksiselitteisiä. Coll, Fjermestad ja Coll vertasivat vuonna 1998 kahdeksassa kokeessa neljää tasaustapaa. Seitsemässä kahdeksasta kokeesta lukuaikojen välillä ei löytynyt merkitsevää eroa, eikä luetun säilymisessä löytynyt tilastollisesti merkitseviä eroja.
+
+Tutkimusnäyttö tukee siis varovaisempaa johtopäätöstä: tekstin tasaus vaikuttaa lukemisen visuaaliseen rakenteeseen ja voi vaikuttaa silmänliikkeisiin sekä koettuun helppouteen, mutta väite ”keskitetty teksti on aina hitaampaa tai vaikeammin ymmärrettävää” olisi liian ehdoton. Käytännön suositus perustuu tutkimuksen lisäksi typografisiin periaatteisiin sekä WebAIMin, W3C:n ja muiden saavutettavuustoimijoiden ohjeisiin.
 
 ## Mobiili tekee ongelman näkyväksi
 
 Työpöydällä kahdelle riville asettuva keskitetty ingressi voi näyttää tasapainoiselta. Puhelimessa sama teksti saattaa jakautua kuudelle riville.
 
-Kun tila kapenee, rivejä ja epäsäännöllisiä aloituskohtia syntyy enemmän. Tekstiblokista tulee korkeampi ja hitaammin silmäiltävä.
+Kun tila kapenee, rivejä ja epäsäännöllisiä aloituskohtia syntyy enemmän. Tekstiblokista tulee korkeampi, ja katseen pitää löytää seuraavan rivin alku useammin eri kohdasta.
 
 Sama tapahtuu, kun käyttäjä suurentaa tekstiä. Siksi tasausta ei kannata hyväksyä vain leveän työpöytänäkymän perusteella.
 
 <figure>
-
-![Keskitetyn ja vasemmalle tasatun tekstin vertailu työpöytä- ja mobiilinäkymissä. Keskitetyn tekstin epätasainen rivinalku korostuu mobiilissa.](@assets/blog/tekstin-tasaus-mobiili.jpeg)
-
+  <img
+    src="/src/assets/blog/tekstin-tasaus-mobiili.jpeg"
+    alt="Keskitetyn ja vasemmalle tasatun tekstin vertailu työpöytä- ja mobiilinäkymissä. Keskitetyn tekstin epätasainen rivinalku korostuu mobiilissa."
+  />
   <figcaption>Vasemmalla keskitetty teksti ja oikealla vasemmalle tasattu teksti. Mobiilissa keskitetyn tekstin epätasainen vasen reuna korostuu.</figcaption>
 </figure>
 
@@ -171,7 +193,7 @@ WCAG 2.2:ssa ei ole yleistä kieltoa keskitetylle tekstille. AAA-tason onnistumi
 
 Tarkka johtopäätös on siis tämä:
 
-> Pitkä keskitetty teksti ei ole sellaisenaan WCAG-rikkomus, mutta sen välttäminen on perusteltu saavutettavuus- ja käytettävyyssuositus.
+> *Pitkä keskitetty teksti ei ole sellaisenaan WCAG-rikkomus, mutta sen välttäminen on perusteltu saavutettavuus- ja käytettävyyssuositus.*
 
 Myös W3C:n Low Vision Accessibility Task Force -työryhmän [täydentävä ohje](https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Supplemental_Guidance%3A_Text_Justification) suosittelee välttämään keskitystä yhtä virkettä pidemmissä tekstiblokeissa. Kyseessä on hyödyllinen käytännön ohje, ei itsenäinen WCAG-vaatimus.
 
@@ -184,17 +206,22 @@ Keskitys toimii parhaiten, kun teksti on lyhyt, visuaalisesti erillinen ja tarko
 Sopivia käyttökohteita voivat olla:
 
 - lyhyt hero-otsikko
+
 - yhden lauseen nosto
+
 - yksittäinen tunnusluku
+
 - lyhyt sitaatti
+
 - vahvistusviesti
+
 - lyhyt toimintakehote
 
 Keskitys muuttuu riskiksi, kun elementti sisältää useita virkkeitä tai rivittyy kapeassa näkymässä pitkäksi siksakiksi.
 
 Käytännöllinen design system -sääntö voisi olla:
 
-> Keskitystä saa käyttää elementissä, joka säilyy enintään 2–3 lyhyenä rivinä tavallisissa näyttöleveyksissä. Pidempi teksti tasataan vasemmalle.
+> *Keskitystä saa käyttää elementissä, joka säilyy enintään 2–3 lyhyenä rivinä tavallisissa näyttöleveyksissä. Pidempi teksti tasataan vasemmalle.*
 
 Raja ei ole tutkimuksessa todistettu taikaluku. Sen hyöty on johdonmukaisuudessa: tiimin ei tarvitse ratkaista samaa kysymystä uudelleen jokaisessa komponentissa.
 
@@ -224,7 +251,7 @@ Pyydä käyttäjää etsimään tekstistä tietty tieto. Tarkkaile löytämiseen
 
 Digitaalisten palvelujen turvallinen oletus on yksinkertainen:
 
-> Tasaa kaikki luettava leipäteksti vasemmalle. Salli keskitys vain lyhyissä otsikoissa, nostoissa ja toimintakehotteissa, jotka säilyvät lyhyinä myös mobiilissa ja suurennetulla tekstillä.
+> *Tasaa kaikki luettava leipäteksti vasemmalle. Salli keskitys vain lyhyissä otsikoissa, nostoissa ja toimintakehotteissa, jotka säilyvät lyhyinä myös mobiilissa ja suurennetulla tekstillä.*
 
 Tämä sääntö ei estä visuaalista ilmaisua. Se erottaa korostettavan sisällön luettavasta sisällöstä.
 
@@ -232,7 +259,7 @@ Tämä sääntö ei estä visuaalista ilmaisua. Se erottaa korostettavan sisäll
 
 Vasemmalle tasattu teksti on paras lähtökohta leipätekstille suomenkielisissä digitaalisissa palveluissa. Vakaa vasen reuna helpottaa uuden rivin löytämistä ja tekee sisällöstä selkeämmin silmäiltävää.
 
-Keskitetty teksti toimii lyhyissä, erillisissä elementeissä, joiden tehtävä on korostaa. Sen toimivuus heikkenee tekstimäärän kasvaessa ja erityisesti mobiilissa tai suurennetulla tekstillä.
+Keskitetty teksti toimii lyhyissä, erillisissä elementeissä, joiden tehtävä on korostaa. Tekstimäärän kasvaessa, kapeassa näkymässä ja suurennetulla tekstillä vaihtelevia rivinaloituskohtia syntyy enemmän, jolloin keskityksen käyttöä kannattaa arvioida tarkemmin.
 
 Keskitys voi sanoa: **”Katso tätä.”**
 
@@ -243,11 +270,25 @@ Kun sisältö on tarkoitettu luettavaksi, jälkimmäinen on yleensä oikea valin
 ## Lähteet
 
 - **Vertaisarvioitu tutkimus:** Ling, J. & van Schaik, P. (2007). [*The influence of line spacing and text alignment on visual search of web pages*](https://doi.org/10.1016/j.displa.2007.04.003). Displays, 28(2), 60–67. Tutkimus käsittelee vasemmalle tasatun ja molempiin reunoihin tasatun tekstin vaikutuksia visuaaliseen hakuun.
+
+- **Suora vasemmalle tasaus vs. keskitys -vertailu:** Figueroa, I., Rivas, A. & Wang, L. (2022). [*Mobile Survey Design Research - Experiment 13: Text Alignment*](https://www.census.gov/library/working-papers/2022/adrm/rsm2022-05.html). U.S. Census Bureau. Tutkimuksessa ei havaittu merkitsevää eroa lukunopeudessa tai ymmärtämisessä, mutta 80 % osallistujista suosi vasemmalle tasausta.
+
+- **Vertaisarvioitu silmänliiketutkimus:** Scaltritti, M., Miniukovich, A., Venuti, P. et al. (2019). [*Investigating Effects of Typographic Variables on Webpage Reading Through Eye Movements*](https://doi.org/10.1038/s41598-019-49051-x). Scientific Reports, 9, 12711. Suurempi vasemmalle tasatun tekstin osuus liittyi pienempään fiksaatiomäärään todellisia verkkosivuja luettaessa.
+
+- **Vertaisarvioitu tutkimussarja:** Coll, J. H., Fjermestad, J. & Coll, R. (1998). [*An eight experiment sequence to determine reading equality*](https://doi.org/10.1016/S0378-7206(98)00059-7). Information & Management, 34(4), 231–242. Kahdeksan kokeen sarjassa tasaustapojen välillä löytyi vain yksi merkitsevä ero lukuajassa eikä merkitseviä eroja muistamisessa.
+
 - **WCAG-standardi:** W3C. [*Web Content Accessibility Guidelines 2.2*](https://www.w3.org/TR/WCAG22/). Onnistumiskriteerit 1.4.4, 1.4.8 ja 1.4.10.
+
 - **W3C:n selittävä ohje:** W3C. [*Understanding Success Criterion 1.4.8: Visual Presentation*](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html). Selitys tekstiblokkien visuaalista esitystä koskevalle AAA-tason kriteerille.
+
 - **W3C:n opetussisältö:** W3C Web Accessibility Initiative. [*Page Structure Tutorial*](https://www.w3.org/WAI/tutorials/page-structure/). Ohje verkkosisällön selkeästä rakenteesta ja esittämisestä.
+
 - **W3C-työryhmän informatiivinen ohje:** Low Vision Accessibility Task Force. [*Supplemental Guidance: Text Justification*](https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Supplemental_Guidance%3A_Text_Justification). Täydentävä ohje keskitetyn ja molempiin reunoihin tasatun tekstin käytöstä; ei itsenäinen WCAG-vaatimus.
+
 - **Saavutettavuusorganisaation käytännön ohje:** WebAIM. [*Text/Typographical Layout*](https://webaim.org/techniques/textlayout/). Ohje tekstin tasauksesta, rivin pituudesta ja tyhjästä tilasta.
+
 - **Saavutettavuusorganisaation tyyliopas:** British Dyslexia Association. [*Dyslexia Style Guide 2023*](https://cdn.bdadyslexia.org.uk/uploads/documents/Advice/style-guide/BDA-Style-Guide-2023.pdf?v=1680084017). Suosituksia vasemmalle tasauksesta, rivin pituudesta ja dokumentin rakenteesta.
+
 - **Käytännön asiantuntijalähde:** Bureau of Internet Accessibility. [*Why Justified (or Centered) Text is Bad for Accessibility*](https://www.boia.org/blog/why-justified-or-centered-text-is-bad-for-accessibility). Tulkinta keskitetyn ja molempiin reunoihin tasatun tekstin saavutettavuusvaikutuksista.
+
 - **Käytännön asiantuntijalähde:** Traci Gardner. [*Centered Text Is Harder to Read*](https://tracigardner.github.io/TechComm/document-design/page--centered-text-is-harder-to-read.html). Havainnollistus keskitetyn tekstin epätasaisesta vasemmasta reunasta.
