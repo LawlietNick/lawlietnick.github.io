@@ -55,7 +55,7 @@ For that, you need signals tied to the article itself.
 
 ## Why GA4 scroll tracking still does not tell you whether an article was read
 
-When scroll measurement is enabled, GA4 tracks event when 90% of the page's vertical depth becomes visible. It does not automatically record intermediate milestones such as 25%, 50% or 75%. [Google's enhanced measurement documentation](https://support.google.com/analytics/answer/9216061?hl=en)
+When scroll measurement is enabled, GA4 records a scroll event when 90% of the page's vertical depth becomes visible. It does not automatically record intermediate milestones such as 25%, 50% or 75%. [Google's enhanced measurement documentation](https://support.google.com/analytics/answer/9216061?hl=en)
 
 The 90% threshold applies to the whole page, not the article. A long footer, comments or related content can push it well past the final paragraph.
 
@@ -87,21 +87,25 @@ The measurement model combines both.
 
 The model records four article-specific signals and derives an estimated read when the required end and time conditions are both satisfied. Each signal is counted at most once during a page view of the article, so repeatedly scrolling past the same point does not inflate the count. Opening the article again can create another page view: the counts describe visits to the content, not unique people.
 
+The model only measures articles that are longer than one screen. If the whole article body fits in the viewport when the page opens, progress through it cannot be observed, so the page view records none of these signals.
+
 ### 1. Article Scroll Starts
 
-**The first scroll interaction while the article content is visible.**
+**The first scroll that shows article text while the page is visible and in focus.**
 
 This gives you an observable starting signal beyond a page load. Comparing scroll starts with page views for the article can help you investigate whether visitors begin moving through the content.
 
-However, someone can read the opening paragraphs without scrolling. A short article might fit entirely on screen. Treat this as a scroll-start signal, not a count of everyone who began reading. The technical event can still use a concise name such as `article_start`, but Article Scroll Starts is a clearer reporting label.
+At least 20 pixels of article text must be on screen when the scroll happens, so scrolling through the page header alone does not count.
+
+However, someone can read the opening paragraphs without scrolling. Treat this as a scroll-start signal, not a count of everyone who began reading.
 
 ### 2. Article Midpoint Reached
 
-**The midpoint of the article body becomes visible.**
+**The midpoint of the article body becomes visible or has already been passed.**
 
 This shows whether visitors reach the middle of the content, excluding the surrounding page elements. It can help you decide where to investigate a loss of interest or a mismatch between the introduction and the rest of the article.
 
-Visibility does not establish that the preceding paragraphs were read. The midpoint may already be on screen when a short article opens, or a visitor may jump directly to a section.
+Visibility does not establish that the preceding paragraphs were read. A visitor may follow a link directly to a later section, and the midpoint then counts as reached because it is above the viewport.
 
 ### 3. Article End Reached
 
@@ -115,7 +119,7 @@ It remains a position signal. A quick jump to the conclusion can satisfy this co
 
 **Accumulated qualifying time reaches the article's estimated reading time.**
 
-In this model, qualifying time accumulates while the page is visible and focused and some article content is in view. Time in a background tab does not count.
+In this model, qualifying time starts when article text first comes into view. From then on, it accumulates while the page is visible and in focus. Time in a background tab or another window does not count.
 
 Calculate the threshold from the article's word count and a configurable reading-speed assumption:
 
@@ -130,17 +134,17 @@ Calculate the threshold from the article's word count and a configurable reading
 </mrow>
 </math>
 
-For example, an 800-word article at an assumed 200 words per minute gives a four-minute threshold:
+For example, a 1,000-word article at an assumed 250 words per minute gives a four-minute threshold:
 
 <math display="block">
 <mrow>
 <mfrac>
 <mrow>
-<mn>800</mn>
+<mn>1000</mn>
 <mtext> words</mtext>
 </mrow>
 <mrow>
-<mn>200</mn>
+<mn>250</mn>
 <mtext> words per minute</mtext>
 </mrow>
 </mfrac>
@@ -150,9 +154,9 @@ For example, an 800-word article at an assumed 200 words per minute gives a four
 </mrow>
 </math>
 
-That is an illustrative setting, not a universal reading speed.
+That is an illustrative setting, not a universal reading speed. The model also adds one second for each image or figure, so illustrated articles get slightly more time.
 
-GA4 already measures engagement time with the web page in focus. This custom signal adds an article-specific visibility condition and a threshold based on its length. [Google's user engagement documentation](https://support.google.com/analytics/answer/11109416?hl=en)
+GA4 already measures engagement time with the web page in focus. This custom signal adds an article-specific start condition and a threshold based on its length. [Google's user engagement documentation](https://support.google.com/analytics/answer/11109416?hl=en)
 
 Even foreground time cannot establish attention. Someone may leave the screen, pause to think or inspect an illustration. The threshold qualifies time; it does not verify reading.
 
@@ -174,7 +178,7 @@ The ∧ symbol means that both conditions must be satisfied during the same page
 
 This is not a separate behaviour signal. It is a derived outcome that combines two observations: the visitor reached the end, and enough qualifying time accumulated to meet your chosen estimate.
 
-The event can be named `article_read`, but the reporting label should make its meaning clear: **Estimated Article Reads**. It is a proxy for consumption, with limitations inherited from both conditions.
+The reporting label should make its meaning clear: **Estimated Article Reads**. It is a proxy for consumption, with limitations inherited from both conditions.
 
 For content intended to be read through, this is a useful outcome to monitor alongside the individual signals.
 
@@ -195,7 +199,7 @@ C --> D
 D -->|Yes| E["Estimated Article Read"]
 ```
 
-The start and midpoint events add diagnostic detail. They are not prerequisites for an estimated read. This matters for short articles, where the end may be visible without any scrolling.
+The start and midpoint events add diagnostic detail. They are not prerequisites for an estimated read. A visitor who opens a link straight to the conclusion can reach the end without a recorded scroll start.
 
 ## What this model does not tell you
 
@@ -267,7 +271,7 @@ Using the example above:
 </mrow>
 </math>
 
-The denominator should use GA4 page views for the same set of eligible article pages as the article events. Mixing the article events with a broader page-view total collected under different rules can distort the rate.
+The denominator should use GA4 page views for the same set of eligible article pages as the article events. Articles short enough to fit on one screen send no signals, so leave them out of both counts. Mixing the article events with a broader page-view total collected under different rules can distort the rate.
 
 The result means that 18% of those page views for the article met the configured conditions. It does not mean that exactly 18% of visitors read the article.
 
