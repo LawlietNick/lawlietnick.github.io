@@ -35,7 +35,8 @@ function EditableText({
     if (!element) return;
     const resize = () => {
       element.style.height = "auto";
-      element.style.height = `${element.scrollHeight}px`;
+      const borderAndScrollbar = element.offsetHeight - element.clientHeight;
+      element.style.height = `${element.scrollHeight + borderAndScrollbar}px`;
     };
     resize();
     window.addEventListener("resize", resize);
@@ -46,9 +47,13 @@ function EditableText({
     <label className={`dl-editable ${className}`}>
       <span className="visually-hidden">{label}</span>
       <textarea ref={textarea} rows={rows} value={value} onChange={(event) => onChange(event.target.value)} aria-label={label} />
+      <PrintText value={value} />
     </label>
   );
 }
+
+// Form controls clip and keep screen-width heights on paper, so print shows this plain copy instead.
+const PrintText = ({ value }: { value: string }) => <span className="dl-print" aria-hidden="true">{value}</span>;
 
 export default function DataLayerDocumenter() {
   const [state, setState] = useState<DocumentState>(createInitialState);
@@ -210,7 +215,7 @@ export default function DataLayerDocumenter() {
         </aside>
 
         <main className="dl-document" id="datalayer-document">
-          <header className="dl-document__header">
+          <header className={`dl-document__header${state.settings.notes.trim() ? "" : " dl-document__header--no-notes"}`}>
             <EditableText className="dl-title" rows={1} label="Dokumentin otsikko" value={state.settings.title} onChange={(value) => updateSettings("title", value)} />
             <dl>
               <div><dt>Asiakas</dt><dd>{state.settings.clientName || "Täydennä asiakkaan nimi"}</dd></div>
@@ -246,8 +251,8 @@ export default function DataLayerDocumenter() {
                   <EditableText rows={2} label={`${section.title}: tarkoitus`} value={section.purpose} onChange={(value) => updateSection(section.id, { purpose: value })} />
                 </div>
                 <div className="dl-copy-block">
-                  <strong>Laukaisu ja toteutus</strong>
-                  <EditableText rows={3} label={`${section.title}: laukaisu ja toteutus`} value={section.trigger} onChange={(value) => updateSection(section.id, { trigger: value })} />
+                  <strong>Lähetyshetki ja toteutus</strong>
+                  <EditableText rows={3} label={`${section.title}: lähetyshetki ja toteutus`} value={section.trigger} onChange={(value) => updateSection(section.id, { trigger: value })} />
                 </div>
 
                 {!!section.parameters.length && (
@@ -259,12 +264,13 @@ export default function DataLayerDocumenter() {
                         <tbody>
                           {section.parameters.map((parameter, parameterIndex) => (
                             <tr key={`${section.id}-${parameterIndex}`}>
-                              <td><input aria-label={`${section.title}: parametrin nimi`} value={parameter.name} onChange={(event) => updateParameter(section.id, parameterIndex, { name: event.target.value })} /></td>
-                              <td><input aria-label={`${parameter.name}: tyyppi`} value={parameter.type} onChange={(event) => updateParameter(section.id, parameterIndex, { type: event.target.value })} /></td>
+                              <td><input aria-label={`${section.title}: parametrin nimi`} value={parameter.name} onChange={(event) => updateParameter(section.id, parameterIndex, { name: event.target.value })} /><PrintText value={parameter.name} /></td>
+                              <td><input aria-label={`${parameter.name}: tyyppi`} value={parameter.type} onChange={(event) => updateParameter(section.id, parameterIndex, { type: event.target.value })} /><PrintText value={parameter.type} /></td>
                               <td>
                                 <select aria-label={`${parameter.name}: pakollisuus`} value={parameter.required} onChange={(event) => updateParameter(section.id, parameterIndex, { required: event.target.value as DocumentParameter["required"] })}>
-                                  <option>Kyllä</option><option>Jompikumpi</option><option>Jos value</option><option>Suositeltu</option><option>Ei</option>
+                                  <option>Kyllä</option><option>Jompikumpi</option><option value="Jos value">Jos value annetaan</option><option>Suositeltu</option><option>Ei</option>
                                 </select>
+                                <PrintText value={parameter.required === "Jos value" ? "Jos value annetaan" : parameter.required} />
                               </td>
                               <td>
                                 <EditableText
@@ -285,14 +291,14 @@ export default function DataLayerDocumenter() {
                 {section.code && (
                   <div className="dl-code">
                     <h3>Esimerkki</h3>
-                    <EditableText rows={Math.min(22, Math.max(6, section.code.split("\n").length))} label={`${section.title}: koodiesimerkki`} value={section.code} onChange={(value) => updateSection(section.id, { code: value })} />
+                    <EditableText rows={1} label={`${section.title}: koodiesimerkki`} value={section.code} onChange={(value) => updateSection(section.id, { code: value })} />
                   </div>
                 )}
 
-                <div className="dl-notes">
+                <div className={`dl-notes${section.notes.some((note) => note.trim()) ? "" : " dl-notes--empty"}`}>
                   <h3>Erityistapaukset ja tarkistukset</h3>
                   {section.notes.map((note, noteIndex) => (
-                    <div className="dl-note" key={`${section.id}-note-${noteIndex}`}>
+                    <div className={`dl-note${note.trim() ? "" : " dl-note--empty"}`} key={`${section.id}-note-${noteIndex}`}>
                       <span aria-hidden="true">•</span>
                       <EditableText rows={2} label={`${section.title}: huomio ${noteIndex + 1}`} value={note} onChange={(value) => updateSection(section.id, { notes: section.notes.map((item, index) => index === noteIndex ? value : item) })} />
                       <button type="button" aria-label={`Poista huomio ${noteIndex + 1} osiosta ${section.title}`} onClick={() => updateSection(section.id, { notes: section.notes.filter((_, index) => index !== noteIndex) })}>Poista</button>
@@ -302,6 +308,7 @@ export default function DataLayerDocumenter() {
                 </div>
 
                 <a className="dl-source" href={section.source} target="_blank" rel="noreferrer">Google Developers -lähde</a>
+                {section.source.trim() && <p className="dl-print dl-print-source">Lähde: {section.source.trim()}</p>}
               </div>
             </article>
           ))}

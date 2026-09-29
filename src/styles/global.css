@@ -159,6 +159,10 @@ main:focus {
 }
 
 @media print {
+  .skip {
+    display: none !important;
+  }
+
   @page {
     margin: 18mm;
   }

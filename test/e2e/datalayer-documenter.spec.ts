@@ -46,3 +46,23 @@ test("downloads a real DOCX and exposes an intentional empty state", async ({ pa
   await expect(page.getByRole("heading", { name: "Valitse vähintään yksi osio" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Lataa Markdown" })).toBeDisabled();
 });
+
+test("prints plain text instead of clipped form controls", async ({ page }) => {
+  await page.getByLabel("Consent Mode ja tapahtumajärjestys: tarkoitus").fill("Ensimmäinen rivi\nToinen rivi");
+  await page.emulateMedia({ media: "print" });
+
+  const document = page.locator("#datalayer-document");
+  await expect(document.locator("textarea:visible, input:visible, select:visible")).toHaveCount(0);
+  await expect(page.locator(".tool-hero")).toBeHidden();
+  await expect(document.locator(".dl-section").first()).toHaveCSS("break-before", "page");
+  await expect(document.getByText("item_category...item_category5", { exact: true })).toBeVisible();
+  await expect(document.locator(".dl-print", { hasText: /^Jompikumpi$/ }).first()).toBeVisible();
+  const multiline = document.locator(".dl-print", { hasText: "Ensimmäinen rivi" });
+  await expect(multiline).toBeVisible();
+  expect(await multiline.innerText()).toBe("Ensimmäinen rivi\nToinen rivi");
+
+  // Every printed value wraps inside its column instead of running off the page.
+  const overflowing = await document.locator(".dl-print").evaluateAll((nodes) =>
+    nodes.filter((node) => node.scrollWidth > node.clientWidth + 1).length);
+  expect(overflowing).toBe(0);
+});

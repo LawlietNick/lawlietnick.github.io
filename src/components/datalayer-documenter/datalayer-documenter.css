@@ -472,7 +472,8 @@
 }
 
 .dl-code textarea {
-  min-height: 11rem;
+  min-height: 0;
+  resize: none;
   padding: 1rem;
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -543,6 +544,10 @@
   }
 }
 
+.dl-print {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dl-builder button {
     transition: none;
@@ -558,9 +563,20 @@
   .site-header,
   .site-footer,
   .breadcrumb,
+  .tool-hero,
+  .datalayer-usage,
   .dl-builder__privacy,
   .dl-controls,
   .dl-section__order,
+  .dl-document textarea,
+  .dl-document input,
+  .dl-document select,
+  .dl-document__header--no-notes .dl-project-notes,
+  .dl-notes--empty,
+  .dl-note--empty,
+  .dl-note button,
+  .dl-add-note,
+  .dl-source,
   body > footer {
     display: none !important;
   }
@@ -583,58 +599,145 @@
     color: #1f1f25;
   }
 
-  .dl-document__header,
-  .dl-section__content {
-    padding: 0 0 10mm;
+  /* Plain-text copies replace the form controls on paper and wrap to the page width. */
+  .dl-print {
+    display: block;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 
+  .dl-title .dl-print {
+    font-family: var(--font-display);
+    font-size: 26pt;
+    font-weight: var(--font-weight-strong);
+    line-height: 1.1;
+  }
+
+  .dl-section-title .dl-print {
+    font-family: var(--font-display);
+    font-size: 18pt;
+    font-weight: var(--font-weight-strong);
+    line-height: 1.15;
+  }
+
+  /* Block layout: Chrome ignores break-after inside grid, which left headings alone at page ends. */
+  .dl-document__header,
+  .dl-section__content,
+  .dl-copy-block,
+  .dl-notes,
+  .dl-project-notes {
+    display: block;
+    padding: 0;
+  }
+
+  .dl-document__header {
+    padding-bottom: 6mm;
+  }
+
+  .dl-document__header > * + *,
+  .dl-section__content > * + * {
+    margin-top: 4mm;
+  }
+
+  .dl-document__header > dl {
+    margin-top: 6mm;
+  }
+
+  .dl-copy-block > strong,
+  .dl-project-notes > span {
+    display: block;
+    margin-bottom: 1mm;
+  }
+
+  .dl-event-name {
+    display: block;
+    width: fit-content;
+  }
+
+  .dl-note + .dl-note {
+    margin-top: 1.5mm;
+  }
+
+  /* Every section starts on its own page; the header above the first one works as a cover. */
   .dl-section {
     display: block;
+    break-before: page;
     break-inside: auto;
-    padding-block: 8mm;
-    border-color: #d8d6df;
+    padding-block: 0;
+    border: 0;
   }
 
-  .dl-editable textarea,
-  .dl-parameters input,
-  .dl-parameters select,
-  .dl-parameters textarea {
-    border: 0 !important;
-    outline: 0 !important;
-    background: transparent !important;
-    color: #1f1f25 !important;
-    resize: none;
+  .dl-event-name,
+  .dl-section-title,
+  .dl-copy-block > strong,
+  .dl-section h3,
+  .dl-project-notes > span {
+    break-after: avoid;
   }
 
-  .dl-title textarea,
-  .dl-section-title textarea {
-    padding: 0;
-    margin: 0;
+  .dl-copy-block,
+  .dl-note,
+  .dl-parameters tr,
+  .dl-code .dl-editable {
+    break-inside: avoid;
   }
 
   .dl-table-wrap {
     overflow: visible;
-    border-color: #d8d6df;
+    border: 0;
+    border-radius: 0;
   }
 
   .dl-parameters table {
     min-width: 0;
-    font-size: 8pt;
+    border: 1px solid #d8d6df;
+    font-size: 8.5pt;
+  }
+
+  .dl-parameters thead {
+    display: table-header-group;
+  }
+
+  .dl-parameters th,
+  .dl-parameters td {
+    padding: 1.6mm 2mm;
+    border: 1px solid #d8d6df;
+  }
+
+  .dl-parameters th {
+    background: #f1eef9;
+    color: #4d4957;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .dl-parameters td:first-child .dl-print {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-bold);
   }
 
   .dl-code .dl-editable {
+    padding: 3mm 4mm;
     border-color: #d8d6df;
     background: #f4f3f8;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  .dl-code textarea {
-    white-space: pre-wrap;
+  .dl-code .dl-print {
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    line-height: 1.5;
   }
 
-  .dl-note button,
-  .dl-add-note,
-  .dl-source {
-    display: none;
+  .dl-note > span {
+    padding-top: 0;
+  }
+
+  .dl-section__content .dl-print-source {
+    margin: 3mm 0 0;
+    color: #6d6976;
+    font-size: 8pt;
   }
 
   a {

@@ -72,7 +72,7 @@ ${body}
 
 const moneyParameters: DocumentParameter[] = [
   { name: "currency", type: "string", required: "Jos value", description: "Valuutan ISO 4217 -koodi, esimerkiksi EUR." },
-  { name: "value", type: "number", required: "Suositeltu", description: "Tapahtumaan liittyvien tuotteiden arvo. Ei sisällä toimitusta tai veroa." },
+  { name: "value", type: "number", required: "Suositeltu", description: "Tapahtumaan liittyvien tuotteiden arvo. Ei sisällä toimituskuluja eikä veroja." },
   { name: "items", type: "array", required: "Kyllä", description: "Tapahtumaan liittyvät tuotteet." },
 ];
 
@@ -81,7 +81,7 @@ const sectionDefinitions: DocumentSection[] = [
     id: "implementation",
     group: "Perusta",
     title: "Toteutuksen periaatteet",
-    purpose: "Dokumentti määrittelee selaimen dataLayeriin lähetettävät GA4-tapahtumat. Sivuston toteutus vastaa oikeasta laukaisuhetkestä ja tapahtuman tiedoista; Google Tag Manager lukee datan ja välittää sen sovittuihin kohteisiin.",
+    purpose: "Dokumentti määrittelee selaimen dataLayeriin lähetettävät GA4-tapahtumat. Sivuston toteutus vastaa oikeasta lähetyshetkestä ja tapahtuman tiedoista; Google Tag Manager lukee datan ja välittää sen sovittuihin kohteisiin.",
     trigger: "Alusta window.dataLayer vain kerran. Lisää tiedot aina dataLayer.push()-kutsulla ja käytä tapahtuma- sekä parametrinimiä yhdenmukaisesti koko sivustolla.",
     parameters: [],
     code: `window.dataLayer = window.dataLayer || [];
@@ -102,8 +102,8 @@ window.dataLayer.push({
     id: "consent",
     group: "Perusta",
     title: "Consent Mode ja tapahtumajärjestys",
-    purpose: "Consent Mode ohjaa Google-tagien toimintaa käyttäjän suostumusvalintojen perusteella. dataLayer-tapahtumaa ja suostumustilaa ei pidä sekoittaa samaan vastuuseen.",
-    trigger: "Aseta suostumuksen oletustila ennen mittausta lähettäviä komentoja. Päivitä tila heti samalla sivulla, kun käyttäjä muuttaa valintaansa. Jos CMP latautuu asynkronisesti, määritä tarpeeseen sopiva wait_for_update oletuskomennossa.",
+    purpose: "Consent Mode ohjaa Google-tagien toimintaa käyttäjän suostumusvalintojen perusteella. Erota dataLayer-tapahtumien lähettäminen ja suostumustilan hallinta toisistaan.",
+    trigger: "Aseta suostumuksen oletustila ennen mittaustietoja lähettäviä komentoja. Päivitä tila heti samalla sivulla, kun käyttäjä muuttaa valintaansa. Jos CMP latautuu asynkronisesti, määritä oletuskomennossa tarpeeseen sopiva wait_for_update-arvo.",
     parameters: [
       { name: "analytics_storage", type: "granted | denied", required: "Kyllä", description: "Analytiikkaan liittyvän tallennuksen suostumustila." },
       { name: "ad_storage", type: "granted | denied", required: "Kyllä", description: "Mainontaan liittyvän tallennuksen suostumustila." },
@@ -118,9 +118,9 @@ window.dataLayer.push({
   wait_for_update: 500
 });`,
     notes: [
-      "Ecommerce-tapahtumia ei yleisesti tarvitse viivästää odottamaan käyttäjän hyväksyntää. Google-tagien tulee toimia kulloisenkin suostumustilan mukaisesti.",
-      "GTM:n omassa consent-templatessa käytä setDefaultConsentState- ja updateConsentState-rajapintoja.",
-      "Testaa consentin oletustila, päivitys ja tapahtumien lähetys GTM Preview'ssa ennen julkaisua.",
+      "Verkkokauppatapahtumia ei yleisesti tarvitse viivästää odottamaan käyttäjän hyväksyntää. Google-tagien tulee toimia kulloisenkin suostumustilan mukaisesti.",
+      "Käytä GTM:n suostumuksenhallinnan mallipohjassa setDefaultConsentState- ja updateConsentState-rajapintoja.",
+      "Testaa suostumuksen oletustila, päivitys ja tapahtumien lähetys GTM:n esikatselutilassa ennen julkaisua.",
     ],
     source: consentSource,
     selected: true,
@@ -129,26 +129,26 @@ window.dataLayer.push({
     id: "items",
     group: "Perusta",
     title: "Items-taulukon yhteinen rakenne",
-    purpose: "items-taulukko kuvaa tapahtumaan liittyvät tuotteet tai palvelut. Käytä samaa item_id-arvoa jokaisessa tapahtumassa, jotta tuotevaiheet voidaan yhdistää raportoinnissa.",
+    purpose: "items-taulukko kuvaa tapahtumaan liittyvät tuotteet tai palvelut. Käytä samaa item_id-arvoa jokaisessa tapahtumassa, jotta saman tuotteen eri tapahtumat voidaan yhdistää raportoinnissa.",
     trigger: "Muodosta jokainen tuote samalla tietomallilla. Lähetä kaikki saatavilla olevat suositellut parametrit ja enintään 27 omaa parametria tuotetta kohti.",
     parameters: [
-      { name: "item_id", type: "string", required: "Jompikumpi", description: "Tuotteen pysyvä tunniste, esimerkiksi SKU. Vähintään item_id tai item_name vaaditaan." },
-      { name: "item_name", type: "string", required: "Jompikumpi", description: "Tuotteen nimi. Vähintään item_id tai item_name vaaditaan." },
+      { name: "item_id", type: "string", required: "Jompikumpi", description: "Tuotteen pysyvä tunniste, esimerkiksi SKU. Anna vähintään toinen parametreista: item_id tai item_name." },
+      { name: "item_name", type: "string", required: "Jompikumpi", description: "Tuotteen nimi. Anna vähintään toinen parametreista: item_id tai item_name." },
       { name: "price", type: "number", required: "Suositeltu", description: "Yksikköhinta tuotetason alennuksen jälkeen." },
-      { name: "discount", type: "number", required: "Ei", description: "Tuotekohtainen alennus per yksikkö. Ei prosenttiosuus." },
+      { name: "discount", type: "number", required: "Ei", description: "Tuotekohtainen alennus yksikköä kohti. Ei prosenttiosuus." },
       { name: "quantity", type: "number", required: "Suositeltu", description: "Tuotteiden määrä. Oletusarvo GA4:ssa on 1." },
       { name: "item_brand", type: "string", required: "Ei", description: "Tuotteen brändi." },
       { name: "item_category...item_category5", type: "string", required: "Ei", description: "Tuotekategorian tasot yhdestä viiteen." },
       { name: "item_variant", type: "string", required: "Ei", description: "Variantti, kuten väri ja koko." },
       { name: "item_list_id / item_list_name", type: "string", required: "Ei", description: "Lista, jossa tuote näytettiin tai valittiin." },
-      { name: "index", type: "number", required: "Ei", description: "Tuotteen nollasta alkava sijainti listalla." },
+      { name: "index", type: "number", required: "Ei", description: "Tuotteen järjestysnumero listalla. Numerointi alkaa nollasta." },
       { name: "coupon", type: "string", required: "Ei", description: "Tuotetason kuponki tai alennuskoodi." },
       { name: "affiliation", type: "string", required: "Ei", description: "Kauppa tai kumppani, jonka kautta tapahtuma syntyi." },
     ],
     code: item(),
     notes: [
       "Yhdessä items-taulukossa voi olla enintään 200 tuotetta.",
-      "price ja discount ovat erillisiä arvoja. price on alennettu yksikköhinta ja discount alennuksen määrä per yksikkö.",
+      "price ja discount ovat erillisiä arvoja. price on alennettu yksikköhinta ja discount alennuksen määrä yksikköä kohti.",
       "Älä vaihda item_id:n lähdettä tapahtumien välillä esimerkiksi tuote-ID:stä variantti-SKU:hun.",
     ],
     source: ecommerceSources.implementation,
@@ -159,8 +159,8 @@ window.dataLayer.push({
     group: "Selaus",
     eventName: "view_item_list",
     title: "Tuotelistan näkeminen",
-    purpose: "Lähetetään, kun käyttäjälle näytetään tuotteiden luettelo, kuten kategoria, hakutulos, suosituslohko tai kuratoitu kokoelma.",
-    trigger: "Lähetä tuotteet, kun ne tulevat näkyviin. Lazyload- ja infinite scroll -toteutuksissa lähetä vain uudet näkyviin tulleet tuotteet.",
+    purpose: "Tapahtuma kertoo, mitä tuotteita käyttäjälle näytetään esimerkiksi kategoriassa, hakutuloksissa, suosituksissa tai kokoelmassa.",
+    trigger: "Lähetä tapahtuma tuotteiden tiedoilla, kun tuotteet tulevat näkyviin. Jos tuotteita ladataan lisää vierityksen aikana, lähetä vain uudet näkyviin tulleet tuotteet.",
     parameters: [
       { name: "item_list_id", type: "string", required: "Suositeltu", description: "Listan vakaa tunniste." },
       { name: "item_list_name", type: "string", required: "Suositeltu", description: "Listan käyttäjälle ymmärrettävä nimi." },
@@ -168,7 +168,7 @@ window.dataLayer.push({
     ],
     code: ecommercePush("view_item_list", `    item_list_id: "category_shoes",\n    item_list_name: "Shoes",\n    items: [\n      ${item(',\n  index: 0,\n  item_list_id: "category_shoes",\n  item_list_name: "Shoes"').replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
-      "Estä saman tuotelistan saman näyttökerran tuplat esimerkiksi IntersectionObserverin ja fired-tilan avulla.",
+      "Estä saman tuotelistan näyttökertaan liittyvät päällekkäiset tapahtumat esimerkiksi IntersectionObserverin avulla ja tallentamalla tieto tapahtuman lähettämisestä.",
       "Älä lähetä listaa vielä silloin, kun tiedot vain haetaan mutta tuotteet eivät ole näkyvissä.",
     ],
     source: ecommerceSources.itemList,
@@ -179,15 +179,15 @@ window.dataLayer.push({
     group: "Selaus",
     eventName: "select_item",
     title: "Tuotteen valitseminen listalta",
-    purpose: "Lähetetään, kun käyttäjä valitsee tuotteen listalta ja siirtyy esimerkiksi tuotesivulle.",
-    trigger: "Lähetä klikkauksen tai muun yksiselitteisen valinnan yhteydessä. Säilytä listan tunniste, nimi ja tuotteen index samana kuin view_item_list-tapahtumassa.",
+    purpose: "Tapahtuma kertoo, minkä tuotteen käyttäjä valitsee listalta.",
+    trigger: "Lähetä tapahtuma klikkauksen tai muun yksiselitteisen valinnan yhteydessä. Säilytä listan tunniste, nimi ja tuotteen index samana kuin view_item_list-tapahtumassa.",
     parameters: [
       { name: "item_list_id", type: "string", required: "Suositeltu", description: "Lista, josta tuote valittiin." },
       { name: "item_list_name", type: "string", required: "Suositeltu", description: "Listan nimi." },
       { name: "items", type: "array", required: "Kyllä", description: "Valittu tuote. Lähetä vain valittu tuote." },
     ],
     code: ecommercePush("select_item", `    item_list_id: "category_shoes",\n    item_list_name: "Shoes",\n    items: [\n      ${item(',\n  index: 0,\n  item_list_id: "category_shoes",\n  item_list_name: "Shoes"').replaceAll("\n", "\n      ")}\n    ]`),
-    notes: ["Älä lähetä select_item-tapahtumaa pelkästä hoverista tai listan näyttämisestä."],
+    notes: ["Älä lähetä select_item-tapahtumaa pelkästään siksi, että osoitin viedään tuotteen päälle tai lista näytetään käyttäjälle."],
     source: ecommerceSources.itemList,
     selected: false,
   },
@@ -196,8 +196,8 @@ window.dataLayer.push({
     group: "Selaus",
     eventName: "view_item",
     title: "Tuotetietojen katsominen",
-    purpose: "Lähetetään, kun käyttäjä näkee tuotteen yksityiskohtaiset tiedot.",
-    trigger: "Lähetä tuotesivun tai muun tuotedetaljin renderöidyttyä. Lähetä uudelleen, jos käyttäjän valitsema variantti vaihtaa seurattavaa tuotetta tai hintaa.",
+    purpose: "Tapahtuma kertoo, minkä tuotteen yksityiskohtaisia tietoja käyttäjä katsoo.",
+    trigger: "Lähetä tapahtuma, kun tuotteen yksityiskohtaiset tiedot on näytetty käyttäjälle. Lähetä tapahtuma uudelleen, jos käyttäjän valitsema variantti vaihtaa seurattavaa tuotetta tai hintaa.",
     parameters: moneyParameters,
     code: ecommercePush("view_item", `    currency: "EUR",\n    value: 89.95,\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: ["value on items-taulukon price × quantity -arvojen summa."],
@@ -209,8 +209,8 @@ window.dataLayer.push({
     group: "Selaus",
     eventName: "add_to_wishlist",
     title: "Tuotteen lisääminen toivelistalle",
-    purpose: "Lähetetään, kun käyttäjä lisää yhden tai useamman tuotteen toivelistalle.",
-    trigger: "Lähetä vasta onnistuneen lisäyksen jälkeen.",
+    purpose: "Tapahtuma kertoo, mitä tuotteita käyttäjä lisää toivelistalle.",
+    trigger: "Lähetä add_to_wishlist-tapahtuma vasta, kun tuotteet on lisätty toivelistalle onnistuneesti.",
     parameters: moneyParameters,
     code: ecommercePush("add_to_wishlist", `    currency: "EUR",\n    value: 89.95,\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: ["Älä lähetä tapahtumaa, jos lisäys epäonnistuu tai käyttäjä peruu toiminnon."],
@@ -222,8 +222,8 @@ window.dataLayer.push({
     group: "Ostoskori",
     eventName: "add_to_cart",
     title: "Tuotteen lisääminen ostoskoriin",
-    purpose: "Lähetetään, kun käyttäjä lisää yhden tai useamman tuotteen ostoskoriin.",
-    trigger: "Lähetä vasta, kun ostoskori on päivittynyt onnistuneesti.",
+    purpose: "Tapahtuma kertoo, mitä tuotteita käyttäjä lisää ostoskoriin ja kuinka monta.",
+    trigger: "Lähetä add_to_cart-tapahtuma vasta, kun tuotteet on lisätty ostoskoriin onnistuneesti.",
     parameters: moneyParameters,
     code: ecommercePush("add_to_cart", `    currency: "EUR",\n    value: 89.95,\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
@@ -238,8 +238,8 @@ window.dataLayer.push({
     group: "Ostoskori",
     eventName: "remove_from_cart",
     title: "Tuotteen poistaminen ostoskorista",
-    purpose: "Lähetetään, kun käyttäjä poistaa tuotteen tai pienentää sen määrää ostoskorissa.",
-    trigger: "Lähetä vasta onnistuneen ostoskoripäivityksen jälkeen.",
+    purpose: "Tapahtuma kertoo, mitä tuotteita käyttäjä poistaa ostoskorista ja kuinka monta.",
+    trigger: "Lähetä remove_from_cart-tapahtuma vasta, kun ostoskori on päivittynyt onnistuneesti.",
     parameters: moneyParameters,
     code: ecommercePush("remove_from_cart", `    currency: "EUR",\n    value: 89.95,\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
@@ -254,13 +254,13 @@ window.dataLayer.push({
     group: "Ostoskori",
     eventName: "view_cart",
     title: "Ostoskorin katsominen",
-    purpose: "Lähetetään, kun käyttäjä näkee ostoskorin sisällön sivulla, avautuvassa paneelissa tai modaalissa.",
-    trigger: "Lähetä ostoskorin sivun latauduttua tai varsinaisen ostoskoripaneelin avauduttua. Älä lähetä hover-esikatselusta.",
+    purpose: "Tapahtuma kertoo, mitä tuotteita ostoskorissa on, kun käyttäjä katsoo sen sisältöä.",
+    trigger: "Lähetä tapahtuma ostoskorisivun latauduttua tai varsinaisen ostoskoripaneelin avauduttua. Älä lähetä tapahtumaa esikatselusta, joka avautuu, kun osoitin viedään ostoskorin kuvakkeen päälle.",
     parameters: moneyParameters,
     code: ecommercePush("view_cart", `    currency: "EUR",\n    value: 164.45,\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
       "Tyhjästä ostoskorista voidaan lähettää value: 0 ja tyhjä items-taulukko.",
-      "Jos avoimen ostoskorin sisältö muuttuu, lähetä uusi view_cart vain, jos uusi näkymä vastaa toteutuksen määriteltyä näyttökertaa. Vältä jokaisen pienen renderöinnin tuplia.",
+      "Jos avoimen ostoskorin sisältö muuttuu, lähetä uusi view_cart vain, jos uusi näkymä vastaa toteutuksen määriteltyä näyttökertaa. Estä näkymän päivityksistä aiheutuvat päällekkäiset tapahtumat.",
     ],
     source: ecommerceSources.cart,
     selected: true,
@@ -269,17 +269,17 @@ window.dataLayer.push({
     id: "begin_checkout",
     group: "Kassa",
     eventName: "begin_checkout",
-    title: "Kassan aloittaminen",
-    purpose: "Lähetetään, kun käyttäjä aloittaa kassaprosessin.",
-    trigger: "Lähetä, kun käyttäjä siirtyy ostoskorista kassalle tai aloittaa kassan Osta nyt -toiminnolla. Älä lähetä pelkästä kassasivun päivityksestä, jos uutta kassayritystä ei synny.",
+    title: "Kassaprosessin aloittaminen",
+    purpose: "Tapahtuma kertoo, että käyttäjä aloittaa kassaprosessin.",
+    trigger: "Lähetä tapahtuma, kun käyttäjä siirtyy ostoskorista kassalle tai aloittaa kassaprosessin Osta nyt -toiminnolla. Älä lähetä tapahtumaa pelkästä kassasivun päivityksestä, jos uutta kassaprosessia ei synny.",
     parameters: [
       ...moneyParameters,
-      { name: "coupon", type: "string", required: "Ei", description: "Tilauksen tasolla aktiivinen alennuskoodi." },
+      { name: "coupon", type: "string", required: "Ei", description: "Koko tilaukseen sovellettava alennuskoodi." },
     ],
     code: ecommercePush("begin_checkout", `    currency: "EUR",\n    value: 164.45,\n    coupon: "SUMMER10",\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
-      "Jos käyttäjä palaa ostoskoriin ja aloittaa kassan uudelleen, kyseessä voi olla uusi begin_checkout.",
-      "Osta nyt -toiminnossa lähetä add_to_cart vain, jos tuote todella lisätään ostoskoriin, ja begin_checkout kassan alkaessa.",
+      "Jos käyttäjä palaa ostoskoriin ja aloittaa kassaprosessin uudelleen, kyseessä voi olla uusi begin_checkout.",
+      "Osta nyt -toiminnossa lähetä add_to_cart vain, jos tuote todella lisätään ostoskoriin, ja begin_checkout kassaprosessin alkaessa.",
     ],
     source: ecommerceSources.checkout,
     selected: true,
@@ -289,17 +289,17 @@ window.dataLayer.push({
     group: "Kassa",
     eventName: "add_shipping_info",
     title: "Toimitustietojen lisääminen",
-    purpose: "Lähetetään, kun käyttäjä on antanut tai vahvistanut toimitustiedot ja etenee kassalla.",
-    trigger: "Lähetä onnistuneen toimitusvaiheen jälkeen, ei pelkästä kentän muutoksesta.",
+    purpose: "Tapahtuma kertoo, että käyttäjä on antanut tai vahvistanut toimitustiedot ja edennyt kassalla.",
+    trigger: "Lähetä tapahtuma onnistuneen toimitusvaiheen jälkeen, ei pelkästä kentän muutoksesta.",
     parameters: [
       ...moneyParameters,
       { name: "shipping_tier", type: "string", required: "Ei", description: "Valittu toimitustapa, esimerkiksi Standard tai Express." },
-      { name: "coupon", type: "string", required: "Ei", description: "Tilauksen tasolla aktiivinen alennuskoodi." },
+      { name: "coupon", type: "string", required: "Ei", description: "Koko tilaukseen sovellettava alennuskoodi." },
     ],
     code: ecommercePush("add_shipping_info", `    currency: "EUR",\n    value: 164.45,\n    shipping_tier: "Standard",\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
-      "value kuvaa tuotteiden arvoa eikä siihen lisätä shipping- tai tax-parametreja.",
-      "SPA-kassassa estä saman vaiheen automaattisten uudelleenrenderöintien tuplat.",
+      "value kuvaa tuotteiden arvoa, eikä siihen lasketa mukaan toimituskuluja tai veroja.",
+      "Estä SPA-toteutuksessa kassavaiheen automaattisista näkymän päivityksistä aiheutuvat päällekkäiset tapahtumat.",
     ],
     source: ecommerceSources.checkout,
     selected: true,
@@ -309,16 +309,16 @@ window.dataLayer.push({
     group: "Kassa",
     eventName: "add_payment_info",
     title: "Maksutietojen lisääminen",
-    purpose: "Lähetetään, kun käyttäjä antaa tai vahvistaa maksutavan ja etenee kassalla.",
-    trigger: "Lähetä onnistuneen maksuvaiheen jälkeen. Älä lähetä maksutavan pelkästä näyttämisestä.",
+    purpose: "Tapahtuma kertoo, että käyttäjä on antanut tai vahvistanut maksutavan ja edennyt kassalla.",
+    trigger: "Lähetä tapahtuma onnistuneen maksuvaiheen jälkeen. Älä lähetä tapahtumaa pelkästään siksi, että maksutapa näytetään käyttäjälle.",
     parameters: [
       ...moneyParameters,
       { name: "payment_type", type: "string", required: "Ei", description: "Valittu maksutapa, esimerkiksi Credit Card, PayPal tai Apple Pay." },
-      { name: "coupon", type: "string", required: "Ei", description: "Tilauksen tasolla aktiivinen alennuskoodi." },
+      { name: "coupon", type: "string", required: "Ei", description: "Koko tilaukseen sovellettava alennuskoodi." },
     ],
     code: ecommercePush("add_payment_info", `    currency: "EUR",\n    value: 164.45,\n    payment_type: "Credit Card",\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
-      "Lähetä maksutavan vaihdosta uudelleen vain, jos käyttäjä vahvistaa uuden valinnan osana kassavaihetta.",
+      "Lähetä tapahtuma maksutavan vaihdosta uudelleen vain, jos käyttäjä vahvistaa uuden valinnan osana kassavaihetta.",
       "Älä lähetä korttinumeroa, tilinumeroa tai muuta maksamiseen liittyvää henkilötietoa.",
     ],
     source: ecommerceSources.checkout,
@@ -329,22 +329,22 @@ window.dataLayer.push({
     group: "Tilaus",
     eventName: "purchase",
     title: "Onnistunut osto",
-    purpose: "Lähetetään, kun tilaus on varmasti valmis ja palvelin on antanut yksilöllisen tilaustunnisteen.",
-    trigger: "Lähetä onnistumissivulla tai palvelimen vahvistaman tilausvalmistumisen jälkeen. Älä lähetä Osta-painikkeen klikkauksesta. Estä saman transaction_id:n lähettäminen uudelleen sivun päivityksessä.",
+    purpose: "Tapahtuma kertoo valmistuneesta tilauksesta, jolle palvelin on antanut yksilöllisen tilaustunnisteen.",
+    trigger: "Lähetä tapahtuma tilausvahvistussivulla tai sen jälkeen, kun palvelin on vahvistanut tilauksen valmistumisen. Älä lähetä tapahtumaa Osta-painikkeen klikkauksesta. Estä saman transaction_id:n lähettäminen uudelleen sivun päivityksessä.",
     parameters: [
       { name: "transaction_id", type: "string", required: "Kyllä", description: "Palvelimen luoma yksilöllinen tilaustunniste." },
       { name: "currency", type: "string", required: "Jos value", description: "Valuutan ISO 4217 -koodi." },
-      { name: "value", type: "number", required: "Suositeltu", description: "Tuotteiden yhteenlaskettu arvo tuotetason alennusten jälkeen. Ei sisällä veroa tai toimitusta." },
+      { name: "value", type: "number", required: "Suositeltu", description: "Tuotteiden yhteenlaskettu arvo tuotetason alennusten jälkeen. Ei sisällä toimituskuluja eikä veroja." },
       { name: "tax", type: "number", required: "Ei", description: "Tilauksen veron määrä." },
       { name: "shipping", type: "number", required: "Ei", description: "Tilauksen toimituskulut." },
-      { name: "coupon", type: "string", required: "Ei", description: "Tilauksen tasoinen alennuskoodi." },
+      { name: "coupon", type: "string", required: "Ei", description: "Koko tilaukseen sovellettava alennuskoodi." },
       { name: "items", type: "array", required: "Kyllä", description: "Ostetut tuotteet." },
     ],
     code: ecommercePush("purchase", `    transaction_id: "ORD-20260727-78432",\n    currency: "EUR",\n    value: 164.45,\n    tax: 39.47,\n    shipping: 4.90,\n    coupon: "SUMMER10",\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
       "transaction_id:n tulee olla sama kaikissa järjestelmissä, mutta se ei saa sisältää henkilötietoa.",
-      "Säilytä purchase-data palvelimella tai sivun lähdedatassa niin, ettei tapahtuma katoa maksupalvelusta palaamisen ajoitusvirheeseen.",
-      "Testaa tuplien esto samalla transaction_id:llä.",
+      "Säilytä purchase-tapahtuman tiedot palvelimella tai sivun lähdedatassa niin, ettei tapahtuma katoa maksupalvelusta palaamisen ajoitusvirheeseen.",
+      "Testaa päällekkäisten tapahtumien estäminen samalla transaction_id:llä.",
     ],
     source: ecommerceSources.purchase,
     selected: true,
@@ -354,8 +354,8 @@ window.dataLayer.push({
     group: "Tilaus",
     eventName: "refund",
     title: "Palautus",
-    purpose: "Lähetetään, kun koko tilaus tai osa tilauksesta on hyvitetty.",
-    trigger: "Lähetä palautuksen vahvistumisen jälkeen. Luotettavin toteutus tehdään yleensä palvelinpuolelta tai taustajärjestelmästä, koska palautus ei tavallisesti tapahdu selaimessa.",
+    purpose: "Tapahtuma kertoo koko tilauksen tai sen osan hyvityksestä.",
+    trigger: "Lähetä tapahtuma palautuksen vahvistumisen jälkeen. Luotettavin toteutus tehdään yleensä palvelinpuolelta tai taustajärjestelmästä, koska palautus ei tavallisesti tapahdu selaimessa.",
     parameters: [
       { name: "transaction_id", type: "string", required: "Kyllä", description: "Sama tunniste kuin alkuperäisessä purchase-tapahtumassa." },
       { name: "currency", type: "string", required: "Jos value", description: "Palautuksen valuutta." },
@@ -367,7 +367,7 @@ window.dataLayer.push({
     code: ecommercePush("refund", `    transaction_id: "ORD-20260727-78432",\n    currency: "EUR",\n    value: 89.95,\n    items: [\n      ${item().replaceAll("\n", "\n      ")}\n    ]`),
     notes: [
       "Osittaisessa palautuksessa lähetä palautetut tuotteet ja määrät.",
-      "Täydessä palautuksessa pelkkä transaction_id riittää tapahtuman yhdistämiseen, mutta item-tiedot parantavat tuotetason raportointia.",
+      "Täydessä palautuksessa pelkkä transaction_id riittää tapahtuman yhdistämiseen, mutta tuotetiedot parantavat tuotetason raportointia.",
       "Älä lähetä palautussummaa negatiivisena.",
     ],
     source: ecommerceSources.purchase,
@@ -378,12 +378,12 @@ window.dataLayer.push({
     group: "Markkinointi",
     eventName: "view_promotion",
     title: "Sisäisen kampanjan näkeminen",
-    purpose: "Lähetetään, kun käyttäjä näkee sivuston sisäisen kampanjan, kuten kampanjabannerin.",
-    trigger: "Lähetä, kun kampanja tulee näkyviin. Estä saman näyttökerran tuplat.",
+    purpose: "Tapahtuma kertoo, minkä sivuston sisäisen kampanjan käyttäjä näkee esimerkiksi kampanjabannerissa.",
+    trigger: "Lähetä tapahtuma, kun kampanja tulee näkyviin. Estä samaan näyttökertaan liittyvät päällekkäiset tapahtumat.",
     parameters: [
       { name: "promotion_id", type: "string", required: "Suositeltu", description: "Kampanjan vakaa tunniste." },
       { name: "promotion_name", type: "string", required: "Suositeltu", description: "Kampanjan nimi." },
-      { name: "creative_name", type: "string", required: "Ei", description: "Luovan toteutuksen nimi." },
+      { name: "creative_name", type: "string", required: "Ei", description: "Kampanjamateriaalin nimi." },
       { name: "creative_slot", type: "string", required: "Ei", description: "Kampanjan sijainti sivulla." },
       { name: "items", type: "array", required: "Ei", description: "Kampanjaan liittyvät tuotteet." },
     ],
@@ -397,12 +397,12 @@ window.dataLayer.push({
     group: "Markkinointi",
     eventName: "select_promotion",
     title: "Sisäisen kampanjan valitseminen",
-    purpose: "Lähetetään, kun käyttäjä valitsee sivuston sisäisen kampanjan.",
-    trigger: "Lähetä kampanjan klikkauksesta tai vastaavasta yksiselitteisestä valinnasta.",
+    purpose: "Tapahtuma kertoo, minkä sivuston sisäisen kampanjan käyttäjä valitsee.",
+    trigger: "Lähetä tapahtuma kampanjan klikkauksesta tai vastaavasta yksiselitteisestä valinnasta.",
     parameters: [
       { name: "promotion_id", type: "string", required: "Suositeltu", description: "Kampanjan vakaa tunniste." },
       { name: "promotion_name", type: "string", required: "Suositeltu", description: "Kampanjan nimi." },
-      { name: "creative_name", type: "string", required: "Ei", description: "Luovan toteutuksen nimi." },
+      { name: "creative_name", type: "string", required: "Ei", description: "Kampanjamateriaalin nimi." },
       { name: "creative_slot", type: "string", required: "Ei", description: "Kampanjan sijainti sivulla." },
       { name: "items", type: "array", required: "Ei", description: "Valittuun kampanjaan liittyvä tuote." },
     ],
@@ -416,8 +416,8 @@ window.dataLayer.push({
     group: "Käyttäjä",
     eventName: "sign_up",
     title: "Tilin luominen",
-    purpose: "Lähetetään, kun uusi käyttäjätili on luotu onnistuneesti.",
-    trigger: "Lähetä vasta palvelimen vahvistettua tilin luomisen. Monivaiheisessa rekisteröitymisessä tapahtuma kuuluu viimeiseen onnistuneeseen vaiheeseen.",
+    purpose: "Tapahtuma kertoo uuden käyttäjätilin onnistuneesta luomisesta.",
+    trigger: "Lähetä tapahtuma vasta palvelimen vahvistettua tilin luomisen. Monivaiheisessa rekisteröitymisessä tapahtuma kuuluu viimeiseen onnistuneeseen vaiheeseen.",
     parameters: [{ name: "method", type: "string", required: "Ei", description: "Rekisteröitymistapa, esimerkiksi Email, Google tai Apple." }],
     code: `window.dataLayer = window.dataLayer || [];
 window.dataLayer.push({
@@ -425,8 +425,8 @@ window.dataLayer.push({
   method: "Email"
 });`,
     notes: [
-      "Älä lähetä epäonnistuneesta rekisteröitymisestä.",
-      "Älä lähetä sähköpostia, nimeä tai käyttäjätunnusta tapahtuman mukana.",
+      "Älä lähetä tapahtumaa epäonnistuneesta rekisteröitymisestä.",
+      "Älä lähetä sähköpostiosoitetta, nimeä tai käyttäjätunnusta tapahtuman mukana.",
     ],
     source: `${eventsSource}#sign_up`,
     selected: true,
@@ -436,8 +436,8 @@ window.dataLayer.push({
     group: "Käyttäjä",
     eventName: "login",
     title: "Kirjautuminen",
-    purpose: "Lähetetään, kun käyttäjä kirjautuu onnistuneesti tilille.",
-    trigger: "Lähetä vasta koko kirjautumisen, mahdollinen 2FA mukaan lukien, onnistuttua. Automaattisesta kirjautumisesta lähetä korkeintaan kerran istunnossa, jos se kuuluu sovittuun mittaussuunnitelmaan.",
+    purpose: "Tapahtuma kertoo onnistuneesta kirjautumisesta käyttäjätilille.",
+    trigger: "Lähetä tapahtuma vasta, kun kirjautuminen ja mahdollinen kaksivaiheinen tunnistautuminen ovat onnistuneet. Lähetä automaattisesta kirjautumisesta tapahtuma korkeintaan kerran istunnossa, jos se kuuluu sovittuun mittaussuunnitelmaan.",
     parameters: [{ name: "method", type: "string", required: "Ei", description: "Kirjautumistapa, esimerkiksi Email, Google, Apple tai SSO." }],
     code: `window.dataLayer = window.dataLayer || [];
 window.dataLayer.push({
@@ -445,8 +445,8 @@ window.dataLayer.push({
   method: "Google"
 });`,
     notes: [
-      "Älä lähetä epäonnistuneesta kirjautumisesta.",
-      "Älä lähetä sähköpostia, nimeä tai käyttäjätunnusta tapahtuman mukana.",
+      "Älä lähetä tapahtumaa epäonnistuneesta kirjautumisesta.",
+      "Älä lähetä sähköpostiosoitetta, nimeä tai käyttäjätunnusta tapahtuman mukana.",
     ],
     source: `${eventsSource}#login`,
     selected: true,
@@ -528,11 +528,11 @@ export function buildMarkdown(state: DocumentState) {
   ].filter(Boolean).join("  \n");
   const intro = settings.notes.trim() ? `\n\n## Projektin lisähuomiot\n\n${clean(settings.notes)}` : "";
   const body = selectedSections(state).map((section) => {
-    const parameters = section.parameters.length ? `\n\n### Parametrit\n\n| Parametri | Tyyppi | Pakollinen | Kuvaus |\n| --- | --- | --- | --- |\n${section.parameters.map((parameter) => `| \`${escapeTable(parameter.name)}\` | ${escapeTable(parameter.type)} | ${parameter.required} | ${escapeTable(parameter.description)} |`).join("\n")}` : "";
+    const parameters = section.parameters.length ? `\n\n### Parametrit\n\n| Parametri | Tyyppi | Pakollinen | Kuvaus |\n| --- | --- | --- | --- |\n${section.parameters.map((parameter) => `| \`${escapeTable(parameter.name)}\` | ${escapeTable(parameter.type)} | ${parameter.required === "Jos value" ? "Jos value annetaan" : parameter.required} | ${escapeTable(parameter.description)} |`).join("\n")}` : "";
     const code = section.code.trim() ? `\n\n### Esimerkki\n\n\`\`\`javascript\n${section.code.trim()}\n\`\`\`` : "";
     const notes = section.notes.filter((note) => note.trim()).length ? `\n\n### Erityistapaukset ja tarkistukset\n\n${section.notes.filter((note) => note.trim()).map((note) => `- ${clean(note)}`).join("\n")}` : "";
     const source = section.source.trim() ? `\n\n[Lähde: Google Developers](${section.source.trim()})` : "";
-    return `## ${clean(section.title)}${section.eventName ? ` (\`${section.eventName}\`)` : ""}\n\n**Tarkoitus:** ${clean(section.purpose)}\n\n**Laukaisu ja toteutus:** ${clean(section.trigger)}${parameters}${code}${notes}${source}`;
+    return `## ${clean(section.title)}${section.eventName ? ` (\`${section.eventName}\`)` : ""}\n\n**Tarkoitus:** ${clean(section.purpose)}\n\n**Lähetyshetki ja toteutus:** ${clean(section.trigger)}${parameters}${code}${notes}${source}`;
   }).join("\n\n---\n\n");
   return `# ${clean(settings.title) || "Verkkokaupan dataLayer-dokumentaatio"}\n\n${metadata || "*Projektitiedot täydennetään ennen toimitusta.*"}${intro}\n\n${body}\n`;
 }
@@ -589,6 +589,9 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
       // The textual NK fallback below keeps server-side and test exports functional.
     }
   }
+  // Word ignores "\n" inside a run, so each typed line becomes its own run with a line break.
+  const textRuns = (text: string, options: Omit<ConstructorParameters<typeof TextRun>[0] & object, "text" | "break"> = {}) =>
+    text.split("\n").map((line, index) => new TextRun({ ...options, text: line, break: index ? 1 : 0 }));
   const logo = () => logoData
     ? new ImageRun({ type: "png", data: logoData, transformation: { width: 105, height: 74 } })
     : new TextRun({ text: "NK", font: "Georgia", size: 34, bold: true, color: colors.ink });
@@ -648,11 +651,11 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
     }),
     ...parameters.map((parameter) => new TableRow({
       cantSplit: true,
-      children: [parameter.name, parameter.type, parameter.required, parameter.description].map((text, index) => new TableCell({
+      children: [parameter.name, parameter.type, parameter.required === "Jos value" ? "Jos value annetaan" : parameter.required, parameter.description].map((text, index) => new TableCell({
         width: { size: [2300, 1150, 1350, 4838][index], type: WidthType.DXA },
         margins: { top: 120, bottom: 120, left: 120, right: 120 },
         verticalAlign: VerticalAlign.CENTER,
-        children: [new Paragraph({ children: [new TextRun({ text, font: index === 0 ? "Courier New" : "Arial", size: 18, bold: index === 0, color: colors.ink })] })],
+        children: [new Paragraph({ children: textRuns(text, { font: index === 0 ? "Courier New" : "Arial", size: 18, bold: index === 0, color: colors.ink }) })],
       })),
     })),
   ];
@@ -691,7 +694,7 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
 
   if (state.settings.notes.trim()) contentChildren.push(
     new Paragraph({ text: "Projektin lisähuomiot", heading: HeadingLevel.HEADING_2 }),
-    new Paragraph({ shading: { type: ShadingType.CLEAR, fill: colors.note }, border: { left: { style: BorderStyle.SINGLE, size: 16, color: colors.pop } }, indent: { left: 220, right: 180 }, spacing: { before: 80, after: 180 }, children: [new TextRun(state.settings.notes.trim())] }),
+    new Paragraph({ shading: { type: ShadingType.CLEAR, fill: colors.note }, border: { left: { style: BorderStyle.SINGLE, size: 16, color: colors.pop } }, indent: { left: 220, right: 180 }, spacing: { before: 80, after: 180 }, children: textRuns(state.settings.notes.trim()) }),
   );
 
   for (const section of selectedSections(state)) {
@@ -700,8 +703,8 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
     );
     if (section.eventName) contentChildren.push(new Paragraph({ spacing: { after: 160 }, children: [new TextRun({ text: section.eventName, font: "Courier New", bold: true, color: colors.accent, shading: { type: ShadingType.CLEAR, fill: colors.accentSoft }, size: 19 })] }));
     contentChildren.push(
-      new Paragraph({ shading: { type: ShadingType.CLEAR, fill: colors.accentSoft }, border: { left: { style: BorderStyle.SINGLE, size: 16, color: colors.accent } }, indent: { left: 220, right: 180 }, spacing: { before: 40, after: 100 }, children: [new TextRun({ text: "TARKOITUS  ", bold: true, color: colors.accent, size: 17, characterSpacing: 16 }), new TextRun(section.purpose)] }),
-      new Paragraph({ shading: { type: ShadingType.CLEAR, fill: "F8F7FA" }, border: { left: { style: BorderStyle.SINGLE, size: 8, color: colors.line } }, indent: { left: 220, right: 180 }, spacing: { before: 0, after: 180 }, children: [new TextRun({ text: "LAUKAISU JA TOTEUTUS  ", bold: true, color: colors.muted, size: 17, characterSpacing: 12 }), new TextRun(section.trigger)] }),
+      new Paragraph({ shading: { type: ShadingType.CLEAR, fill: colors.accentSoft }, border: { left: { style: BorderStyle.SINGLE, size: 16, color: colors.accent } }, indent: { left: 220, right: 180 }, spacing: { before: 40, after: 100 }, children: [new TextRun({ text: "TARKOITUS  ", bold: true, color: colors.accent, size: 17, characterSpacing: 16 }), ...textRuns(section.purpose.trim())] }),
+      new Paragraph({ shading: { type: ShadingType.CLEAR, fill: "F8F7FA" }, border: { left: { style: BorderStyle.SINGLE, size: 8, color: colors.line } }, indent: { left: 220, right: 180 }, spacing: { before: 0, after: 180 }, children: [new TextRun({ text: "LÄHETYSHETKI JA TOTEUTUS  ", bold: true, color: colors.muted, size: 17, characterSpacing: 12 }), ...textRuns(section.trigger.trim())] }),
     );
     if (section.parameters.length) contentChildren.push(
       new Paragraph({ text: "Parametrit", heading: HeadingLevel.HEADING_2, keepNext: true }),
@@ -719,7 +722,7 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
     );
     if (section.notes.some((note) => note.trim())) contentChildren.push(
       new Paragraph({ text: "Erityistapaukset ja tarkistukset", heading: HeadingLevel.HEADING_2, keepNext: true }),
-      ...section.notes.filter((note) => note.trim()).map((note) => new Paragraph({ text: note.trim(), bullet: { level: 0 }, shading: { type: ShadingType.CLEAR, fill: colors.note }, spacing: { after: 80 }, indent: { right: 140 } })),
+      ...section.notes.filter((note) => note.trim()).map((note) => new Paragraph({ children: textRuns(note.trim()), bullet: { level: 0 }, shading: { type: ShadingType.CLEAR, fill: colors.note }, spacing: { after: 80 }, indent: { right: 140 } })),
     );
     if (section.source.trim()) contentChildren.push(new Paragraph({ spacing: { before: 80, after: 220 }, children: [new ExternalHyperlink({ link: section.source, children: [new TextRun({ text: "Lähde: Google Developers", style: "Hyperlink", size: 18 })] })] }));
   }
