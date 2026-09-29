@@ -49,10 +49,16 @@ const cta = (position) => ({
 });
 
 const formatLabel = fm.format === "monthly" ? t.formatMonthly : t.formatFixed;
+const schemaService = {
+  name: fm.title,
+  description: fm.summary,
+  serviceType: fm.schema?.serviceType,
+  about: fm.schema?.about,
+};
 
 ---
 
-<Base title={fm.metaTitle ?? fm.title} description={fm.metaDescription ?? fm.summary} schemaPageType="service" alternate={fm.alternate}>
+<Base title={fm.metaTitle ?? fm.title} description={fm.metaDescription ?? fm.summary} schemaPageType="service" {schemaService} alternate={fm.alternate}>
   <div class="wide-band">
     <Breadcrumb
       fi={fi}

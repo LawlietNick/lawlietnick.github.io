@@ -12,6 +12,7 @@ const {
   pageType,
   items = [],
   stats,
+  service,
   hasTranslation,
   translatedPath,
 } = Astro.props;
@@ -43,6 +44,7 @@ const schema = canonicalUrl
       frontmatter: fm,
       items,
       stats,
+      service,
       personImage,
       pageImage,
       hasTranslation,

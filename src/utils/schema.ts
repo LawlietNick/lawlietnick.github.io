@@ -37,6 +37,9 @@ export type SchemaOptions = {
   stats?: { words?: number; readTime?: number } | null;
   personImage?: SchemaImage;
   pageImage?: SchemaImage;
+  // Service pages: name/description from `title`/`summary`, the rest from
+  // the optional `schema:` frontmatter block. Absent values are omitted.
+  service?: { name?: string; description?: string; serviceType?: string; about?: string };
   // Same values that already drive hreflang and the language switcher
   // (resolveLanguageLinks in Base.astro) — reused here so translation
   // relationships can't drift from what the page actually links to.
@@ -146,6 +149,7 @@ export function buildSchemaGraph(options: SchemaOptions) {
     frontmatter,
     items = [],
     stats,
+    service,
     hasTranslation,
     translatedPath,
   } = options;
@@ -357,9 +361,11 @@ export function buildSchemaGraph(options: SchemaOptions) {
     graph.push(compact({
       "@type": "Service",
       "@id": serviceId,
-      name: title,
-      description,
       url: canonicalUrl,
+      name: service?.name ?? title,
+      description: service?.description ?? description,
+      serviceType: service?.serviceType,
+      about: service?.about ? { "@type": "Thing", name: service.about } : undefined,
       provider: { "@id": PERSON_ID },
       mainEntityOfPage: { "@id": canonicalUrl },
     }));

@@ -23,7 +23,7 @@ const fm = Astro.props.frontmatter;
 const { title, description = "", documentTitle } = fm ?? Astro.props;
 // pages/posts pass a page-specific title; the brand suffix is appended here (one place)
 const fullTitle = documentTitle ?? (title ? `${title} | ${siteName}` : siteName);
-const { schemaPageType, schemaItems = [] } = Astro.props;
+const { schemaPageType, schemaItems = [], schemaService } = Astro.props;
 const { banner = false } = Astro.props; // pages opt in to the footer CTA banner
 const { noindex = false } = fm ?? Astro.props;  // markdown pages carry it in frontmatter
 const headings = Astro.props.headings ?? [];  // markdown layout gives this; .astro pages don't
@@ -167,6 +167,7 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
       {description}
       pageType={schemaPageType}
       items={schemaItems}
+      service={schemaService}
       {stats}
       hasTranslation={effectiveHasLanguageAlternate}
       translatedPath={fi ? enLanguageHref : fiLanguageHref}
