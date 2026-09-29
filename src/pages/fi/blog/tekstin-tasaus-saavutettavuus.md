@@ -261,12 +261,6 @@ Vasemmalle tasattu teksti on paras lähtökohta leipätekstille suomenkielisiss�
 
 Keskitetty teksti toimii lyhyissä, erillisissä elementeissä, joiden tehtävä on korostaa. Tekstimäärän kasvaessa, kapeassa näkymässä ja suurennetulla tekstillä vaihtelevia rivinaloituskohtia syntyy enemmän, jolloin keskityksen käyttöä kannattaa arvioida tarkemmin.
 
-Keskitys voi sanoa: **”Katso tätä.”**
-
-Vasemmalle tasaus sanoo: **”Lue tämä.”**
-
-Kun sisältö on tarkoitettu luettavaksi, jälkimmäinen on yleensä oikea valinta.
-
 ## Lähteet
 
 - **Vertaisarvioitu tutkimus:** Ling, J. & van Schaik, P. (2007). [*The influence of line spacing and text alignment on visual search of web pages*](https://doi.org/10.1016/j.displa.2007.04.003). Displays, 28(2), 60–67. Tutkimus käsittelee vasemmalle tasatun ja molempiin reunoihin tasatun tekstin vaikutuksia visuaaliseen hakuun.

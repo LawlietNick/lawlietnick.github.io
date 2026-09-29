@@ -1,12 +1,13 @@
 ---
 layout: ../../../layouts/Base.astro
 title: "Cookiebot-opas"
-description: "Vaiheittainen opas Cookiebotin ja Google Consent Moden käyttöönottoon: skriptin asennus, suostumuksen oletustilat ja tagien toiminnan varmistus."
+description: "Vaiheittainen opas Cookiebotin käyttöönottoon sekä Google Consent Moden, Microsoft UET:n ja Clarityn suostumustilojen määrittämiseen ja testaamiseen."
 date: 2025-08-07
+updatedDate: 2026-09-28
 category: templates
 order: 1
 icon: "🍪"
-summary: "Kopioitava Cookiebot- ja Google Consent Mode -toteutus asetusten valinnasta koodiin ja testaukseen."
+summary: "Cookiebotin käyttöönotto ja Googlen sekä Microsoftin suostumustilojen hallinta: asetukset, kopioitavat koodit ja testausohjeet."
 tags: ["Cookiebot", "Consent Mode", "GDPR", "evästeet"]
 image: /images/blog/cookiebot-guide.jpeg
 imageAlt: "Silmälasipäinen sarjakuvakilpikonna seisoo Cookiebot-logon ja evästesuojan näyttävän selainikkunan vieressä"
@@ -23,23 +24,39 @@ mentions:
   - "Google Tag Assistant"
   - "Microsoft UET"
 citations:
+  - name: "Consent mode: Basic vs Advanced"
+    url: "https://developers.google.com/tag-platform/security/concepts/consent-mode#basic_vs_advanced_consent_mode"
+  - name: "Consent debugging with Tag Assistant"
+    url: "https://developers.google.com/tag-platform/security/guides/consent-debugging"
   - name: "Cookiebot: Automatic cookie blocking"
     url: "https://support.cookiebot.com/hc/en-us/articles/360009074960-Automatic-cookie-blocking"
+  - name: "Cookiebot: Manual cookie blocking"
+    url: "https://support.cookiebot.com/hc/en-us/articles/4405978132242-Manual-cookie-blocking"
   - name: "Cookiebot: Setting up Microsoft UET for Consent Mode"
     url: "https://support.cookiebot.com/hc/en-us/articles/12452886794908-Setting-up-Microsoft-Universal-Event-Tracking-for-Consent-Mode"
 ---
 
-## Vaihe 1 – Valitse ConsentDefault-toimintatapa
+Tässä oppaassa Cookiebot asennetaan suoraan verkkosivustolle. Ohje etenee skriptien lisäämisestä toiminnan tarkistamiseen selaimessa. Sivuston ylläpitäjä saa ohjeet toteutukseen, markkinoinnin ja analytiikan asiantuntija suostumustilojen tarkistamiseen ja kehittäjä kopioitavat koodit muokattaviksi.
 
-Molemmat alla olevat skriptit asettavat sekä Google Consent Mode v2:n oletusarvot että Microsoft UET:n oletuksen (`ad_storage`). Microsoft Advertising edellyttää suostumussignaaleja ETA-alueella, Britanniassa ja Sveitsissä, ja UET olettaa arvon `granted`, jos oletusta ei ole asetettu. Siksi denied-oletus on pakko lähettää.
+## Ennen aloittamista
 
-Microsoft kuvaa kaksi toteutustapaa: **Advanced**, jossa UET-tagi latautuu heti ja kerää anonymisoitua dataa suostumuksen puuttuessa, ja **Basic**, jossa UET-tagi ei laukea lainkaan ennen suostumusta. Tässä oppaassa käytetään **Basic Consent Modea**. Se on tiukempi, mutta samalla menetetään mallinnetut konversiot niiltä kävijöiltä, jotka eivät anna suostumusta. Vertailu löytyy [Cookiebotin UET-ohjeesta](https://support.cookiebot.com/hc/en-us/articles/12452886794908-Setting-up-Microsoft-Universal-Event-Tracking-for-Consent-Mode).
+Opas käsittelee **suoraan sivustolle tehtävää toteutusta**: suostumuksen oletustilat ja Cookiebot-tagi lisätään sivuston `<head>`-osioon. Tarvitset Cookiebotin verkkotunnusryhmän tunnuksen (Domain Group ID) sekä pääsyn sivuston lähdekoodiin tai sisällönhallintajärjestelmän toimintoon, jolla skriptejä voi lisätä `<head>`-osioon.
 
-UET lukee vain `ad_storage`-arvon. **Microsoft Clarity** on oma tuotteensa, jolla on oma consent mode. Se lukee sekä `ad_storage`-arvon (markkinointi) että `analytics_storage`-arvon (tilastointi). Clarity ei vaadi omaa koodia: Cookiebot hoitaa sen automaattisesti, ja sen voi kytkeä pois vain vaiheen 2 valintaruudulla. Sekä UET että Clarity ovat edellyttäneet suostumussignaalia ETA-alueen, Britannian ja Sveitsin kävijöiltä 31.10.2025 alkaen.
+Älä käytä näitä skriptejä yhdessä Google Tag Managerin Cookiebot CMP -mallipohjan tai muun suostumuksen oletustiloja ja päivityksiä jo hallitsevan integraation kanssa. Tarkista tai poista nykyinen toteutus ennen jatkamista, sillä samaa suostumustilaa hallitsevat integraatiot voivat toimia ristiriitaisesti.
+
+Opas käsittelee teknistä toteutusta eikä ratkaise sen lainmukaisuutta. Evästeluokkien, aluekohtaisten toimintatapojen, säilytysajan ja banneritekstien on vastattava sivuston käytäntöjä ja sovellettavia vaatimuksia.
+
+## Vaihe 1 – Valitse suostumuksen oletustilojen asettamistapa
+
+Molemmat alla olevat skriptit asettavat Google Consent Mode v2:n oletustilat. Jos sivusto käyttää Microsoft Advertisingia tai Clarityä, samoilla skripteillä voi asettaa myös Microsoft UET:n ja Microsoft Clarity Consent API v2:n oletustilat. Microsoft Advertising edellyttää suostumussignaaleja ETA-alueella, Britanniassa ja Sveitsissä. UET olettaa arvon `granted`, jos oletustilaa ei ole asetettu, joten mukaan valitun UET-integraation oletustilaksi on asetettava `denied`.
+
+Basic ja Advanced Consent Mode kuvaavat **tagin latausajankohtaa**, eivät sitä, kumman oletustilan asettavan skriptin kopioit. Basic-tilassa tagin lataaminen estetään, kunnes tarvittava suostumus on annettu. Advanced-tilassa tagi latautuu `denied`-oletustilassa ja lähettää rajattuja mittaustietoja ilman evästeitä. Tässä oppaassa Microsoft UET käyttää **Basic-tilaa**. Google-tagit voivat käyttää kumpaa tahansa tilaa lataussääntöjensä mukaan. Katso Googlen [Basic- ja Advanced-tilojen vertailu](https://developers.google.com/tag-platform/security/concepts/consent-mode#basic_vs_advanced_consent_mode) ja [Cookiebotin UET-ohje](https://support.cookiebot.com/hc/en-us/articles/12452886794908-Setting-up-Microsoft-Universal-Event-Tracking-for-Consent-Mode).
+
+UET lukee vain `ad_storage`-arvon. **Microsoft Clarity** on erillinen tuote, jonka Consent API v2 lukee sekä `ad_Storage`-arvon (markkinointi) että `analytics_Storage`-arvon (tilastointi). Kun valitset palvelun mukaan, skriptit alustavat sen suostumusarvot ennen kyseisen Microsoft-tagin latautumista. Sekä UET että Clarity ovat edellyttäneet suostumussignaaleja ETA-alueen, Britannian ja Sveitsin kävijöiltä 31.10.2025 alkaen.
 
 <fieldset class="consent-default-picker">
-  <legend>ConsentDefault-asetus</legend>
-  <p>Haetaanko kävijän tallennetut Cookiebot-valinnat automaattisesti jokaisella sivulatauksella ConsentDefault-osion oletusarvoiksi?</p>
+  <legend>Valitse oletustilan asettava skripti</legend>
+  <p>Palautetaanko palaavan kävijän tallennetut Cookiebot-valinnat ennen Cookiebotin latautumista?</p>
   <label class="form-choice" for="consent-default-no">
     <input
       id="consent-default-no"
@@ -49,7 +66,7 @@ UET lukee vain `ad_storage`-arvon. **Microsoft Clarity** on oma tuotteensa, joll
       aria-controls="consent-default-denied"
       checked
     >
-    <span><strong>Ei.</strong> Käytä estettyjä oletusarvoja, kunnes Cookiebot päivittää suostumustilan.</span>
+    <span><strong>Ei. Suositus useimmille sivustoille.</strong> Aloita denied-tilasta ja anna Cookiebotin päivittää suostumustila.</span>
   </label>
   <label class="form-choice" for="consent-default-yes">
     <input
@@ -59,54 +76,90 @@ UET lukee vain `ad_storage`-arvon. **Microsoft Clarity** on oma tuotteensa, joll
       value="stored"
       aria-controls="consent-default-stored"
     >
-    <span><strong>Kyllä.</strong> Lue tallennetut valinnat CookieConsent-evästeestä jokaisella sivulatauksella.</span>
+    <span><strong>Kyllä. Edistynyt toteutus.</strong> Lue ja tarkista tallennettu CookieConsent-eväste ensin.</span>
+  </label>
+</fieldset>
+
+<fieldset class="consent-service-picker">
+  <legend>Valitse Microsoftin suostumusten hallinta</legend>
+  <p>Google Consent Mode sisältyy aina toteutukseen. Nämä valinnat koskevat kumpaakin oletustilan asettavaa skriptiä.</p>
+  <label class="form-choice" for="consent-default-include-uet">
+    <input id="consent-default-include-uet" type="checkbox" checked>
+    <span>Sisällytä Microsoft Advertising UET:n suostumusten hallinta</span>
+  </label>
+  <label class="form-choice" for="consent-default-include-clarity">
+    <input id="consent-default-include-clarity" type="checkbox" checked>
+    <span>Sisällytä Microsoft Clarityn suostumusten hallinta</span>
   </label>
 </fieldset>
 
 <section id="consent-default-stored" hidden>
 
-<h3>Käytä tallennettuja Cookiebot-valintoja Consent Moden oletusarvoina</h3>
+<h3>Edistynyt toteutus: palauta tallennetut Cookiebot-valinnat</h3>
 
-Käytä tätä versiota, kun ConsentDefault-osion pitää lukea kävijän tallennetut Cookiebot-valinnat automaattisesti jokaisella sivulatauksella.
+Käytä tätä versiota vain, jos palaavien kävijöiden varhaisten sivutapahtumien käsittely edellyttää lisäkoodia ja tiimisi pystyy ylläpitämään sitä. Skripti alustaa aina Google Consent Mode v2:n. Yllä olevilla Microsoft-valinnoilla lisäät mukaan UET Consent Moden ja Clarity Consent V2:n, jotka käyttävät samoja Cookiebotin evästeluokkia.
 
-Sijoita koodi mahdollisimman korkealle **\<head\>**-osioon. WordPressissä se tulee ladata ennen `wp_head`-hookin suorittamista.
+Sijoita koodi mahdollisimman lähelle **\<head\>**-osion alkua. WordPressissä se tulee ladata ennen `wp_head`-hookin suorittamista.
 
-Tämä versio toimii varman eston periaatteella (fail closed): oletuksena se hyväksyy vain nimenomaisen suostumuksen, hylkää yli 366 päivää vanhan suostumuksen ja jättää ristiriitaiset tai epäselvät samannimiset `CookieConsent`-evästeet huomioimatta. Jos tallennettua suostumusta ei voida vahvistaa, kaikki ei-välttämättömät signaalit jäävät `denied`-tilaan, kunnes Cookiebot lähettää ajantasaisen päivityksen.
+Tämä versio toimii varman eston periaatteella (fail closed): oletuksena se hyväksyy vain nimenomaisen suostumuksen, hylkää yli 366 päivää vanhan suostumuksen ja jättää ristiriitaiset tai epäselvät samannimiset `CookieConsent`-evästeet huomioimatta. Jos tallennettua suostumusta ei voida vahvistaa, kaikki ei-välttämättömät signaalit jäävät `denied`-tilaan. Cookiebotille annetaan aikaa lähettää ajantasainen päivitys.
 
-Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CMP -malli asettaa oletustilan, älä käytä tätä alustusskriptiä samanaikaisesti.
+Aseta Consent Moden oletustila vain yhdestä lähteestä. Poista aiempi suostumuksen oletustiloja tai päivityksiä hallitseva toteutus ennen tämän alustusskriptin käyttämistä.
 
 <div class="code-accordion" data-code-accordion>
 <div class="code-accordion__content" id="cookiebot-stored-consent-script" data-code-accordion-content>
 
 ```html
 <!--
-  Google Consent Mode v2 -alustusskripti Cookiebotille.
+  Cookiebotin suostumustilojen alustusskripti.
+
+  Tukee seuraavia palveluita:
+  - Google Consent Mode v2
+  - Microsoft UET Consent Mode
+  - Microsoft Clarity Consent V2
 
   SIJOITUS:
-  Suoraan <head>-osioon ENNEN:
-  1. Cookiebotia
-  2. Google Tag Manageria
-  3. gtag.js:ää
+  Suoraan <head>-osioon ennen seuraavia skriptejä:
+  1. Cookiebot
+  2. Google Tag Manager
+  3. gtag.js
+  4. Microsoft UET
+  5. Microsoft Clarity
 
-  Ei async-attribuuttia.
-  Ei defer-attribuuttia.
-  Ei ulkoiseen tiedostoon.
+  Ei async- tai defer-attribuuttia.
+
+  Suositus: sijoita skripti inline-muodossa suoraan <head>-osioon, jotta Consent Moden oletustila asetetaan mahdollisimman aikaisin.
+
+  Jos käytetään ulkoista tiedostoa, sen on latauduttava synkronisesti ennen Cookiebotia, GTM:ää, gtag.js:ää, Microsoft UET:tä ja   Clarityä.
 
   TARKOITUS:
-  - Palauttaa palaavan käyttäjän aiempi Cookiebot-suostumus heti.
-  - Mahdollistaa aikaisin syntyvien tapahtumien käsittelyn käyttäjän
-    tallennetulla suostumustilalla.
-  - Jos tallennettua suostumusta ei voida luotettavasti vahvistaa,
+  - Palauttaa palaavan kävijän aiemman Cookiebot-suostumuksen heti.
+  - Antaa varhaisten tapahtumien käyttää tallennettua suostumustilaa.
+  - Jos tallennettua suostumusta ei voida vahvistaa luotettavasti,
     kaikki ei-välttämättömät signaalit jäävät denied-tilaan.
-  - Cookiebot säilyy varsinaisena suostumustietojen lähteenä ja
-    lähettää myöhemmin ajantasaisen suostumuspäivityksen.
-  - Välittää saman ad_storage-tilan Microsoft UET:lle jokaisella
-    sivulatauksella.
+  - Cookiebot säilyy suostumustietojen lähteenä ja päivittää tilan myöhemmin.
+  - Samoja Cookiebotin evästeluokkia käytetään Googlen,
+    Microsoft UET:n ja Microsoft Clarityn suostumustiloissa.
 
-  HUOM:
-  Consent Moden oletustila pitää asettaa vain yhdestä lähteestä.
-  Jos GTM:n Cookiebot CMP -malli asettaa oletustilan,
-  älä aseta sitä myös tällä skriptillä.
+  VASTAAVUUDET:
+  Cookiebot marketing
+  → Google ad_storage
+  → Google ad_user_data
+  → Google ad_personalization
+  → Microsoft UET ad_storage
+  → Microsoft Clarity ad_Storage
+
+  Cookiebot statistics
+  → Google analytics_storage
+  → Microsoft Clarity analytics_Storage
+
+  Cookiebot preferences
+  → Google functionality_storage
+  → Google personalization_storage
+
+  HUOMAUTUS:
+  Aseta Consent Moden oletustila vain yhdestä lähteestä.
+  Poista aiempi oletustiloja tai päivityksiä hallitseva toteutus
+  ennen tämän skriptin käyttämistä.
 -->
 <script type="text/javascript" data-cookieconsent="ignore">
 (function (window, document) {
@@ -114,20 +167,19 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
    * ASETUKSET
-   * =========================================================
    */
 
   var CONFIG = {
+
     /*
      * Cookiebotin tallentaman suostumusevästeen nimi.
      */
     cookieName: 'CookieConsent',
 
     /*
-     * Kuinka kauan Google-tagit odottavat Cookiebotin päivitystä,
-     * jos aiempaa kelvollista suostumusta ei löydy.
+     * Kuinka kauan Google-tagit odottavat Cookiebotia, jos aiempaa
+     * kelvollista suostumusta ei löydy.
      *
      * 0 = ei odotusta.
      */
@@ -143,7 +195,7 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
     /*
      * Hyväksy alustuksen aikana vain nimenomainen suostumus.
      *
-     * ETA/GDPR-toteutuksessa tämän tulisi normaalisti olla true.
+     * ETA/GDPR-toteutuksessa arvo on yleensä true.
      */
     requireExplicit: true,
 
@@ -154,6 +206,12 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
     urlPassthrough: false,
 
     /*
+     * Valinnaiset Microsoftin suostumusintegraatiot.
+     */
+    includeMicrosoftUet: true,
+    includeMicrosoftClarity: true,
+
+    /*
      * Ota käyttöön vain, jos sivusto käyttää IAB TCF:ää.
      */
     enableTcfSupport: false,
@@ -161,16 +219,16 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
     /*
      * Virheenkorjaustila.
      *
-     * true = dataLayeriin lisätään consent_bootstrap-tapahtuma,
-     * josta näkee, käytettiinkö tallennettua suostumusta vai
-     * turvallista oletustilaa.
+     * true = lisää dataLayeriin consent_bootstrap- ja
+     * consent_microsoft_update-tapahtumat.
      */
     debug: false,
 
     /*
-     * Cookiebot-kategoriat → Google Consent Mode.
+     * Cookiebotin evästeluokat → Google Consent Moden signaalit.
      */
     mapping: {
+
       marketing: [
         'ad_storage',
         'ad_user_data',
@@ -190,12 +248,11 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
-   * SALLITUT COOKIEBOT-KENTÄT
-   * =========================================================
+   * TÄSSÄ SKRIPTISSÄ KÄYTETTÄVÄT COOKIEBOT-KENTÄT
    *
-   * Parsinnassa huomioidaan vain kentät, joita tässä
-   * toteutuksessa tarvitaan.
+   * Muut kentät ohitetaan jäsentämisessä.
+   * Myös ver ja stamp ovat mukana, jotta niiden toistuminen
+   * johtaa evästeen hylkäämiseen epäselvänä.
    */
 
   var ALLOWED_FIELDS = {
@@ -211,9 +268,7 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
    * DATALAYER + GTAG
-   * =========================================================
    */
 
   if (
@@ -229,9 +284,27 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
-   * KAKSOISAJOSUOJA
-   * =========================================================
+   * MICROSOFT CLARITYN JONO
+   *
+   * Mahdollistaa Clarity Consent V2 -komentojen lisäämisen jonoon
+   * ennen Clarity-skriptin latautumista.
+   *
+   * Määritellään ennen toistuvan suorituksen estoa, jotta jono
+   * on olemassa myös silloin, kun skripti suoritetaan kahdesti.
+   */
+
+  if (CONFIG.includeMicrosoftClarity) {
+    window.clarity = window.clarity || function () {
+      window.clarity.q =
+        window.clarity.q || [];
+
+      window.clarity.q.push(arguments);
+    };
+  }
+
+
+  /*
+   * TOISTUVAN SUORITUKSEN ESTO
    */
 
   if (window.__cmBootstrapDone) {
@@ -240,14 +313,11 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
-   * DENIED-OLETUSTILA
-   * =========================================================
+   * OLETUSTILA
    *
-   * Signaalit määritellään eksplisiittisesti.
-   *
-   * Määritys ei koskaan luo lähtötilaa, vaan voi ainoastaan
-   * nostaa vahvistetun kategorian denied → granted.
+   * Kaikkien hallittavien ei-välttämättömien signaalien
+   * oletusarvo on denied. Vahvistettu suostumus voi muuttaa
+   * signaalin arvon denied-arvosta granted-arvoksi.
    */
 
   function createDeniedState() {
@@ -268,12 +338,10 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
-   * SUOSTUMUKSEN LUKEMINEN
-   * =========================================================
+   * TALLENNETUN COOKIEBOT-SUOSTUMUKSEN LUKEMINEN
    *
-   * Mikään Cookiebot-evästeen käsittelyssä tapahtuva virhe
-   * ei saa estää Consent Moden oletusarvokomennon lähettämistä.
+   * Jos evästeen käsittelyssä tapahtuu virhe, käytetään
+   * varmaa denied-oletustilaa.
    */
 
   try {
@@ -282,14 +350,17 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
       window.gtag_enable_tcf_support = true;
     }
 
-    consent = readStoredConsent();
+    consent =
+      readStoredConsent();
+
 
     if (consent) {
 
       /*
-       * Ainoastaan vahvistetut, arvon true saaneet kategoriat voivat
-       * nostaa signaalin granted-tilaan.
+       * Vain vahvistetut, arvon true saaneet evästeluokat
+       * voivat muuttaa signaalin arvoksi granted.
        */
+
       for (var category in CONFIG.mapping) {
 
         if (
@@ -301,25 +372,38 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
           continue;
         }
 
-        if (consent[category] !== true) {
+        if (
+          consent[category] !== true
+        ) {
           continue;
         }
 
-        var signals = CONFIG.mapping[category];
 
-        for (var i = 0; i < signals.length; i++) {
-          state[signals[i]] = 'granted';
+        var signals =
+          CONFIG.mapping[category];
+
+
+        for (
+          var i = 0;
+          i < signals.length;
+          i++
+        ) {
+          state[signals[i]] =
+            'granted';
         }
       }
 
-    } else if (CONFIG.waitForUpdate > 0) {
+    } else if (
+      CONFIG.waitForUpdate > 0
+    ) {
 
       /*
        * Aiempaa vahvistettua suostumusta ei löytynyt.
        *
-       * Pidetään kaikki ei-välttämätön denied-tilassa ja
+       * Pidetään ei-välttämättömät signaalit denied-tilassa ja
        * annetaan Cookiebotille aikaa lähettää päivitys.
        */
+
       state.wait_for_update =
         CONFIG.waitForUpdate;
     }
@@ -328,14 +412,14 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
     /*
      * Viimeinen varmistus.
-     *
-     * Jos mikä tahansa yllä olevassa logiikassa epäonnistuu,
-     * palataan aina denied-oletukseen.
      */
+
     consent = null;
     state = createDeniedState();
 
-    if (CONFIG.waitForUpdate > 0) {
+    if (
+      CONFIG.waitForUpdate > 0
+    ) {
       state.wait_for_update =
         CONFIG.waitForUpdate;
     }
@@ -343,9 +427,7 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
-   * GOOGLE CONSENT MODEN OLETUSTILA
-   * =========================================================
+   * GOOGLE CONSENT MODE
    */
 
   gtag(
@@ -356,23 +438,21 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * Oletustila on nyt varmasti lisätty dataLayeriin.
-   * Vasta tämän jälkeen merkitään alustus suoritetuksi.
+   * Oletustilan asettava komento on nyt lisätty jonoon.
+   * Merkitään alustus heti suoritetuksi, jotta toistuva suoritus
+   * ei lähetä oletustilaa uudelleen, vaikka myöhempi toiminto
+   * epäonnistuisi.
    */
+
   window.__cmBootstrapDone = true;
 
-
-  /*
-   * =========================================================
-   * GOOGLE-LISÄASETUKSET
-   * =========================================================
-   */
 
   gtag(
     'set',
     'ads_data_redaction',
     CONFIG.adsDataRedaction
   );
+
 
   gtag(
     'set',
@@ -382,51 +462,234 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
-   * MICROSOFT UET -OLETUS
-   * =========================================================
+   * MICROSOFT UET CONSENT MODE
    *
-   * Ilman nimenomaista oletusta UET olettaa arvon granted, joten
-   * oletus on aina denied.
+   * UET käyttää vain ad_storage-arvoa.
+   * Ilman erikseen asetettua oletustilaa UET olettaa arvon granted.
+   * Siksi oletustilaksi lähetetään denied aina, kun UET on mukana.
    *
-   * Jos tallennettu suostumus saatiin vahvistettua, se lähetetään
-   * päivityksenä myös tällä sivulatauksella. UET odottaa granted-
-   * tai denied-arvoa jokaisella sivulla, ei vain sillä sivulla,
-   * jolla suostumus annettiin.
-   *
-   * Cookiebot lähettää lisäksi oman päivityksensä myöhemmin.
+   * Lähetetyt arvot tallennetaan paikallisiin muuttujiin, koska
+   * UET näyttää nykyisen tilan alkuperäisen oletustilan sijaan.
+   * Arvot raportoidaan virheenkorjauksen dataLayer-tapahtumissa.
+   * Niitä ei tallenneta window-objektiin, jotta sivun muu koodi
+   * ei voi ylikirjoittaa niitä.
    */
 
-  window.uetq = window.uetq || [];
+  var uetConsentDefault = null;
+  var uetConsentUpdate = null;
 
-  window.uetq.push(
-    'consent',
-    'default',
-    {
-      ad_storage: 'denied'
-    }
-  );
 
-  if (consent) {
+  if (CONFIG.includeMicrosoftUet) {
+    window.uetq =
+      window.uetq || [];
+
+
+    uetConsentDefault = 'denied';
+
+
     window.uetq.push(
       'consent',
-      'update',
+      'default',
       {
-        ad_storage: state.ad_storage
+        ad_storage: uetConsentDefault
       }
     );
   }
 
 
   /*
-   * =========================================================
+   * Palaava kävijä, jonka tallennettu suostumus on vahvistettu.
+   */
+
+  if (
+    CONFIG.includeMicrosoftUet &&
+    consent
+  ) {
+
+    uetConsentUpdate =
+      state.ad_storage;
+
+
+    window.uetq.push(
+      'consent',
+      'update',
+      {
+        ad_storage: uetConsentUpdate
+      }
+    );
+  }
+
+
+  /*
+   * MICROSOFT CLARITY CONSENT V2
+   */
+
+  var lastClarityAdStorage = null;
+  var lastClarityAnalyticsStorage = null;
+
+
+  function setClarityConsent(
+    adStorage,
+    analyticsStorage
+  ) {
+
+    if (!CONFIG.includeMicrosoftClarity) {
+      return;
+    }
+
+    /*
+     * Estetään saman tilan lähettäminen toistuvasti.
+     */
+
+    if (
+      adStorage ===
+        lastClarityAdStorage &&
+      analyticsStorage ===
+        lastClarityAnalyticsStorage
+    ) {
+      return;
+    }
+
+
+    window.clarity(
+      'consentv2',
+      {
+        ad_Storage:
+          adStorage,
+
+        analytics_Storage:
+          analyticsStorage
+      }
+    );
+
+
+    lastClarityAdStorage =
+      adStorage;
+
+    lastClarityAnalyticsStorage =
+      analyticsStorage;
+  }
+
+
+  setClarityConsent(
+    state.ad_storage,
+    state.analytics_storage
+  );
+
+
+  /*
+   * COOKIEBOTIN SUOSTUMUSPÄIVITYKSET
+   *
+   * Pitää Microsoft UET:n ja Clarityn suostumustilat ajan tasalla
+   * Cookiebotin kanssa myös kävijän myöhempien muutosten jälkeen.
+   *
+   * Googlen tilaa ei päivitetä tässä. Cookiebot lähettää itse
+   * gtag-suostumuspäivityksen, joten lisäpäivitys lähettäisi sen kahdesti.
+   *
+   * Cookiebot välittää suostumuksen myös UET:lle ja Claritylle.
+   * Nämä komennot lähettävät siis yleensä saman arvon uudelleen.
+   * Ne ovat päivitysten ainoa lähde, jos Cookiebot-skriptin
+   * data-ms-consent-mode- tai data-ms-clarity-consent-mode-attribuutin
+   * arvoksi on asetettu disabled.
+   */
+
+  window.addEventListener(
+    'CookiebotOnConsentReady',
+    function () {
+
+      if (
+        typeof window.Cookiebot ===
+          'undefined' ||
+        !window.Cookiebot.consent
+      ) {
+        return;
+      }
+
+
+      var marketingState =
+        window.Cookiebot.consent.marketing
+          ? 'granted'
+          : 'denied';
+
+
+      var statisticsState =
+        window.Cookiebot.consent.statistics
+          ? 'granted'
+          : 'denied';
+
+
+      /*
+       * Microsoft UET
+       */
+
+      if (
+        CONFIG.includeMicrosoftUet &&
+        uetConsentUpdate !==
+          marketingState
+      ) {
+
+        uetConsentUpdate =
+          marketingState;
+
+
+        window.uetq.push(
+          'consent',
+          'update',
+          {
+            ad_storage:
+              marketingState
+          }
+        );
+      }
+
+
+      /*
+       * Microsoft Clarity
+       */
+
+      setClarityConsent(
+        marketingState,
+        statisticsState
+      );
+
+
+      if (CONFIG.debug) {
+
+        window.dataLayer.push({
+          event:
+            'consent_microsoft_update',
+
+          microsoft_uet_ad_storage:
+            CONFIG.includeMicrosoftUet
+              ? marketingState
+              : null,
+
+          clarity_ad_storage:
+            CONFIG.includeMicrosoftClarity
+              ? marketingState
+              : null,
+
+          clarity_analytics_storage:
+            CONFIG.includeMicrosoftClarity
+              ? statisticsState
+              : null
+        });
+      }
+    },
+    false
+  );
+
+
+  /*
    * VIRHEENKORJAUS
-   * =========================================================
    */
 
   if (CONFIG.debug) {
+
     window.dataLayer.push({
-      event: 'consent_bootstrap',
+
+      event:
+        'consent_bootstrap',
 
       consent_bootstrap_source:
         consent
@@ -446,15 +709,43 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
       consent_bootstrap_marketing:
         consent
           ? consent.marketing
-          : false
+          : false,
+
+      google_ad_storage:
+        state.ad_storage,
+
+      google_analytics_storage:
+        state.analytics_storage,
+
+      microsoft_uet_default:
+        uetConsentDefault,
+
+      microsoft_uet_update:
+        uetConsentUpdate,
+
+      clarity_ad_storage:
+        CONFIG.includeMicrosoftClarity
+          ? state.ad_storage
+          : null,
+
+      clarity_analytics_storage:
+        CONFIG.includeMicrosoftClarity
+          ? state.analytics_storage
+          : null
     });
   }
 
 
   /*
-   * =========================================================
-   * TALLENNETUN COOKIEBOT-SUOSTUMUKSEN LUKEMINEN
-   * =========================================================
+   * EVÄSTEIDEN KÄSITTELY
+   */
+
+  /*
+   * Lukee ja tarkistaa tallennetun Cookiebot-suostumuksen.
+   *
+   * Palauttaa arvon null, jos tilaan ei voi luottaa:
+   * eväste puuttuu, sitä ei voi jäsentää tai kahden
+   * CookieConsent-evästeen suostumusvalinnat poikkeavat toisistaan.
    */
 
   function readStoredConsent() {
@@ -464,34 +755,32 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
         CONFIG.cookieName
       );
 
+
     if (!values.length) {
       return null;
     }
 
+
     var accepted = null;
 
-    for (var i = 0; i < values.length; i++) {
+
+    for (
+      var i = 0;
+      i < values.length;
+      i++
+    ) {
 
       var parsed =
         parseConsent(
           values[i]
         );
 
-      /*
-       * Jos samannimisiä CookieConsent-evästeitä on useita,
-       * yhdenkin epäkelvon kopion löytyminen tekee tilanteesta
-       * epäselvän.
-       *
-       * Varma esto → yhteenkään ei luoteta.
-       */
+
       if (!parsed) {
         return null;
       }
 
-      /*
-       * Jos useat kelvolliset CookieConsent-evästeet
-       * sisältävät eri suostumusvalinnat, tilanne on ristiriitainen.
-       */
+
       if (
         accepted &&
         !isSameConsent(
@@ -502,48 +791,60 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
         return null;
       }
 
+
       accepted = parsed;
     }
+
 
     return accepted;
   }
 
-
-  /*
-   * =========================================================
-   * COOKIECONSENT-EVÄSTEIDEN HAKU
-   * =========================================================
-   */
 
   function findCookieValues(name) {
 
     var values = [];
     var raw;
 
+
     try {
-      raw = document.cookie;
+      raw =
+        document.cookie;
     } catch (error) {
       return values;
     }
+
 
     if (!raw) {
       return values;
     }
 
+
     var parts =
       raw.split(';');
 
-    for (var i = 0; i < parts.length; i++) {
+
+    for (
+      var i = 0;
+      i < parts.length;
+      i++
+    ) {
 
       var part =
-        trim(parts[i]);
+        trim(
+          parts[i]
+        );
+
 
       var separator =
         part.indexOf('=');
 
-      if (separator === -1) {
+
+      if (
+        separator === -1
+      ) {
         continue;
       }
+
 
       var cookieName =
         part.slice(
@@ -551,44 +852,58 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
           separator
         );
 
-      if (cookieName !== name) {
+
+      if (
+        cookieName !== name
+      ) {
         continue;
       }
+
 
       var value =
         part.slice(
           separator + 1
         );
 
+
       if (value) {
         values.push(value);
       }
     }
+
 
     return values;
   }
 
 
   /*
-   * =========================================================
-   * COOKIECONSENT-EVÄSTEEN JÄSENTÄMINEN
-   * =========================================================
+   * Tarkistaa yhden CookieConsent-arvon.
+   *
+   * Jokaisen valinnaisen evästeluokan on oltava totuusarvo,
+   * necessary-arvon on oltava true ja suostumuksen riittävän tuore.
+   * Kun requireExplicit on käytössä, oletettua suostumusta ei hyväksytä.
    */
 
-  function parseConsent(rawValue) {
+  function parseConsent(
+    rawValue
+  ) {
 
     var decoded;
 
+
     try {
+
       decoded =
         decodeURIComponent(
           rawValue
         );
+
     } catch (error) {
 
       /*
-       * Eväste voi olla myös valmiiksi dekoodatussa muodossa.
+       * Evästeen arvo voi olla jo valmiiksi dekoodattu.
        */
+
       decoded =
         rawValue;
     }
@@ -599,25 +914,20 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
         decoded
       );
 
+
     if (!fields) {
       return null;
     }
 
 
-    /*
-     * necessary-kentän pitää aina olla true.
-     */
     if (
-      fields.necessary !== 'true'
+      fields.necessary !==
+        'true'
     ) {
       return null;
     }
 
 
-    /*
-     * Kaikkien valinnaisten kategorioiden pitää löytyä
-     * nimenomaisina totuusarvoina (true tai false).
-     */
     if (
       !isBoolean(
         fields.preferences
@@ -626,6 +936,7 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
       return null;
     }
 
+
     if (
       !isBoolean(
         fields.statistics
@@ -633,6 +944,7 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
     ) {
       return null;
     }
+
 
     if (
       !isBoolean(
@@ -643,26 +955,22 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
     }
 
 
-    /*
-     * ETA/GDPR-toteutuksessa hyväksytään tarvittaessa vain
-     * nimenomainen suostumus (explicit).
-     */
-    if (CONFIG.requireExplicit) {
+    if (
+      CONFIG.requireExplicit
+    ) {
 
       if (
         !fields.method ||
         String(
           fields.method
-        ).toLowerCase() !== 'explicit'
+        ).toLowerCase() !==
+          'explicit'
       ) {
         return null;
       }
     }
 
 
-    /*
-     * Tarkistetaan suostumuksen ikä.
-     */
     if (
       !isRecent(
         fields.utc
@@ -673,42 +981,51 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
     return {
+
       preferences:
-        fields.preferences === 'true',
+        fields.preferences ===
+          'true',
 
       statistics:
-        fields.statistics === 'true',
+        fields.statistics ===
+          'true',
 
       marketing:
-        fields.marketing === 'true'
+        fields.marketing ===
+          'true'
     };
   }
 
 
   /*
-   * =========================================================
-   * COOKIEBOT-KENTTIEN JÄSENTÄMINEN
-   * =========================================================
+   * Lukee Cookiebot-evästeen kentät.
    *
-   * Tukee esimerkiksi:
-   *
+   * Tukee esimerkiksi seuraavia muotoja:
    * necessary:true
    * method:'explicit'
    * method:"explicit"
    * utc:1683027386232
+   *
+   * Tunnetun avaimen toistuminen tekee rakenteesta epäselvän,
+   * joten koko eväste hylätään.
    */
 
   function readFields(text) {
 
     var fields = {};
 
+
     var pattern =
       /([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(?:'([^']*)'|"([^"]*)"|([^,}\]]*))/g;
 
+
     var match;
 
+
     while (
-      (match = pattern.exec(text)) !== null
+      (match =
+        pattern.exec(text)) !==
+        null
     ) {
 
       var key =
@@ -716,9 +1033,7 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
           match[1]
         ).toLowerCase();
 
-      /*
-       * Ohitetaan kentät, joita alustus ei tarvitse.
-       */
+
       if (
         !Object.prototype.hasOwnProperty.call(
           ALLOWED_FIELDS,
@@ -729,10 +1044,6 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
       }
 
 
-      /*
-       * Sama tunnettu avain kahdesti tekee rakenteesta
-       * epäselvän → varma esto.
-       */
       if (
         Object.prototype.hasOwnProperty.call(
           fields,
@@ -745,17 +1056,25 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
       var value;
 
+
       if (
-        match[2] !== undefined
+        match[2] !==
+          undefined
       ) {
-        value = match[2];
+
+        value =
+          match[2];
 
       } else if (
-        match[3] !== undefined
+        match[3] !==
+          undefined
       ) {
-        value = match[3];
+
+        value =
+          match[3];
 
       } else {
+
         value =
           match[4] || '';
       }
@@ -765,17 +1084,13 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
         trim(value);
     }
 
+
     return fields;
   }
 
 
-  /*
-   * =========================================================
-   * TOTUUSARVON TARKISTUS
-   * =========================================================
-   */
-
   function isBoolean(value) {
+
     return (
       value === 'true' ||
       value === 'false'
@@ -784,18 +1099,22 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 
 
   /*
-   * =========================================================
-   * CONSENTIN IKÄ
-   * =========================================================
+   * Tarkistaa suostumuksen iän.
+   *
+   * Cookiebot tallentaa utc-arvon yleensä epoch-millisekunteina.
+   * Epoch-sekunneilta näyttävä arvo muunnetaan millisekunneiksi.
+   * Tulevaisuuteen päivätty suostumus hylätään.
    */
 
   function isRecent(value) {
 
     if (
-      CONFIG.maxConsentAgeDays <= 0
+      CONFIG.maxConsentAgeDays <=
+        0
     ) {
       return true;
     }
+
 
     if (!value) {
       return false;
@@ -805,16 +1124,13 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
     var timestamp;
 
 
-    /*
-     * Cookiebot käyttää normaalisti epoch-millisekunteja.
-     *
-     * Esimerkiksi:
-     * utc:1683027386232
-     */
-    if (/^\d+$/.test(value)) {
+    if (
+      /^\d+$/.test(value)
+    ) {
 
       timestamp =
         Number(value);
+
 
       if (
         !isFinite(timestamp) ||
@@ -824,11 +1140,10 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
       }
 
 
-      /*
-       * Jos arvo näyttää epoch-sekunneilta,
-       * normalisoidaan millisekunneiksi.
-       */
-      if (timestamp < 100000000000) {
+      if (
+        timestamp <
+          100000000000
+      ) {
         timestamp =
           timestamp * 1000;
       }
@@ -838,6 +1153,7 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
       /*
        * Varatapa mahdollisia muita muotoja varten.
        */
+
       timestamp =
         Date.parse(value);
     }
@@ -856,9 +1172,6 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
       timestamp;
 
 
-    /*
-     * Tulevaisuuteen päivättyä suostumusta ei hyväksytä.
-     */
     if (age < 0) {
       return false;
     }
@@ -872,38 +1185,37 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
       1000;
 
 
-    return age <= maxAge;
-  }
-
-
-  /*
-   * =========================================================
-   * SUOSTUMUSTILOJEN VERTAILU
-   * =========================================================
-   */
-
-  function isSameConsent(a, b) {
     return (
-      a.preferences === b.preferences &&
-      a.statistics === b.statistics &&
-      a.marketing === b.marketing
+      age <= maxAge
     );
   }
 
 
-  /*
-   * =========================================================
-   * MERKKIJONON REUNOJEN SIISTIMINEN
-   * =========================================================
-   */
+  function isSameConsent(
+    a,
+    b
+  ) {
+
+    return (
+      a.preferences ===
+        b.preferences &&
+      a.statistics ===
+        b.statistics &&
+      a.marketing ===
+        b.marketing
+    );
+  }
+
 
   function trim(value) {
+
     return String(value)
       .replace(
         /^\s+|\s+$/g,
         ''
       );
   }
+
 
 })(window, document);
 </script>
@@ -913,47 +1225,133 @@ Aseta Consent Moden oletustila vain yhdestä lähteestä. Jos GTM:n Cookiebot CM
 <button class="code-accordion__toggle" type="button" aria-expanded="false" aria-controls="cookiebot-stored-consent-script" data-code-accordion-toggle data-collapsed-label="Näytä koko Consent Mode -skripti" data-expanded-label="Piilota koko Consent Mode -skripti">Näytä koko Consent Mode -skripti</button>
 </div>
 
+<script data-astro-rerun>
+(() => {
+  const includeUet = document.getElementById('consent-default-include-uet');
+  const includeClarity = document.getElementById('consent-default-include-clarity');
+  const output = document.querySelector('#cookiebot-stored-consent-script pre code');
+
+  if (!includeUet || !includeClarity || !output) {
+    return;
+  }
+
+  const source = output.textContent;
+
+  function updateStoredConsentScript() {
+    output.textContent = source
+      .replace(
+        'includeMicrosoftUet: true',
+        `includeMicrosoftUet: ${includeUet.checked}`
+      )
+      .replace(
+        'includeMicrosoftClarity: true',
+        `includeMicrosoftClarity: ${includeClarity.checked}`
+      );
+  }
+
+  [includeUet, includeClarity].forEach(function (control) {
+    control.addEventListener('change', updateStoredConsentScript);
+  });
+
+  if (!includeUet.checked || !includeClarity.checked) {
+    updateStoredConsentScript();
+  }
+})();
+</script>
+
 </section>
 
 <section id="consent-default-denied">
 
-<h3>Lisää Consent Moden estävät oletusarvot</h3>
+<h3>Suositus: aloita denied-oletustiloista</h3>
 
-Käytä tätä versiota, kun Cookiebotin pitää päivittää suostumustila sivun latautumisen jälkeen.
+Tämä versio sopii useimpiin suoraan sivustolle tehtäviin toteutuksiin. Se asettaa oletustilan heti ja antaa Cookiebotin päivittää suostumustilan latauduttuaan.
 
-Sijoita koodi mahdollisimman korkealle **\<head\>**-osioon. WordPressissä se tulee ladata ennen `wp_head`-hookin suorittamista.
+Sijoita koodi mahdollisimman lähelle **\<head\>**-osion alkua. WordPressissä se tulee ladata ennen `wp_head`-hookin suorittamista.
 
-```html
-<!-- Consent Mode v2:n alkuasetukset -->
-<script type="text/javascript" data-cookieconsent="ignore">
-  window.dataLayer = window.dataLayer || [];
+Pidä Microsoft UET -tagin lataaminen estettynä Basic Consent Modessa, kunnes markkinointisuostumus on annettu. Kun valitset UET:n mukaan, luotu skripti alustaa `window.uetq`-jonon ja asettaa oletustilaksi `denied`. Cookiebot välittää kävijän ajantasaisen markkinointisuostumuksen samaan jonoon automaattisesti. Älä lisää tähän ehdotonta `granted`-päivitystä, sillä se suoritettaisiin ennen kävijän valintaa.
 
-  function gtag() {
-    window.dataLayer.push(arguments);
+Clarity-valinta lisää jonoon molempien tallennustyyppien `denied`-oletustilat ennen Clarityn latautumista. Pidä Cookiebotin automaattiset integraatiot käytössä, jotta se voi välittää myöhemmät suostumusmuutokset.
+
+<pre
+  data-copy
+  class="astro-code github-dark"
+  style="background-color:#24292e;color:#e1e4e8;overflow-x:auto"
+  tabindex="0"
+  data-language="html"
+><code id="consent-default-script-output" class="language-html" aria-live="polite"></code></pre>
+
+<script data-astro-rerun>
+(() => {
+  const includeUet = document.getElementById('consent-default-include-uet');
+  const includeClarity = document.getElementById('consent-default-include-clarity');
+  const output = document.getElementById('consent-default-script-output');
+
+  function updateConsentDefaultScript() {
+    const lines = [
+      '<!-- Consent Mode v2:n alkuasetukset -->',
+      '<script type="text/javascript" data-cookieconsent="ignore">',
+      '  window.dataLayer = window.dataLayer || [];',
+      '',
+      '  function gtag() {',
+      '    window.dataLayer.push(arguments);',
+      '  }',
+      '',
+      "  gtag('consent', 'default', {",
+      "    ad_personalization: 'denied',",
+      "    ad_storage: 'denied',",
+      "    ad_user_data: 'denied',",
+      "    analytics_storage: 'denied',",
+      "    functionality_storage: 'denied',",
+      "    personalization_storage: 'denied',",
+      "    security_storage: 'granted',",
+      '    wait_for_update: 1500',
+      '  });',
+      '',
+      "  gtag('set', 'ads_data_redaction', true);",
+      "  gtag('set', 'url_passthrough', false);",
+    ];
+
+    if (includeUet.checked) {
+      lines.push(
+        '',
+        '  // Microsoft UET:n oletustila. Ilman tätä UET olettaa arvon granted.',
+        '  window.uetq = window.uetq || [];',
+        "  window.uetq.push('consent', 'default', { ad_storage: 'denied' });"
+      );
+    }
+
+    if (includeClarity.checked) {
+      lines.push(
+        '',
+        '  // Microsoft Clarity Consent API v2:n oletustilat.',
+        '  window.clarity = window.clarity || function () {',
+        '    (window.clarity.q = window.clarity.q || []).push(arguments);',
+        '  };',
+        "  window.clarity('consentv2', {",
+        "    ad_Storage: 'denied',",
+        "    analytics_Storage: 'denied'",
+        '  });'
+      );
+    }
+
+    lines.push(
+      '',
+      "  // Ota käyttöön vain, kun Cookiebotin IAB TCF -integraatio on käytössä.",
+      '  // window.gtag_enable_tcf_support = true;',
+      '<' + '/script>'
+    );
+
+    output.textContent = lines.join('\n');
   }
 
-  gtag('consent', 'default', {
-    ad_personalization: 'denied',
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    analytics_storage: 'denied',
-    functionality_storage: 'denied',
-    personalization_storage: 'denied',
-    security_storage: 'granted',
-    wait_for_update: 1500
+  [includeUet, includeClarity].forEach(function (control) {
+    control.addEventListener('change', updateConsentDefaultScript);
   });
 
-  gtag('set', 'ads_data_redaction', true);
-  gtag('set', 'url_passthrough', false);
-
-  // Microsoft UET -oletus. Ilman tätä UET olettaa arvon granted.
-  window.uetq = window.uetq || [];
-  window.uetq.push('consent', 'default', { ad_storage: 'denied' });
-
-  // Ota käyttöön vain, kun Cookiebotin IAB TCF -integraatio on käytössä.
-  // window.gtag_enable_tcf_support = true;
+  updateConsentDefaultScript();
+})();
 </script>
-```
 </section>
 
 <script data-astro-rerun>
@@ -987,11 +1385,14 @@ Sijoita koodi mahdollisimman korkealle **\<head\>**-osioon. WordPressissä se tu
 })();
 </script>
 
-## Vaihe 2 – Lisää Cookiebot-koodi verkkosivustolle
+## Vaihe 2 – Lisää Cookiebot verkkosivustolle
 
-Liitä seuraava koodi mahdollisimman korkealle sivun **\<head\>**-osioon. Tämä on erityisen tärkeää, jos GTM lisätään esimerkiksi [Google Tag Manager for WordPress](https://wordpress.org/plugins/duracelltomi-google-tag-manager/) -lisäosalla.
+Sijoita luotu Cookiebot-tagi **ensimmäiseksi skriptiksi `<head>`-osioon**. Tämä on erityisen tärkeää automaattista estoa käytettäessä, sillä ennen Cookiebotia latautuvat skriptit voivat jäädä sen hallinnan ulkopuolelle.
 
-Jos et halua käyttää automaattista evästeiden estotilaa, voit käyttää Cookiebotin [async/defer-toteutusta](https://support.cookiebot.com/hc/en-us/articles/360009074960-Automatic-cookie-blocking).
+- **Automaattinen esto** käyttää `data-blockingmode="auto"`-attribuuttia. Älä käytä sen kanssa `async`- tai `defer`-attribuuttia.
+- **Manuaalisessa estossa** Cookiebot ladataan `async`-attribuutilla. Merkitse silloin jokaiseen ei-välttämättömään skriptiin, iframeen ja kuvaan oikea suostumusluokka. Katso Cookiebotin [automaattisen eston](https://support.cookiebot.com/hc/en-us/articles/360009074960-Automatic-cookie-blocking) ja [manuaalisen eston](https://support.cookiebot.com/hc/en-us/articles/4405978132242-Manual-cookie-blocking) ohjeet.
+
+Jos WordPress-lisäosa lisää sivulle Google Tag Managerin, tarkista lopullinen sivun lähdekoodi lisäosan asetusten lisäksi. Tässä toteutuksessa Cookiebotin on suorituttava ennen Google Tag Manageria ja muita tageja, jotka voivat asettaa ei-välttämättömiä evästeitä.
 
 <fieldset class="cookiebot-script-builder">
   <legend>Mukauta Cookiebot-skriptiä</legend>
@@ -1001,10 +1402,13 @@ Jos et halua käyttää automaattista evästeiden estotilaa, voit käyttää Coo
       id="cookiebot-cbid"
       type="text"
       placeholder="00000000-0000-0000-0000-000000000000"
+      pattern="[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}"
       autocomplete="off"
       spellcheck="false"
+      aria-describedby="cookiebot-cbid-help cookiebot-cbid-error"
     >
-    <small>Kopioi verkkotunnusryhmän tunnus (Domain Group ID) Cookiebot Managerista.</small>
+    <small id="cookiebot-cbid-help">Kopioi verkkotunnusryhmän tunnus (Domain Group ID) Cookiebot Managerista.</small>
+    <p id="cookiebot-cbid-error" role="alert" hidden>Anna verkkotunnusryhmän koko tunnus UUID-muodossa.</p>
   </div>
   <div class="form-field">
     <label for="cookiebot-blocking-mode">Estotila</label>
@@ -1067,23 +1471,10 @@ Jos et halua käyttää automaattista evästeiden estotilaa, voit käyttää Coo
       <option value="ZH-HANT">Perinteinen kiina</option>
     </select>
   </div>
-  <div class="form-field">
-    <label class="form-choice" for="cookiebot-ms-consent-mode">
-      <input id="cookiebot-ms-consent-mode" type="checkbox">
-      <span>Poista käytöstä Cookiebotin automaattinen suostumuksen välitys Microsoft UET:lle</span>
-    </label>
-    <small>Lisää skriptiin <code>data-ms-consent-mode="disabled"</code>. Jätä valitsematta, ellet välitä UET:n suostumuspäivityksiä itse.</small>
-  </div>
-  <div class="form-field">
-    <label class="form-choice" for="cookiebot-ms-clarity-consent-mode">
-      <input id="cookiebot-ms-clarity-consent-mode" type="checkbox">
-      <span>Poista käytöstä Cookiebotin automaattinen suostumuksen välitys Microsoft Claritylle</span>
-    </label>
-    <small>Lisää skriptiin <code>data-ms-clarity-consent-mode="disabled"</code>. Jätä valitsematta, ellet käytä Clarityä tai hoida sen suostumusta itse.</small>
-  </div>
 </fieldset>
 
 <pre
+  data-copy
   class="astro-code github-dark"
   style="background-color:#24292e;color:#e1e4e8;overflow-x:auto"
   tabindex="0"
@@ -1095,12 +1486,20 @@ Jos et halua käyttää automaattista evästeiden estotilaa, voit käyttää Coo
   const cookiebotCbid = document.getElementById('cookiebot-cbid');
   const cookiebotBlockingMode = document.getElementById('cookiebot-blocking-mode');
   const cookiebotCulture = document.getElementById('cookiebot-culture');
-  const cookiebotMsConsentMode = document.getElementById('cookiebot-ms-consent-mode');
-  const cookiebotMsClarityConsentMode = document.getElementById('cookiebot-ms-clarity-consent-mode');
   const cookiebotScriptOutput = document.getElementById('cookiebot-script-output');
+  const cookiebotCbidError = document.getElementById('cookiebot-cbid-error');
 
   function updateCookiebotScript() {
-    const cbid = cookiebotCbid.value.trim() || 'COOKIEBOT-TUNNUS-TÄHÄN';
+    const rawCbid = cookiebotCbid.value.trim();
+    const hasValidCbid = rawCbid !== '' && cookiebotCbid.checkValidity();
+    const cbid = hasValidCbid ? rawCbid : 'COOKIEBOT-TUNNUS-TÄHÄN';
+    const showCbidError = rawCbid !== '' && !hasValidCbid;
+    if (showCbidError) {
+      cookiebotCbid.setAttribute('aria-invalid', 'true');
+    } else {
+      cookiebotCbid.removeAttribute('aria-invalid');
+    }
+    cookiebotCbidError.hidden = !showCbidError;
     const lines = [
       '<script',
       '  id="Cookiebot"',
@@ -1118,19 +1517,11 @@ Jos et halua käyttää automaattista evästeiden estotilaa, voit käyttää Coo
       lines.push(`  data-culture="${cookiebotCulture.value}"`);
     }
 
-    if (cookiebotMsConsentMode.checked) {
-      lines.push('  data-ms-consent-mode="disabled"');
-    }
-
-    if (cookiebotMsClarityConsentMode.checked) {
-      lines.push('  data-ms-clarity-consent-mode="disabled"');
-    }
-
     lines.push('  type="text/javascript"', '><' + '/script>');
     cookiebotScriptOutput.textContent = lines.join('\n');
   }
 
-  [cookiebotCbid, cookiebotBlockingMode, cookiebotCulture, cookiebotMsConsentMode, cookiebotMsClarityConsentMode].forEach(function (control) {
+  [cookiebotCbid, cookiebotBlockingMode, cookiebotCulture].forEach(function (control) {
     control.addEventListener('input', updateCookiebotScript);
   });
 
@@ -1138,91 +1529,89 @@ Jos et halua käyttää automaattista evästeiden estotilaa, voit käyttää Coo
 })();
 </script>
 
-Voit määrittää bannerin kielen `data-culture`-attribuutilla esimerkiksi silloin, kun sivustolla on erilliset kieliversiot etkä halua käyttää automaattista kielentunnistusta.
+<details>
+<summary>Edistynyt toteutus: poista automaattinen suostumusintegraatio käytöstä</summary>
+
+Luotu tagi pitää Cookiebotin Google-, Microsoft UET- ja Microsoft Clarity -suostumusintegraatiot käytössä. Lisää käytöstä poistava attribuutti käsin vain, jos oma toteutuksesi hallitsee kyseisen palvelun kaikki suostumuspäivitykset: hyväksymisen ja kieltämisen, myöhemmät muutokset, suostumuksen peruuttamisen sekä palaavien kävijöiden suostumukset.
+
+| Omalla koodilla korvattava integraatio | Cookiebot-tagiin lisättävä attribuutti |
+| :-- | :-- |
+| Google Consent Mode | `data-consentmode="disabled"` |
+| Microsoft UET Consent Mode | `data-ms-consent-mode="disabled"` |
+| Microsoft Clarity Consent Mode | `data-ms-clarity-consent-mode="disabled"` |
+
+Poista käytöstä vain integraatio, jonka korvaat omalla toteutuksellasi. Jos palvelua ei käytetä lainkaan, jätä sen tagi ja siihen liittyvä koodi pois.
+
+</details>
+
+Valitse kiinteä kieli, jos sivuston kunkin kieliversion tulee näyttää banneri samalla kielellä. Valitse automaattinen kielentunnistus, jos Cookiebotin tulee käyttää kävijän selaimen kieltä.
 
 <details>
 <summary>Näytä kaikki <code>data-culture</code>-kielikoodit</summary>
 
 | Kieli | `data-culture`-koodi |
-| :---- | :------------------ |
-| Arabia | AR |
-| Bulgaria | BG |
-| Katalaani | CA |
-| Tšekki | CS |
-| Kymri | CY |
-| Tanska | DA |
-| Saksa | DE |
-| Nykykreikka | EL |
-| Englanti | EN |
-| Espanja | ES |
-| Viro | ET |
-| Baski | EU |
-| Suomi | FI |
-| Ranska | FR |
-| Iiri | GA |
-| Heprea | HE |
-| Hindi | HI |
-| Kroatia | HR |
-| Unkari | HU |
-| Indonesia | ID |
-| Islanti | IS |
-| Italia | IT |
-| Japani | JA |
-| Korea | KO |
-| Liettua | LT |
-| Latvia | LV |
-| Makedonia | MK |
-| Malaiji | MS |
-| Norjan bokmål | NB |
-| Hollanti | NL |
-| Puola | PL |
-| Portugali | PT |
-| Brasilianportugali | PT-BR |
-| Romania | RO |
-| Venäjä | RU |
-| Sinhala | SI |
-| Slovakki | SK |
-| Sloveeni | SL |
-| Albania | SQ |
-| Serbia | SR |
-| Ruotsi | SV |
-| Tamili | TA |
-| Thai | TH |
-| Turkki | TR |
-| Ukraina | UK |
-| Vietnam | VI |
-| Kiina | ZH |
-| Perinteinen kiina | ZH-HANT |
+| :---- | :-- |
+Arabia | AR
+Bulgaria | BG
+Katalaani | CA
+Tšekki | CS
+Kymri | CY
+Tanska | DA
+Saksa | DE
+Nykykreikka | EL
+Englanti | EN
+Espanja | ES
+Viro | ET
+Baski | EU
+Suomi | FI
+Ranska | FR
+Iiri | GA
+Heprea | HE
+Hindi | HI
+Kroatia | HR
+Unkari | HU
+Indonesia | ID
+Islanti | IS
+Italia | IT
+Japani | JA
+Korea | KO
+Liettua | LT
+Latvia | LV
+Makedonia | MK
+Malaiji | MS
+Norjan bokmål | NB
+Hollanti | NL
+Puola | PL
+Portugali | PT
+Brasilianportugali | PT-BR
+Romania | RO
+Venäjä | RU
+Sinhala | SI
+Slovakki | SK
+Sloveeni | SL
+Albania | SQ
+Serbia | SR
+Ruotsi | SV
+Tamili | TA
+Thai | TH
+Turkki | TR
+Ukraina | UK
+Vietnam | VI
+Kiina | ZH
+Perinteinen kiina | ZH-HANT
 
 </details>
 
-### Microsoft UET ja Basic Consent Mode
+## Vaihe 3 – Lisää evästeluettelo evästesivulle
 
-Cookiebot välittää suostumuspäivitykset `window.uetq`-objektiin automaattisesti aina, kun objekti on olemassa. Useimmissa toteutuksissa muuta ei tarvita.
-
-Basic Consent Modessa UET-tagi ei saa laueta ennen kuin markkinointisuostumus on annettu. Käytä siis Cookiebotin automaattista estoa tai GTM-liipaisinta, joka on sidottu markkinointisuostumukseen. Sivuilla, joilla tagi laukeaa, lähetä granted-päivitys:
-
-<div data-copy>
-
-```js
-window.uetq = window.uetq || [];
-window.uetq.push('consent', 'update', { ad_storage: 'granted' });
-```
-
-</div>
-
-Valitse yllä olevat Microsoft-valintaruudut vain, jos haluat hoitaa päivitykset itse Cookiebotin sijaan.
-
-## Vaihe 3 – Lisää Cookiebot Declaration -koodi evästesivulle
-
-Liitä seuraava koodi sivulle, jolla verkkosivuston käyttämät evästeet luetellaan.
+Evästeluettelo (Cookie Declaration) on valinnainen. Lisää se sivulle, jolla haluat luetella sivustolta löydetyt evästeet ja seurantatekniikat, esimerkiksi evästesivulle. Luettelo käyttää vaiheessa 2 annettua verkkotunnusryhmän tunnusta. Voit valita sen kielen erikseen.
 
 <fieldset class="cookiebot-declaration-builder">
-  <legend>Mukauta Cookie Declaration -skriptiä</legend>
+  <legend>Mukauta evästeluettelon skriptiä</legend>
   <div class="form-field">
     <label for="cookiebot-declaration-cbid">Cookiebot-tunnus</label>
     <input id="cookiebot-declaration-cbid" type="text" readonly>
-    <small>Tunnus periytyy automaattisesti vaiheessa 2 annetusta Cookiebot-tunnuksesta.</small>
+    <small>Kenttä täytetään automaattisesti vaiheessa 2 antamallasi Cookiebot-tunnuksella.</small>
   </div>
   <div class="form-field">
     <label for="cookiebot-declaration-culture">Evästeluettelon kieli (<code>data-culture</code>)</label>
@@ -1231,6 +1620,7 @@ Liitä seuraava koodi sivulle, jolla verkkosivuston käyttämät evästeet luete
 </fieldset>
 
 <pre
+  data-copy
   class="astro-code github-dark"
   style="background-color:#24292e;color:#e1e4e8;overflow-x:auto"
   tabindex="0"
@@ -1253,13 +1643,16 @@ Liitä seuraava koodi sivulle, jolla verkkosivuston käyttämät evästeet luete
   cookiebotDeclarationCulture.value = cookiebotCulture.value;
 
   function updateCookiebotDeclaration() {
-    const cbid = cookiebotCbid.value.trim() || 'COOKIEBOT-TUNNUS-TÄHÄN';
+    const rawCbid = cookiebotCbid.value.trim();
+    const cbid = rawCbid !== '' && cookiebotCbid.checkValidity()
+      ? rawCbid
+      : 'COOKIEBOT-TUNNUS-TÄHÄN';
     cookiebotDeclarationCbid.value = cbid;
     const lines = [
       '<script',
       '  id="CookieDeclaration"',
       `  src="https://consent.cookiebot.com/${cbid}/cd.js"`,
-      '  defer',
+      '  async',
     ];
 
     if (cookiebotDeclarationCulture.value) {
@@ -1276,33 +1669,44 @@ Liitä seuraava koodi sivulle, jolla verkkosivuston käyttämät evästeet luete
 })();
 </script>
 
-## Vaihe 4 – Lisää suostumuksen uusimispainike
+## Vaihe 4 – Lisää painike evästeasetusten muuttamiseen
 
-Voit lisätä verkkosivuston alatunnisteeseen oman painikkeen, jos haluat avata suostumusvalinnat muualtakin kuin Cookiebotin oletusarvoisesta kelluvasta painikkeesta. Kopioi seuraava koodi ja lisää painikkeelle tarvittavat tyylit.
+Cookiebotin Privacy Trigger -painikkeella kävijä voi jo muuttaa tai peruuttaa suostumuksensa. Jos haluat tarjota toisen tavan avata asetukset, lisää painike alatunnisteeseen tai tietosuojasivulle. Painike toimii Cookiebot-skriptin latauduttua.
+
+<div data-copy>
 
 ```html
-<button type="button" onclick="Cookiebot.renew();">
+
+<button type="button" onclick="Cookiebot.renew()">
   Muokkaa evästeasetuksia
 </button>
 ```
 
-## Vaihe 5 – Tarkista Google- ja Microsoft-suostumustilat selaimen konsolissa
+</div>
 
-Avaa selaimen kehittäjätyökalujen konsoli ennen evästeiden hyväksymistä ja suorita seuraava koodi. Se tarkistaa kaikki kolme suostumusjärjestelmää kerralla.
+## Vaihe 5 – Tarkista suostumustilat ja tagien toiminta
 
-Ennen suostumusta kaikkien Google-signaalien pitäisi olla arvossa `denied` lukuun ottamatta `security_storage`-signaalia, Microsoft UET:n pitäisi näyttää `consent default` -lähetys arvolla `ad_storage: denied` ja Clarityn pitäisi ilmoittaa sekä `ad_storage` että `analytics_storage` arvossa `DENIED`. Suorita koodi uudelleen hyväksynnän jälkeen ja varmista, että päivitykset menevät perille.
+Tarkista Googlen suostumustilat ensisijaisesti [Google Tag Assistantilla](https://developers.google.com/tag-platform/security/guides/consent-debugging): varmista, että ensimmäinen Consent-tapahtuma sisältää oletustilan ja viimeisin Consent-tapahtuma päivityksen. Alla oleva konsolikoodi tarjoaa täydentävän tarkistuksen Googlen, UET:n ja Clarityn tiloista nykyisellä sivulla.
+
+Tarkista ennen suostumuksen antamista seuraavat asiat:
+
+- Kaikkien Google-signaalien arvo on `denied`, paitsi `security_storage`-signaalin.
+- UET:n `ad_storage`-oletusarvo on `denied`, tai tagin lataaminen on estetty Basic-tilassa.
+- Clarityn molempien tallennustyyppien arvo on `DENIED`.
+
+Suorita koodi uudelleen suostumuksen antamisen ja peruuttamisen jälkeen. Varmista, että suostumustilat päivittyvät molemmissa tapauksissa.
 
 <div data-copy>
 
 ```js
-// Apufunktiot tilan tekstille ja värille.
-const consentStatusString = status =>
-  status === undefined ? "" : status ? "granted" : "denied";
-
-const consentStatusColor = status =>
-  status === "granted" ? "color: #4AF626" : "color: #ef2929";
-
 (() => {
+
+  // Määritellään funktion sisällä, jotta koodin voi suorittaa toistuvasti.
+  const consentStatusString = status =>
+    status === undefined ? "" : status ? "granted" : "denied";
+
+  const consentStatusColor = status =>
+    status === "granted" ? "color: #4AF626" : "color: #ef2929";
 
   /* =========================================================
      GOOGLE CONSENT MODE
@@ -1398,7 +1802,7 @@ const consentStatusColor = status =>
 
 
   /* =========================================================
-     MICROSOFT CLARITY -SUOSTUMUS
+     MICROSOFT CLARITYN SUOSTUMUS
      ========================================================= */
 
   console.log(

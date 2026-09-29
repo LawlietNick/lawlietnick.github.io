@@ -149,7 +149,7 @@ Kysymykset pysyvät samoina: millainen sivu tämä on ja mistä se ensisijaisest
 
 Sivustolla pitää olla paikka luokitusten tallentamiseen ja tapa välittää ne eteenpäin. Tämä voi edellyttää kehitystyötä. Kehittäjä ja analytiikasta vastaava henkilö huolehtivat toteutuksesta ja sen tarkistamisesta.
 
-Sisällönhallintajärjestelmä eli CMS tallentaa valinnat ja on luokitusten lähde. Muut järjestelmät käyttävät samaa tietoa. Luokittelu voidaan julkaista esimerkiksi sivun omissa HTML-meta-elementeissä, eli sivun koodissa olevina koneellisesti luettavina tietoina:
+Sisällönhallintajärjestelmä eli CMS tallentaa valinnat ja on luokitusten lähde. Muut järjestelmät käyttävät samaa tietoa. Luokittelu voidaan julkaista esimerkiksi sivun omissa HTML-meta-elementeissä. Ne sisältävät sivun koodissa olevia koneellisesti luettavia tietoja:
 
 <div data-no-copy>
 

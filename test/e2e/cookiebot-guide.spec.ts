@@ -104,7 +104,7 @@ test("keeps generated code visible across language switches", async ({ page }) =
   await expect(page.locator("#cookiebot-script-output")).toContainText('data-culture="FI"');
   await expect(page.locator("#cookiebot-declaration-output")).toContainText("COOKIEBOT-TUNNUS-TÄHÄN");
 
-  await page.getByLabel("Kyllä. Lue tallennetut valinnat CookieConsent-evästeestä jokaisella sivulatauksella.").check();
+  await page.getByLabel(/Kyllä\. Edistynyt toteutus/).check();
   await expect(page.locator("#consent-default-stored")).toBeVisible();
 
   const accordion = page.locator("#consent-default-stored [data-code-accordion]");

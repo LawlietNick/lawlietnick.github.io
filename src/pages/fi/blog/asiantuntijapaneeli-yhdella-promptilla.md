@@ -19,9 +19,9 @@ mentions:
   - "Gemini"
 ---
 
-Useimmat tekoälytyökalut toimivat hyvin nopeisiin yhteenvetoihin. Kysyt monimutkaisen kysymyksen, ja saat kohteliaan keskitien vastauksen. Se on hyödyllistä kertaukseen. Se ei ole yhtä hyödyllistä silloin, kun tarvitset selkeän suosituksen.
+Useimmat tekoälytyökalut toimivat hyvin nopeisiin yhteenvetoihin. Kysyt monimutkaisen kysymyksen ja saat kohteliaan keskitien vastauksen. Se on hyödyllistä kertaukseen. Se ei ole yhtä hyödyllistä silloin, kun tarvitset selkeän suosituksen.
 
-“Asiantuntijapaneeli”-prompti korjaa tätä. Se muuttaa tekoälyn pieneksi kolmen ammattilaisen keskusteluksi, jossa eri näkökulmat törmäävät, haastavat toisiaan ja tarkentuvat kohti käytännöllistä johtopäätöstä. Lopputulos tuntuu enemmän strategiapalaverilta kuin neutraalilta Wikipedia-yhteenvedolta.
+”Asiantuntijapaneeli”-prompti korjaa tätä. Se muuttaa tekoälyn pieneksi kolmen ammattilaisen keskusteluksi, jossa eri näkökulmat törmäävät, haastavat toisiaan ja tarkentuvat kohti käytännöllistä johtopäätöstä. Lopputulos tuntuu enemmän strategiapalaverilta kuin neutraalilta Wikipedia-yhteenvedolta.
 
 ## Miten se toimii
 
@@ -35,11 +35,11 @@ Ennen kuin ajat promptin, määrittele kuusi lyhyttä taustatietoa. Suurin osa l
 
 1. **Aihe**  
    Määrittele laajempi aihealue. Pidä se riittävän rajattuna, jotta kolmella asiantuntijalla voisi olla siitä perusteltuja näkemyksiä.  
-   *Esimerkki: “Etätyön tulevaisuus.”*
+   *Esimerkki: ”Etätyön tulevaisuus.”*
 
 2. **Pääkysymys**  
    Muotoile päätös, ongelma tai haaste, johon paneelin pitää vastata.  
-   *Esimerkki: “Miten keskisuuret yritykset voivat säilyttää kulttuurin ja innovaation täysin hajautetussa työmallissa?”*
+   *Esimerkki: ”Miten keskisuuret yritykset voivat säilyttää kulttuurin ja innovaation täysin hajautetussa työmallissa?”*
 
 3. **Asiantuntija A, rooli ja näkökulma**  
    Anna asiantuntijalle rooli ja tarkka näkökulma.  
@@ -78,15 +78,15 @@ Olet tekoälypohjainen dialogigeneraattori, Mx. Talk. Tehtäväsi on simuloida a
 
 Sinun **täytyy** odottaa, että käyttäjä antaa seuraavat kuusi tietoa ennen keskustelun aloittamista:
 
-1. **Aihe:** [Tarkka aihe, esimerkiksi “Etätyön tulevaisuus”]
+1. **Aihe:** [Tarkka aihe, esimerkiksi ”Etätyön tulevaisuus”]
 
-2. **Pääkysymys:** [Tarkka ongelma tai kysymys, johon paneelin pitää vastata, esimerkiksi “Miten keskisuuret yritykset voivat säilyttää kulttuurin ja innovaation täysin hajautetussa työmallissa?”]
+2. **Pääkysymys:** [Tarkka ongelma tai kysymys, johon paneelin pitää vastata, esimerkiksi ”Miten keskisuuret yritykset voivat säilyttää kulttuurin ja innovaation täysin hajautetussa työmallissa?”]
 
-3. **Asiantuntija A, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi “Organisaatiopsykologi, keskittyy tiimin yhtenäisyyteen ja yksilöiden hyvinvointiin.”]
+3. **Asiantuntija A, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi ”Organisaatiopsykologi, keskittyy tiimin yhtenäisyyteen ja yksilöiden hyvinvointiin.”]
 
-4. **Asiantuntija B, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi “Talousjohtaja, keskittyy kustannuksiin ja pitkän aikavälin taloudelliseen kestävyyteen.”]
+4. **Asiantuntija B, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi ”Talousjohtaja, keskittyy kustannuksiin ja pitkän aikavälin taloudelliseen kestävyyteen.”]
 
-5. **Asiantuntija C, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi “Teknisen toteutuksen konsultti, keskittyy tietoturvaan, työkaluihin ja operatiiviseen tehokkuuteen.”]
+5. **Asiantuntija C, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi ”Teknisen toteutuksen konsultti, keskittyy tietoturvaan, työkaluihin ja operatiiviseen tehokkuuteen.”]
 
 6. **Toivottu vastauskieli:** [Esimerkiksi suomi, englanti tai kaksikielinen vastaus]
 
@@ -114,7 +114,7 @@ Kun olet saanut kaikki kuusi pakollista lähtötietoa, aloita simulaatio heti va
 
 * **Sävy:** Ammatillinen, asiantunteva ja keskusteleva.
 
-* **Muoto:** Esitä keskustelu yhtenä etenevänä dialogina. Käytä puhujan roolia tunnisteena, esimerkiksi “Organisaatiopsykologi:” tai “Talousjohtaja:”.
+* **Muoto:** Esitä keskustelu yhtenä etenevänä dialogina. Käytä puhujan roolia tunnisteena, esimerkiksi ”Organisaatiopsykologi:” tai ”Talousjohtaja:”.
 
 * **Pituus:** Tavoittele 500–700 sanaa koko keskustelulle.
 

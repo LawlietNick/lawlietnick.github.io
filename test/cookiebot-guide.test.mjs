@@ -2,11 +2,22 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import vm from "node:vm";
+import { JSDOM } from "jsdom";
 
-const guide = await readFile(new URL("../src/pages/templates/cookiebot-guide.md", import.meta.url), "utf8");
+for (const [language, path] of [
+  ["en", "../src/pages/templates/cookiebot-guide.md"],
+  ["fi", "../src/pages/fi/toteutusmallit/cookiebot-opas.md"],
+]) {
+const guide = await readFile(new URL(path, import.meta.url), "utf8");
+const headings = language === "fi" ? {
+  "Recommended: start with denied defaults": "Suositus: aloita denied-oletustiloista",
+  "Advanced: restore saved Cookiebot choices": "Edistynyt toteutus: palauta tallennetut Cookiebot-valinnat",
+  "Step 5 - Validate consent and tag behavior": "Vaihe 5 – Tarkista suostumustilat ja tagien toiminta",
+} : {};
+const localized = (heading) => headings[heading] || heading;
 
 const codeBlockAfter = (heading) => {
-  const start = guide.indexOf(heading);
+  const start = guide.indexOf(localized(heading));
   assert.notEqual(start, -1, `Missing heading: ${heading}`);
   const match = guide.slice(start).match(/```(?:html|js)\n([\s\S]*?)\n```/);
   assert.ok(match, `Missing code block after: ${heading}`);
@@ -19,8 +30,8 @@ const inlineScript = (html) => {
   return match[1];
 };
 
-test("shared Microsoft options feed the recommended generator", () => {
-  const start = guide.indexOf("Recommended: start with denied defaults");
+test(`${language}: shared Microsoft options feed the recommended generator`, () => {
+  const start = guide.indexOf(localized("Recommended: start with denied defaults"));
   const end = guide.indexOf("</section>", start);
   const section = guide.slice(start, end);
 
@@ -32,7 +43,7 @@ test("shared Microsoft options feed the recommended generator", () => {
   assert.match(section, /analytics_Storage: 'denied'/);
 });
 
-test("stored-consent bootstrap restores explicit choices and updates Microsoft queues", () => {
+test(`${language}: stored-consent bootstrap restores explicit choices and updates Microsoft queues`, () => {
   const listeners = new Map();
   const timestamp = Date.now();
   const context = {
@@ -70,7 +81,7 @@ test("stored-consent bootstrap restores explicit choices and updates Microsoft q
   assert.equal(clarityUpdate[1].analytics_Storage, "granted");
 });
 
-test("stored-consent bootstrap fails closed for stale consent", () => {
+test(`${language}: stored-consent bootstrap fails closed for stale consent`, () => {
   const context = {
     document: {
       cookie: `CookieConsent=${encodeURIComponent("{stamp:'test',necessary:true,preferences:true,statistics:true,marketing:true,method:'explicit',ver:1,utc:1}")}`,
@@ -88,7 +99,7 @@ test("stored-consent bootstrap fails closed for stale consent", () => {
   assert.equal(state.wait_for_update, 1500);
 });
 
-test("stored-consent bootstrap can exclude both Microsoft integrations", () => {
+test(`${language}: stored-consent bootstrap can exclude both Microsoft integrations`, () => {
   const listeners = new Map();
   const context = {
     document: { cookie: "" },
@@ -117,7 +128,7 @@ test("stored-consent bootstrap can exclude both Microsoft integrations", () => {
   assert.equal(context.window.clarity, undefined);
 });
 
-test("console helper can run repeatedly in the same page context", () => {
+test(`${language}: console helper can run repeatedly in the same page context`, () => {
   const logs = [];
   const context = {
     console: { log: (...args) => logs.push(args) },
@@ -128,7 +139,58 @@ test("console helper can run repeatedly in the same page context", () => {
   vm.runInNewContext(helper, context);
   vm.runInNewContext(helper, context);
 
-  assert.equal(logs.filter(([message]) => message === "No Consent Mode data found").length, 2);
-  assert.equal(logs.filter(([message]) => message === "No UET data found").length, 2);
-  assert.equal(logs.filter(([message]) => message === "No Clarity data found").length, 2);
+  assert.equal(logs.filter(([message]) => message === (language === "fi" ? "Consent Mode -tietoja ei löytynyt" : "No Consent Mode data found")).length, 2);
+  assert.equal(logs.filter(([message]) => message === (language === "fi" ? "UET-tietoja ei löytynyt" : "No UET data found")).length, 2);
+  assert.equal(logs.filter(([message]) => message === (language === "fi" ? "Clarity-tietoja ei löytynyt" : "No Clarity data found")).length, 2);
 });
+
+test(`${language}: generators respond to service choices, valid IDs and language settings`, () => {
+  const html = guide.replace(/```(?:html|js)\n([\s\S]*?)\n```/g, (_, code) =>
+    `<pre><code>${code.replaceAll("&", "&amp;").replaceAll("<", "&lt;")}</code></pre>`);
+  const dom = new JSDOM(html, { runScripts: "outside-only" });
+  const { document, Event } = dom.window;
+  try {
+    for (const script of document.querySelectorAll("script[data-astro-rerun]")) {
+      dom.window.eval(script.textContent);
+    }
+    const uet = document.getElementById("consent-default-include-uet");
+    const clarity = document.getElementById("consent-default-include-clarity");
+    for (const useUet of [false, true]) {
+      for (const useClarity of [false, true]) {
+        uet.checked = useUet;
+        clarity.checked = useClarity;
+        uet.dispatchEvent(new Event("change"));
+        clarity.dispatchEvent(new Event("change"));
+        const output = document.getElementById("consent-default-script-output").textContent;
+        const context = { window: {} };
+        vm.runInNewContext(inlineScript(output), context);
+        assert.ok(context.window.dataLayer);
+        assert.equal(Boolean(context.window.uetq), useUet);
+        assert.equal(Boolean(context.window.clarity), useClarity);
+        const stored = document.querySelector("#cookiebot-stored-consent-script code").textContent;
+        assert.ok(stored.includes(`includeMicrosoftUet: ${useUet}`));
+        assert.ok(stored.includes(`includeMicrosoftClarity: ${useClarity}`));
+      }
+    }
+    const cbid = document.getElementById("cookiebot-cbid");
+    cbid.value = "invalid";
+    cbid.dispatchEvent(new Event("input"));
+    assert.equal(cbid.getAttribute("aria-invalid"), "true");
+    assert.equal(document.getElementById("cookiebot-cbid-error").hidden, false);
+    cbid.value = "12345678-90ab-cdef-1234-567890abcdef";
+    cbid.dispatchEvent(new Event("input"));
+    assert.equal(cbid.hasAttribute("aria-invalid"), false);
+    const declaration = document.getElementById("cookiebot-declaration-output").textContent;
+    assert.ok(declaration.includes(cbid.value));
+    assert.ok(declaration.includes("async"));
+    assert.ok(declaration.includes(`data-culture="${language.toUpperCase()}"`));
+    const mode = document.getElementById("cookiebot-blocking-mode");
+    mode.value = "manual";
+    mode.dispatchEvent(new Event("input"));
+    assert.ok(document.getElementById("cookiebot-script-output").textContent.includes("async"));
+  } finally {
+    dom.window.close();
+  }
+});
+
+}

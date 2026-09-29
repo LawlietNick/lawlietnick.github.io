@@ -30,7 +30,7 @@ Siksi McKinseyn, BCG:n ja Bainin kaltaiset konsulttiyhtiöt käyttävät esityst
 
 Hyvä puoli on se, ettei niiden hyödyntäminen vaadi taustaa strategiakonsultoinnissa. Yhdellä tekoälypromptilla voit luoda valmiin, johdolle sopivan esitysrungon ChatGPT:n tai Geminin avulla. Näin se tehdään.
 
-### 1. Aloita viitekehyksestä: Näin konsultit rakentavat esityksen tarinan
+### 1. Aloita viitekehyksestä: näin konsultit rakentavat esityksen tarinan
 
 McKinseyn ja vastaavien strategiayhtiöiden esityksissä käytetään usein kahta toisiinsa liittyvää viitekehystä:
 
@@ -40,7 +40,7 @@ Yhdessä ne tekevät perustelusta sekä *loogisen* että *toimintaan ohjaavan*.
 
 ---
 
-#### SCQR-malli: Esityksen tarina
+#### SCQR-malli: esityksen tarina
 
 SCQR-rakenne muodostuu sanoista Situation, Complication, Question ja Resolution. Se vie yleisön yhteisestä lähtötilanteesta kohti päätöstä.
 
@@ -51,9 +51,9 @@ SCQR-rakenne muodostuu sanoista Situation, Complication, Question ja Resolution.
 | Kysymys | Muotoilee keskeisen päätöksen. | ”Miten suorituskykyä voidaan parantaa rakentamatta koko sivustoa uudelleen?” |
 | Ratkaisu | Antaa selkeän, dataan perustuvan vastauksen. | ”Optimoidaan median lataus ensin ja uudistetaan URL-rakenne seuraavaksi.” |
 
-Tämä tarinarakenne varmistaa, että yleisö ymmärtää *miksi aiheella on merkitystä* ennen suositusten esittämistä.
+Tämä rakenne auttaa yleisöä ymmärtämään aiheen merkityksen ennen suositusten esittämistä.
 
-#### Pyramidiperiaate: Esityksen rakenne
+#### Pyramidiperiaate: esityksen rakenne
 
 Kun tarina on määritelty, **pyramidiperiaate** järjestää perustelut ylhäältä alaspäin eteneväksi kokonaisuudeksi.
 
@@ -130,7 +130,7 @@ Tekoäly pyytää sinulta kuusi lyhyttä tietoa ja muodostaa niiden perusteella 
 
 ### **II. Runko, pyramidiperiaate ja MECE-pilarit**
 
-*(Jokaisen tason 2 kohdan tulee olla toisistaan erillinen, mutta yhdessä kattava eli MECE-periaatteen mukainen. Jokaisen kohdan tulee tukea suoraan ratkaisua R.)*
+*(Tason 2 kohtien tulee olla toisistaan erillisiä ja yhdessä kattavia eli MECE-periaatteen mukaisia. Jokaisen kohdan tulee tukea suoraan ratkaisua R.)*
 
 *   **Dia 5: Pilari 1: [Tiivis ja toimintaan ohjaava otsikko 1]**
     *   **Tason 2 väite:** [Tämän pilarin tärkein havainto tai suositus.]
@@ -180,12 +180,12 @@ Esimerkiksi:
 
 ### Vaihe 4: Tarkista, viimeistele ja esitä
 
-Tekoäly palauttaa **dia kerrallaan etenevän esitysrungon**, jonka voit:
+Tekoäly palauttaa **dia kerrallaan etenevän esitysrungon**, jonka voit
 
-- Siirtää PowerPointiin tai Google Slidesiin
+- siirtää PowerPointiin tai Google Slidesiin
 
-- Täydentää kuvilla, kaavioilla ja brändin mukaisella tyylillä
+- täydentää kuvilla, kaavioilla ja brändin mukaisella tyylillä
 
-- Esittää päätöksentekijöille selkeänä ja jäsenneltynä suosituksena
+- esittää päätöksentekijöille selkeänä ja jäsenneltynä suosituksena
 
 Lopputuloksena saat McKinsey-tyylisesti rakennetun esityksen ilman tyhjästä diasta aloittamista.

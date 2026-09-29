@@ -7,7 +7,7 @@ date: 2025-11-06
 category: ai-prompting
 tags: ["ChatGPT", "promptit", "tekoäly"]
 image: /images/blog/prompt-optimization-chatgpt.jpeg
-imageAlt: "Prompt engineeriksi pukeutunut sarjakuvakilpikonna pitelee tablettia promptti- ja tavoitesymbolien välissä"
+imageAlt: "Promptien suunnittelijaksi pukeutunut sarjakuvakilpikonna pitelee tablettia prompti- ja tavoitesymbolien välissä"
 imageCredit: "Luotu OpenAI ImageGenillä"
 alternate:
   lang: en
@@ -25,19 +25,19 @@ Oletko kyllästynyt saamaan ChatGPT:ltä tai Geminiltä ympäripyöreitä ja hei
 
 ### Tekoälypromptien optimoija
 
-Donatello Optimization System on tehokas metaprompti, joka määrittää tekoälyn kokeneeksi prompt engineeriksi. Sen tehtävänä on ottaa vastaan keskeneräisiä ja epämääräisiä syötteitä sekä muuttaa ne järjestelmällisesti täsmällisiksi ja toimiviksi prompteiksi, jotka tuottavat kielimallilta parempia ja johdonmukaisempia tuloksia.
+Donatello Optimization System on tehokas metaprompti, joka määrittää tekoälyn kokeneeksi promptien suunnittelijaksi. Sen tehtävänä on ottaa vastaan keskeneräisiä ja epämääräisiä syötteitä sekä muuttaa ne järjestelmällisesti täsmällisiksi ja toimiviksi prompteiksi, jotka tuottavat kielimallilta parempia ja johdonmukaisempia tuloksia.
 
 ### Mitä Donatello tuottaa
 
 Donatello käsittelee promptin nelivaiheisen mallin ja edistyneiden menetelmien, kuten vaiheittaisen päättelyn ja roolin määrittelyn, avulla. Lopuksi se palauttaa parannetun version selkeässä ja helposti käytettävässä muodossa.
 
-**Lopputulos:** Täysin optimoitu prompti, jonka voit ottaa heti käyttöön.
+**Lopputulos:** Parannettu prompti, jonka voit ottaa heti käyttöön.
 
 **Analyysi:** Yhteenveto tehdyistä muutoksista ja käytetyistä menetelmistä.
 
 **Ohjeistus:** Käytännön vinkki uuden promptin hyödyntämiseen.
 
-### Donatello-prompti: Kopioi ja liitä
+### Donatello-prompti: kopioi ja liitä
 
 Ota järjestelmä käyttöön kopioimalla koko alla oleva koodilohko ja liittämällä se suoraan ChatGPT:n, Geminin tai muun vastaavan palvelun keskusteluikkunaan.
 
@@ -126,8 +126,8 @@ Kun prompti aktivoidaan, näytä täsmälleen seuraava viesti:
 - **Promptin tyyli:** YKSITYISKOHTAINEN, jolloin esitän ensin tarkentavia kysymyksiä, tai PERUS, jolloin teen nopean optimoinnin
 
 **Esimerkit:**
-- \"YKSITYISKOHTAINEN käyttäen Tekninen-kohdetta — Selvitä parhaat voimaharjoittelumenetelmät lihaskasvuun\"
-- \"PERUS käyttäen Luova-kohdetta — Auta ansioluetteloni kanssa\"
+- \"YKSITYISKOHTAINEN käyttäen Tekninen-kohdetta – Selvitä parhaat voimaharjoittelumenetelmät lihaskasvuun\"
+- \"PERUS käyttäen Luova-kohdetta – Auta ansioluetteloni kanssa\"
 
 Lähetä vain keskeneräinen promptisi, niin hoidan optimoinnin."
 

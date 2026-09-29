@@ -1,13 +1,13 @@
 ---
 layout: ../../layouts/Base.astro
 title: "Cookiebot guide"
-description: "Step-by-step Cookiebot and Google Consent Mode setup: install the script, configure consent defaults, and validate that tags fire correctly."
+description: "A step-by-step guide to setting up Cookiebot and configuring and testing consent states for Google Consent Mode, Microsoft UET and Clarity."
 date: 2025-08-07
 updatedDate: 2026-09-22
 category: templates
 order: 1
 icon: "🍪"
-summary: "Copy-ready Cookiebot and Google Consent Mode setup with configurable defaults, implementation code and validation steps."
+summary: "Set up Cookiebot and manage Google and Microsoft consent states with configurable settings, copy-ready code and testing instructions."
 tags: ["Cookiebot", "Consent Mode", "GDPR", "cookie consent"]
 image: /images/blog/cookiebot-guide.jpeg
 imageAlt: "Cartoon turtle with glasses standing beside a browser window showing the Cookiebot logo and a cookie shield"
@@ -99,7 +99,7 @@ UET reads `ad_storage` only. **Microsoft Clarity** is a separate product with it
 
 Use this version only when returning visitors' early page events justify the extra code and your team can maintain it. It always bootstraps Google Consent Mode v2. The Microsoft selections above add UET Consent Mode and Clarity Consent V2 using the same Cookiebot categories.
 
-Place the code as high in the **\<head\>** as possible. In WordPress, load it before the `wp_head` hook.
+Place the code as close to the start of **\<head\>** as possible. In WordPress, load it before the `wp_head` hook.
 
 This version fails closed: by default it accepts only explicit consent, rejects consent older than 366 days and ignores ambiguous or conflicting duplicate `CookieConsent` cookies. If stored consent cannot be verified, all non-essential signals remain denied while Cookiebot is given time to send its current update.
 
@@ -1132,7 +1132,7 @@ Set the Consent Mode default from one source only. Remove any earlier implementa
    * Checks the consent age.
    *
    * Cookiebot normally stores utc as epoch milliseconds.
-   * A value that looks like epoch seconds is normalized,
+   * A value that looks like epoch seconds is converted to milliseconds,
    * and consent dated in the future is rejected.
    */
 
@@ -1297,7 +1297,7 @@ Set the Consent Mode default from one source only. Remove any earlier implementa
 
 Use this version for most direct implementations. It establishes a safe state immediately and lets Cookiebot send the current consent update after it loads.
 
-Place the code as high in the **\<head\>** as possible. In WordPress, load it before the `wp_head` hook.
+Place the code as close to the start of **\<head\>** as possible. In WordPress, load it before the `wp_head` hook.
 
 For Microsoft UET with Basic Consent Mode, keep the UET tag blocked until marketing consent is granted. When included, the generated script creates `window.uetq` and sets its initial state to `denied`; Cookiebot then pushes the visitor's current marketing consent to the same queue automatically. Do not add an unconditional `granted` update here, because it would run before the visitor has made a choice.
 
@@ -1632,16 +1632,16 @@ Traditional Chinese | ZH-HANT
 
 </details>
 
-## Step 3 - Add Cookiebot declaration code to website's cookie listing page
+## Step 3 - Add the Cookie Declaration to your cookie policy page
 
-The Cookie Declaration is optional. Add it where the site's discovered cookies and trackers should be listed, such as a cookie policy page. Its Domain Group ID follows Step 2, while its language can be selected independently.
+The Cookie Declaration is optional. Add it where the site's discovered cookies and trackers should be listed, such as a cookie policy page. It uses the Domain Group ID entered in Step 2. You can select its language independently.
 
 <fieldset class="cookiebot-declaration-builder">
   <legend>Customize the Cookie Declaration script</legend>
   <div class="form-field">
     <label for="cookiebot-declaration-cbid">Cookiebot ID</label>
     <input id="cookiebot-declaration-cbid" type="text" readonly>
-    <small>Inherited automatically from the Cookiebot ID entered in Step 2.</small>
+    <small>This field is filled automatically with the Cookiebot ID you entered in Step 2.</small>
   </div>
   <div class="form-field">
     <label for="cookiebot-declaration-culture">Declaration language (<code>data-culture</code>)</label>
@@ -1718,7 +1718,13 @@ Cookiebot's Privacy Trigger already lets visitors change or withdraw consent. If
 
 Use [Google Tag Assistant](https://developers.google.com/tag-platform/security/guides/consent-debugging) as the primary Google check: confirm the earliest Consent event contains the default and the latest Consent event contains the update. The Console helper below is a quick supplementary check for Google, UET and Clarity on the current page.
 
-Before consent, every Google signal except `security_storage` should be `denied`. UET should have a denied `ad_storage` default or remain blocked in Basic mode. Clarity should report both storage values as `DENIED`. Run the helper again after accepting and after withdrawing consent to confirm both directions work.
+Before consent, check the following:
+
+- Every Google signal except `security_storage` should be `denied`.
+- UET should have an `ad_storage` default of `denied` or remain blocked in Basic mode.
+- Clarity should report both storage values as `DENIED`.
+
+Run the helper again after accepting and after withdrawing consent to confirm that the consent states update in both cases.
 
 <div data-copy>
 
