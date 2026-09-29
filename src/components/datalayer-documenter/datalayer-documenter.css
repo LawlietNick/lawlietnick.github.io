@@ -380,6 +380,11 @@
   font-weight: var(--font-weight-bold);
 }
 
+/* The event name reads as the title's eyebrow, so it sits close above it. */
+.dl-event-name + .dl-section-title {
+  margin-top: -1rem;
+}
+
 .dl-section-title textarea {
   min-height: 1.25em;
   padding: 0.3rem;
@@ -652,6 +657,12 @@
   .dl-event-name {
     display: block;
     width: fit-content;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .dl-section__content > .dl-event-name + .dl-section-title {
+    margin-top: 1.5mm;
   }
 
   .dl-note + .dl-note {

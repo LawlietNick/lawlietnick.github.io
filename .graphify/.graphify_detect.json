@@ -252,9 +252,10 @@
   "graphifyignore_patterns": 12,
   "git": {
     "source_owner": "git",
-    "source_hash": "f9eff5252eddf0f583b39b819de3a7da38d869b8",
+    "source_hash": "a1c2d139ee93e31c2288861f7ac6f7434d33b5cf",
     "branches": [
       "claude/sweet-lamport-b36507",
+      "datalayer-print-and-copy-edits",
       "main"
     ],
     "max_commits": 200,
@@ -266,11 +267,11 @@
     "source": "default-auto",
     "root": ".",
     "git_root": ".",
-    "head": "f9eff5252eddf0f583b39b819de3a7da38d869b8",
+    "head": "a1c2d139ee93e31c2288861f7ac6f7434d33b5cf",
     "candidate_count": 261,
     "included_count": 233,
     "excluded_untracked_count": 1,
-    "excluded_ignored_count": 26559,
+    "excluded_ignored_count": 26572,
     "excluded_sensitive_count": 1,
     "missing_committed_count": 0,
     "warnings": [],
