@@ -33,6 +33,7 @@
       "src/components/PostList.astro",
       "src/components/Postscript.astro",
       "src/components/PreferredSourceCTA.astro",
+      "src/components/ReadingSignals.astro",
       "src/components/RelatedArticles.astro",
       "src/components/Schema.astro",
       "src/components/ServiceCard.astro",
@@ -241,17 +242,17 @@
     ],
     "video": []
   },
-  "total_files": 232,
-  "total_words": 508934,
+  "total_files": 233,
+  "total_words": 512107,
   "needs_graph": true,
-  "warning": "Large corpus: 232 files · ~508,934 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
+  "warning": "Large corpus: 233 files · ~512,107 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
   "skipped_sensitive": [
     "src/styles/tokens.css"
   ],
   "graphifyignore_patterns": 12,
   "git": {
     "source_owner": "git",
-    "source_hash": "e4eedad88d356e938d539f786f0dddaa9dca40a9",
+    "source_hash": "f9eff5252eddf0f583b39b819de3a7da38d869b8",
     "branches": [
       "claude/sweet-lamport-b36507",
       "main"
@@ -265,13 +266,13 @@
     "source": "default-auto",
     "root": ".",
     "git_root": ".",
-    "head": "e4eedad88d356e938d539f786f0dddaa9dca40a9",
+    "head": "f9eff5252eddf0f583b39b819de3a7da38d869b8",
     "candidate_count": 261,
-    "included_count": 232,
+    "included_count": 233,
     "excluded_untracked_count": 1,
-    "excluded_ignored_count": 26483,
+    "excluded_ignored_count": 26559,
     "excluded_sensitive_count": 1,
-    "missing_committed_count": 1,
+    "missing_committed_count": 0,
     "warnings": [],
     "recommendation": "Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder."
   }
