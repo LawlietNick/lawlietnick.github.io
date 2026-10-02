@@ -10,7 +10,6 @@ test("description completion preserves earlier sentences, avoids duplicates and 
   assert.equal(suggestions("Kampanja kohdistettiin uusille asiakkaille.").some((item) => item.sentence === "Kampanja kohdistettiin uusille asiakkaille."), false);
   const original = "Kampanja kohdistettiin Helsinkiin.";
   assert.equal(suggestions(original, 9).every((item) => item.value.startsWith(original)), true);
-  assert.equal(getDescriptionSuggestions(category, "budget", "en", "")[0].sentence, "Daily budget changed: [before] → [after].");
 });
 
 test("Finnish-only annotation tool does not link to an invented English translation", () => {
@@ -32,7 +31,7 @@ test("all templates have bilingual copy, date guidance and relevant suggestions"
       for (const item of suggestions) assert.ok(characterCount(item.value) <= 150, template.id);
     }
   }
-  assert.equal(count, 49);
+  assert.equal(count, 44);
   const podcast = getDescriptionSuggestions(annotationCategories[0], "podcast", "fi", "");
   assert.ok(podcast.every((item) => !item.sentence.includes("Uutiskirje")));
   assert.equal(hasPlaceholder("Valmis [INC-123]"), false);

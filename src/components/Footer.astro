@@ -1,7 +1,7 @@
 ---
 import ButtonLink from "./ButtonLink.astro";
 import LanguageMenu from "./LanguageMenu.astro";
-import { profiles, conceptName, authorName } from "../data/site.js";
+import { profiles, authorName } from "../data/site.js";
 
 const {
   fi,
@@ -42,7 +42,6 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
             <img class="site-footer__brand-logo" src="/nk-logo.svg" alt="" width="300" height="210" loading="lazy" />
             <p class="site-footer__brand-line">
               <strong class="site-footer__brand-primary">{authorName}</strong>
-              <span class="site-footer__brand-concept">{conceptName}</span>
             </p>
           </div>
           <p class="site-footer__brand-desc">{t.blurb}</p>
@@ -196,11 +195,6 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
     color: var(--ink);
   }
   .site-footer__brand-primary { font-weight: var(--font-weight-bold); }
-  .site-footer__brand-concept {
-    display: block;
-    font-weight: var(--font-weight-body);
-    color: var(--muted);
-  }
   .site-footer__brand-desc {
     font-size: 0.875rem;
     line-height: 1.6;

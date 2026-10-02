@@ -1,7 +1,6 @@
 // Changeable site and structured-data identity values live here.
 // Page copy, navigation, tool settings, and generated-document branding do not.
 export const siteName = "Niko Karppinen";
-export const conceptName = "Funky Analytics";
 
 export const siteConfig = {
   url: "https://karppinen.one/",
@@ -10,7 +9,6 @@ export const siteConfig = {
   },
   website: {
     name: siteName,
-    alternateName: conceptName,
     description: "Digital measurement, SEO and analytics consulting by Niko Karppinen.",
     atomFeedPath: "/atom.xml",
   },

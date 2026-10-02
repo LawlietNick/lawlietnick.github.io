@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { appearances } from "../src/data/appearances.js";
-import { authorName, brandName, conceptName, siteConfig, siteName } from "../src/data/site.js";
+import { authorName, brandName, siteConfig, siteName } from "../src/data/site.js";
 import { buildSchemaGraph, breadcrumbs, publicImage } from "../src/utils/schema.ts";
 
 const root = siteConfig.url;
@@ -26,11 +26,9 @@ test("appearances declare a displayable language", () => {
 
 test("The official website name has one shared source", () => {
   assert.equal(siteName, "Niko Karppinen");
-  assert.equal(conceptName, "Funky Analytics");
   assert.equal(brandName, siteName);
   assert.equal(siteConfig.brand.name, siteName);
   assert.equal(siteConfig.website.name, siteName);
-  assert.equal(siteConfig.website.alternateName, conceptName);
   assert.equal(siteName, authorName);
 });
 
@@ -228,7 +226,7 @@ test("The WebSite identity comes from siteConfig", () => {
   assert.equal(website["@id"], `${root}#website`);
   assert.equal(website.url, root);
   assert.equal(website.name, siteConfig.website.name);
-  assert.equal(website.alternateName, conceptName);
+  assert.equal("alternateName" in website, false);
   assert.equal(website.description, siteConfig.website.description);
   assert.deepEqual(website.publisher, PERSON);
   assert.equal("potentialAction" in website, false);

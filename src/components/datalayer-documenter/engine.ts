@@ -633,7 +633,6 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
       ],
     }),
     new Paragraph({ spacing: { before: 900, after: 80 }, children: [new TextRun({ text: "Niko Karppinen", bold: true, size: 22, color: colors.ink })] }),
-    new Paragraph({ spacing: { after: 40 }, children: [new TextRun({ text: "Funky Analytics", color: colors.accent, size: 20 })] }),
     new Paragraph({ children: [new TextRun({ text: "nicknoir@gmail.com  ·  karppinen.one", color: colors.muted, size: 18 })] }),
   ];
 
@@ -687,7 +686,7 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
         metadataRow("Valuutta", state.settings.currency || "EUR"),
         metadataRow("Versio", version),
         metadataRow("Päivämäärä", exportDate),
-        metadataRow("Tekijä", "Niko Karppinen · Funky Analytics"),
+        metadataRow("Tekijä", "Niko Karppinen"),
       ],
     }),
   ];
@@ -737,7 +736,7 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
     spacing: { before: 80 },
     children: [
       new TextRun({
-        children: [`Niko Karppinen · Funky Analytics  ·  Versio ${version}  ·  Sivu `, PageNumber.CURRENT],
+        children: [`Niko Karppinen  ·  Versio ${version}  ·  Sivu `, PageNumber.CURRENT],
         color: colors.muted,
         size: 16,
       }),
@@ -748,7 +747,7 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
     creator: "Niko Karppinen",
     title: state.settings.title || "Verkkokaupan dataLayer-dokumentaatio",
     subject: "Verkkokaupan dataLayer-toteutusohje",
-    description: "Niko Karppisen Funky Analytics -konseptilla brändätty dataLayer-dokumentaatio verkkosivuston kehittäjälle.",
+    description: "Niko Karppisen dataLayer-dokumentaatio verkkosivuston kehittäjälle.",
     features: { updateFields: true },
     styles: {
       default: { document: { run: { font: "Arial", size: 21, color: colors.ink }, paragraph: { spacing: { after: 140, line: 300 } } } },

@@ -12,7 +12,6 @@
       "entityId": "e_001",
       "@type": "WebSite",
       "name": "Niko Karppinen",
-      "alternateName": "Funky Analytics",
       "description": "Niko Karppinen's personal consulting website for practical measurement, SEO, analytics and AI-assisted workflows.",
       "audienceType": "general",
       "hasChunks": [

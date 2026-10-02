@@ -248,7 +248,6 @@ export function buildSchemaGraph(options: SchemaOptions) {
     "@id": WEBSITE_ID,
     url: SITE_URL,
     name: siteConfig.website.name,
-    alternateName: siteConfig.website.alternateName,
     description: siteConfig.website.description,
     publisher: { "@id": PERSON_ID },
     inLanguage: ["en", "fi"],
