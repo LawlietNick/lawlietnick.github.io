@@ -166,6 +166,8 @@ export const annotationCategories = [
       phrase("Muutos julkaistiin GTM:ssä.", "The change was published in GTM."),
       phrase("Tapahtuma kirjautui aiemmin kahdesti.", "The event was previously recorded twice."),
       phrase("Muutos vaikuttaa vertailukelpoisuuteen.", "The change affects comparability."),
+      phrase("Kaikki GTM-tagit noudattavat nyt evästebannerin suostumusta.", "All GTM tags now respect cookie banner consent."),
+      phrase("Ilman suostumusta data puuttuu tai mallinnetaan.", "Without consent, data is dropped or modelled."),
       phrase("Consent Mode -asetukset päivitettiin.", "Consent Mode settings were updated."),
       phrase("Suostumusbanneri vaihtui: [ennen] → [jälkeen].", "Consent banner changed: [before] → [after]."),
       phrase("Suostumusten osuus muuttui: [ennen] → [jälkeen].", "Consent rate changed: [before] → [after]."),
@@ -303,7 +305,7 @@ const templateTerms = {
   abuse: ["Havaittiin", "Epäillään", "API:n"],
   page: ["Julkaistiin", "Sivu linkitettiin"], redesign: ["Uudistettiin", "Navigaatiota"], test: ["Testissä", "Liikenne jaettiin", "Testi päättyi"], seo: ["Päivitettiin", "Uudelleenohjaus", "Sivuille"],
   campaign: ["Kampanja kohdistettiin", "Kampanja pysäytettiin"], offline: ["Media:", "Mainoksessa oli", "Mainonta"],
-  event: ["Lisättiin"], fix: ["Korjattiin", "Tapahtuma"], consent: ["Consent", "Suostumus", "Muutos vaikuttaa"], "key-event": ["[Tapahtuma]", "Laskentatapa"],
+  event: ["Lisättiin"], fix: ["Korjattiin", "Tapahtuma"], consent: ["Kaikki GTM-tagit", "Ilman suostumusta", "Consent", "Suostumus", "Muutos vaikuttaa"], "key-event": ["[Tapahtuma]", "Laskentatapa"],
   season: ["Sesonki"], competitor: ["Kilpailija"], industry: ["Tapahtuma", "Osallistuimme"], external: ["Muutos"],
 };
 
