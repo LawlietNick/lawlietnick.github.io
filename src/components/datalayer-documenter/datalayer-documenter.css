@@ -549,7 +549,8 @@
   }
 }
 
-.dl-print {
+.dl-print,
+.dl-print-header {
   display: none;
 }
 
@@ -560,9 +561,58 @@
 }
 
 @media print {
+  /* No top page margin: the fixed .dl-print-header sits there instead, and
+     Chrome's own date/title/URL header has no room to appear. */
   @page {
     size: A4;
-    margin: 18mm;
+    margin: 0 18mm 16mm;
+
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      color: #6d6976;
+      font: 7.5pt/1.2 system-ui, sans-serif;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  .dl-print-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    gap: 6mm;
+    height: 15mm;
+    padding-bottom: 2.5mm;
+    border-bottom: 0.3mm solid #d8d6df;
+    color: #6d6976;
+    font: 7.5pt/1.2 var(--font-body);
+  }
+
+  .dl-print-header img {
+    width: auto;
+    height: 6mm;
+  }
+
+  .dl-print-header span:nth-of-type(1) {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .dl-print-header span:nth-of-type(2) {
+    text-align: right;
+  }
+
+  /* Room under the running header on every page, also where a long section continues. */
+  .dl-document__header,
+  .dl-section {
+    padding-top: 22mm !important;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   .site-header,
@@ -584,6 +634,15 @@
   .dl-source,
   body > footer {
     display: none !important;
+  }
+
+  /* Align the document with the page margins, where the header and footer sit. */
+  main.container:has(.dl-builder),
+  main.container:has(.dl-builder) > .wide-band {
+    width: auto;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
   }
 
   body {
@@ -633,6 +692,7 @@
   .dl-project-notes {
     display: block;
     padding: 0;
+    overflow: visible;
   }
 
   .dl-document__header {

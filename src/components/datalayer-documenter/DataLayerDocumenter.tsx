@@ -151,12 +151,18 @@ export default function DataLayerDocumenter() {
   };
 
   const printPdf = () => {
-    setExportStatus("Valitse tulostusikkunassa Tallenna PDF:nä.");
+    setExportStatus("Valitse tulostusikkunassa Tallenna PDF:nä ja poista valinta kohdasta Ylä- ja alatunnisteet.");
     requestAnimationFrame(() => window.print());
   };
 
   return (
     <section className="dl-builder" aria-label="dataLayer-dokumentaatiogeneraattori">
+      {/* Chrome can't draw images in @page margin boxes, so the running header is a fixed element that repeats on every printed page. */}
+      <div className="dl-print-header" aria-hidden="true">
+        <img src="/nk-logo-print.svg" alt="" />
+        <span>{state.settings.title.trim() || "Verkkokaupan dataLayer-dokumentaatio"}</span>
+        <span>Niko Karppinen</span>
+      </div>
       <div className="dl-builder__privacy">
         <strong>Paikallinen luonnos</strong>
         <p>Asiakastiedot ja muokkaukset säilyvät vain tässä selaimessa.</p>

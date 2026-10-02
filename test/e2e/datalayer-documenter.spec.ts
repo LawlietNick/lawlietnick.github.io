@@ -54,6 +54,11 @@ test("prints plain text instead of clipped form controls", async ({ page }) => {
   const document = page.locator("#datalayer-document");
   await expect(document.locator("textarea:visible, input:visible, select:visible")).toHaveCount(0);
   await expect(page.locator(".tool-hero")).toBeHidden();
+  const header = page.locator(".dl-print-header");
+  await expect(header).toBeVisible();
+  await expect(header).toContainText("Verkkokaupan dataLayer-dokumentaatio");
+  await expect(header).toContainText("Niko Karppinen");
+  expect(await header.locator("img").evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0);
   await expect(document.locator(".dl-section").first()).toHaveCSS("break-before", "page");
   await expect(document.getByText("item_category...item_category5", { exact: true })).toBeVisible();
   await expect(document.locator(".dl-print", { hasText: /^Jompikumpi$/ }).first()).toBeVisible();
