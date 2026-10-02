@@ -512,12 +512,8 @@
     "hash": "32ba48f38cab10e4ced968f339cb51f6"
   },
   "src/pages/fi/palvelut/google-analytics-auditointi.md": {
-    "mtime": 1790701301124.3584,
-    "hash": "046c5e9af6397992172a6fd99fe68f77"
-  },
-  "src/pages/fi/palvelut/jatkuva-seo.md": {
-    "mtime": 1790455072322.6245,
-    "hash": "2146291735f46519b990b82e39d85c42"
+    "mtime": 1790965912221.8113,
+    "hash": "c5a9d9604594d2201abcecbecac777d4"
   },
   "src/pages/fi/palvelut/raataloity-dashboard.md": {
     "mtime": 1790701301124.5027,
@@ -556,8 +552,8 @@
     "hash": "49c10791cb11b44e02dfe3fcf63c0b13"
   },
   "src/pages/services/monthly-seo.md": {
-    "mtime": 1790455072325.1458,
-    "hash": "f59c09ca17c48fa0caa4a6a96131647f"
+    "mtime": 1790967607649.129,
+    "hash": "0458e9a2c56700024968f4d5bbbe23a3"
   },
   "src/pages/services/server-side-tracking.md": {
     "mtime": 1790455072326.177,
@@ -872,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1790928556287.2302,
-    "hash": "96ac6dd93dfce639699bdc33c853e2e1"
+    "mtime": 1790967474919.7058,
+    "hash": "bb9b804edd0e7a967e608855e5735d07"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
