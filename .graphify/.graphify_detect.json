@@ -185,7 +185,8 @@
       "src/pages/services/tracking-implementation-plan.md",
       "src/pages/templates/cookiebot-guide.md",
       "src/pages/templates/hubspot-form-tracking-gtm.md",
-      "src/pages/templates/openai-ads-pixel-shopify.md"
+      "src/pages/templates/openai-ads-pixel-shopify.md",
+      "suomen-kielen-tarkistus.md"
     ],
     "paper": [],
     "image": [
@@ -209,6 +210,7 @@
       "public/images/blog/what-is-an-algorithm-steps-and-process.jpeg",
       "public/images/tools/gtm-container-builder/overview.png",
       "public/nk-logo-docx.png",
+      "public/nk-logo-print.svg",
       "public/nk-logo.svg",
       "public/og-default.png",
       "src/assets/about/portrait.jpeg",
@@ -242,17 +244,17 @@
     ],
     "video": []
   },
-  "total_files": 233,
-  "total_words": 512107,
+  "total_files": 235,
+  "total_words": 513444,
   "needs_graph": true,
-  "warning": "Large corpus: 233 files · ~512,107 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
+  "warning": "Large corpus: 235 files · ~513,444 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
   "skipped_sensitive": [
     "src/styles/tokens.css"
   ],
   "graphifyignore_patterns": 12,
   "git": {
     "source_owner": "git",
-    "source_hash": "a1c2d139ee93e31c2288861f7ac6f7434d33b5cf",
+    "source_hash": "562d5a6269562304384fd4865b59422c6e3fc67c",
     "branches": [
       "claude/sweet-lamport-b36507",
       "datalayer-print-and-copy-edits",
@@ -267,11 +269,11 @@
     "source": "default-auto",
     "root": ".",
     "git_root": ".",
-    "head": "a1c2d139ee93e31c2288861f7ac6f7434d33b5cf",
-    "candidate_count": 261,
-    "included_count": 233,
-    "excluded_untracked_count": 1,
-    "excluded_ignored_count": 26572,
+    "head": "562d5a6269562304384fd4865b59422c6e3fc67c",
+    "candidate_count": 263,
+    "included_count": 235,
+    "excluded_untracked_count": 0,
+    "excluded_ignored_count": 26358,
     "excluded_sensitive_count": 1,
     "missing_committed_count": 0,
     "warnings": [],
