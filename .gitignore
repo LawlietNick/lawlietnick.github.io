@@ -8,13 +8,10 @@ playwright-report/
 # env / local
 .env*
 .DS_Store
-.claude/settings.local.json
-
-# graphify local state (per CLAUDE.md: never commit)
-.graphify/branch.json
-.graphify/worktree.json
-.graphify/needs_update
-.graphify/cache/
+/.claude/
+/.graphify/
+/.impeccable/
+/suomen-kielen-tarkistus.md
 
 # Local-only drafts: unfinished service pages and draft posts stay on disk but out of
 # the public repo. Remove a line here (and `git add` the file) to publish it.
