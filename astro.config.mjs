@@ -43,7 +43,7 @@ export default defineConfig({
             if (t.en) drafts.push(`${t.category}/${t.en.slug ?? t.slug}/`);
             if (t.fi) drafts.push(`fi/${toolkit.find((c) => c.slug === t.category).fiSlug}/${t.fi.slug ?? t.slug}/`);
           }
-          const hidden = showServices ? [] : ["services/", "fi/palvelut/", "work/", "fi/work/"];
+          const hidden = showServices ? [] : ["services/", "fi/palvelut/"];
           await Promise.all([...drafts, ...hidden].map((p) => rm(new URL(p, dir), { recursive: true, force: true })));
         },
       },
@@ -71,7 +71,13 @@ export default defineConfig({
   // that pass their own widths/sizes keep them (Astro only fills gaps)
   image: { layout: "constrained" },
   redirects: {
-    ...(showServices && { "/work": "/services/", "/fi/work": "/fi/palvelut/" }),
+    "/work": showServices ? "/services/" : "/about/",
+    "/fi/work": showServices ? "/fi/palvelut/" : "/fi/minusta/",
+    // URLs from the previous karppinen.one site (Astro Nano), kept alive after the move
+    "/blog/cookiebot-guide": "/templates/cookiebot-guide/",
+    "/projects": "/about/",
+    "/projects/podcast-hakuammuntaa": "/about/",
+    "/projects/podcast-signal": "/about/",
     "/fi/tools": "/fi/tyokalut/",
     "/fi/templates": "/fi/toteutusmallit/",
     "/tools/form-type-picker": "/tools/form-name-builder/",
