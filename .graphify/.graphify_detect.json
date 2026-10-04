@@ -221,7 +221,7 @@
     "video": []
   },
   "total_files": 211,
-  "total_words": 469631,
+  "total_words": 469517,
   "needs_graph": true,
   "warning": null,
   "skipped_sensitive": [
@@ -230,7 +230,7 @@
   "graphifyignore_patterns": 20,
   "git": {
     "source_owner": "git",
-    "source_hash": "b75b160923997cf185cc28cf3ad814cf99683aae",
+    "source_hash": "c54917e7fbe6ad60b36d031e51b51f9e8e7f99b0",
     "branches": [
       "backup/before-purge",
       "claude/sweet-lamport-b36507",
@@ -247,11 +247,11 @@
     "source": "default-auto",
     "root": ".",
     "git_root": ".",
-    "head": "b75b160923997cf185cc28cf3ad814cf99683aae",
+    "head": "c54917e7fbe6ad60b36d031e51b51f9e8e7f99b0",
     "candidate_count": 239,
     "included_count": 211,
     "excluded_untracked_count": 3,
-    "excluded_ignored_count": 26473,
+    "excluded_ignored_count": 26481,
     "excluded_sensitive_count": 1,
     "missing_committed_count": 0,
     "warnings": [],

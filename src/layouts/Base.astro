@@ -181,7 +181,6 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
     {/* Rybbit: cookieless visitor statistics, production builds only; allowed in the CSP (astro.config.mjs) */}
     {import.meta.env.PROD && <script is:inline src="https://app.rybbit.io/api/script.js?siteId=6f009de8f938" defer></script>}
     <link rel="alternate" type="application/atom+xml" title={siteConfig.website.name} href={Astro.site ? new URL(feedHref, Astro.site).href : feedHref} />
-    <link rel="prefetch" href="/ai.txt" />
 
     <!-- resource hints -->
     <link rel="preload" href="/fonts/roboto-flex.woff2" as="font" type="font/woff2" crossorigin />
