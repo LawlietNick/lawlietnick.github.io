@@ -1,6 +1,7 @@
 {
   "version": "1.0",
   "schema": "https://entitymap.org/spec/v1.0",
+  "profile": "core",
   "publisher": {
     "name": "Niko Karppinen",
     "url": "https://karppinen.one"
@@ -46,7 +47,7 @@
     },
     {
       "entityId": "e_012",
-      "@type": "Guide",
+      "@type": "karppinen:Guide",
       "name": "Cookiebot guide",
       "description": "A simplified walkthrough for installing Cookiebot and wiring Consent Mode defaults, including where to place the code.",
       "audienceType": "technical",
@@ -127,7 +128,7 @@
     },
     {
       "entityId": "e_017",
-      "@type": "Guide",
+      "@type": "karppinen:Guide",
       "name": "HubSpot form tracking in GTM",
       "description": "A GTM template and lookup backend that push successful HubSpot form submissions to the dataLayer with the real form name, keeping the HubSpot token server-side.",
       "audienceType": "technical",
@@ -152,7 +153,8 @@
         }
       ],
       "relations": [
-        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" },
+        { "predicate": "RELATES_TO", "targetId": "e_018", "targetName": "Form taxonomy" }
       ]
     },
     {
