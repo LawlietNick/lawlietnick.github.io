@@ -9,14 +9,14 @@ export const toolkit = [
       label: "Tools",
       // documentTitle overrides the SERP title only; the nav + h1 keep the short label
       documentTitle: "Analytics & SEO Toolkit | Niko Karppinen",
-      navDesc: "GTM builder, dataLayer docs, metric scoring and Cookiebot styling.",
-      desc: "Free tools for analytics, SEO and web work: build GTM containers, generate dataLayer documentation, score metric quality and style Cookiebot consent banners.",
+      navDesc: "GTM builder, GA4 annotations, form names and metric scoring.",
+      desc: "Free tools for analytics, SEO and web work: build GTM containers, write GA4 annotations, name forms consistently and score metric quality.",
     },
     fi: {
       label: "Työkalut",
       documentTitle: "Analytiikan ja SEO:n työkalupakki | Niko Karppinen",
-      navDesc: "GTM-rakentaja, dataLayer-dokumentaatio, mittareiden pisteytys ja Cookiebot-tyylit.",
-      desc: "Ilmaisia työkaluja analytiikkaan, hakukoneoptimointiin ja verkkosivutyöhön: rakenna GTM-säiliöitä, generoi dataLayer-dokumentaatio, pisteytä mittareita ja muotoile Cookiebot-banneri.",
+      navDesc: "GTM-rakentaja, dataLayer-dokumentaatio, GA4-annotaatiot ja lomakkeiden nimet.",
+      desc: "Ilmaisia työkaluja analytiikkaan, hakukoneoptimointiin ja verkkosivutyöhön: rakenna GTM-säiliöitä, luo dataLayer-dokumentaatio, kirjoita GA4-annotaatioita, nimeä lomakkeet yhtenäisesti ja pisteytä mittareita.",
     },
   },
   {
@@ -25,7 +25,7 @@ export const toolkit = [
     en: {
       label: "Implementation Templates",
       navDesc: "Ready-made GTM, schema and tracking setups to copy.",
-      desc: "Reusable GTM containers, schema examples, tracking setups and technical implementation patterns.",
+      desc: "Copy-ready templates for GTM implementations, schema markup, tracking and technical configuration.",
     },
     fi: {
       label: "Toteutusmallit",

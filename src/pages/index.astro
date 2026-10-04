@@ -12,12 +12,12 @@ const posts = selectRecentPosts(Object.values(import.meta.glob("./blog/*.md", { 
     url: withTrailingSlash(p.url),
     minutes: Math.max(1, Math.round(p.rawContent().split(/\s+/).length / 200)),
   })));
+// The footer CTA banner ("Have a data problem?") is hidden for launch: add `banner` to <Base> to bring it back.
 ---
 
 <Base
   documentTitle="Niko Karppinen | SEO & Analytics Consultant"
   description="Niko Karppinen helps teams improve digital measurement, SEO, analytics and practical AI workflows."
-  banner
 >
   <Hero />
 
