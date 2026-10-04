@@ -125,9 +125,9 @@ const effectiveHasLanguageAlternate = noindex ? false : hasLanguageAlternate;
 const effectivePostWithoutTranslation = noindex ? true : postWithoutTranslation;
 const hreflang = Astro.site && effectiveHasLanguageAlternate;
 
-// social share image: per-page frontmatter `image` wins, else the site default
+// social share image: per-page frontmatter `image` wins, else the language default
 const ogImage = Astro.site
-  ? new URL(fm?.image ?? "/og-default.png", Astro.site).href
+  ? new URL(fm?.image ?? (fi ? "/og-default-fi.png" : "/og-default.png"), Astro.site).href
   : undefined;
 const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
