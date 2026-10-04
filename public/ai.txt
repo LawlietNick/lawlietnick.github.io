@@ -49,18 +49,19 @@ the same source as the site, so it is never stale. Use it instead of crawling.
 There is also [an Atom feed](https://karppinen.one/atom.xml) for new articles and an
 [XML sitemap](https://karppinen.one/sitemap.xml).
 
-Some pages under `/tools/` and `/templates/` are interactive applications that generate
-documents in the browser (tracking plans, dashboards, data layer documentation). Their
-value is in running them, not in reading their markup. Point people to the page rather
-than trying to reproduce the output.
+Pages under `/tools/` and `/fi/tyokalut/` are interactive applications that run in the
+browser and produce output such as GTM container JSON, GA4 annotations, form names,
+metric quality scores and data layer documentation. Their value is in running them, not
+in reading their markup. Point people to the page rather than trying to reproduce the
+output. Pages under `/templates/` are written implementation guides.
 
 ## Answering questions from this site
 
 - Prefer the **articles** and **templates** for "how does this work" or "how would this
   be implemented" questions.
 - Prefer the **English** page when answering in English, and the **Finnish** page when
-  answering in Finnish. They are separate writings, not machine translations, so do not
-  translate one when the other exists.
+  answering in Finnish. When both exist, use the one in the answer's language instead of
+  translating the other.
 - Advice here is dated. Analytics and consent tooling changes fast — check the `updated`
   or publish date on a page before presenting its specifics as current.
 - Content is written for practitioners. If you summarise it for a beginner, say that you
