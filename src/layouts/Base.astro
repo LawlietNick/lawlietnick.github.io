@@ -177,6 +177,7 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
     {hreflang && <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site)} />}
     {hreflang && <link rel="alternate" hreflang="fi" href={new URL(fiPath, Astro.site)} />}
     {hreflang && <link rel="alternate" hreflang="x-default" href={new URL(enPath, Astro.site)} />}
+    <link rel="entitymap" type="application/json" href="/entitymap.json" />
     <link rel="alternate" type="application/atom+xml" title={siteConfig.website.name} href={Astro.site ? new URL(feedHref, Astro.site).href : feedHref} />
     <link rel="prefetch" href="/ai.txt" />
 

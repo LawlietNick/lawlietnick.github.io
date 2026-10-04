@@ -9,10 +9,10 @@
   "verificationStatus": "generator-draft",
   "entities": [
     {
-      "entityId": "e_001",
-      "@type": "WebSite",
+      "entityId": "e_002",
+      "@type": "Person",
       "name": "Niko Karppinen",
-      "description": "Niko Karppinen's personal consulting website for practical measurement, SEO, analytics and AI-assisted workflows.",
+      "description": "SEO and web analytics consultant working since 2017 across ecommerce, telecoms, public sector, consumer and B2B. He turns messy tracking and reporting into systems teams can measure and explain.",
       "audienceType": "general",
       "hasChunks": [
         {
@@ -23,16 +23,7 @@
           "publisher": "Niko Karppinen",
           "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "definition"
-        }
-      ]
-    },
-    {
-      "entityId": "e_002",
-      "@type": "Person",
-      "name": "Niko Karppinen",
-      "description": "SEO and web analytics consultant working since 2017 across ecommerce, telecoms, public sector, consumer and B2B. He turns messy tracking and reporting into systems teams can measure and explain.",
-      "audienceType": "general",
-      "hasChunks": [
+        },
         {
           "chunkId": "c_003",
           "text": "I have worked with SEO, analytics, and digital marketing since 2017. In that time, I have worked with organisations in ecommerce, telecommunications, insurance, healthcare, the public sector, B2B, and consumer services.",
@@ -50,89 +41,6 @@
           "publisher": "Niko Karppinen",
           "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "example"
-        }
-      ]
-    },
-    {
-      "entityId": "e_009",
-      "@type": "Methodology",
-      "name": "Expert Panel prompt",
-      "description": "A prompt pattern that casts an AI as a roundtable of three experts who debate a question until they reach a practical recommendation.",
-      "audienceType": "general",
-      "hasChunks": [
-        {
-          "chunkId": "c_011",
-          "text": "The “Expert Panel” prompt fixes that. It turns your AI into a small roundtable of three professionals with different incentives who argue, push back, and refine ideas until they reach a practical conclusion. The output feels closer to a real strategy session than a neutral Wikipedia-style overview.",
-          "sourceUrl": "https://karppinen.one/blog/ai-panel-with-experts/",
-          "pageTitle": "Use AI for multi-expert analysis with one prompt",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        },
-        {
-          "chunkId": "c_012",
-          "text": "You act as the director. The AI plays three experts. The value comes from the tension between them.",
-          "sourceUrl": "https://karppinen.one/blog/ai-panel-with-experts/",
-          "pageTitle": "Use AI for multi-expert analysis with one prompt",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "procedure"
-        }
-      ]
-    },
-    {
-      "entityId": "e_010",
-      "@type": "Methodology",
-      "name": "SCQR and Pyramid Principle",
-      "alternateName": "SCQR",
-      "description": "The Situation–Complication–Question–Resolution storyline paired with the Pyramid Principle, used to structure executive presentations.",
-      "audienceType": "executive",
-      "hasChunks": [
-        {
-          "chunkId": "c_013",
-          "text": "The SCQR (Situation–Complication–Question–Resolution) structure is the foundation of a compelling executive narrative. It moves the audience from shared context to a decision point.",
-          "sourceUrl": "https://karppinen.one/blog/mckinsey-style-presentation-chatgpt-gemini/",
-          "pageTitle": "Create McKinsey-style presentation using ChatGPT or Gemini",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        },
-        {
-          "chunkId": "c_014",
-          "text": "That’s why consultants at McKinsey, BCG, and Bain rely on a strict logic framework called the SCQR and Pyramid Principle to structure every presentation. It turns messy findings into a clear narrative that moves from insight to action.",
-          "sourceUrl": "https://karppinen.one/blog/mckinsey-style-presentation-chatgpt-gemini/",
-          "pageTitle": "Create McKinsey-style presentation using ChatGPT or Gemini",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "evidence"
-        }
-      ]
-    },
-    {
-      "entityId": "e_011",
-      "@type": "Methodology",
-      "name": "Donatello Optimization System",
-      "alternateName": "4-D methodology",
-      "description": "A meta-prompt that turns rough inputs into precise prompts using a four-step DECONSTRUCT–DIAGNOSE–DEVELOP–DELIVER method.",
-      "audienceType": "general",
-      "hasChunks": [
-        {
-          "chunkId": "c_015",
-          "text": "The Donatello Optimization System is a powerful \"meta-prompt\" that establishes the AI as a master-level prompt engineer. Its purpose is to take your rough, vague inputs and systematically transform them into highly precise, effective prompts that guarantee better, more reliable results from your LLM.",
-          "sourceUrl": "https://karppinen.one/blog/prompt-optimization-chatgpt/",
-          "pageTitle": "Use prompt optimization system to create better prompts in ChatGPT",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        },
-        {
-          "chunkId": "c_016",
-          "text": "Donatello applies a rigorous 4-step framework and advanced techniques (like Chain-of-Thought or Role Assignment) to your prompt, then outputs the improved version in a clean, easy-to-use format.",
-          "sourceUrl": "https://karppinen.one/blog/prompt-optimization-chatgpt/",
-          "pageTitle": "Use prompt optimization system to create better prompts in ChatGPT",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "procedure"
         }
       ]
     },
@@ -167,26 +75,114 @@
       ]
     },
     {
-      "entityId": "e_014",
-      "@type": "Concept",
-      "name": "AI-assisted digital workflows",
-      "description": "Niko's framing of AI in digital work: practical, repeatable workflows where AI supports decisions but humans stay in the loop.",
+      "entityId": "e_015",
+      "@type": "Methodology",
+      "name": "Content consumption measurement",
+      "description": "An article-level measurement model that combines progress through the article body with qualifying reading time to estimate whether content was read.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_022",
+          "text": "That requires an article-specific measurement layer. This article uses progress through the article body and qualifying time to build a more transparent estimate of content consumption.",
+          "sourceUrl": "https://karppinen.one/blog/content-consumption-metrics/",
+          "pageTitle": "Are people reading your articles? A practical guide to content consumption metrics",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-10-04T00:00:00Z",
+          "contentType": "definition"
+        },
+        {
+          "chunkId": "c_023",
+          "text": "An Estimated Article Read is still an estimate based on observable behaviour. It does not prove that someone read every word, paid attention throughout the visit or understood the content.",
+          "sourceUrl": "https://karppinen.one/blog/content-consumption-metrics/",
+          "pageTitle": "Are people reading your articles? A practical guide to content consumption metrics",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-10-04T00:00:00Z",
+          "contentType": "evidence"
+        }
+      ],
+      "relations": [
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+      ]
+    },
+    {
+      "entityId": "e_016",
+      "@type": "Methodology",
+      "name": "Page classification for analytics",
+      "description": "Giving every page a page type and a primary topic so reports can compare understandable groups of pages instead of thousands of URLs (Finnish article).",
       "audienceType": "general",
       "hasChunks": [
         {
-          "chunkId": "c_021",
-          "text": "Tools can surface patterns, but people still decide what matters for the customer, the business, and the brand.",
-          "sourceUrl": "https://karppinen.one/about/",
-          "pageTitle": "About Niko Karppinen",
+          "chunkId": "c_024",
+          "text": "Kokonaisuutta voidaan selkeyttää antamalla jokaiselle sivulle kaksi perustietoa: millainen sivu se on ja mihin pääaiheeseen se kuuluu. Näin raportissa voidaan tarkastella ymmärrettäviä ryhmiä ja verrata yksittäistä sivua muihin samankaltaisiin sivuihin.",
+          "sourceUrl": "https://karppinen.one/fi/blog/sivujen-luokittelu-analytiikassa/",
+          "pageTitle": "Mitä verkkosivustosi luvut kertovat? Sivujen luokittelu auttaa ymmärtämään kokonaisuutta",
           "publisher": "Niko Karppinen",
           "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "definition"
         }
       ],
       "relations": [
-        { "predicate": "COVERS", "targetId": "e_009", "targetName": "Expert Panel prompt" },
-        { "predicate": "COVERS", "targetId": "e_011", "targetName": "Donatello Optimization System" },
-        { "predicate": "COVERS", "targetId": "e_010", "targetName": "SCQR and Pyramid Principle" }
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+      ]
+    },
+    {
+      "entityId": "e_017",
+      "@type": "Guide",
+      "name": "HubSpot form tracking in GTM",
+      "description": "A GTM template and lookup backend that push successful HubSpot form submissions to the dataLayer with the real form name, keeping the HubSpot token server-side.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_025",
+          "text": "This template does neither. HubSpot stays the source of truth for the form name, a small backend service looks the name up with a server-side credential, and GTM receives an analytics-friendly event.",
+          "sourceUrl": "https://karppinen.one/templates/hubspot-form-tracking-gtm/",
+          "pageTitle": "Track HubSpot form submissions in GTM with the real form name",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-10-04T00:00:00Z",
+          "contentType": "definition"
+        },
+        {
+          "chunkId": "c_026",
+          "text": "The form name is not secret, but the HubSpot token is. Never call the HubSpot API directly from the browser and never paste the token into a GTM variable or template field.",
+          "sourceUrl": "https://karppinen.one/templates/hubspot-form-tracking-gtm/",
+          "pageTitle": "Track HubSpot form submissions in GTM with the real form name",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-10-04T00:00:00Z",
+          "contentType": "procedure"
+        }
+      ],
+      "relations": [
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+      ]
+    },
+    {
+      "entityId": "e_018",
+      "@type": "Taxonomy",
+      "name": "Form taxonomy",
+      "description": "A controlled list of form categories and types that gives every tracked form one consistent value, whoever builds it.",
+      "audienceType": "general",
+      "hasChunks": [
+        {
+          "chunkId": "c_027",
+          "text": "Name a form yourself and reporting depends on whoever named it. Contact, Get in Touch and Contact Form EN become three rows instead of one. A form type fixes that above the name.",
+          "sourceUrl": "https://karppinen.one/tools/form-name-builder/",
+          "pageTitle": "Form name builder",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-10-04T00:00:00Z",
+          "contentType": "definition"
+        },
+        {
+          "chunkId": "c_028",
+          "text": "Answer two questions about your form, give it a name, and you get one consistent value to track it with — the same value every time, whoever builds the next form.",
+          "sourceUrl": "https://karppinen.one/tools/form-name-builder/",
+          "pageTitle": "Form name builder",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-10-04T00:00:00Z",
+          "contentType": "procedure"
+        }
+      ],
+      "relations": [
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
       ]
     }
   ]
