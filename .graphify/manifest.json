@@ -104,8 +104,8 @@
     "hash": "53b56bf86d6d1543633bdd924a163fa7"
   },
   "src/pages/about.astro": {
-    "mtime": 1790701301122.8223,
-    "hash": "e2dfe8426e9275d294bdd0cc4864c5e1"
+    "mtime": 1791100880466.9014,
+    "hash": "cdc62d3ed9d53b1f9ee6b1e0855d146d"
   },
   "src/pages/blog/index.astro": {
     "mtime": 1789233542253.0383,
@@ -128,12 +128,12 @@
     "hash": "dc44f6ba158e74dde8849b75397e447e"
   },
   "src/pages/fi/index.astro": {
-    "mtime": 1790701301123.8174,
-    "hash": "3be1716a135c649b72f075fbb09967db"
+    "mtime": 1791100880465.5542,
+    "hash": "3907440befacad5e459521ee5c20184a"
   },
   "src/pages/fi/minusta.astro": {
-    "mtime": 1790701301123.9656,
-    "hash": "ea0700cf1bcea3f0888558f62f6315ac"
+    "mtime": 1791100880466.464,
+    "hash": "d7e370756a78073bf0ff1f4c240bad49"
   },
   "src/pages/fi/palvelut.astro": {
     "mtime": 1790701301124.0608,
@@ -144,8 +144,8 @@
     "hash": "528a7a22018d3faca3be0adf20e07786"
   },
   "src/pages/index.astro": {
-    "mtime": 1789922802424.903,
-    "hash": "8c162684a08d448e025eaf0c8f38447c"
+    "mtime": 1791100880465.8872,
+    "hash": "4de216ad1daae00ee08ad0c9e8e304f7"
   },
   "src/pages/privacy.astro": {
     "mtime": 1789231319585.5845,
@@ -512,8 +512,8 @@
     "hash": "32ba48f38cab10e4ced968f339cb51f6"
   },
   "src/pages/fi/palvelut/google-analytics-auditointi.md": {
-    "mtime": 1790965912221.8113,
-    "hash": "c5a9d9604594d2201abcecbecac777d4"
+    "mtime": 1791100880468.214,
+    "hash": "56c7309d73b035c6c7bdb200a6e58665"
   },
   "src/pages/fi/palvelut/raataloity-dashboard.md": {
     "mtime": 1790701301124.5027,
@@ -524,8 +524,8 @@
     "hash": "0d5f63ebc34e27111c080e1729933e35"
   },
   "src/pages/fi/palvelut/seurannan-toteutussuunnitelma.md": {
-    "mtime": 1790455072323.3926,
-    "hash": "7ca710a6747c01ddfae5ac562fa14358"
+    "mtime": 1791100880467.2922,
+    "hash": "0ed871093715b53d3fc4fae74a0db8de"
   },
   "src/pages/fi/palvelut/tag-manager-auditointi.md": {
     "mtime": 1790701301124.7869,
@@ -544,8 +544,8 @@
     "hash": "b74b7296a6842221e8210c6623768067"
   },
   "src/pages/services/google-analytics-audit.md": {
-    "mtime": 1790455072325.3745,
-    "hash": "7654acd63f88935902ed18e05907662b"
+    "mtime": 1791100880468.606,
+    "hash": "46abd0eabf5423938c4a686bccbe0a9f"
   },
   "src/pages/services/keyword-research.md": {
     "mtime": 1790455072324.9263,
@@ -572,8 +572,8 @@
     "hash": "f3f13d149535f8626bed8033b2a3f82e"
   },
   "src/pages/services/tracking-implementation-plan.md": {
-    "mtime": 1790455072325.817,
-    "hash": "3f022319a8d405b726a4b0ea4c1ea2c4"
+    "mtime": 1791100880467.8486,
+    "hash": "a32079f107d43df343186556b780c4b6"
   },
   "public/images/blog/tekstin-tasaus-saavutettavuus.jpeg": {
     "mtime": 1784653754319.4434,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1790967474919.7058,
-    "hash": "bb9b804edd0e7a967e608855e5735d07"
+    "mtime": 1791030014129.7476,
+    "hash": "057470cc417733bbf417f47744827bbc"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -934,5 +934,9 @@
   "public/nk-logo-print.svg": {
     "mtime": 1790701744641.0234,
     "hash": "c6e1bd857de6764cba380f77498af03a"
+  },
+  "src/pages/fi/palvelut/jatkuva-hakukoneoptimointi.md": {
+    "mtime": 1790968141322.0066,
+    "hash": "613f12fa150d82d2c868151aac95d590"
   }
 }

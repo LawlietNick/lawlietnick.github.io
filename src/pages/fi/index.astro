@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Hero from "../../components/Hero.astro";
+import ButtonLink from "../../components/ButtonLink.astro";
 import PostList from "../../components/PostList.astro";
 import SplitSection from "../../components/SplitSection.astro";
 import { selectRecentPosts } from "../../utils/recent-posts.ts";
@@ -23,18 +24,27 @@ const posts = selectRecentPosts(Object.values(import.meta.glob("./blog/*.md", { 
 
   <SplitSection variant="about">
     <Fragment slot="title">
-      <h2>Selkeä data alkaa selkeämmistä kysymyksistä.</h2>
+      <h2>Kun lukuihin ei voi luottaa, uusi dashboard ei auta.</h2>
     </Fragment>
     <Fragment slot="copy">
       <p>
-        Useimmat seurannan ongelmat eivät johdu puuttuvasta dashboardista. Ne
-        alkavat epäselvistä kysymyksistä, kirjavista toteutuksista tai vastuusta,
-        jota kukaan ei oikein omista.
+        Useimmat seurannan ongelmat eivät johdu puuttuvasta raportista. Ne
+        johtuvat epäselvistä tavoitteista, kirjavista toteutuksista tai siitä,
+        ettei kukaan oikein omista kokonaisuutta.
       </p>
       <p>
-        Autan muuttamaan tämän sotkun priorisoiduiksi toimenpiteiksi,
-        määrittelyiksi, dokumentaatioksi ja toistettaviksi työnkuluiksi –
-        teknisestä SEO:sta ja GA4:stä raportointiin ja käytännön AI-työhön.
+        Selvitän, mikä seurannassa tai sivustossa on oikeasti vialla, ja korjaan
+        asiat tärkeysjärjestyksessä. Lopputuloksena on seuranta, johon voi
+        luottaa, ja raportit, joiden perusteella on helppo päättää seuraavista
+        toimista.
+      </p>
+      <p>
+        Sama koskee tekoälyä. Jos data ja prosessit ovat sekaisin, AI tekee
+        samat virheet nopeammin. Siksi kannattaa aloittaa siitä, mitä mitataan,
+        kuka omistaa datan ja missä kohdassa ihminen tekee päätöksen.
+      </p>
+      <p>
+        <ButtonLink href="/fi/palvelut/" label="Katso palvelut" variant="secondary" />
       </p>
     </Fragment>
   </SplitSection>

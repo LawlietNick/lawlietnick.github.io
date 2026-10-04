@@ -1,24 +1,24 @@
-# Graph Report - .  (2026-10-02)
+# Graph Report - .  (2026-10-04)
 
 ## Corpus Check
-- Large corpus: 234 files · ~513,135 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
+- Large corpus: 235 files · ~514,054 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
 
 ## Summary
-- 450 nodes · 828 edges · 14 communities detected
+- 451 nodes · 831 edges · 14 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
-- Edge kinds: contains: 302 · MODIFIES: 163 · imports_from: 146 · imports: 102 · ON_BRANCH: 49 · calls: 42 · PARENT_OF: 24
+- Edge kinds: contains: 302 · MODIFIES: 163 · imports_from: 147 · imports: 102 · ON_BRANCH: 50 · calls: 42 · PARENT_OF: 25
 
 
 ## Input Scope
 - Requested: auto
 - Resolved: committed (source: default-auto)
-- Included files: 234 · Candidates: 263
-- Excluded: 0 untracked · 26358 ignored · 1 sensitive · 1 missing committed
+- Included files: 235 · Candidates: 263
+- Excluded: 0 untracked · 26359 ignored · 1 sensitive · 0 missing committed
 - Recommendation: Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder.
 
 ## Graph Freshness
-- Built from Git commit: `9bd6879`
+- Built from Git commit: `4ed47ed`
 - Compare this hash to `git rev-parse HEAD` before trusting freshness-sensitive graph output.
 ## God Nodes (most connected - your core abstractions)
 1. `buildSelectedContainer()` - 9 edges
@@ -58,7 +58,7 @@ Nodes (13): root, pagesRoot, serviceSchema, toolSchema, types, categoryIds, type
 
 ### Community 2 - "Community 2"
 Cohesion: 0.11
-Nodes (27): services, work, 0421511 Add short navSummary lines for services in the mega menu, 17b83c7 Add serviceType and about to service page schema, 1b5b266 Broaden toolkit copy beyond analytics, 1ca05d5 Match mega menu link heights within a grid row, 3313846 Align content consumption article with the tracking script, 50b19e2 Optimize article content images at build time (+19 more)
+Nodes (28): services, work, 0421511 Add short navSummary lines for services in the mega menu, 17b83c7 Add serviceType and about to service page schema, 1b5b266 Broaden toolkit copy beyond analytics, 1ca05d5 Match mega menu link heights within a grid row, 3313846 Align content consumption article with the tracking script, 4ed47ed Sharpen GA4 audit and monthly SEO service pages (+20 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.11
@@ -118,8 +118,8 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.07807807807807808 - nodes in this community are weakly interconnected._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.06414414414414414 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0645045045045045 - nodes in this community are weakly interconnected._
 - **Should `Community 9` be split into smaller, more focused modules?**
   _Cohesion score 0.1 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.1141025641025641 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11097560975609756 - nodes in this community are weakly interconnected._

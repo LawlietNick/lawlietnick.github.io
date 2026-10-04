@@ -166,6 +166,7 @@
       "src/pages/fi/palvelut/consent-mode-toteutus.md",
       "src/pages/fi/palvelut/digitaalisen-analyysin-paketti.md",
       "src/pages/fi/palvelut/google-analytics-auditointi.md",
+      "src/pages/fi/palvelut/jatkuva-hakukoneoptimointi.md",
       "src/pages/fi/palvelut/raataloity-dashboard.md",
       "src/pages/fi/palvelut/server-side-seuranta.md",
       "src/pages/fi/palvelut/seurannan-toteutussuunnitelma.md",
@@ -243,17 +244,17 @@
     ],
     "video": []
   },
-  "total_files": 234,
-  "total_words": 513135,
+  "total_files": 235,
+  "total_words": 514054,
   "needs_graph": true,
-  "warning": "Large corpus: 234 files · ~513,135 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
+  "warning": "Large corpus: 235 files · ~514,054 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
   "skipped_sensitive": [
     "src/styles/tokens.css"
   ],
   "graphifyignore_patterns": 12,
   "git": {
     "source_owner": "git",
-    "source_hash": "9bd68795b146b417b4dbd485624eb5b1b05fbe23",
+    "source_hash": "4ed47ed070d6c8edfaed7c9078b06fcabc244b0d",
     "branches": [
       "claude/sweet-lamport-b36507",
       "datalayer-print-and-copy-edits",
@@ -268,13 +269,13 @@
     "source": "default-auto",
     "root": ".",
     "git_root": ".",
-    "head": "9bd68795b146b417b4dbd485624eb5b1b05fbe23",
+    "head": "4ed47ed070d6c8edfaed7c9078b06fcabc244b0d",
     "candidate_count": 263,
-    "included_count": 234,
+    "included_count": 235,
     "excluded_untracked_count": 0,
-    "excluded_ignored_count": 26358,
+    "excluded_ignored_count": 26359,
     "excluded_sensitive_count": 1,
-    "missing_committed_count": 1,
+    "missing_committed_count": 0,
     "warnings": [],
     "recommendation": "Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder."
   }
