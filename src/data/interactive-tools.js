@@ -85,8 +85,8 @@ export const allInteractiveTools = [
       summary: "Pick a form type from a controlled taxonomy and copy the exact value to track.",
     },
     fi: {
-      slug: "lomakkeen-nimen-muodostaja",
-      title: "Lomakkeen nimen muodostaja",
+      slug: "lomakkeiden-nimeamistyokalu",
+      title: "Lomakkeiden nimeämistyökalu",
       summary: "Valitse lomaketyyppi rajatusta taksonomiasta ja kopioi tarkka arvo seurantaan.",
     },
   },

@@ -376,8 +376,8 @@
     "hash": "c8bdfee3e8afdc0b202f61ec661f3f5b"
   },
   "src/data/interactive-tools.js": {
-    "mtime": 1791116140247.0159,
-    "hash": "697af8088747c1a13107e74c7facac6c"
+    "mtime": 1791116299058.098,
+    "hash": "cd6f9a52d293a371cc7f225f1e47d099"
   },
   "src/layouts/ServiceLayout.astro": {
     "mtime": 1790701301122.6755,
@@ -768,8 +768,8 @@
     "hash": "b41eddc22bbb6b36ba7f2894ab54f3e8"
   },
   "src/pages/tools/form-name-builder.astro": {
-    "mtime": 1791116186946.5312,
-    "hash": "6119a606c754bc8584255d967af60373"
+    "mtime": 1791116299058.4614,
+    "hash": "905c7fac43f0db36c04b7b4b375702eb"
   },
   "src/scripts/content-enhancements.ts": {
     "mtime": 1790185037369.217,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791115886426.609,
-    "hash": "a6e32a674430391bd1fe083b5a036c20"
+    "mtime": 1791116217771.778,
+    "hash": "b1bd256f797028eacbb96dd7d1e0bd18"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -938,5 +938,17 @@
   "src/pages/fi/palvelut/jatkuva-hakukoneoptimointi.md": {
     "mtime": 1791100978374.1213,
     "hash": "4612e72921b9c7874c7a566c27b8dc64"
+  },
+  "src/data/form-types.fi.js": {
+    "mtime": 1791116070497.6409,
+    "hash": "970231665767a31d6adb72a71d612c1b"
+  },
+  "src/pages/tools/ga4-annotations.astro": {
+    "mtime": 1791115636658.5886,
+    "hash": "5f88c36ffb69c3649f9b340e15a1b457"
+  },
+  "test/form-types-fi.test.mjs": {
+    "mtime": 1791116140250.975,
+    "hash": "74b5a16c63ee1426f1de63a4b04dccf4"
   }
 }
