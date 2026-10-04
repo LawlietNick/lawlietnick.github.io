@@ -26,3 +26,6 @@ playwright-report/
 /src/data/work.js
 /src/pages/blog/marketing-automation-flows.md
 /src/pages/templates/openai-ads-pixel-shopify.md
+
+# local working files, not part of the site
+/to be used/
