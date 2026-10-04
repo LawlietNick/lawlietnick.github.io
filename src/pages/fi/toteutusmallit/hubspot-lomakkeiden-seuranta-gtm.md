@@ -1,33 +1,33 @@
 ---
-layout: ../../layouts/Base.astro
-title: "Track HubSpot form submissions in GTM with the real form name"
-description: "A Google Tag Manager template that pushes successful HubSpot form submissions to the dataLayer with the actual HubSpot form name, resolved through a Cloudflare Worker or PHP endpoint."
+layout: ../../../layouts/Base.astro
+title: "HubSpot-lomakkeiden seuranta GTM:llä oikealla lomakkeen nimellä"
+description: "Google Tag Manager -malli, joka lähettää onnistuneet HubSpot-lomakkeiden lähetykset dataLayeriin HubSpotin todellisella lomakkeen nimellä. Nimi haetaan Cloudflare Workerin tai PHP-päätepisteen kautta."
 date: 2026-09-20
 category: templates
 order: 3
 icon: "◆"
-summary: "Copy-ready GTM template, backend lookup service and dataLayer specification for HubSpot form success events that carry the real form name."
-tags: ["HubSpot", "Google Tag Manager", "form tracking", "Cloudflare Workers"]
+summary: "Kopioitava GTM-malli, taustapalvelu nimen hakuun ja dataLayer-määritys HubSpot-lomakkeiden onnistumistapahtumille, jotka sisältävät oikean lomakkeen nimen."
+tags: ["HubSpot", "Google Tag Manager", "lomakkeiden seuranta", "Cloudflare Workers"]
 image: /images/blog/hubspot-form-submission-tracking-gtm.jpeg
-imageAlt: "Cartoon turtle with glasses inspecting a HubSpot form through a magnifying glass, with a successful submission passing through a cloud lookup service into a Google Tag Manager window"
-imageCredit: "Generated with OpenAI ImageGen"
+imageAlt: "Silmälasipäinen sarjakuvakilpikonna tutkii HubSpot-lomaketta suurennuslasilla. Onnistunut lähetys kulkee pilvessä toimivan hakupalvelun kautta Google Tag Manager -ikkunaan."
+imageCredit: "Luotu OpenAI ImageGenillä"
 alternate:
-  lang: fi
-  href: /fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm/
+  lang: en
+  href: /templates/hubspot-form-tracking-gtm/
 about:
-  - "HubSpot form tracking"
-  - "Form submission tracking in GTM"
+  - "HubSpot-lomakkeiden seuranta"
+  - "Lomakkeiden lähetysten seuranta GTM:ssä"
 mentions:
   - "HubSpot"
   - "Google Tag Manager"
   - "Cloudflare Workers"
 ---
 
-HubSpot form tracking in Google Tag Manager usually ends in one of two bad places: events that carry only a form ID, or a hand-maintained list of form IDs and names inside a GTM variable that nobody updates.
+HubSpot-lomakkeiden seuranta Google Tag Managerissa päätyy yleensä kahteen huonoon lopputulokseen: tapahtumissa on vain lomakkeen tunniste, tai GTM-muuttujassa on käsin ylläpidetty lista lomakkeiden tunnisteista ja nimistä, jota kukaan ei päivitä.
 
-This template does neither. HubSpot stays the source of truth for the form name, a small backend service looks the name up with a server-side credential, and GTM receives an analytics-friendly event.
+Tämä malli ei tee kumpaakaan. HubSpot pysyy lomakkeen nimen ainoana lähteenä, pieni taustapalvelu hakee nimen palvelinpuolen tunnuksella, ja GTM saa analytiikkaan sopivan tapahtuman.
 
-By default, a submission produces the HubSpot form name exactly as it is stored:
+Oletuksena lähetys tuottaa HubSpotin lomakkeen nimen täsmälleen sellaisena kuin se on tallennettu:
 
 ```javascript
 {
@@ -38,7 +38,7 @@ By default, a submission produces the HubSpot form name exactly as it is stored:
 }
 ```
 
-If your form names follow a `Category : Type | Name` convention, one optional setting turns that single string into three reporting dimensions:
+Jos lomakkeiden nimet noudattavat muotoa `Category : Type | Name`, yksi valinnainen asetus jakaa merkkijonon kolmeksi raportoinnin dimensioksi:
 
 ```javascript
 {
@@ -51,21 +51,21 @@ If your form names follow a `Category : Type | Name` convention, one optional se
 }
 ```
 
-## How it works
+## Miten se toimii
 
 ```mermaid
 flowchart TB
-    accTitle: HubSpot form submission tracking flow
-    accDescr: A seven-step flow from a HubSpot form submission through Google Tag Manager and a backend metadata lookup to a dataLayer push in the browser.
+    accTitle: HubSpot-lomakkeen lähetyksen seurannan kulku
+    accDescr: Seitsemänvaiheinen kulku HubSpot-lomakkeen lähetyksestä Google Tag Managerin ja taustapalvelun metatietohaun kautta dataLayer-lähetykseen selaimessa.
 
     subgraph BrowserStart[" "]
         direction TB
 
-        BrowserStartTitle["Browser"]
-        A["1. HubSpot form submission"]
-        B["2. GTM custom template"]
-        C["3. HubSpot success event detected"]
-        D["4. Form ID sent to lookup backend"]
+        BrowserStartTitle["Selain"]
+        A["1. HubSpot-lomake lähetetään"]
+        B["2. GTM:n mukautettu malli"]
+        C["3. HubSpotin onnistumistapahtuma havaitaan"]
+        D["4. Lomakkeen tunniste lähetetään hakupalveluun"]
 
         BrowserStartTitle --> A
         A --> B
@@ -76,8 +76,8 @@ flowchart TB
     subgraph Backend[" "]
         direction TB
 
-        BackendTitle["Backend"]
-        E["5. Request form metadata from HubSpot API"]
+        BackendTitle["Taustapalvelu"]
+        E["5. Metatiedot haetaan HubSpotin rajapinnasta"]
 
         BackendTitle --> E
     end
@@ -85,9 +85,9 @@ flowchart TB
     subgraph BrowserReturn[" "]
         direction TB
 
-        BrowserReturnTitle["Browser"]
-        F["6. Form name returned to browser"]
-        G["7. dataLayer push"]
+        BrowserReturnTitle["Selain"]
+        F["6. Lomakkeen nimi palautetaan selaimeen"]
+        G["7. Lähetys dataLayeriin"]
 
         BrowserReturnTitle --> F
         F --> G
@@ -113,25 +113,25 @@ flowchart TB
     linkStyle default stroke:#D8D1E0,stroke-width:2px
 ```
 
-Three parts do the work:
+Työn tekee kolme osaa:
 
-1. **A GTM custom template** that loads the tracker and holds the configuration.
-2. **A backend service** that keeps the HubSpot token server-side, resolves form IDs to form names, caches the result and serves the tracker script.
-3. **The browser tracker** that listens for HubSpot form events, combines the event data with the form metadata and pushes one clean event.
+1. **GTM:n mukautettu malli**, joka lataa seurantaskriptin ja sisältää asetukset.
+2. **Taustapalvelu**, joka pitää HubSpot-tunnuksen palvelimella, muuntaa lomakkeiden tunnisteet nimiksi, tallentaa tuloksen välimuistiin ja jakaa seurantaskriptin.
+3. **Selaimen seurantaskripti**, joka kuuntelee HubSpot-lomakkeiden tapahtumia, yhdistää tapahtuman tiedot lomakkeen metatietoihin ja lähettää yhden siistin tapahtuman.
 
-Splitting the tracking logic out of the GTM template means a fix to HubSpot event handling is a backend deploy, not a rebuild of every tag using the template.
+Kun seurantalogiikka on erotettu GTM-mallista, HubSpotin tapahtumankäsittelyn korjaus on taustapalvelun julkaisu eikä jokaisen mallia käyttävän tagin uudelleenrakennus.
 
-## What the backend exposes
+## Mitä taustapalvelu tarjoaa
 
-| Endpoint | Purpose |
+| Päätepiste | Tarkoitus |
 | --- | --- |
-| `/` | Health check. Returns service status and tracker version. |
-| `/form?id=HUBSPOT_FORM_ID` | Returns `{ "id": "...", "name": "..." }` for one form. |
-| `/hubspot-form-tracker.js` | Serves the browser tracker, generated from the GTM template's settings. |
+| `/` | Tilan tarkistus. Palauttaa palvelun tilan ja seurantaskriptin version. |
+| `/form?id=HUBSPOT_FORM_ID` | Palauttaa yhden lomakkeen tiedot muodossa `{ "id": "...", "name": "..." }`. |
+| `/hubspot-form-tracker.js` | Jakaa selaimen seurantaskriptin, joka luodaan GTM-mallin asetuksista. |
 
-The browser only ever knows the public backend URL. The HubSpot access token stays on the server.
+Selain tietää vain taustapalvelun julkisen osoitteen. HubSpotin käyttötunnus pysyy palvelimella.
 
-A health check response looks like:
+Tilan tarkistuksen vastaus näyttää tältä:
 
 ```json
 {
@@ -141,7 +141,7 @@ A health check response looks like:
 }
 ```
 
-A metadata lookup returns only what tracking needs, not the full HubSpot form object:
+Metatietojen haku palauttaa vain seurannan tarvitsemat tiedot, ei koko HubSpotin lomakeobjektia:
 
 ```json
 {
@@ -150,22 +150,22 @@ A metadata lookup returns only what tracking needs, not the full HubSpot form ob
 }
 ```
 
-## Before you begin
+## Ennen kuin aloitat
 
-You need:
+Tarvitset:
 
-- A HubSpot private app token with access to forms
-- Publish rights in the Google Tag Manager container
-- A hostname you control for the backend, for example `forms-api.example.com`
-- Either a Cloudflare account or a PHP host, depending on the choice in Step 1
+- HubSpotin private app -tunnuksen, jolla on lomakkeiden käyttöoikeus
+- julkaisuoikeudet Google Tag Manager -säiliöön
+- hallitsemasi verkkotunnuksen taustapalvelulle, esimerkiksi `forms-api.example.com`
+- joko Cloudflare-tilin tai PHP-palvelimen sen mukaan, mitä valitset vaiheessa 1.
 
-> **Note:** The form name is not secret, but the HubSpot token is. Never call the HubSpot API directly from the browser and never paste the token into a GTM variable or template field.
+> **Huomio:** Lomakkeen nimi ei ole salainen, mutta HubSpot-tunnus on. Älä koskaan kutsu HubSpotin rajapintaa suoraan selaimesta äläkä liitä tunnusta GTM-muuttujaan tai mallin kenttään.
 
-## Step 1 - Choose the backend
+## Vaihe 1 – Valitse taustapalvelu
 
 <fieldset class="hubspot-backend-picker">
-  <legend>Lookup backend</legend>
-  <p>Where will the HubSpot lookup service run?</p>
+  <legend>Hakupalvelun alusta</legend>
+  <p>Missä HubSpotin hakupalvelu ajetaan?</p>
   <label class="form-choice" for="hubspot-backend-worker">
     <input
       id="hubspot-backend-worker"
@@ -175,7 +175,7 @@ You need:
       aria-controls="hubspot-backend-worker-steps"
       checked
     >
-    <span><strong>Cloudflare Worker.</strong> No server to maintain, built-in caching, secrets stored in Cloudflare.</span>
+    <span><strong>Cloudflare Worker.</strong> Ei ylläpidettävää palvelinta, sisäänrakennettu välimuisti ja salaisuudet tallessa Cloudflaressa.</span>
   </label>
   <label class="form-choice" for="hubspot-backend-php">
     <input
@@ -185,20 +185,20 @@ You need:
       value="php"
       aria-controls="hubspot-backend-php-steps"
     >
-    <span><strong>PHP endpoint.</strong> Runs on the web hosting you already have, no new platform in the stack.</span>
+    <span><strong>PHP-päätepiste.</strong> Toimii nykyisessä verkkohotellissasi, eikä tekniikkaan tule uutta alustaa.</span>
   </label>
 </fieldset>
 
-Both options expose the same three endpoints and the same JSON, so the GTM template and the tracker are identical either way. Pick whichever your team can deploy and monitor. If the site already sits behind Cloudflare, the Worker is usually less work.
+Molemmat vaihtoehdot tarjoavat samat kolme päätepistettä ja saman JSONin, joten GTM-malli ja seurantaskripti ovat kummassakin tapauksessa samat. Valitse se, jonka tiimisi pystyy julkaisemaan ja jota se pystyy valvomaan. Jos sivusto on jo Cloudflaren takana, Worker on yleensä vähemmän työtä.
 
 <section id="hubspot-backend-worker-steps">
 
-### Deploy the Cloudflare Worker
+### Ota Cloudflare Worker käyttöön
 
-1. Create a new Worker in the Cloudflare dashboard, or run `npx wrangler init hubspot-form-lookup`.
-2. Replace the Worker source with the code below.
-3. Add the secret and the environment variable described under *Worker configuration*.
-4. Map the Worker to a route such as `forms-api.example.com/*`.
+1. Luo uusi Worker Cloudflaren hallintapaneelissa tai aja `npx wrangler init hubspot-form-lookup`.
+2. Korvaa Workerin lähdekoodi alla olevalla koodilla.
+3. Lisää kohdassa *Workerin asetukset* kuvattu salaisuus ja ympäristömuuttuja.
+4. Liitä Worker reittiin, esimerkiksi `forms-api.example.com/*`.
 
 <div class="code-accordion" data-code-accordion>
 <div class="code-accordion__content" id="hubspot-worker-script" data-code-accordion-content>
@@ -1974,10 +1974,10 @@ function corsHeaders(origin) {
 ```
 
 </div>
-<button class="code-accordion__toggle" type="button" aria-expanded="false" aria-controls="hubspot-worker-script" data-code-accordion-toggle data-collapsed-label="Show complete Worker code" data-expanded-label="Hide complete Worker code">Show complete Worker code</button>
+<button class="code-accordion__toggle" type="button" aria-expanded="false" aria-controls="hubspot-worker-script" data-code-accordion-toggle data-collapsed-label="Näytä Workerin koko koodi" data-expanded-label="Piilota Workerin koko koodi">Näytä Workerin koko koodi</button>
 </div>
 
-#### Worker configuration
+#### Workerin asetukset
 
 <table class="worker-configuration">
   <colgroup>
@@ -1988,29 +1988,29 @@ function corsHeaders(origin) {
   </colgroup>
   <thead>
     <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Type</th>
-      <th scope="col">Example</th>
-      <th scope="col">Purpose</th>
+      <th scope="col">Nimi</th>
+      <th scope="col">Tyyppi</th>
+      <th scope="col">Esimerkki</th>
+      <th scope="col">Tarkoitus</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><span class="worker-configuration__label" aria-hidden="true">Name</span><code>HUBSPOT_TOKEN</code></td>
-      <td><span class="worker-configuration__label" aria-hidden="true">Type</span>Secret</td>
-      <td><span class="worker-configuration__label" aria-hidden="true">Example</span><code>pat-eu1-...</code></td>
-      <td><span class="worker-configuration__label" aria-hidden="true">Purpose</span>HubSpot private app token with forms access. Never hardcode it in the source.</td>
+      <td><span class="worker-configuration__label" aria-hidden="true">Nimi</span><code>HUBSPOT_TOKEN</code></td>
+      <td><span class="worker-configuration__label" aria-hidden="true">Tyyppi</span>Salaisuus</td>
+      <td><span class="worker-configuration__label" aria-hidden="true">Esimerkki</span><code>pat-eu1-...</code></td>
+      <td><span class="worker-configuration__label" aria-hidden="true">Tarkoitus</span>HubSpotin private app -tunnus, jolla on lomakkeiden käyttöoikeus. Älä koskaan kirjoita sitä suoraan lähdekoodiin.</td>
     </tr>
     <tr>
-      <td><span class="worker-configuration__label" aria-hidden="true">Name</span><code>ALLOWED_ORIGINS</code></td>
-      <td><span class="worker-configuration__label" aria-hidden="true">Type</span>Variable</td>
-      <td><span class="worker-configuration__label" aria-hidden="true">Example</span><code>https://www.example.com,<wbr>https://example.com</code></td>
-      <td><span class="worker-configuration__label" aria-hidden="true">Purpose</span>Comma-separated list of browser origins allowed to call the endpoints.</td>
+      <td><span class="worker-configuration__label" aria-hidden="true">Nimi</span><code>ALLOWED_ORIGINS</code></td>
+      <td><span class="worker-configuration__label" aria-hidden="true">Tyyppi</span>Muuttuja</td>
+      <td><span class="worker-configuration__label" aria-hidden="true">Esimerkki</span><code>https://www.example.com,<wbr>https://example.com</code></td>
+      <td><span class="worker-configuration__label" aria-hidden="true">Tarkoitus</span>Pilkuilla eroteltu lista selaimen alkuperistä, jotka saavat kutsua päätepisteitä.</td>
     </tr>
   </tbody>
 </table>
 
-Add the token as a secret, not a plain variable:
+Lisää tunnus salaisuutena, ei tavallisena muuttujana:
 
 <div data-copy>
 
@@ -2020,7 +2020,7 @@ npx wrangler secret put HUBSPOT_TOKEN
 
 </div>
 
-The Worker parses the origin list and rejects requests from anywhere else:
+Worker jäsentää alkuperälistan ja hylkää pyynnöt kaikkialta muualta:
 
 ```javascript
 const allowedOrigins = (env.ALLOWED_ORIGINS || "")
@@ -2029,11 +2029,11 @@ const allowedOrigins = (env.ALLOWED_ORIGINS || "")
   .filter(Boolean);
 ```
 
-The origin check is a restriction on a public endpoint, not the thing protecting the token. The token is protected because it never leaves the Worker.
+Alkuperän tarkistus rajoittaa julkista päätepistettä, mutta se ei ole se, mikä suojaa tunnuksen. Tunnus on suojassa, koska se ei koskaan poistu Workerista.
 
-#### Caching
+#### Välimuisti
 
-Form metadata is cached in the Cloudflare cache for 24 hours, keyed by form ID:
+Lomakkeiden metatiedot tallennetaan Cloudflaren välimuistiin 24 tunniksi lomakkeen tunnisteen mukaan:
 
 ```javascript
 const CACHE_TTL_SECONDS = 86400;
@@ -2043,37 +2043,37 @@ cacheUrl.pathname =
   encodeURIComponent(formId);
 ```
 
-First lookup for a form:
+Lomakkeen ensimmäinen haku:
 
 ```text
 Browser → Worker → HubSpot API → Worker cache → Browser
 ```
 
-Every lookup after that, until the cache expires:
+Jokainen haku sen jälkeen, kunnes välimuisti vanhenee:
 
 ```text
 Browser → Worker cache → Browser
 ```
 
-The response carries a header so you can see which happened:
+Vastauksen otsakkeesta näet, kumpi tapahtui:
 
 ```text
 X-HubSpot-Form-Cache: HIT
 X-HubSpot-Form-Cache: MISS
 ```
 
-The tracker script is cached differently. While the implementation is still changing, it is served with `Cache-Control: no-cache` so a fix can ship without inventing a new version number. Tighten that once the tracker is stable.
+Seurantaskriptin välimuisti toimii toisin. Niin kauan kuin toteutus vielä muuttuu, skripti jaetaan otsakkeella `Cache-Control: no-cache`, jotta korjauksen voi julkaista keksimättä uutta versionumeroa. Kiristä asetusta, kun seurantaskripti on vakiintunut.
 
 </section>
 
 <section id="hubspot-backend-php-steps" hidden>
 
-### Deploy the PHP endpoint
+### Ota PHP-päätepiste käyttöön
 
-1. Point a hostname you control at its own directory, for example `forms-api.example.com`. The endpoint has to sit at the domain root: it routes on the request path, so running it from a subdirectory makes every path a 404.
-2. Add the file below as the front controller and rewrite every request to it, including paths that do not exist on disk. On Apache that is a `mod_rewrite` rule; on nginx a `try_files $uri /index.php$is_args$args;`.
-3. Set the environment variables under *PHP configuration*. `PUBLIC_BASE_URL` and `HUBSPOT_TOKEN` are both required and the endpoint refuses to work without them.
-4. Confirm the host serves the endpoint over HTTPS and that PHP has the cURL extension.
+1. Ohjaa hallitsemasi verkkotunnus omaan hakemistoonsa, esimerkiksi `forms-api.example.com`. Päätepisteen on oltava verkkotunnuksen juuressa: se ohjaa pyynnöt polun perusteella, joten alihakemistossa jokainen polku palauttaa 404:n.
+2. Lisää alla oleva tiedosto etuohjaimeksi ja ohjaa jokainen pyyntö siihen, myös polut, joita ei ole levyllä. Apachessa se tehdään `mod_rewrite`-säännöllä, nginxissä rivillä `try_files $uri /index.php$is_args$args;`.
+3. Aseta kohdan *PHP-asetukset* ympäristömuuttujat. `PUBLIC_BASE_URL` ja `HUBSPOT_TOKEN` ovat molemmat pakollisia, eikä päätepiste toimi ilman niitä.
+4. Varmista, että palvelin jakaa päätepisteen HTTPS:n kautta ja että PHP:ssä on cURL-laajennus.
 
 <div class="code-accordion" data-code-accordion>
 <div class="code-accordion__content" id="hubspot-php-script" data-code-accordion-content>
@@ -4099,32 +4099,32 @@ JS;
 ```
 
 </div>
-<button class="code-accordion__toggle" type="button" aria-expanded="false" aria-controls="hubspot-php-script" data-code-accordion-toggle data-collapsed-label="Show complete PHP code" data-expanded-label="Hide complete PHP code">Show complete PHP code</button>
+<button class="code-accordion__toggle" type="button" aria-expanded="false" aria-controls="hubspot-php-script" data-code-accordion-toggle data-collapsed-label="Näytä PHP:n koko koodi" data-expanded-label="Piilota PHP:n koko koodi">Näytä PHP:n koko koodi</button>
 </div>
 
-#### PHP configuration
+#### PHP-asetukset
 
-| Name | Required | Example | Purpose |
+| Nimi | Pakollinen | Esimerkki | Tarkoitus |
 | --- | --- | --- | --- |
-| `HUBSPOT_TOKEN` | Yes | `pat-eu1-...` | HubSpot private app token with forms access. |
-| `PUBLIC_BASE_URL` | Yes | `https://forms-api.example.com` | The public address of this endpoint, written into the tracker so the browser knows where to send lookups. |
-| `ALLOWED_ORIGINS` | No | `https://www.example.com,https://example.com` | Comma-separated list of browser origins allowed to call the endpoints. Empty means any origin. |
-| `HUBSPOT_CACHE_DIR` | No | `/var/www/cache/hubspot` | Where form metadata is cached. Defaults to a private directory under the system temp path. |
+| `HUBSPOT_TOKEN` | Kyllä | `pat-eu1-...` | HubSpotin private app -tunnus, jolla on lomakkeiden käyttöoikeus. |
+| `PUBLIC_BASE_URL` | Kyllä | `https://forms-api.example.com` | Päätepisteen julkinen osoite. Se kirjoitetaan seurantaskriptiin, jotta selain tietää, minne haut lähetetään. |
+| `ALLOWED_ORIGINS` | Ei | `https://www.example.com,https://example.com` | Pilkuilla eroteltu lista selaimen alkuperistä, jotka saavat kutsua päätepisteitä. Tyhjä arvo sallii kaikki alkuperät. |
+| `HUBSPOT_CACHE_DIR` | Ei | `/var/www/cache/hubspot` | Hakemisto, johon lomakkeiden metatiedot tallennetaan. Oletuksena järjestelmän väliaikaishakemiston alla oleva yksityinen hakemisto. |
 
-Each value is read from the environment first and from `$_SERVER` second, because php-fpm delivers `fastcgi_param` values only to the latter. Never commit the token, and keep any config file outside the document root.
+Jokainen arvo luetaan ensin ympäristöstä ja sitten `$_SERVER`-muuttujasta, koska php-fpm välittää `fastcgi_param`-arvot vain jälkimmäiseen. Älä koskaan tallenna tunnusta versionhallintaan, ja pidä mahdollinen asetustiedosto julkisen hakemiston ulkopuolella.
 
-`PUBLIC_BASE_URL` is deliberately required rather than derived from the `Host` header. A request can send any `Host` it likes, and a tracker built from it would send every form lookup to that address instead of yours.
+`PUBLIC_BASE_URL` on tarkoituksella pakollinen eikä sitä päätellä `Host`-otsakkeesta. Pyyntö voi lähettää minkä tahansa `Host`-arvon, ja sen perusteella rakennettu seurantaskripti lähettäisi jokaisen lomakehaun siihen osoitteeseen sinun osoitteesi sijaan.
 
-#### Caching
+#### Välimuisti
 
-PHP has no platform cache, so the endpoint caches form metadata itself for 24 hours in `HUBSPOT_CACHE_DIR`. Each entry is a small JSON file named after the SHA-256 of the form ID, so a request can never steer the write anywhere unexpected. Form names change rarely and the payload is two fields. The cache signal header matches the Worker, so testing works identically:
+PHP:ssä ei ole alustan välimuistia, joten päätepiste tallentaa lomakkeiden metatiedot itse 24 tunniksi hakemistoon `HUBSPOT_CACHE_DIR`. Jokainen merkintä on pieni JSON-tiedosto, jonka nimi on lomakkeen tunnisteen SHA-256-tiiviste, joten pyyntö ei voi ohjata kirjoitusta mihinkään odottamattomaan paikkaan. Lomakkeiden nimet muuttuvat harvoin, ja tietoja on kaksi kenttää. Välimuistin tilan kertova otsake on sama kuin Workerissa, joten testaus toimii samalla tavalla:
 
 ```text
 X-HubSpot-Form-Cache: HIT
 X-HubSpot-Form-Cache: MISS
 ```
 
-Serve the tracker script with `Cache-Control: no-cache` while the implementation is still changing.
+Jaa seurantaskripti otsakkeella `Cache-Control: no-cache` niin kauan kuin toteutus vielä muuttuu.
 
 </section>
 
@@ -4134,12 +4134,12 @@ Serve the tracker script with `Cache-Control: no-cache` while the implementation
   const workerSteps = document.getElementById('hubspot-backend-worker-steps');
   const phpSteps = document.getElementById('hubspot-backend-php-steps');
 
-  // the table of contents should only list the backend the reader picked
-  const tocItem = (slug) =>
-    document.querySelector('.toc__link[data-target="' + slug + '"]')?.closest('li');
+  // sisällysluettelossa näytetään vain lukijan valitsema taustapalvelu
+  const tocItem = (section) =>
+    document.querySelector('.toc__link[data-target="' + document.querySelector('#' + section + ' h3')?.id + '"]')?.closest('li');
 
-  const workerTocItem = tocItem('deploy-the-cloudflare-worker');
-  const phpTocItem = tocItem('deploy-the-php-endpoint');
+  const workerTocItem = tocItem('hubspot-backend-worker-steps');
+  const phpTocItem = tocItem('hubspot-backend-php-steps');
 
   function showSelectedBackendSteps() {
     const selected = document.querySelector('input[name="hubspot-backend"]:checked');
@@ -4160,9 +4160,9 @@ Serve the tracker script with `Cache-Control: no-cache` while the implementation
 })();
 </script>
 
-## Step 2 - Look up the form in HubSpot
+## Vaihe 2 – Hae lomake HubSpotista
 
-Whichever backend you chose, the lookup itself is the same request. The backend builds the HubSpot URL from the form ID:
+Valitsitpa kumman taustapalvelun tahansa, itse haku on sama pyyntö. Taustapalvelu muodostaa HubSpotin osoitteen lomakkeen tunnisteesta:
 
 ```javascript
 const hubspotUrl =
@@ -4172,13 +4172,13 @@ const hubspotUrl =
   encodeURIComponent(formId);
 ```
 
-This implementation uses:
+Tämä toteutus käyttää osoitetta:
 
 ```javascript
 const HUBSPOT_FORMS_API_VERSION = "2027-09-beta";
 ```
 
-The token is used server-side only:
+Tunnusta käytetään vain palvelimella:
 
 ```javascript
 headers: {
@@ -4187,7 +4187,7 @@ headers: {
 }
 ```
 
-And the response is reduced to the two fields tracking needs:
+Vastauksesta jätetään vain ne kaksi kenttää, joita seuranta tarvitsee:
 
 ```javascript
 const result = {
@@ -4196,9 +4196,9 @@ const result = {
 };
 ```
 
-## Step 3 - Test the backend before touching GTM
+## Vaihe 3 – Testaa taustapalvelu ennen GTM:ää
 
-Do not connect GTM until the lookup works on its own. Open the endpoint in a browser:
+Älä yhdistä GTM:ää, ennen kuin haku toimii yksinään. Avaa päätepiste selaimessa:
 
 <div data-copy>
 
@@ -4208,7 +4208,7 @@ https://forms-api.example.com/form?id=HUBSPOT_FORM_ID
 
 </div>
 
-A working response looks like:
+Toimiva vastaus näyttää tältä:
 
 ```json
 {
@@ -4217,22 +4217,22 @@ A working response looks like:
 }
 ```
 
-That single response confirms four things at once:
+Tämä yksi vastaus vahvistaa neljä asiaa kerralla:
 
-- the backend is reachable
-- HubSpot authentication works
-- the form ID resolves
-- the form name comes back
+- taustapalvelu on tavoitettavissa
+- HubSpotin tunnistautuminen toimii
+- lomakkeen tunniste löytyy
+- lomakkeen nimi palautuu.
 
-Reload the URL and check that `X-HubSpot-Form-Cache` changes from `MISS` to `HIT`.
+Lataa osoite uudelleen ja tarkista, että `X-HubSpot-Form-Cache` vaihtuu arvosta `MISS` arvoon `HIT`.
 
-## Step 4 - Import the GTM template
+## Vaihe 4 – Tuo GTM-malli
 
-1. Download [hubspot-form-tracking.tpl](/downloads/hubspot-form-tracking.tpl), or copy the source below into a file with that name.
-2. In Google Tag Manager, open **Templates → Tag Templates → New**.
-3. Choose **Import** from the template editor menu and select the file.
-4. Open **Permissions → Injects scripts** and change the allowed URL from `https://forms-api.example.com/*` to your own backend hostname. The template cannot load the tracker until this matches.
-5. Save the template.
+1. Lataa [hubspot-form-tracking.tpl](/downloads/hubspot-form-tracking.tpl) tai kopioi alla oleva lähdekoodi tiedostoon, jolla on sama nimi.
+2. Avaa Google Tag Managerissa **Templates → Tag Templates → New**.
+3. Valitse mallieditorin valikosta **Import** ja valitse tiedosto.
+4. Avaa **Permissions → Injects scripts** ja vaihda sallittu osoite `https://forms-api.example.com/*` oman taustapalvelusi osoitteeksi. Malli ei voi ladata seurantaskriptiä, ennen kuin osoite täsmää.
+5. Tallenna malli.
 
 <div class="code-accordion" data-code-accordion>
 <div class="code-accordion__content" id="hubspot-gtm-template" data-code-accordion-content>
@@ -4726,31 +4726,31 @@ Created on 9/20/2026, 7:04:39 PM
 ```
 
 </div>
-<button class="code-accordion__toggle" type="button" aria-expanded="false" aria-controls="hubspot-gtm-template" data-code-accordion-toggle data-collapsed-label="Show complete GTM template" data-expanded-label="Hide complete GTM template">Show complete GTM template</button>
+<button class="code-accordion__toggle" type="button" aria-expanded="false" aria-controls="hubspot-gtm-template" data-code-accordion-toggle data-collapsed-label="Näytä koko GTM-malli" data-expanded-label="Piilota koko GTM-malli">Näytä koko GTM-malli</button>
 </div>
 
-## Step 5 - Configure the tag
+## Vaihe 5 – Määritä tagi
 
-Create a new tag from the template and fire it on **Initialization - All Pages**, so the tracker is listening before any HubSpot form is ready.
+Luo mallista uusi tagi ja käynnistä se triggerillä **Initialization - All Pages**, jotta seurantaskripti kuuntelee jo ennen kuin yksikään HubSpot-lomake on valmis.
 
-| Setting | Required | Default | Notes |
+| Asetus | Pakollinen | Oletus | Huomiot |
 | --- | --- | --- | --- |
-| Lookup endpoint | Yes | `https://forms-api.example.com` | The backend hostname from Step 1. A trailing slash is trimmed automatically. |
-| dataLayer event name | Yes | HubSpot Form Success | Choose `hubspot_form_success`, `generate_lead`, `form_submit`, or Custom. Variables are allowed. |
-| Custom event name | Only with Custom | – | Shown when the event name is set to Custom. |
-| Customize dataLayer output | No | Off | Reveals every setting below. Leave it off for the standard HubSpot-prefixed names. |
-| Form ID parameter | No | `hubspot_form_id` | |
-| Form name parameter | No | `hubspot_form_name` | |
-| Instance ID parameter | No | `hubspot_form_instance_id` | |
-| Split form name into category, type and name | No | Off | Parses `Category : Type \| Name` out of the HubSpot form name. See Step 6. |
-| Form category parameter | No | `hubspot_form_category` | Shown when splitting is on. |
-| Category / type separator | No | `:` | Shown when splitting is on. |
-| Form type parameter | No | `hubspot_form_type` | Shown when splitting is on. |
-| Type / name separator | No | `\|` | Shown when splitting is on. |
+| Lookup endpoint | Kyllä | `https://forms-api.example.com` | Taustapalvelun osoite vaiheesta 1. Lopussa oleva kauttaviiva poistetaan automaattisesti. |
+| dataLayer event name | Kyllä | HubSpot Form Success | Valitse `hubspot_form_success`, `generate_lead`, `form_submit` tai Custom. Muuttujat ovat sallittuja. |
+| Custom event name | Vain Customin kanssa | – | Näkyy, kun tapahtuman nimeksi on valittu Custom. |
+| Customize dataLayer output | Ei | Pois | Tuo näkyviin kaikki alla olevat asetukset. Jätä pois päältä, jos käytät vakiomuotoisia HubSpot-etuliitteisiä nimiä. |
+| Form ID parameter | Ei | `hubspot_form_id` | |
+| Form name parameter | Ei | `hubspot_form_name` | |
+| Instance ID parameter | Ei | `hubspot_form_instance_id` | |
+| Split form name into category, type and name | Ei | Pois | Erottaa HubSpotin lomakkeen nimestä osat `Category : Type \| Name`. Katso vaihe 6. |
+| Form category parameter | Ei | `hubspot_form_category` | Näkyy, kun jakaminen on päällä. |
+| Category / type separator | Ei | `:` | Näkyy, kun jakaminen on päällä. |
+| Form type parameter | Ei | `hubspot_form_type` | Näkyy, kun jakaminen on päällä. |
+| Type / name separator | Ei | `\|` | Näkyy, kun jakaminen on päällä. |
 
-Every setting from **Form ID parameter** down is nested under **Customize dataLayer output**, so splitting is only available once customization is enabled.
+Kaikki asetukset kohdasta **Form ID parameter** alaspäin ovat asetuksen **Customize dataLayer output** alla, joten jakaminen on käytettävissä vasta, kun mukauttaminen on otettu käyttöön.
 
-The template passes these settings to the backend as query parameters when it loads the tracker:
+Malli välittää nämä asetukset taustapalvelulle kyselyparametreina, kun se lataa seurantaskriptin:
 
 ```text
 /hubspot-form-tracker.js
@@ -4760,7 +4760,7 @@ The template passes these settings to the backend as query parameters when it lo
 &splitFormName=0
 ```
 
-With customization enabled, the request also carries the parameter names:
+Kun mukauttaminen on päällä, pyynnössä ovat mukana myös parametrien nimet:
 
 ```text
 formIdParameter=hubspot_form_id
@@ -4773,25 +4773,25 @@ formCategorySeparator=%3A
 formNameSeparator=%7C
 ```
 
-`customizeDataLayerSettings` and `splitFormName` are always sent explicitly, so the tracker never has to guess. The backend validates every value before it generates the tracker, and anything it does not recognise falls back to the default. An older `includeFormType=1` parameter is still accepted as a synonym for `splitFormName=1`, so tags built against the previous version keep working.
+`customizeDataLayerSettings` ja `splitFormName` lähetetään aina erikseen, joten seurantaskriptin ei tarvitse arvata. Taustapalvelu tarkistaa jokaisen arvon ennen kuin se luo seurantaskriptin, ja kaikki tunnistamattomat arvot palautuvat oletuksiin. Vanhempi parametri `includeFormType=1` hyväksytään edelleen parametrin `splitFormName=1` synonyymina, joten edellistä versiota käyttävät tagit toimivat yhä.
 
-## Step 6 - Split the form name into category, type and name
+## Vaihe 6 – Jaa lomakkeen nimi kategoriaksi, tyypiksi ja nimeksi
 
-Optional, and off by default. With splitting disabled, `hubspot_form_name` carries the complete HubSpot form name and nothing is rewritten.
+Valinnainen ja oletuksena pois päältä. Kun jakaminen ei ole käytössä, `hubspot_form_name` sisältää HubSpotin lomakkeen koko nimen, eikä mitään kirjoiteta uudelleen.
 
-Turn it on when your HubSpot form names follow a structured convention:
+Ota se käyttöön, kun HubSpot-lomakkeidesi nimet noudattavat jäsenneltyä käytäntöä. Yhtenäiset nimet saat [Lomakkeiden nimeämistyökalulla](/fi/tyokalut/lomakkeiden-nimeamistyokalu/):
 
 ```text
 Category : Type | Name
 ```
 
-For example:
+Esimerkiksi:
 
 ```text
 Support : Return or Refund | Start a Return
 ```
 
-Reporting on that whole string means every form is its own silo. With **Split form name** enabled, it becomes three dimensions:
+Jos raportoit koko merkkijonoa, jokainen lomake jää omaksi siilokseen. Kun **Split form name** on käytössä, siitä tulee kolme dimensiota:
 
 ```javascript
 {
@@ -4801,26 +4801,26 @@ Reporting on that whole string means every form is its own silo. With **Split fo
 }
 ```
 
-Now GA4 can answer "how do support forms perform" or "how do return requests perform" without a regex on the form name.
+Nyt GA4 voi vastata kysymyksiin ”miten tukilomakkeet toimivat” tai ”miten palautuspyynnöt toimivat” ilman säännöllistä lauseketta lomakkeen nimessä.
 
-Both separators are configurable. The defaults are `:` between category and type, and `|` between type and name.
+Molemmat erottimet ovat muokattavissa. Oletuksena kategorian ja tyypin välissä on `:` ja tyypin ja nimen välissä `|`.
 
-Splitting is all or nothing. The tracker only uses the structured values when the category separator is found, the name separator is found after it, and all three parts contain text. If any of that fails, the complete HubSpot form name stays in `hubspot_form_name` and no category or type is created. Forms that do not follow the convention are never silently rewritten.
+Jakaminen toimii kaikki tai ei mitään -periaatteella. Seurantaskripti käyttää jäsenneltyjä arvoja vain, kun kategorian erotin löytyy, nimen erotin löytyy sen jälkeen ja kaikissa kolmessa osassa on tekstiä. Jos jokin näistä ei täyty, `hubspot_form_name` sisältää HubSpotin lomakkeen koko nimen, eikä kategoriaa tai tyyppiä luoda. Käytäntöä noudattamattomia lomakkeita ei koskaan kirjoiteta uudelleen huomaamatta.
 
-## How the tracker handles old and new HubSpot forms
+## Miten seurantaskripti käsittelee HubSpotin vanhoja ja uusia lomakkeita
 
-HubSpot exposes form events in two different ways, and a single site often has both.
+HubSpot välittää lomakkeiden tapahtumat kahdella eri tavalla, ja samalla sivustolla on usein molempia.
 
-Newer forms emit browser events:
+Uudemmat lomakkeet lähettävät selaintapahtumia:
 
 ```text
 hs-form-event:on-ready
 hs-form-event:on-submission:success
 ```
 
-The success event carries both the form ID and an instance ID.
+Onnistumistapahtuma sisältää sekä lomakkeen tunnisteen että instanssin tunnisteen.
 
-Older forms use the `hsFormCallback` message system:
+Vanhemmat lomakkeet käyttävät `hsFormCallback`-viestijärjestelmää:
 
 ```text
 onFormReady
@@ -4829,13 +4829,13 @@ onBeforeFormSubmit
 onFormSubmitted
 ```
 
-Only `onFormSubmitted` counts as a completed submission. The earlier events are used to start resolving the form name ahead of time, so the lookup has usually finished before the submission arrives. That matters when submission triggers a redirect.
+Vain `onFormSubmitted` lasketaan valmiiksi lähetykseksi. Aiempia tapahtumia käytetään lomakkeen nimen hakemisen aloittamiseen etukäteen, joten haku on yleensä valmis ennen kuin lähetys tulee. Sillä on merkitystä, kun lähetys johtaa uudelleenohjaukseen.
 
-The resolved name is held in memory for the page. If several HubSpot events ask for the same form at once, they share one Promise instead of firing parallel requests.
+Haettu nimi säilytetään muistissa sivun ajan. Jos useampi HubSpot-tapahtuma pyytää samaa lomaketta yhtä aikaa, ne jakavat yhden Promisen eivätkä tee rinnakkaisia pyyntöjä.
 
-### The instance ID race
+### Instanssitunnisteen kilpatilanne
 
-On a site where both event systems fire for the same submission, pushing immediately loses data:
+Jos sivustolla molemmat tapahtumajärjestelmät käynnistyvät samasta lähetyksestä, välitön lähetys dataLayeriin hukkaa tietoa:
 
 ```text
 Legacy submission event
@@ -4849,7 +4849,7 @@ New HubSpot success event
 → ignored
 ```
 
-The tracker avoids this by holding a successful submission in a short-lived pending state instead of pushing straight away:
+Seurantaskripti välttää tämän pitämällä onnistuneen lähetyksen hetken odottavassa tilassa sen sijaan, että lähettäisi sen heti:
 
 ```text
 Legacy event
@@ -4865,43 +4865,43 @@ form ID + instance ID
 one dataLayer event
 ```
 
-If the second event arrives, its instance ID is merged in before the push. If it does not, the submission is still tracked after the short wait, simply without an instance ID. Duplicate protection stays in place, and the richer metadata is no longer thrown away.
+Jos toinen tapahtuma saapuu, sen instanssitunniste yhdistetään ennen lähetystä dataLayeriin. Jos se ei saavu, lähetys seurataan silti lyhyen odotuksen jälkeen, mutta ilman instanssitunnistetta. Kaksoislähetysten esto pysyy käytössä, eikä tarkempia metatietoja enää heitetä pois.
 
-## Troubleshooting
+## Vianmääritys
 
-Common symptoms and what usually causes them.
+Yleisiä oireita ja niiden tavallisimmat syyt.
 
 <details>
-<summary>The lookup returns an error but the token is correct</summary>
+<summary>Haku palauttaa virheen, vaikka tunnus on oikea</summary>
 
-Check that the private app has forms scope, and that the form ID belongs to the same HubSpot account as the token.
+Tarkista, että private appilla on lomakkeiden käyttöoikeus (forms scope) ja että lomakkeen tunniste kuuluu samaan HubSpot-tiliin kuin tunnus.
 
 </details>
 
 <details>
-<summary>The lookup works in a browser tab but not from the site</summary>
+<summary>Haku toimii selaimen välilehdellä, mutta ei sivustolta</summary>
 
-The origin is not in `ALLOWED_ORIGINS`. Add both the `www` and non-`www` variants if both resolve.
-
-</details>
-
-<details>
-<summary>The event fires without a form name</summary>
-
-The lookup did not finish before the submission. Confirm the tag fires on **Initialization - All Pages** so the ready event can start the lookup early.
+Alkuperä ei ole listassa `ALLOWED_ORIGINS`. Lisää sekä `www`-alkuinen että ilman `www`-etuliitettä oleva versio, jos molemmat ovat käytössä.
 
 </details>
 
 <details>
-<summary>The event fires twice</summary>
+<summary>Tapahtuma käynnistyy ilman lomakkeen nimeä</summary>
 
-Two tags are loading the tracker, or the tag is firing on more than one trigger. The tracker deduplicates HubSpot’s own double events, not two copies of itself.
+Haku ei ehtinyt valmistua ennen lähetystä. Varmista, että tagi käynnistyy triggerillä **Initialization - All Pages**, jotta valmis-tapahtuma voi aloittaa haun ajoissa.
 
 </details>
 
 <details>
-<summary>The instance ID is always missing</summary>
+<summary>Tapahtuma käynnistyy kahdesti</summary>
 
-Legacy HubSpot forms do not provide one. Confirm against a form that emits `hs-form-event:on-submission:success` before treating it as a bug.
+Kaksi tagia lataa seurantaskriptin, tai tagi käynnistyy useammalla kuin yhdellä triggerillä. Seurantaskripti poistaa HubSpotin omat kaksoistapahtumat, mutta ei kahta kopiota itsestään.
+
+</details>
+
+<details>
+<summary>Instanssitunniste puuttuu aina</summary>
+
+Vanhat HubSpot-lomakkeet eivät anna sitä. Tarkista asia lomakkeella, joka lähettää tapahtuman `hs-form-event:on-submission:success`, ennen kuin pidät sitä virheenä.
 
 </details>

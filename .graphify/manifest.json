@@ -740,8 +740,8 @@
     "hash": "ebfe0369b77bcb9f787ac3716f0f0dbf"
   },
   "src/pages/templates/hubspot-form-tracking-gtm.md": {
-    "mtime": 1790364527722.0454,
-    "hash": "f0806c8d3ced2542bdda347e106e1696"
+    "mtime": 1791117035618.202,
+    "hash": "f37268a3ea66ae5d490e8a6ec6f8810b"
   },
   "public/images/blog/hubspot-form-submission-tracking-gtm.jpeg": {
     "mtime": 1789925276150.7463,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791116781350.3806,
-    "hash": "c660d9c1d8f5461b6bab931a1db4484c"
+    "mtime": 1791116902278.728,
+    "hash": "08ffe4d8a3592f5be3251ba5719935fe"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -966,5 +966,9 @@
   "src/pages/fi/tyokalut/gtm-sailion-rakentaja.astro": {
     "mtime": 1791116748539.0679,
     "hash": "d17e4585e411d1e3aae129a0b37e276f"
+  },
+  "src/pages/fi/blog/sisallon-kulutuksen-mittaaminen.md": {
+    "mtime": 1791116866684.6685,
+    "hash": "8874fcd4cbd8dcff0f5972de9b48bfe2"
   }
 }

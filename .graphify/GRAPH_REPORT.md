@@ -1,24 +1,24 @@
 # Graph Report - .  (2026-10-04)
 
 ## Corpus Check
-- Large corpus: 242 files · ~519,890 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
+- Large corpus: 243 files · ~521,868 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
 
 ## Summary
-- 478 nodes · 960 edges · 13 communities detected
+- 479 nodes · 962 edges · 14 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
-- Edge kinds: contains: 315 · MODIFIES: 207 · imports_from: 165 · imports: 113 · ON_BRANCH: 86 · calls: 43 · PARENT_OF: 31
+- Edge kinds: contains: 315 · MODIFIES: 207 · imports_from: 165 · imports: 113 · ON_BRANCH: 87 · calls: 43 · PARENT_OF: 32
 
 
 ## Input Scope
 - Requested: auto
 - Resolved: committed (source: default-auto)
-- Included files: 242 · Candidates: 270
-- Excluded: 1 untracked · 26383 ignored · 1 sensitive · 0 missing committed
+- Included files: 243 · Candidates: 271
+- Excluded: 1 untracked · 26386 ignored · 1 sensitive · 0 missing committed
 - Recommendation: Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder.
 
 ## Graph Freshness
-- Built from Git commit: `e500df6`
+- Built from Git commit: `4272b85`
 - Compare this hash to `git rev-parse HEAD` before trusting freshness-sensitive graph output.
 ## God Nodes (most connected - your core abstractions)
 1. `buildSelectedContainer()` - 9 edges
@@ -33,18 +33,22 @@
 10. `compactValues()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `4272b85 Add Finnish content consumption metrics article` --ON_BRANCH--> `main`  [EXTRACTED]
+  git → git  _Bridges community 1 → community 2_
 - `a227870 Add Finnish Cookiebot banner styler` --ON_BRANCH--> `main`  [EXTRACTED]
   git → git  _Bridges community 0 → community 2_
+- `a227870 Add Finnish Cookiebot banner styler` --PARENT_OF--> `e500df6 Add Finnish GTM container builder`  [EXTRACTED]
+  git → git  _Bridges community 0 → community 1_
 
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.05
-Nodes (13): article-image-optimization, a227870 Add Finnish Cookiebot banner styler, ac99fdc Baseline before article image optimization, aef1e56 Prepare site for launch: hide services, add draft mode, translate tools, b7eb340 Rename Finnish form tool to Lomakkeiden nimeämistyökalu, e500df6 Add Finnish GTM container builder, enhancedRoots, bg (+5 more)
+Cohesion: 0.06
+Nodes (10): article-image-optimization, a227870 Add Finnish Cookiebot banner styler, ac99fdc Baseline before article image optimization, aef1e56 Prepare site for launch: hide services, add draft mode, translate tools, b7eb340 Rename Finnish form tool to Lomakkeiden nimeämistyökalu, enhancedRoots, now, imgs (+2 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.08
-Nodes (41): applyTagNamingConvention(), BuilderSettings, BuilderState, BuilderValidation, buildSelectedContainer(), clone(), createBuilderState(), EVENT_DETAILS (+33 more)
+Cohesion: 0.07
+Nodes (43): 4272b85 Add Finnish content consumption metrics article, e500df6 Add Finnish GTM container builder, applyTagNamingConvention(), BuilderSettings, BuilderState, BuilderValidation, buildSelectedContainer(), clone() (+35 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.13
@@ -90,12 +94,18 @@ Nodes (2): collections, postSchema
 Cohesion: 0.83
 Nodes (2): gatedBandIndex(), metricBandIndex()
 
+### Community 20 - "Community 20"
+Cohesion: 0.67
+Nodes (2): bg, logoWhite
+
 ## Knowledge Gaps
 - **100 isolated node(s):** `logoWhite`, `bg`, `root`, `pagesRoot`, `serviceSchema` (+95 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Community 17`** (2 nodes): `collections`, `postSchema`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 18`** (2 nodes): `gatedBandIndex()`, `metricBandIndex()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 20`** (2 nodes): `bg`, `logoWhite`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
@@ -110,8 +120,8 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `logoWhite`, `bg`, `root` to the rest of the system?**
   _100 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.053763440860215055 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.060191518467852256 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.07547169811320754 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07205387205387205 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.13424947145877378 - nodes in this community are weakly interconnected._
