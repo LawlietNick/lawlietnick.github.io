@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import SplitSection from "../components/SplitSection.astro";
 import AboutIntro from "../components/AboutIntro.astro";
 import Appearances from "../components/Appearances.astro";
+import { contactUrl } from "../data/site.js";
 ---
 
 <Base title="About Niko Karppinen" description="Niko Karppinen is an SEO and analytics consultant working across digital measurement, technical implementation and practical digital systems." schemaPageType="about">
@@ -61,6 +62,29 @@ import Appearances from "../components/Appearances.astro";
     </Fragment>
   </SplitSection>
 
+  <SplitSection id="how-i-write" variant="about">
+    <Fragment slot="title">
+      <h2>How I write</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        I write about the work I do myself: analytics, tracking, search
+        engine optimisation and using AI at work. Every article shows its
+        publish date at the top and, when the content has changed, the date
+        it was updated.
+      </p>
+      <p>
+        When a claim relies on an outside source, I link to the original,
+        such as the vendor's own documentation. If an article's illustration
+        was made with AI, the caption says so.
+      </p>
+      <p>
+        If you spot a mistake or outdated information, let me know. I will
+        fix it and update the article's updated date.
+      </p>
+    </Fragment>
+  </SplitSection>
+
   <SplitSection id="background" variant="about">
     <Fragment slot="title">
       <h2>Background</h2>
@@ -112,4 +136,17 @@ import Appearances from "../components/Appearances.astro";
   </SplitSection>
 
   <Appearances />
+
+  <SplitSection id="contact" variant="about">
+    <Fragment slot="title">
+      <h2>Contact</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        The easiest way to reach me is LinkedIn. Send a message about working
+        together, my work or the articles.
+      </p>
+      <p><a href={contactUrl} rel="me noopener">Message me on LinkedIn</a></p>
+    </Fragment>
+  </SplitSection>
 </Base>

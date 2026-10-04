@@ -44,8 +44,8 @@
     "hash": "861f8ab576508d5f041253a77060ab16"
   },
   "src/components/PostHero.astro": {
-    "mtime": 1790102712531.3057,
-    "hash": "d5a14a75eb223ad8d4097b097d172baf"
+    "mtime": 1791122931498.1294,
+    "hash": "5bcd67c2a6184bf9d8990ea40533c5c6"
   },
   "src/components/PostList.astro": {
     "mtime": 1791122481786.0024,
@@ -88,8 +88,8 @@
     "hash": "bdf1682e6ff17e412535c331576a6271"
   },
   "src/layouts/Base.astro": {
-    "mtime": 1791122372612.413,
-    "hash": "d075382727779e22678c6a4b990aedf5"
+    "mtime": 1791123178273.353,
+    "hash": "85ef002e09c58a3077b236b439b46da7"
   },
   "src/pages/404.astro": {
     "mtime": 1784635640860.7234,
@@ -100,8 +100,8 @@
     "hash": "d1bfe80dd14dd5fe83110d1885d23a56"
   },
   "src/pages/about.astro": {
-    "mtime": 1791100880466.9014,
-    "hash": "cdc62d3ed9d53b1f9ee6b1e0855d146d"
+    "mtime": 1791123073161.6655,
+    "hash": "60eaa99ecebd09d57a15660354c85378"
   },
   "src/pages/blog/index.astro": {
     "mtime": 1789233542253.0383,
@@ -128,8 +128,8 @@
     "hash": "48d308eb7008dfbcd8b3fd607a5692eb"
   },
   "src/pages/fi/minusta.astro": {
-    "mtime": 1791117477826.0212,
-    "hash": "09ff7ef55fd30d3b34ff5c87b3996fef"
+    "mtime": 1791123073161.4922,
+    "hash": "8e5058ba84eed32bb081c7e34b02692d"
   },
   "src/pages/fi/palvelut.astro": {
     "mtime": 1791116336103.4434,
@@ -212,16 +212,16 @@
     "hash": "26265e748b6073dc4b8cbf566027bec2"
   },
   "src/utils/schema.ts": {
-    "mtime": 1790928193281.7207,
-    "hash": "5b8fe4976c4f899b9dd569786fe6847a"
+    "mtime": 1791122931498.447,
+    "hash": "4d8f4d8c8d5456e81f5f7b77ab1b34b5"
   },
   "test/schema.test.ts": {
     "mtime": 1790928193282.2666,
     "hash": "a5808a80098dec12055df108384f63ad"
   },
   "src/content.config.ts": {
-    "mtime": 1784912888385.1812,
-    "hash": "166705d8b7838443212bb227b3257665"
+    "mtime": 1791123178257.9028,
+    "hash": "fe3f07def901a9538d3284db9559755d"
   },
   "src/pages/atom.xml.ts": {
     "mtime": 1784394610341.366,
@@ -296,16 +296,16 @@
     "hash": "12b575435149d9515c4e8a3ce5fe233a"
   },
   "src/utils/related-posts.ts": {
-    "mtime": 1789233542252.7275,
-    "hash": "e9da02aca582d80567c3cfaf16005c37"
+    "mtime": 1791123178238.6106,
+    "hash": "16a9c01c50553277eec3da70953e1200"
   },
   "test/recent-posts.test.ts": {
     "mtime": 1784496829914.3066,
     "hash": "09e86f118662506f076a42bf766c1ecc"
   },
   "test/related-posts.test.ts": {
-    "mtime": 1784492552238.9224,
-    "hash": "1cda2a4e57613c3af4b7324d24001589"
+    "mtime": 1791123178287.6584,
+    "hash": "4e0a698fa6ad19225b38a585d4b94b42"
   },
   "src/pages/fi/blog/mckinsey-tyylinen-esitys-chatgpt-gemini.md": {
     "mtime": 1790701301123.1804,
@@ -492,8 +492,8 @@
     "hash": "7ce8ce3afdf94b7037e07a86dc0974c5"
   },
   "src/pages/fi/blog/tekstin-tasaus-saavutettavuus.md": {
-    "mtime": 1790701301123.6997,
-    "hash": "95b09a1f594eebc5c5c269c80dfb8754"
+    "mtime": 1791123228026.589,
+    "hash": "b091cd8f09892a85295004a2355ea567"
   },
   "src/pages/fi/palvelut/avainsanatutkimus.md": {
     "mtime": 1790455072322.339,
@@ -640,8 +640,8 @@
     "hash": "42d116888384e185cf0f63259d0e7379"
   },
   "src/pages/blog/text-alignment-accessibility.md": {
-    "mtime": 1790453549816.8916,
-    "hash": "ed82b446017e7d7688dd4ce0c3cb9d35"
+    "mtime": 1791123228025.7603,
+    "hash": "0382551351e4f846fa9d4c3884ec4ec7"
   },
   "public/nk-logo-docx.png": {
     "mtime": 1785153225958.4062,
@@ -788,8 +788,8 @@
     "hash": "ce0564f21584c3655ceea63735806714"
   },
   "src/pages/fi/blog/sivujen-luokittelu-analytiikassa.md": {
-    "mtime": 1790701301123.5881,
-    "hash": "df5610d4a87ed72d4bbc1daf68468ae7"
+    "mtime": 1791123228027.1125,
+    "hash": "8e6d875964e04fcff8a46e038bd7d4e2"
   },
   "public/images/blog/content-consumption-metrics.jpeg": {
     "mtime": 1790192109797.8162,
@@ -864,8 +864,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791122397117.2446,
-    "hash": "e511a4c5c6b36ea053eb18914e0c0eaf"
+    "mtime": 1791122990720.6013,
+    "hash": "c14018c1073fcec82127af8605e070d2"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,

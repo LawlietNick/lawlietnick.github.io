@@ -49,6 +49,7 @@ Sivutyyppi ja pääaihe eivät siis ole vaihtoehtoja toisilleen, vaan jokainen s
 
 ![Sivutyyppi ja pääaihe muodostavat kaksi eri ulottuvuutta, joiden avulla verkkosivut voidaan luokitella.](@assets/blog/sivutyyppi-ja-paaaihe.jpeg)
 
+  <figcaption>Kuva luotu tekoälyllä.</figcaption>
 </figure>
 
 Teknisessä toteutuksessa sivutyypin kenttä voi olla nimeltään `page_type` ja pääaiheen kenttä `primary_category`. Sisältöä tehdessä riittää, että ymmärrät suomenkieliset käsitteet ja osaat valita sivulle sopivat vaihtoehdot.

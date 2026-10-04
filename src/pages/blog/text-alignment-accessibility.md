@@ -95,7 +95,7 @@ According to [WebAIM's guidance on typographical layout](https://webaim.org/tech
 
 ![Diagram of the eye's return sweep. With centered text, the eye returns to changing starting points; with left-aligned text, it returns to the same vertical line even though line lengths vary.](@assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg)
 
-  <figcaption>Centered text on the left, where the next line begins in a different place each time. Left-aligned text on the right, where the eye can always return to the same line.</figcaption>
+  <figcaption>Centered text on the left, where the next line begins in a different place each time. Left-aligned text on the right, where the eye can always return to the same line. Image made with AI.</figcaption>
 </figure>
 
 ### Scannability
@@ -132,7 +132,7 @@ The same thing happens when a user enlarges the text. Alignment should not be ap
 
 ![Comparison of centered and left-aligned text in desktop and mobile views. The uneven line starts of centered text become more pronounced on mobile.](@assets/blog/tekstin-tasaus-mobiili.jpeg)
 
-  <figcaption>Centered text on the left and left-aligned text on the right. The uneven left edge of centered text becomes more pronounced on mobile.</figcaption>
+  <figcaption>Centered text on the left and left-aligned text on the right. The uneven left edge of centered text becomes more pronounced on mobile. Image made with AI.</figcaption>
 </figure>
 
 The Level AA criteria in [WCAG 2.2](https://www.w3.org/TR/WCAG22/) require text to be resizable up to 200 percent without loss of content or functionality, and content to reflow into a narrow viewport without unnecessary two-dimensional scrolling. These requirements do not prohibit centering, but they make testing on mobile and at higher zoom levels essential.

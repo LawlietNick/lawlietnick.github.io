@@ -319,7 +319,11 @@ export function buildSchemaGraph(options: SchemaOptions) {
       description: frontmatter.description,
       datePublished: isoDate(frontmatter.date),
       dateModified: isoDate(frontmatter.updatedDate ?? frontmatter.modified ?? frontmatter.date),
-      author: { "@id": PERSON_ID },
+      author: {
+        "@id": PERSON_ID,
+        name: authorName,
+        url: absoluteUrl(language === "fi" ? "/fi/minusta/" : siteConfig.person.aboutPath),
+      },
       publisher: { "@id": PERSON_ID },
       isPartOf: { "@id": blog ? blog.id : WEBSITE_ID },
       inLanguage: language,

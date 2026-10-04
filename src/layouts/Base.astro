@@ -52,24 +52,33 @@ let relatedPosts = [];
 if (fm) {
   // Reuse the metadata/body store; importing page modules also pulls in layouts.
   const posts = await getCollection(fi ? "blogFi" : "blog");
+  const templates = await getCollection(fi ? "templatesFi" : "templates");
   const language: "fi" | "en" = fi ? "fi" : "en";
-  const postCandidates = posts.map(({ id, data }) => ({
+  const entries = [
+    ...posts.map((post) => ({ ...post, slug: post.id, url: `${fi ? "/fi" : ""}/blog/${post.id}/` })),
+    ...templates.map((post) => ({
+      ...post,
+      slug: `${fi ? "toteutusmallit" : "templates"}/${post.id}`,
+      url: `${fi ? "/fi/toteutusmallit" : "/templates"}/${post.id}/`,
+    })),
+  ];
+  const postCandidates = entries.map(({ slug, url, data }) => ({
     ...data,
-    slug: id,
+    slug,
     language,
-    url: `${fi ? "/fi" : ""}/blog/${id}/`,
+    url,
   }));
   relatedPosts = selectRelatedPosts(
     {
       ...fm,
-      slug: Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "",
+      slug: Astro.url.pathname.replace(/^\/(?:fi\/)?(?:blog\/)?/, "").replace(/\/$/, ""),
       language,
       date: new Date(fm.date),
       url: Astro.url.pathname,
     },
     postCandidates,
   ).map((post) => {
-    const body = posts.find(({ id }) => id === post.slug)?.body ?? "";
+    const body = entries.find(({ slug }) => slug === post.slug)?.body ?? "";
     return {
       ...post,
       // Only count words for the cards that will actually be displayed.
@@ -251,7 +260,7 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
           </div>
           <article>
             <div class="wide-band">
-              <PostHero {fm} {fi} />
+              <PostHero {fm} {fi} {aboutHref} />
               <AskAI url={ogUrl} title={title} {fi} />
             </div>
             <div class="post-layout">

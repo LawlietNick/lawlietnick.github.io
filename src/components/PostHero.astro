@@ -1,12 +1,15 @@
 ---
 import BlogImage from "./BlogImage.astro";
-const { fm, fi = false } = Astro.props;
+import { authorName } from "../data/site.js";
+const { fm, fi = false, aboutHref } = Astro.props;
 ---
 
 <section class="article-hero__grid">
   <div class="article-hero__intro-panel">
     {fm.date && (
       <p class="article-hero__date">
+        <a href={aboutHref} rel="author" class="article-hero__author">{authorName}</a>
+        <span aria-hidden="true"> · </span>
         {fm.updatedDate && <>{fi ? "Julkaistu " : "Published "}</>}
         <time datetime={new Date(fm.date).toISOString().slice(0, 10)}>{new Date(fm.date).toLocaleDateString(fi ? "fi-FI" : "en-US", { dateStyle: "long" })}</time>
         {fm.updatedDate && <>
@@ -105,6 +108,10 @@ const { fm, fi = false } = Astro.props;
   }
 
   /* date: quiet metadata above the title, never competes with the headline */
+  .article-hero__author {
+    color: var(--ink);
+    font-weight: 600;
+  }
   .article-hero__date {
     margin: 0;
     color: var(--muted);

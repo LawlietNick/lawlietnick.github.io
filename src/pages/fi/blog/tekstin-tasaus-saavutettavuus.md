@@ -106,7 +106,7 @@ W3C:n Low Vision Accessibility Task Force -työryhmän [täydentävä ohje](http
     src="/src/assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg"
     alt="Kaavio katseen paluuliikkeestä. Keskitetyssä tekstissä katse palaa vaihteleviin aloituskohtiin, vasemmalle tasatussa tekstissä samalle pystylinjalle, vaikka rivien pituudet vaihtelevat."
   />
-  <figcaption>Vasemmalla keskitetty teksti, jossa seuraavan rivin aloituskohta vaihtuu. Oikealla vasemmalle tasattu teksti, jossa katse voi palata aina samaan linjaan.</figcaption>
+  <figcaption>Vasemmalla keskitetty teksti, jossa seuraavan rivin aloituskohta vaihtuu. Oikealla vasemmalle tasattu teksti, jossa katse voi palata aina samaan linjaan. Kuva luotu tekoälyllä.</figcaption>
 </figure>
 
 ### Silmäiltävyys
@@ -154,7 +154,7 @@ Sama tapahtuu, kun käyttäjä suurentaa tekstiä. Siksi tasausta ei kannata hyv
     src="/src/assets/blog/tekstin-tasaus-mobiili.jpeg"
     alt="Keskitetyn ja vasemmalle tasatun tekstin vertailu työpöytä- ja mobiilinäkymissä. Keskitetyn tekstin epätasainen rivinalku korostuu mobiilissa."
   />
-  <figcaption>Vasemmalla keskitetty teksti ja oikealla vasemmalle tasattu teksti. Mobiilissa keskitetyn tekstin epätasainen vasen reuna korostuu.</figcaption>
+  <figcaption>Vasemmalla keskitetty teksti ja oikealla vasemmalle tasattu teksti. Mobiilissa keskitetyn tekstin epätasainen vasen reuna korostuu. Kuva luotu tekoälyllä.</figcaption>
 </figure>
 
 [WCAG 2.2:n](https://www.w3.org/TR/WCAG22/) AA-tason kriteerit edellyttävät, että tekstiä voi suurentaa 200 prosenttiin ilman sisällön tai toiminnallisuuden menetystä ja että sisältö mukautuu kapeaan näkymään ilman tarpeetonta kahdensuuntaista vierittämistä. Nämä vaatimukset eivät kiellä keskitystä, mutta ne tekevät mobiili- ja suurennustestauksesta olennaista.

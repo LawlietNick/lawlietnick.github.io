@@ -3,6 +3,7 @@ import Base from "../../layouts/Base.astro";
 import SplitSection from "../../components/SplitSection.astro";
 import AboutIntro from "../../components/AboutIntro.astro";
 import Appearances from "../../components/Appearances.astro";
+import { contactUrl } from "../../data/site.js";
 ---
 
 <Base title="Minusta" description="Niko Karppinen on SEO- ja analytiikkakonsultti, jonka työhön kuuluvat digitaalinen mittaaminen, seurannan toteutukset ja verkkosivustojen kehittäminen." schemaPageType="about">
@@ -67,6 +68,29 @@ import Appearances from "../../components/Appearances.astro";
     </Fragment>
   </SplitSection>
 
+  <SplitSection id="how-i-write" variant="about">
+    <Fragment slot="title">
+      <h2>Näin kirjoitan</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Kirjoitan aiheista, joiden parissa työskentelen itse: analytiikasta,
+        seurannasta, hakukoneoptimoinnista ja tekoälyn käytöstä työssä.
+        Jokaisen artikkelin alussa näkyy julkaisupäivä ja, jos sisältö on
+        muuttunut, päivityspäivä.
+      </p>
+      <p>
+        Kun väite perustuu ulkoiseen lähteeseen, linkitän alkuperäiseen
+        lähteeseen, kuten palvelun omaan dokumentaatioon. Jos artikkelin
+        kuvitus on tehty tekoälyllä, se kerrotaan kuvatekstissä.
+      </p>
+      <p>
+        Jos huomaat virheen tai vanhentuneen tiedon, kerro siitä minulle.
+        Korjaan sen ja päivitän artikkelin päivityspäivän.
+      </p>
+    </Fragment>
+  </SplitSection>
+
   <SplitSection id="background" variant="about">
     <Fragment slot="title">
       <h2>Kokemus ja näkökulma</h2>
@@ -119,4 +143,17 @@ import Appearances from "../../components/Appearances.astro";
   </SplitSection>
 
   <Appearances fi={true} />
+
+  <SplitSection id="contact" variant="about">
+    <Fragment slot="title">
+      <h2>Yhteystiedot</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Tavoitat minut helpoimmin LinkedInissä. Voit lähettää viestin
+        yhteistyöstä, työstäni tai artikkeleista.
+      </p>
+      <p><a href={contactUrl} rel="me noopener">Lähetä viesti LinkedInissä</a></p>
+    </Fragment>
+  </SplitSection>
 </Base>
