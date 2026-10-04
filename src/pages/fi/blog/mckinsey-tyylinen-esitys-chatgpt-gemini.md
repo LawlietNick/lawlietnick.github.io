@@ -2,8 +2,9 @@
 layout: ../../../layouts/Base.astro
 title: Luo McKinsey-tyylinen esitys ChatGPT:n tai Geminin avulla
 documentTitle: "McKinsey-tyylinen esitys ChatGPT:llä | Niko Karppinen"
-description: Opi luomaan McKinsey-tyylisiä esityksiä ChatGPT:n tai Geminin avulla hyödyntämällä SCQR-mallia ja pyramidiperiaatetta. Vaiheittainen opas liike-elämän ammattilaisille.
+description: "Luo McKinsey-tyylinen esitys ChatGPT:llä tai Geminillä. Opas näyttää, miten SCQR-malli ja pyramidiperiaate tekevät promptista selkeän esityksen."
 date: 2025-11-03
+updatedDate: 2026-10-04
 category: ai-prompting
 tags: ["ChatGPT", "Gemini", "esitykset"]
 image: /images/blog/mckinsey-style-presentation-chatgpt-gemini.jpeg
@@ -28,7 +29,7 @@ Useimmat ammattilaiset osaavat tuottaa dataa. Harvempi osaa muuttaa datan tarina
 
 Siksi McKinseyn, BCG:n ja Bainin kaltaiset konsulttiyhtiöt käyttävät esitysten jäsentämiseen loogisia viitekehyksiä, kuten SCQR-mallia ja pyramidiperiaatetta. Niiden avulla hajanaisista havainnoista muodostetaan selkeä kokonaisuus, joka etenee havainnoista suosituksiin ja toimintaan.
 
-Hyvä puoli on se, ettei niiden hyödyntäminen vaadi taustaa strategiakonsultoinnissa. Yhdellä tekoälypromptilla voit luoda valmiin, johdolle sopivan esitysrungon ChatGPT:n tai Geminin avulla. Näin se tehdään.
+Hyvä puoli on se, ettei niiden hyödyntäminen vaadi taustaa strategiakonsultoinnissa. Yhdellä promptilla ChatGPT tai Gemini haastattelee sinua, rakentaa tarinan kanssasi ja tekee siitä valmiit diat. Näin se tehdään.
 
 ## 1. Aloita viitekehyksestä: näin konsultit rakentavat esityksen tarinan
 
@@ -61,131 +62,95 @@ Jokainen taso tukee sen yläpuolella olevaa tasoa:
 
 1. **Taso 1, pääviesti:** Vastaus kysymykseen eli esityksen ratkaisu.
 
-2. **Taso 2, tukipilarit:** Kolme selkeää teemaa tai suositusta, jotka tukevat pääviestiä.
+2. **Taso 2, tukipilarit:** Kahdesta neljään (usein kolme) selkeää teemaa tai suositusta, jotka tukevat pääviestiä.
 
 3. **Taso 3, näyttö:** Data, mittarit ja havainnot, jotka perustelevat jokaisen tukipilarin.
 
 Rakenne tekee esityksestä selkeän. Jokaisella yksityiskohdalla on tehtävä, ja kaikki havainnot tukevat yhtä pääviestiä.
 
+### Väiteotsikot: otsikko kertoo viestin
+
+Konsultti ei otsikoi diaa ”Sivunopeus”. Hän kirjoittaa johtopäätöksen kokonaisena virkkeenä: ”Mobiilisivut latautuvat 6 sekunnissa, kaksi kertaa suositusta hitaammin”. Kun luet pelkät otsikot järjestyksessä, saat koko perustelun. Dian sisältö on olemassa todistamaan otsikon.
+
+Ennen dioja konsultit kirjoittavat ensin tämän otsikkolistan. Sitä kutsutaan *haamuesitykseksi* (ghost deck), ja siinä heikon perustelun korjaaminen on halvinta.
+
 ## 2. Hyödynnä viitekehystä tekoälyn avulla
 
-Kun esityksen logiikka on selvä, voit antaa tekoälyn auttaa rakenteen ja sisällön muodostamisessa.
-
-Tarvitset vain muutaman keskeisen tiedon esityksen aiheesta.
-
-Näin etenet:
+Alla oleva prompti etenee kolmessa kierroksessa. Ensin tekoäly haastattelee sinua ja lukee aineistosi. Sitten se rakentaa kanssasi tarinan ja haamuesityksen, ja vasta lopuksi se tekee diat. Päätät itse perustelusta, ja tekoäly hoitaa luonnostelun ja taiton.
 
 ### Vaihe 1: Kokoa keskeinen aineisto
 
-Kerää ennen aloittamista tärkeimmät datapisteet, havainnot ja auditointitulokset, jotka haluat esittää.
+Kerää raportti, auditointi, taulukko tai muistiinpanot, jotka haluat esittää. Voit liittää tiedostot suoraan ChatGPT:hen tai Geminiin, joten lukuja ei tarvitse kirjoittaa uudelleen. Myös muutama ranskalainen viiva riittää.
 
-Et tarvitse vielä dioja. Muutama ranskalainen viiva tuloksista, ongelmista ja tarvittavista toimenpiteistä riittää.
+Poista ennen latausta kaikki luottamuksellinen tieto, jota yrityksesi ei salli tekoälytyökaluihin.
 
 ### Vaihe 2: Liitä tämä prompti ChatGPT:hen tai Geminiin
 
-Kopioi ja liitä seuraava teksti sellaisenaan.
-
-Tekoäly pyytää sinulta kuusi lyhyttä tietoa ja muodostaa niiden perusteella **valmiin McKinsey-tyylisen esitysrungon SCQR-mallin ja pyramidiperiaatteen avulla**.
+Kopioi prompti ja liitä aineistosi samaan viestiin. Tekoäly lukee aineiston ja kysyy vain sen, mitä siitä vielä puuttuu.
 
 ```
-**Rooli:** Toimi liike-elämän viestintään erikoistuneena konsulttina, joka hallitsee **McKinsey & Companyn SCQR-mallin (Situation–Complication–Question–Resolution) ja pyramidiperiaatteen**. Erityisosaamistasi on monimutkaisten analyysien, auditointien ja strategioiden muuttaminen selkeiksi, asiakaslähtöisiksi ja toimintaan ohjaaviksi esityksiksi.
+Autat minua rakentamaan johdolle suunnatun esityksen strategiakonsulttien menetelmillä: SCQR-tarina (tilanne, haaste, kysymys, ratkaisu), pyramidiperiaate ja väiteotsikot.
 
-**Tavoite:** Luo täydellinen esitysrakenne, joka noudattaa tarkasti määriteltyä viitekehystä. Lopputuloksen tulee palvella yhtä kahdesta tavoitteesta: 1) **Hankkeen hyväksynnän saaminen** tai 2) **Kriittisten auditointihavaintojen esittäminen**.
+Etene kolmessa kierroksessa. Pysähdy jokaisen kierroksen lopussa ja odota vastaustani.
 
-**Syöttötiedot, jotka käyttäjän tulee antaa:**
-1. **[TULOSTUSKIELI]:** Esimerkiksi ensin suomi, sitten englanti
-2. **[AIHEEN_OTSIKKO]:** Esimerkiksi Strategia toisen vuosineljänneksen operatiivisten kustannusten vähentämiseksi 15 prosentilla
-3. **[ESITYKSEN_TAVOITE]:** Valitse yksi: Hankkeen hyväksynnän saaminen TAI Kriittisten auditointihavaintojen esittäminen
-4. **[YLEISÖ]:** Esimerkiksi johtoryhmä, operatiivisen toiminnan johtajat tai tekninen arviointiryhmä
-5. **[KESKEISET_DATAPISTEET]:** Esityksessä tarvittavat tärkeät luvut, esimerkiksi ”Nykyinen virheprosentti on 22 %”, ”Ratkaisun arvioitu kustannus on 4 miljoonaa euroa” tai ”Auditoinnissa havaittiin kolme kriittistä tietoturva-aukkoa”
-6. **[KESKEINEN_RATKAISU_TAI_SUOSITUS]:** Tärkein toimenpide, vastaus tai suositeltu seuraava askel, esimerkiksi ”Meidän tulee ottaa keskitetty pilviarkkitehtuuri käyttöön kolmanteen vuosineljännekseen mennessä”
+KIERROS 1: HAASTATTELU
+Lue liittämäni aineisto. Kysy sen jälkeen vain se, mikä on vielä epäselvää, yksi kysymys kerrallaan ja enintään viisi kysymystä. Sinun tulee tietää
+- mitä päätöstä tai toimenpidettä haluan yleisöltä
+- kuka yleisö on ja mitä se jo tietää
+- keskeiset havainnot ja luvut (aineistostani, jos olen liittänyt sen)
+- suositukseni, jos minulla on sellainen (jos ei ole, ehdota sitä aineiston perusteella)
+- esityksen kieli, kesto minuutteina ja pakolliset sisällöt.
+Tiivistä ymmärryksesi viiteen kohtaan ja pyydä minua vahvistamaan ne.
 
-**Tulosteen rajoitteet ja rakenne:**
-* **Pituus:** Esitysrungon tulee sisältää **8–12 loogisesti ryhmiteltyä diaa tai osiota**, jotka sopivat 15–30 minuutin esitykseen.
-* **Sävy:** Erittäin ammattimainen, dataan perustuva, varma ja toimintaan ohjaava.
-* **Muoto:** Laadi esitysrakenne alla olevan mallin mukaisesti. Kaiken sisällön tulee olla määritellyllä **[TULOSTUSKIELELLÄ]**.
+KIERROS 2: TARINA JA HAAMUESITYS
+1. Kirjoita pääviesti: yksi virke, joka vastaa kysymykseen ja kertoo suosituksen.
+2. Kirjoita SCQR, yksi virke kustakin osasta.
+3. Anna 2–4 tukipilaria. Niiden tulee olla MECE-periaatteen mukaisia (ei päällekkäisyyksiä, mitään olennaista ei puutu), ja jokaisen tulee tukea suoraan pääviestiä.
+4. Rakenna haamuesitys taulukoksi, jossa on sarakkeet: Nro | Väiteotsikko | Näyttö dialla | Visualisointi | Lähde.
+   - Väiteotsikko on enintään 15 sanan kokonainen virke, joka kertoo johtopäätöksen eikä aihetta. (”Mobiilisivut latautuvat 6 sekunnissa, kaksi kertaa suositusta hitaammin”, ei ”Sivunopeus”.)
+   - Yksi viesti diaa kohden. Varaa noin yksi dia kahta minuuttia kohden ja yksityiskohdille liiteosio.
+   - Viimeisellä dialla kerrotaan yksi päätös tai seuraava askel, jota tarvitsen yleisöltä.
+5. Tee kaksi tarkistusta ja kerro löytämäsi ongelmat:
+   - Lue pelkät otsikot järjestyksessä. Kertovatko ne koko perustelun yksinään?
+   - Todistaako jokaisen dian näyttö sen otsikon?
+Kysy minulta, mitä muutetaan. Toista, kunnes sanon tarinan olevan hyväksytty.
 
----
-## **ESITYSRUNKO: [AIHEEN_OTSIKKO]**
+KIERROS 3: DIAT
+Kun hyväksyn tarinan, rakenna esitys dia kerrallaan:
+- väiteotsikko diaotsikkona
+- 3–5 lyhyttä kohtaa tai yksi kaavio, joka todistaa otsikon (kerro kaaviotyyppi ja sen taustalla oleva data)
+- lähde pienellä dian alareunassa
+- 2–4 virkkeen puhujan muistiinpanot.
+Käytä selkeää ja yhtenäistä konsulttityyliä: valkoinen tausta, yksi korostusväri, ei kuvapankkikuvia. Jos pystyt luomaan tiedostoja tai käyttämään canvasia, tee varsinaiset diat (Google Slides tai .pptx). Jos et pysty, anna diojen sisältö valmiiksi liitettävässä muodossa.
 
-### **I. Johdanto, SCQR ja kiinnostuksen herättäminen**
-
-*   **Dia 1: Otsikko ja tilanne (S)**
-    *   **Otsikko:** [AIHEEN_OTSIKKO]
-    *   **Alaotsikko:** [Esittäjän nimi / Päivämäärä / Asiayhteys]
-    *   **S, tilanne:** [Laadi 1–2 virkettä yleisön tuntemasta ja yhteisesti hyväksytystä lähtötilanteesta. Tämä on nykytila.]
-
-*   **Dia 2: Haaste (C)**
-    *   **Otsikko:** Keskeinen haaste
-    *   **C, haaste:** [Laadi 1–2 vaikuttavaa virkettä keskeisestä haasteesta, riskistä tai kiireellisyydestä.]
-    *   **Keskeinen data:** [Nosta yksi **[KESKEISET_DATAPISTEET]**-kohdan luku näkyvästi esiin. Tämä toimii huomion herättäjänä.]
-
-*   **Dia 3: Ohjaava kysymys (Q)**
-    *   **Otsikko:** Suunta eteenpäin
-    *   **Q, kysymys:** [Laadi yksi yksinkertainen kysymys, johon esitys vastaa. Kysymyksen tulee liittyä suoraan haasteeseen.]
-
-*   **Dia 4: Ratkaisumme ja pääväite**
-    *   **R, ratkaisu ja tason 1 pääviesti:** [Esitä **[KESKEINEN_RATKAISU_TAI_SUOSITUS]** selkeänä ja tiiviinä vastauksena kysymykseen.]
-    *   **Etenemismalli:** Käymme läpi ratkaisua tukevat **kolme pilaria**: [Luettele alla olevien tason 2 osioiden otsikot.]
-
-### **II. Runko, pyramidiperiaate ja MECE-pilarit**
-
-*(Tason 2 kohtien tulee olla toisistaan erillisiä ja yhdessä kattavia eli MECE-periaatteen mukaisia. Jokaisen kohdan tulee tukea suoraan ratkaisua R.)*
-
-*   **Dia 5: Pilari 1: [Tiivis ja toimintaan ohjaava otsikko 1]**
-    *   **Tason 2 väite:** [Tämän pilarin tärkein havainto tai suositus.]
-    *   **Tason 3 perustelut ja näyttö:** [Kuvaa miksi ja mitä. Viittaa yhteen **[KESKEISET_DATAPISTEET]**-kohdan datapisteeseen.]
-    *   **Vaikutus asiakkaalle:** [Selitä hyöty **[YLEISÖLLE]**.]
-
-*   **Diat 6–7: Pilari 2: [Tiivis ja toimintaan ohjaava otsikko 2]**
-    *   **Tason 2 väite:** [Tämän pilarin tärkein havainto tai suositus.]
-    *   **Tason 3 perustelut ja näyttö:** [Kuvaa miksi ja mitä. Käytä esimerkkejä tai havainnollistavaa dataa.]
-    *   **Tarvittava toimenpide:** [Määritä asiakkaan tehtäväksi tuleva konkreettinen askel.]
-
-*   **Diat 8–9: Pilari 3: [Tiivis ja toimintaan ohjaava otsikko 3]**
-    *   **Tason 2 väite:** [Tämän pilarin tärkein havainto tai suositus.]
-    *   **Tason 3 perustelut ja näyttö:** [Kuvaa miksi ja mitä. Sisällytä kustannus-hyötyanalyysi tai riskienhallintaan liittyvät tiedot.]
-    *   **Tämän pilarin seuraavat vaiheet:** [Määritä konkreettinen tuotos tai tavoiteltu lopputulos.]
-
-### **III. Yhteenveto ja toiminta**
-
-*   **Dia 10: Taloudellinen yhteenveto tai riskienhallinta tarvittaessa**
-    *   [Tee yhteenveto sijoitetun pääoman tuotosta, toimettomuuden kustannuksista tai auditointihavainnon vakavuudesta.]
-
-*   **Dia 11: Johtopäätös ja toimintakehotus**
-    *   **Yhteenveto:** Suunta eteenpäin on selkeä: **[Toista tason 1 pääviesti eli ratkaisu R]**.
-    *   **Kolmen pilarin yhteenveto:** [Luettele lyhyesti kolme tason 2 kohtaa.]
-    *   **Toimintakehotus ja tarvittava päätös:** Määritä **[ESITYKSEN_TAVOITTEEN]** perusteella yksi selkeä pyyntö, esimerkiksi ”Hyväksytään 4 miljoonan euron budjetti välittömästi” tai ”Nimetään johtoryhmätason omistaja kolmen korjaavan toimenpiteen toteutukselle”.
+KOKO TEHTÄVÄN SÄÄNNÖT
+- Älä koskaan keksi lukuja, lähteitä tai lainauksia. Jos näyttö puuttuu, kirjoita [DATA PUUTTUU: mikä] ja kerro siitä minulle.
+- Erota aineistoni faktat omista oletuksistasi ja merkitse oletukset.
+- Jos data ei tue suositustani, sano se suoraan ja ehdota vahvempaa suositusta.
+- Selkeä kieli. Ei muotisanoja eikä täytetekstiä.
 ```
 
-### Vaihe 3: Anna tarvittavat tiedot
+### Vaihe 3: Vastaa kysymyksiin
 
-Kun olet liittänyt promptin, tekoäly pyytää sinulta edellä mainitut kuusi tietoa.
+Tekoäly kysyy vain sitä, mitä se ei löytänyt aineistostasi. Verkkosivuston suorituskykyauditoinnissa vastaukset voisivat olla esimerkiksi nämä:
 
-Vastaa niihin selkeästi. Jokainen vastaus antaa tekoälylle aineistoa esityksen tarinan rakentamiseen.
+- **Haluttu päätös:** kahden sprintin suorituskykykorjausten hyväksyminen ennen kevään kampanjaa
+- **Yleisö:** markkinointijohtaja ja teknologiajohtaja, eivät syvällisesti teknisiä
+- **Keskeiset havainnot:** mobiilisivujen lataus kestää 6,2 sekuntia (LCP), keskimääräinen sivukoko on 10 megatavua ja liikenteestä 70 % tulee mobiilista
+- **Suositus:** kuvat ja kolmansien osapuolten skriptit optimoidaan ensin, sivupohjat uudistetaan seuraavalla neljänneksellä
+- **Muoto:** suomi, 15 minuuttia
 
-Esimerkiksi:
+### Vaihe 4: Korjaa tarina ennen dioja
 
-- **TULOSTUSKIELI:** Suomi
+Tämä on arvokkain vaihe. Lue haamuesityksen otsikot järjestyksessä kuin olisit toimitusjohtaja. Jos perustelu ei kestä pelkkien otsikoiden varassa, pyydä tekoälyä korjaamaan se nyt. Yhden taulukkorivin muuttaminen on paljon helpompaa kuin kymmenen valmiin dian muokkaaminen.
 
-- **AIHEEN_OTSIKKO:** Verkkosivuston suorituskyvyn optimointi
+Käy läpi myös jokainen `[DATA PUUTTUU]`-merkintä. Anna puuttuva luku tai poista väite.
 
-- **ESITYKSEN_TAVOITE:** Kriittisten auditointihavaintojen esittäminen
+### Vaihe 5: Rakenna diat
 
-- **YLEISÖ:** Operatiivinen tiimi
+Kun hyväksyt tarinan, tekoäly rakentaa diat:
 
-- **KESKEISET_DATAPISTEET:** Largest Contentful Paint puolittui ja sivun kokonaiskoko pieneni 10 megatavusta 5 megatavuun
+- **Gemini:** ota Canvas käyttöön ennen aloittamista. Sen avulla valmiin esityksen voi viedä Google Slidesiin.
+- **ChatGPT:** pyydä kolmannen kierroksen lopussa ladattava .pptx-tiedosto.
 
-- **KESKEINEN_RATKAISU_TAI_SUOSITUS:** Optimoi sisältö AI Overview -näkyvyyttä varten
-
-### Vaihe 4: Tarkista, viimeistele ja esitä
-
-Tekoäly palauttaa **dia kerrallaan etenevän esitysrungon**, jonka voit
-
-- siirtää PowerPointiin tai Google Slidesiin
-
-- täydentää kuvilla, kaavioilla ja brändin mukaisella tyylillä
-
-- esittää päätöksentekijöille selkeänä ja jäsenneltynä suosituksena
-
-Lopputuloksena saat McKinsey-tyylisesti rakennetun esityksen ilman tyhjästä diasta aloittamista.
+Tarkista kummassakin tapauksessa jokainen luku lähdettä vasten ennen esittämistä. Lisää sitten brändipohjasi ja vaihda tilalle oikeat kaaviot. Lopputuloksena saat konsulttityylisesti perustellun esityksen ilman tyhjästä diasta aloittamista.
