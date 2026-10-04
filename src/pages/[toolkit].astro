@@ -16,7 +16,7 @@ export function getStaticPaths() {
 
 const { item } = Astro.props;
 const c = item.en;
-const mdItems = Object.entries(itemGlobs[item.slug] ?? {}).map(([path, mod]) => ({
+const mdItems = Object.entries(itemGlobs[item.slug] ?? {}).filter(([, mod]) => !mod.frontmatter.draft).map(([path, mod]) => ({
   ...mod.frontmatter,
   href: `/${item.slug}/${path.split("/").pop().replace(/\.md$/, "")}/`,
 }));

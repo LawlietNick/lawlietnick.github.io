@@ -1,0 +1,35 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ToolHero from "../../../components/ToolHero.astro";
+import FormTypePicker from "../../../components/FormTypePicker.astro";
+import FormTypeReference from "../../../components/FormTypeReference.astro";
+import { formTypes } from "../../../data/form-types.js";
+
+const title = "Lomakkeen nimen muodostaja";
+const summary = `Vastaa kysymykseen lomakkeesta ja saat yhtenäisen arvon sen seurantaan. Arvo valitaan rajatusta listasta, jossa on ${formTypes.length} tyyppiä.`;
+---
+
+<Base title={title} description={summary} alternate={{ lang: "en", href: "/tools/form-name-builder/" }}>
+  <Breadcrumb
+    fi
+    crumbs={[
+      { label: "Etusivu", href: "/fi/", icon: true },
+      { label: "Työkalut", href: "/fi/tyokalut/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">
+      Jos jokainen nimeää lomakkeensa itse, raportit riippuvat siitä, kuka lomakkeen teki. <em lang="en">Contact</em>, <em lang="en">Get in Touch</em> ja <em lang="en">Contact Form EN</em> näkyvät
+      kolmena rivinä yhden sijaan. Lomaketyyppi korjaa tämän ennen nimeä. Tyypit ja nimet kirjoitetaan
+      englanniksi, jotta raportit pysyvät samoina kaikilla kielillä.
+    </p>
+  </ToolHero>
+
+  <div class="wide-band">
+    <FormTypePicker fi />
+    <FormTypeReference fi />
+  </div>
+</Base>

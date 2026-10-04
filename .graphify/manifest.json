@@ -1,7 +1,7 @@
 {
   "astro.config.mjs": {
-    "mtime": 1790453549812.8713,
-    "hash": "c849a1281a74d7ee1878481b44dfec39"
+    "mtime": 1791115534959.1777,
+    "hash": "6a7ccbe45aee3e41883747ed0efd9585"
   },
   "scripts/generate-hero-placeholders.mjs": {
     "mtime": 1783662513918.7078,
@@ -12,8 +12,8 @@
     "hash": "68f3a5330245391b28ea6e578be08355"
   },
   "src/components/AboutIntro.astro": {
-    "mtime": 1790701301121.0254,
-    "hash": "ff3eb3a5d4ec60b99dedc153a3c022df"
+    "mtime": 1791115381230.4727,
+    "hash": "f40e249f462b865a0457a9c60e3ea02d"
   },
   "src/components/AskAI.astro": {
     "mtime": 1784490853573.4404,
@@ -32,16 +32,16 @@
     "hash": "74e5672e712c5c2c05f441b3742b4fff"
   },
   "src/components/Footer.astro": {
-    "mtime": 1790928193281.9683,
-    "hash": "7b8e1170f07147331e6760fa3e384901"
+    "mtime": 1791115381227.388,
+    "hash": "e407738033081d63a5cb4a5b59564055"
   },
   "src/components/Header.astro": {
-    "mtime": 1790455072326.8376,
-    "hash": "bd0d88aeb260ece655e34dad07e64258"
+    "mtime": 1791115381229.8713,
+    "hash": "e299d58ca21a788484f74b1f7f23fc33"
   },
   "src/components/Hero.astro": {
-    "mtime": 1790927880599.5693,
-    "hash": "2bb7fcda6ebb18ca42d3e71dca301572"
+    "mtime": 1791114983049.5935,
+    "hash": "efe0e8ecd4672281fd3e752790d4a288"
   },
   "src/components/PatternList.astro": {
     "mtime": 1783578418395.9634,
@@ -80,8 +80,8 @@
     "hash": "cf6d3a14d3982c07ba3af3fa960aada9"
   },
   "src/data/site.js": {
-    "mtime": 1790928193281.5913,
-    "hash": "a6ada827dcf820f607af5e6e5bbbfb4e"
+    "mtime": 1791115381217.419,
+    "hash": "dd39d95a71cec0c3d9e19a8da50b5a17"
   },
   "src/data/toolkit.js": {
     "mtime": 1790454795884.5544,
@@ -100,8 +100,8 @@
     "hash": "0fa83bff8418824f3bb0e5c948063694"
   },
   "src/pages/[toolkit].astro": {
-    "mtime": 1789231319586.8372,
-    "hash": "53b56bf86d6d1543633bdd924a163fa7"
+    "mtime": 1791115215020.6123,
+    "hash": "d1bfe80dd14dd5fe83110d1885d23a56"
   },
   "src/pages/about.astro": {
     "mtime": 1791100880466.9014,
@@ -116,8 +116,8 @@
     "hash": "e80b45f7b2b5aaed91befa8921abba46"
   },
   "src/pages/fi/[toolkit].astro": {
-    "mtime": 1789231329651.8755,
-    "hash": "1637ac663db4ec9b60661f8127765b6f"
+    "mtime": 1791115219678.3193,
+    "hash": "b5df9310306c4f25260c1a5034da8d91"
   },
   "src/pages/fi/about.astro": {
     "mtime": 1783533700656.5876,
@@ -128,16 +128,16 @@
     "hash": "dc44f6ba158e74dde8849b75397e447e"
   },
   "src/pages/fi/index.astro": {
-    "mtime": 1791100880465.5542,
-    "hash": "3907440befacad5e459521ee5c20184a"
+    "mtime": 1791114990005.3738,
+    "hash": "7926717cc9e77ef6b9160b5e823576d3"
   },
   "src/pages/fi/minusta.astro": {
     "mtime": 1791100880466.464,
     "hash": "d7e370756a78073bf0ff1f4c240bad49"
   },
   "src/pages/fi/palvelut.astro": {
-    "mtime": 1790701301124.0608,
-    "hash": "a6826d9f6f376a2fb51d8e842ee7f181"
+    "mtime": 1791115215021.424,
+    "hash": "cb14ffed1fc323051466cfec733f3ff0"
   },
   "src/pages/fi/privacy.astro": {
     "mtime": 1789231319585.8813,
@@ -152,16 +152,16 @@
     "hash": "8efdff04f19156ad17480553ad037ea7"
   },
   "src/pages/services.astro": {
-    "mtime": 1790523508045.4387,
-    "hash": "8f0867d4e9ba7b32462db75ca2e87988"
+    "mtime": 1791115215021.1062,
+    "hash": "4ca863f17c73a4b330ed0302445cff63"
   },
   "src/pages/sitemap.xml.js": {
-    "mtime": 1789231113425.427,
-    "hash": "3e3477c2875264fcb45128b16a142f84"
+    "mtime": 1791115215020.0454,
+    "hash": "6e687ed3d2503ab4b03c68fb248cea30"
   },
   "src/utils/language-links.js": {
-    "mtime": 1790360803597.2786,
-    "hash": "fadf7ac6c72f994495ca47a766af96a0"
+    "mtime": 1791115636659.447,
+    "hash": "e179444f4a1f827432bcb2d461ccacad"
   },
   "test/language-links.test.mjs": {
     "mtime": 1789224265836.0557,
@@ -332,8 +332,8 @@
     "hash": "b4019b787f32202674799ebbdfd2b521"
   },
   "scripts/validate-content.mjs": {
-    "mtime": 1790455072327.1238,
-    "hash": "a44ace856eaf2439c8ee80e94e64d603"
+    "mtime": 1791115215022.0405,
+    "hash": "7926b84f03eec76afc44488f726dd63a"
   },
   "src/assets/tools/cookie-banner/banner.js": {
     "mtime": 1784919803176.9346,
@@ -348,8 +348,8 @@
     "hash": "66ea76d6a173b6c594adb6cdc8d82f9c"
   },
   "src/components/MetricQualityChecker.astro": {
-    "mtime": 1790701301121.1335,
-    "hash": "9344f1eeb194259b18bc7585d611a328"
+    "mtime": 1791114990004.822,
+    "hash": "d3713916d17b9817b9bc7666d1611e1b"
   },
   "src/components/NotFound.astro": {
     "mtime": 1784733120466.4148,
@@ -376,8 +376,8 @@
     "hash": "c8bdfee3e8afdc0b202f61ec661f3f5b"
   },
   "src/data/interactive-tools.js": {
-    "mtime": 1790360803547.6538,
-    "hash": "a3a01222e40832a224640cede807f9ab"
+    "mtime": 1791116140247.0159,
+    "hash": "697af8088747c1a13107e74c7facac6c"
   },
   "src/layouts/ServiceLayout.astro": {
     "mtime": 1790701301122.6755,
@@ -488,8 +488,8 @@
     "hash": "337d2c08c57cdc913d876fc1a4ddfb26"
   },
   "public/entitymap.html": {
-    "mtime": 1790928193283.1096,
-    "hash": "49d36fcb6d3c817e5a90fbca30237318"
+    "mtime": 1791115108594.9866,
+    "hash": "69a80f863ba4e828caee715b52a3f8d7"
   },
   "src/assets/tools/cookie-banner/banner.html": {
     "mtime": 1784919803176.522,
@@ -696,48 +696,48 @@
     "hash": "c6aa4a93787b7290c0417c48372dce64"
   },
   "src/pages/fi/toteutusmallit/cookiebot-opas.md": {
-    "mtime": 1790701301125.2283,
+    "mtime": 1791115245087.0127,
     "hash": "7de235b79b5a7fd505519bea1b7a565d"
   },
   "src/pages/templates/cookiebot-guide.md": {
-    "mtime": 1790701301125.6602,
+    "mtime": 1791115245085.354,
     "hash": "ffd1a103939445ef46dedc96ea479b89"
   },
   "src/pages/templates/openai-ads-pixel-shopify.md": {
-    "mtime": 1790233442461.054,
-    "hash": "f17a9c0fd6a454f24c650ba6e79edd20"
+    "mtime": 1791115250995.7512,
+    "hash": "3d116140620b0b4dc649b29af2b1a862"
   },
   "public/images/blog/chatgpt-pixel-shopify-installation.jpeg": {
     "mtime": 1789053252102.7786,
     "hash": "853af138341534918d4adfbf9b007c56"
   },
   "src/pages/llms.txt.ts": {
-    "mtime": 1789231357251.1592,
-    "hash": "24509cd49231f53ac263f2ede4808f18"
+    "mtime": 1791115215020.317,
+    "hash": "585378e3822d3c5b6a7de51d035710fa"
   },
   "src/assets/blog/chatgpt-pixel-shopify-installation.jpeg": {
     "mtime": 1790490808678.0955,
     "hash": "c908caf05c5ed1d74c41470a6252e0e8"
   },
   "public/ai.txt": {
-    "mtime": 1789232182596.673,
-    "hash": "ed6a5726153e8b92a477610bf34b5641"
+    "mtime": 1791115112966.2512,
+    "hash": "db03b73f199e6c68336c7acfc6964aa5"
   },
   "test/e2e/cookiebot-guide.spec.ts": {
     "mtime": 1790701301126.5093,
     "hash": "92d831bf8077dd7c1a0abe8a4b63bbf7"
   },
   "src/components/FormTypePicker.astro": {
-    "mtime": 1790363847056.107,
-    "hash": "6f8c1660f70c2bb3597a44ab6bb6a41f"
+    "mtime": 1791116162862.965,
+    "hash": "4a1206cab069765350407cafd75433b7"
   },
   "src/data/form-types.js": {
     "mtime": 1790365568107.2637,
     "hash": "dcdb703a93ab7b9429d5043461bbcbf5"
   },
   "src/components/FormTypeReference.astro": {
-    "mtime": 1789912768916.6865,
-    "hash": "1d64b1a47201afc17c4701b636b85c5e"
+    "mtime": 1791116124500.3982,
+    "hash": "ebfe0369b77bcb9f787ac3716f0f0dbf"
   },
   "src/pages/templates/hubspot-form-tracking-gtm.md": {
     "mtime": 1790364527722.0454,
@@ -768,8 +768,8 @@
     "hash": "b41eddc22bbb6b36ba7f2894ab54f3e8"
   },
   "src/pages/tools/form-name-builder.astro": {
-    "mtime": 1789966659977.402,
-    "hash": "508faab822966782e98a0a9314af652e"
+    "mtime": 1791116186946.5312,
+    "hash": "6119a606c754bc8584255d967af60373"
   },
   "src/scripts/content-enhancements.ts": {
     "mtime": 1790185037369.217,
@@ -788,8 +788,8 @@
     "hash": "e15d3ad0b549fd10f05abca246b1dd3a"
   },
   "src/pages/blog/marketing-automation-flows.md": {
-    "mtime": 1790233442457.0889,
-    "hash": "1137a2233212acaf11c3f4c3c108b635"
+    "mtime": 1791115633955.5928,
+    "hash": "ce0564f21584c3655ceea63735806714"
   },
   "src/pages/fi/blog/sivujen-luokittelu-analytiikassa.md": {
     "mtime": 1790701301123.5881,
@@ -828,24 +828,24 @@
     "hash": "a187e6ddeac4b9d9ca0784ae25ef4a16"
   },
   "src/components/Ga4AnnotationBuilder.astro": {
-    "mtime": 1790442125321.9749,
-    "hash": "787e344f7d1bdba902361a183e07c926"
+    "mtime": 1791115965774.8916,
+    "hash": "aab690aec03f1e2a96a4568a970ed540"
   },
   "src/data/ga4-annotations.js": {
-    "mtime": 1790874011637.479,
-    "hash": "fa9ec5cc70cd827cd5ff75b4ad3174b9"
+    "mtime": 1791115568734.6606,
+    "hash": "2020b7d30c711dfb55927797f497f8d0"
   },
   "src/pages/fi/tyokalut/ga4-annotaatiot.astro": {
-    "mtime": 1790415402955.6296,
-    "hash": "69d382a0346a26c03c6c997f5298a50e"
+    "mtime": 1791115636658.4448,
+    "hash": "a88b7c5e15a7a10e3fd6401e5efcfb00"
   },
   "test/e2e/ga4-annotations.spec.ts": {
-    "mtime": 1790415402955.7822,
-    "hash": "cf5607fde6dbf569d4ca40e926d06c68"
+    "mtime": 1791115965774.7031,
+    "hash": "bdfab8122be4914fe7dbe5c7da392a8a"
   },
   "test/ga4-annotations.test.mjs": {
-    "mtime": 1790928404567.5457,
-    "hash": "bb1c4001cad3d15324052f37c363734c"
+    "mtime": 1791115636660.011,
+    "hash": "e36fa8c2e1bbfb6c114165cf59f347f8"
   },
   "test/e2e/header-reflow.spec.ts": {
     "mtime": 1790432353048.9668,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791100890896.439,
-    "hash": "cd481285dd3c36b3bf223b8be97543e1"
+    "mtime": 1791115886426.609,
+    "hash": "a6e32a674430391bd1fe083b5a036c20"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -880,24 +880,24 @@
     "hash": "0211ebb351d043af265ff94f9801ace1"
   },
   ".impeccable/review/ga4-desktop-dark.png": {
-    "mtime": 1790432515867.5017,
-    "hash": "cad7ce5595934c1801a544e197ff65c9"
+    "mtime": 1791116214302.8801,
+    "hash": "166fd5d5df55c1e358cf01bbe7a17770"
   },
   ".impeccable/review/ga4-desktop.png": {
-    "mtime": 1790432515791.2776,
-    "hash": "7a82d1b9fe283438d962150d1aa03434"
+    "mtime": 1791116214232.062,
+    "hash": "70ba622c708b364c3129c116c2c7d32a"
   },
   ".impeccable/review/ga4-mobile-dark.png": {
-    "mtime": 1790432515955.5747,
-    "hash": "52ade9e6af4abea8881361193efe577b"
+    "mtime": 1791116214402.521,
+    "hash": "28a300de05ce3611467e0f4bab38c205"
   },
   ".impeccable/review/ga4-mobile-initial.png": {
-    "mtime": 1790432516659.5662,
-    "hash": "5bf76ae377d6b2aa1c3fe748ed5a500f"
+    "mtime": 1791116215280.2192,
+    "hash": "ade1edb5986ea65d69ac3bca7601161a"
   },
   ".impeccable/review/ga4-mobile.png": {
-    "mtime": 1790432515921.0376,
-    "hash": "69696bc1fc1fd0c2e4d2e03bda5e7cea"
+    "mtime": 1791116214344.7786,
+    "hash": "d7b756198b34ba39b592a38399c3e192"
   },
   "src/assets/blog/examples/example-landscape.jpeg": {
     "mtime": 1790453549813.51,

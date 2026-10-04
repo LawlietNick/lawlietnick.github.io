@@ -12,10 +12,10 @@ test("description completion preserves earlier sentences, avoids duplicates and 
   assert.equal(suggestions(original, 9).every((item) => item.value.startsWith(original)), true);
 });
 
-test("Finnish-only annotation tool does not link to an invented English translation", () => {
-  const links = resolveLanguageLinks({ currentPath: "/fi/tyokalut/ga4-annotaatiot/", isFinnish: true });
-  assert.equal(links.enPath, "/tools/");
-  assert.equal(links.hasLanguageAlternate, false);
+test("Finnish and English annotation tools are a language pair", () => {
+  const links = resolveLanguageLinks({ currentPath: "/fi/tyokalut/ga4-annotaatiot/", isFinnish: true, alternate: { lang: "en", href: "/tools/ga4-annotations/" } });
+  assert.equal(links.enPath, "/tools/ga4-annotations/");
+  assert.equal(links.hasLanguageAlternate, true);
 });
 
 
@@ -23,7 +23,9 @@ test("all templates have bilingual copy, date guidance and relevant suggestions"
   let count = 0;
   for (const category of annotationCategories) for (const template of category.templates) {
     count++;
-    assert.ok(annotationDateGuidance[template.id].startsWith("Valitse GA4:ssa"), template.id);
+    assert.ok(annotationDateGuidance.fi[template.id].startsWith("Valitse GA4:ssa"), template.id);
+    assert.ok(annotationDateGuidance.en[template.id].startsWith("In GA4,"), template.id);
+    assert.ok(template.label.fi && template.label.en, template.id);
     for (const language of ["fi", "en"]) {
       assert.ok(characterCount(`[${category.code}] ${template.title[language]}`) <= 60, template.id);
       const suggestions = getDescriptionSuggestions(category, template.id, language, "");

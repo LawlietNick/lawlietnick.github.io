@@ -23,24 +23,7 @@
           "publisher": "Niko Karppinen",
           "retrieved": "2026-08-06T00:00:00Z",
           "contentType": "definition"
-        },
-        {
-          "chunkId": "c_002",
-          "text": "I help teams improve how they measure, analyze and develop digital work. My work sits between SEO, analytics, technical implementation and practical AI workflows. The goal is simple: clearer decisions, cleaner data and repeatable ways of working.",
-          "sourceUrl": "https://karppinen.one/services/",
-          "pageTitle": "Services",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
         }
-      ],
-      "relations": [
-        { "predicate": "OFFERS", "targetId": "e_003", "targetName": "SEO audits and technical SEO" },
-        { "predicate": "OFFERS", "targetId": "e_004", "targetName": "Analytics and measurement design" },
-        { "predicate": "OFFERS", "targetId": "e_005", "targetName": "GTM, consent and tracking implementation" },
-        { "predicate": "OFFERS", "targetId": "e_006", "targetName": "Reporting, BigQuery and analysis" },
-        { "predicate": "OFFERS", "targetId": "e_007", "targetName": "AI-assisted SEO and analytics workflows" },
-        { "predicate": "OFFERS", "targetId": "e_008", "targetName": "Digital operating models" }
       ]
     },
     {
@@ -67,115 +50,6 @@
           "publisher": "Niko Karppinen",
           "retrieved": "2026-08-06T00:00:00Z",
           "contentType": "example"
-        }
-      ],
-      "relations": []
-    },
-    {
-      "entityId": "e_003",
-      "@type": "Service",
-      "name": "SEO audits and technical SEO",
-      "description": "Technical SEO audits that surface issues, content gaps and site patterns holding organic growth back, delivered as prioritised recommendations.",
-      "audienceType": "technical",
-      "hasChunks": [
-        {
-          "chunkId": "c_005",
-          "text": "Find technical issues, content gaps and site patterns that hold organic growth back. Recommendations come prioritised, not as a 200-row souvenir.",
-          "sourceUrl": "https://karppinen.one/services/",
-          "pageTitle": "Services",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        }
-      ]
-    },
-    {
-      "entityId": "e_004",
-      "@type": "Service",
-      "name": "Analytics and measurement design",
-      "description": "Measurement design that defines what to track and how GA4, the dataLayer and conversion tracking should support decisions.",
-      "audienceType": "technical",
-      "hasChunks": [
-        {
-          "chunkId": "c_006",
-          "text": "Define what needs to be measured, why it matters and how GA4, the dataLayer and conversion tracking should support decisions.",
-          "sourceUrl": "https://karppinen.one/services/",
-          "pageTitle": "Services",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        }
-      ]
-    },
-    {
-      "entityId": "e_005",
-      "@type": "Service",
-      "name": "GTM, consent and tracking implementation",
-      "description": "Planning and implementing GTM, consent logic, conversion tags and marketing pixels so the setup stays understandable after launch.",
-      "audienceType": "technical",
-      "hasChunks": [
-        {
-          "chunkId": "c_007",
-          "text": "Plan and implement GTM, consent logic, conversion tags and marketing pixels so the setup stays understandable after launch.",
-          "sourceUrl": "https://karppinen.one/services/",
-          "pageTitle": "Services",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        }
-      ]
-    },
-    {
-      "entityId": "e_006",
-      "@type": "Service",
-      "name": "Reporting, BigQuery and analysis",
-      "description": "Turning GA4, BigQuery and Data Studio into reporting teams can actually use.",
-      "audienceType": "technical",
-      "hasChunks": [
-        {
-          "chunkId": "c_008",
-          "text": "Turn GA4, BigQuery and Data Studio into reporting people can use without a weekly archaeology session.",
-          "sourceUrl": "https://karppinen.one/services/",
-          "pageTitle": "Services",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        }
-      ]
-    },
-    {
-      "entityId": "e_007",
-      "@type": "Service",
-      "name": "AI-assisted SEO and analytics workflows",
-      "description": "Practical AI-assisted workflows for SEO, analytics QA, audits, documentation and recurring checks, with humans making the decisions.",
-      "audienceType": "technical",
-      "hasChunks": [
-        {
-          "chunkId": "c_009",
-          "text": "Build practical workflows for SEO, analytics QA, audits, documentation and recurring checks, with humans still making the decisions.",
-          "sourceUrl": "https://karppinen.one/services/",
-          "pageTitle": "Services",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        }
-      ]
-    },
-    {
-      "entityId": "e_008",
-      "@type": "Service",
-      "name": "Digital operating models",
-      "description": "Clarifying ownership, handoffs, documentation and repeatable processes across marketing, analytics, content and development.",
-      "audienceType": "executive",
-      "hasChunks": [
-        {
-          "chunkId": "c_010",
-          "text": "Clarify ownership, handoffs, documentation and repeatable processes across marketing, analytics, content and development.",
-          "sourceUrl": "https://karppinen.one/services/",
-          "pageTitle": "Services",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
         }
       ]
     },

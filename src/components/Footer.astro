@@ -1,7 +1,8 @@
 ---
 import ButtonLink from "./ButtonLink.astro";
 import LanguageMenu from "./LanguageMenu.astro";
-import { profiles, authorName } from "../data/site.js";
+import { profiles, authorName, showServices, contactUrl } from "../data/site.js";
+import { toolkit } from "../data/toolkit.js";
 
 const {
   fi,
@@ -28,7 +29,7 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
       <div class="banner__inner">
         <div class="banner__content">
           <h2>{t.bannerTitle} <em>{t.bannerAccent}</em></h2>
-          <ButtonLink href="#" label={t.bannerBtn} />
+          <ButtonLink href={contactUrl} label={t.bannerBtn} />
         </div>
       </div>
     </section>
@@ -56,16 +57,19 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
           <h3 class="site-footer__col-title">{t.explore}</h3>
           <ul class="site-footer__links">
             <li><a href={root} class="site-footer__link">{t.home}</a></li>
-            <li><a href={servicesHref} class="site-footer__link">{t.work}</a></li>
+            {showServices && <li><a href={servicesHref} class="site-footer__link">{t.work}</a></li>}
             <li><a href={aboutHref} class="site-footer__link">{t.about}</a></li>
-            <li><a href={root + "#writing"} class="site-footer__link">{t.writing}</a></li>
+            <li><a href={root + "blog/"} class="site-footer__link">{t.writing}</a></li>
+            {toolkit.map((item) => (
+              <li><a href={root + (fi ? item.fiSlug : item.slug) + "/"} class="site-footer__link">{(fi ? item.fi : item.en).label}</a></li>
+            ))}
           </ul>
         </nav>
 
         <div>
           <h3 class="site-footer__col-title">{t.contact}</h3>
           <p class="site-footer__contact-text">{contactText}</p>
-          <ButtonLink href="#" label={t.contact} class="site-footer__cta" />
+          <ButtonLink href={contactUrl} label={t.contact} class="site-footer__cta" />
         </div>
       </div>
 

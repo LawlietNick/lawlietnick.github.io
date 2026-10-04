@@ -10,7 +10,7 @@ const title = "Form name builder";
 const summary = `Answer one question about your form and get a consistent value to track it with, from a controlled list of ${formTypes.length} types.`;
 ---
 
-<Base title={title} description={summary}>
+<Base title={title} description={summary} alternate={{ lang: "fi", href: "/fi/tyokalut/lomakkeen-nimen-muodostaja/" }}>
   <Breadcrumb
     crumbs={[
       { label: "Home", href: "/", icon: true },
@@ -21,8 +21,8 @@ const summary = `Answer one question about your form and get a consistent value 
 
   <ToolHero title={title} summary={summary}>
     <p class="tool-note">
-      Name a form yourself and reporting depends on whoever named it. <em>Contact</em>,
-      <em>Get in Touch</em> and <em>Contact Form EN</em> become three rows instead of one.
+      Name a form yourself and reporting depends on whoever named it. <em>Contact</em>, <em>Get in Touch</em> and <em>Contact Form EN</em> become
+      three rows instead of one.
       A form type fixes that above the name.
     </p>
   </ToolHero>

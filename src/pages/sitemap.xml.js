@@ -1,25 +1,24 @@
 import { interactiveTools } from "../data/interactive-tools.js";
-import { siteConfig } from "../data/site.js";
+import { siteConfig, showServices } from "../data/site.js";
 
 export const prerender = true;
 
 const staticRoutes = [
   "/",
-  "/services/",
   "/blog/",
   "/about/",
   "/privacy/",
   "/fi/",
   "/fi/minusta/",
-  "/fi/palvelut/",
   "/fi/blog/",
   "/fi/privacy/",
+  ...(showServices ? ["/services/", "/fi/palvelut/"] : []),
 ];
 
 const blogModules = import.meta.glob("./blog/*.md", { eager: true });
 const finnishBlogModules = import.meta.glob("./fi/blog/*.md", { eager: true });
-const serviceModules = import.meta.glob("./services/*.md", { eager: true });
-const finnishServiceModules = import.meta.glob("./fi/palvelut/*.md", { eager: true });
+const serviceModules = showServices ? import.meta.glob("./services/*.md", { eager: true }) : {};
+const finnishServiceModules = showServices ? import.meta.glob("./fi/palvelut/*.md", { eager: true }) : {};
 
 // toolkit: a category hub is only indexable (and in the sitemap) once it has items
 // (markdown entries or interactive .astro tools)
@@ -41,8 +40,8 @@ const escapeXml = (value) =>
 
 const uniqueRoutes = (routes) => [...new Set(routes)].sort();
 
-// noindex pages never belong in the sitemap
-const isIndexable = (page) => !page.frontmatter?.noindex;
+// noindex and draft pages never belong in the sitemap
+const isIndexable = (page) => !page.frontmatter?.noindex && !page.frontmatter?.draft;
 // lastmod comes from frontmatter where the content type has a date; static hubs have none
 const lastmodOf = (page) => page.frontmatter?.updated ?? page.frontmatter?.date;
 

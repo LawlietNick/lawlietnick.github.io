@@ -31,11 +31,11 @@ test("creates and copies an annotation, including a completed description placeh
   await page.goto(path);
   const title = page.getByLabel("Otsikko (pakollinen)");
   const description = page.getByLabel("Kuvaus", { exact: true });
-  await expect(title).toHaveValue("Uutiskirje: [aihe]");
+  await expect(title).toHaveValue("[aihe]");
   await expect(page.getByRole("button", { name: "Kopioi otsikko" })).toBeDisabled();
-  await title.fill("Uutiskirje: Black Friday");
+  await title.fill("Black Friday");
   await page.getByRole("button", { name: "Kopioi otsikko" }).click();
-  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe("[MPR] Uutiskirje: Black Friday");
+  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe("[NEWSLETTER] Black Friday");
   await description.focus();
   await page.getByRole("button", { name: "Uutiskirje lähetettiin [kohderyhmälle].", exact: true }).click();
   await expect(page.getByRole("button", { name: "Kopioi kuvaus" })).toBeDisabled();
@@ -58,10 +58,10 @@ test("completes a typed sentence by keyboard and enforces GA4 character limits",
   await expect(description).toHaveValue("Kampanja kohdistettiin uusille asiakkaille.");
   await expect(description).toBeFocused();
   const title = page.getByLabel("Otsikko (pakollinen)");
-  await title.fill("x".repeat(54));
+  await title.fill("x".repeat(49)); // "[CAMPAIGN] " + 49 = 60
   await expect(page.locator("[data-title-count]")).toHaveText("60 / 60");
   await expect(page.getByRole("button", { name: "Kopioi otsikko" })).toBeEnabled();
-  await title.fill("x".repeat(55));
+  await title.fill("x".repeat(50));
   await expect(title).toHaveAttribute("aria-invalid", "true");
   await expect(page.getByRole("button", { name: "Kopioi otsikko" })).toBeDisabled();
   await description.fill("x".repeat(150));
@@ -78,7 +78,7 @@ test("switches output language, remembers it and preserves drafts and custom wor
   const title = page.getByLabel("Otsikko (pakollinen)");
   const description = page.getByLabel("Kuvaus", { exact: true });
   await page.getByRole("radio", { name: "English", exact: true }).check();
-  await expect(title).toHaveValue("Newsletter: [topic]");
+  await expect(title).toHaveValue("[topic]");
   await description.focus();
   await expect(page.getByRole("button", { name: "Newsletter sent to [audience].", exact: true })).toBeVisible();
   await title.fill("Oma otsikko");
@@ -87,13 +87,13 @@ test("switches output language, remembers it and preserves drafts and custom wor
   await expect(title).toHaveValue("Oma otsikko");
   await expect(description).toHaveValue("Omat havainnot säilyvät.");
   await page.getByLabel("Tapahtumapohja").selectOption("pr");
-  await expect(title).toHaveValue("Tiedote julkaistu: [aihe]");
+  await expect(title).toHaveValue("[aihe]");
   await page.getByLabel("Tapahtumapohja").selectOption("newsletter");
   await expect(title).toHaveValue("Oma otsikko");
   await expect(description).toHaveValue("Omat havainnot säilyvät.");
   await page.getByRole("radio", { name: "English", exact: true }).check();
   await page.reload();
-  await expect(title).toHaveValue("Newsletter: [topic]");
+  await expect(title).toHaveValue("[topic]");
   await expect(page.locator("html")).toHaveAttribute("lang", "fi");
 });
 
@@ -108,15 +108,15 @@ test("handles clipboard rejection honestly and allows manual copying", async ({ 
   expect(await description.evaluate((el: HTMLTextAreaElement) => el.selectionEnd - el.selectionStart)).toBe("Muutos julkaistiin GTM:ssä.".length);
 });
 
-test("is discoverable only on the Finnish hub and works after client navigation", async ({ page }) => {
+test("is listed on both hubs as a language pair and works after client navigation", async ({ page }) => {
   await page.goto("/fi/tyokalut/");
   await page.getByRole("link", { name: /GA4-annotaatiotyökalu/ }).click();
-  await expect(page.getByLabel("Otsikko (pakollinen)")).toHaveValue("Uutiskirje: [aihe]");
+  await expect(page.getByLabel("Otsikko (pakollinen)")).toHaveValue("[aihe]");
   await page.getByRole("radio", { name: "Analytiikan ja seurannan muutokset [DATA]" }).check();
   await expect(page.locator("[data-prefix]")).toHaveText("[DATA]");
-  await expect(page.locator('link[hreflang="en"]')).toHaveCount(0);
+  await expect(page.locator('link[hreflang="en"]')).toHaveAttribute("href", /\/tools\/ga4-annotations\/$/);
   await page.goto("/tools/");
-  await expect(page.getByRole("link", { name: /GA4-annotaatiotyökalu/ })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /GA4 annotation builder/ })).toHaveCount(1);
 });
 
 test("renders the active writing flow on desktop and mobile in both themes", async ({ page }) => {
@@ -169,7 +169,7 @@ test("language changes preserve draft language and mobile category controls stay
   await page.getByLabel("Kategoria", { exact: true }).selectOption("ADS");
   await page.getByLabel("Tapahtumapohja").selectOption("offline");
   const title = page.getByLabel("Otsikko (pakollinen)");
-  await expect(title).toHaveValue("Offline-mainonta: [kampanja]");
+  await expect(title).toHaveValue("[media]: [kampanja]");
   await expect(page.locator('[data-color-name]')).toHaveText("Turkoosi");
   await title.fill("Radio: [INC-123]");
   await page.getByRole("radio", { name: "English", exact: true }).check();
@@ -205,4 +205,18 @@ test("compact layout fits narrow screens and popups clear the header in short vi
   await page.setViewportSize({ width: 320, height: 844 });
   await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
   expect(await page.locator('[data-annotation-builder]').evaluate((root) => [...root.querySelectorAll('*')].every((el) => el.getBoundingClientRect().right <= innerWidth))).toBe(true);
+});
+
+test("English page has English UI, no language switch and English-only output", async ({ page }) => {
+  await page.goto("/tools/ga4-annotations/");
+  await expect(page.locator('input[name="annotation-language"]')).toHaveCount(0);
+  const title = page.getByLabel("Title (required)");
+  await expect(title).toHaveValue("[topic]");
+  await expect(page.getByRole("button", { name: "Copy title" })).toBeDisabled();
+  await title.fill("Black Friday");
+  await page.getByRole("button", { name: "Copy title" }).click();
+  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe("[NEWSLETTER] Black Friday");
+  await page.getByLabel("Description", { exact: true }).focus();
+  await expect(page.getByRole("button", { name: "Newsletter sent to [audience].", exact: true })).toBeVisible();
+  await expect(page.getByLabel("Category", { exact: true }).first()).toContainText("Marketing and PR");
 });

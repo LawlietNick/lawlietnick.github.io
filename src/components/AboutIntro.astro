@@ -4,7 +4,7 @@
 import { Picture } from "astro:assets";
 import ButtonLink from "./ButtonLink.astro";
 import portrait from "../assets/about/portrait.jpeg";
-import { siteConfig } from "../data/site.js";
+import { siteConfig, contactUrl } from "../data/site.js";
 
 const { fi = false } = Astro.props;
 
@@ -14,7 +14,7 @@ const c = fi
       tagline: "Autan tiimejä korjaamaan seurantaa, ymmärtämään dataansa ja parantamaan verkkosivustojaan.",
       lead: "Pidän siitä, että sekavasta seurannasta, hajanaisista raporteista ja epäselvästä sivustorakenteesta saa vähitellen jotain järkevää: kokonaisuuden, josta näkee, mitä tapahtuu, ja jonka pohjalta voi päättää, mitä tehdään seuraavaksi.",
       cta1: "Lue kirjoituksiani", cta1Href: "/fi/blog/",
-      cta2: "Ota yhteyttä", cta2Href: "mailto:nicknoir@gmail.com",
+      cta2: "Ota yhteyttä", cta2Href: contactUrl,
       status: "Vapaana valikoituihin projekteihin", stat: "Vuodesta 2017",
       employerLabel: "Työskentelen yrityksessä",
       portraitAlt: "Niko Karppinen hymyilee kädet ristissä vaaleassa neulepuserossa vaalean seinän edessä",
@@ -31,7 +31,7 @@ const c = fi
       tagline: "I help teams fix their tracking, make sense of their data and improve their websites.",
       lead: "I like untangling messy tracking setups, bringing scattered reports together and making site structures clearer. I want people to understand what is happening and decide what to do next.",
       cta1: "Read my writing", cta1Href: "/blog/",
-      cta2: "Get in touch", cta2Href: "mailto:nicknoir@gmail.com",
+      cta2: "Get in touch", cta2Href: contactUrl,
       status: "Available for selected projects", stat: "Since 2017",
       employerLabel: "Working at",
       portraitAlt: "Niko Karppinen smiling with arms folded, wearing a cream knit jumper against a pale wall",

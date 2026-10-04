@@ -209,6 +209,9 @@ for (const type of types) {
       errors.push(`${entry.file}: alternate target ${alt.href} does not exist.`);
       continue;
     }
+    if (target.data.draft && !entry.data.draft) {
+      errors.push(`${entry.file}: alternate ${alt.href} is a draft — draft this page too or remove 'alternate' until both are published.`);
+    }
     if (target.data.alternate?.href !== route) {
       errors.push(`${target.file}: reciprocal alternate must point back to ${route}.`);
     }

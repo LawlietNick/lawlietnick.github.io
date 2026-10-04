@@ -1,4 +1,6 @@
 ---
+import { showServices } from "../data/site.js";
+
 const { fi = false } = Astro.props;
 
 const copy = fi
@@ -138,13 +140,13 @@ const cta = fi
       eyebrow: "Seuraava askel",
       text: "Jos mittarit eivät ohjaa päätöksiä, mittaaminen on usein suunniteltu puutteellisesti. Tilanne on korjattavissa.",
       label: "Keskustele seurantasuunnitelmasta",
-      href: "/fi/palvelut/seurannan-toteutussuunnitelma/",
+      href: showServices ? "/fi/palvelut/seurannan-toteutussuunnitelma/" : "/fi/minusta/",
     }
   : {
       eyebrow: "Next step",
       text: "Metrics that don't change decisions usually trace back to a measurement setup that was never planned. That is fixable.",
       label: "Discuss a tracking plan",
-      href: "/services/tracking-implementation-plan/",
+      href: showServices ? "/services/tracking-implementation-plan/" : "/about/",
     };
 
 const toolUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;

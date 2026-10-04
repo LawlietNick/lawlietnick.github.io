@@ -1,12 +1,17 @@
 // Interactive Toolkit tools — .astro pages (not markdown), listed on the hub
 // alongside content tools. `category` matches a toolkit.js slug. Add a `fi`
-// block once a Finnish version of the tool page exists.
-export const interactiveTools = [
+// block once a Finnish version of the tool page exists. `draft: true` keeps the
+// tool out of hubs, sitemap and llms.txt and out of the production build.
+export const allInteractiveTools = [
   {
     category: "tools",
     slug: "ga4-annotations",
     icon: "GA4",
     order: 7,
+    en: {
+      title: "GA4 annotation builder",
+      summary: "Write consistent GA4 annotations with event templates and description suggestions.",
+    },
     fi: {
       slug: "ga4-annotaatiot",
       title: "GA4-annotaatiotyökalu",
@@ -51,6 +56,7 @@ export const interactiveTools = [
   {
     category: "tools",
     slug: "ga4-report-builder",
+    draft: true,
     icon: "▥",
     order: 4,
     en: {
@@ -78,5 +84,12 @@ export const interactiveTools = [
       title: "Form name builder",
       summary: "Pick a form type from a controlled taxonomy and copy the exact value to track.",
     },
+    fi: {
+      slug: "lomakkeen-nimen-muodostaja",
+      title: "Lomakkeen nimen muodostaja",
+      summary: "Valitse lomaketyyppi rajatusta taksonomiasta ja kopioi tarkka arvo seurantaan.",
+    },
   },
 ];
+
+export const interactiveTools = allInteractiveTools.filter((t) => !t.draft);

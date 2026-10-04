@@ -55,18 +55,6 @@ export function resolveLanguageLinks({ currentPath, isFinnish, frontmatter, alte
     };
   }
 
-  // This tool currently exists only in Finnish; the English menu goes to the hub,
-  // without advertising the hub as an equivalent translation to search engines.
-  if (currentPath === "/fi/tyokalut/ga4-annotaatiot/") {
-    return {
-      enPath: "/tools/",
-      fiPath: currentPath,
-      languageHref: "/tools/",
-      hasLanguageAlternate: false,
-      postWithoutTranslation: true,
-    };
-  }
-
   if (isPost) {
     // A translated pair is handled above. Untranslated toolkit entries point
     // to the matching collection; untranslated blog posts point home.

@@ -1,8 +1,50 @@
 ---
 import { annotationCategories, annotationDateGuidance } from "../data/ga4-annotations.js";
+
+// fi: Finnish UI with a FI/EN output switch. Otherwise English UI and English-only output.
+const { fi = false } = Astro.props;
+const ui = fi ? "fi" : "en";
+const guidance = annotationDateGuidance[ui];
+const copy = fi
+  ? {
+      ariaLabel: "GA4-annotaation luonti", category: "Kategoria", heading: "Muotoile merkintä", template: "Tapahtumapohja",
+      custom: "Oma merkintä", title: "Otsikko", required: "(pakollinen)", description: "Kuvaus", suggestionsToggle: "Ehdotukset",
+      placeholder: { fi: "Mitä tapahtui, missä ja miksi?", en: "What happened, where and why?" },
+      suggestionsLabel: "Ehdotuksia kuvaukseen", close: "Sulje", suggestionsList: "Kuvauksen ehdotukset",
+      date: "Päivämäärä tai aikaväli", color: "Väri", noscript: "Ota JavaScript käyttöön, jotta voit valita tapahtumapohjan ja käyttää tekstiehdotuksia.",
+      copyTitle: "Kopioi otsikko", copyDescription: "Kopioi kuvaus", copied: "Kopioitu",
+      titleHelp: "Täydennä hakasulkeissa oleva kohta.", titleEmpty: "Kirjoita otsikko.", titleOk: "Tunniste sisältyy otsikkoon ja merkkimäärään.",
+      shortenTitle: "Lyhennä otsikkoa {n} merkkiä.", shortenDescription: "Lyhennä kuvausta {n} merkkiä.",
+      fillPlaceholders: "Täydennä hakasulkeissa olevat kohdat ennen kopiointia.", descriptionOk: "Valinnainen. Lisää tapahtumaan olennaista taustaa.",
+      completeSentence: "Täydennä lausetta", addToDescription: "Lisää kuvaukseen", overLimit: "Ylittää rajan {n} merkillä",
+      addedFill: "Ehdotus lisätty. Täydennä valittu kohta.", added: "Ehdotus lisätty kuvaukseen.",
+      opened: "Kuvausehdotukset avattu. Valitse ehdotus tai jatka kirjoittamista.",
+      titleCopied: "Otsikko kopioitu.", descriptionCopied: "Kuvaus kopioitu.",
+      titleCopyFailed: "Kopiointi ei onnistunut. Kopioi otsikko käsin ja lisää alkuun [{code}].",
+      descriptionCopyFailed: "Kopiointi ei onnistunut. Teksti on valittu: kopioi se käsin.",
+    }
+  : {
+      ariaLabel: "Create a GA4 annotation", category: "Category", heading: "Write the annotation", template: "Event template",
+      custom: "Custom note", title: "Title", required: "(required)", description: "Description", suggestionsToggle: "Suggestions",
+      placeholder: { fi: "What happened, where and why?", en: "What happened, where and why?" },
+      suggestionsLabel: "Description suggestions", close: "Close", suggestionsList: "Description suggestions",
+      date: "Date or date range", color: "Colour", noscript: "Turn on JavaScript to pick an event template and use the text suggestions.",
+      copyTitle: "Copy title", copyDescription: "Copy description", copied: "Copied",
+      titleHelp: "Fill in the part in square brackets.", titleEmpty: "Write a title.", titleOk: "The tag is part of the title and its character count.",
+      shortenTitle: "Shorten the title by {n} characters.", shortenDescription: "Shorten the description by {n} characters.",
+      fillPlaceholders: "Fill in the parts in square brackets before copying.", descriptionOk: "Optional. Add useful context about what happened.",
+      completeSentence: "Complete the sentence", addToDescription: "Add to the description", overLimit: "{n} characters over the limit",
+      addedFill: "Suggestion added. Fill in the selected part.", added: "Suggestion added to the description.",
+      opened: "Description suggestions opened. Pick one or keep typing.",
+      titleCopied: "Title copied.", descriptionCopied: "Description copied.",
+      titleCopyFailed: "Copying failed. Copy the title by hand and start it with [{code}].",
+      descriptionCopyFailed: "Copying failed. The text is selected: copy it by hand.",
+    };
+const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
 ---
 
-<section class="annotation-builder" data-annotation-builder aria-label="GA4-annotaation luonti">
+<section class="annotation-builder" data-annotation-builder aria-label={copy.ariaLabel}>
+  <script type="application/json" data-annotation-config set:html={configJson} />
   <!-- THESIS: A category-led writing desk turns an event into a useful, copyable GA4 note.
        OWN-WORLD: Inherit the site's Fraunces headings, Roboto Flex UI, neutral surfaces and purple controls.
        STORY: Choose category and template; edit the actual output; complete a sentence; copy each field.
@@ -10,75 +52,77 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
        FORM: Established tool surface, code-led extension; composition settled in the user conversation.
        FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
   <div class="annotation-category-mobile">
-    <label class="annotation-label" for="annotation-category-mobile">Kategoria</label>
+    <label class="annotation-label" for="annotation-category-mobile">{copy.category}</label>
     <select id="annotation-category-mobile" data-category-select>
-      {annotationCategories.map((category) => <option value={category.code}>{category.label} [{category.code}]</option>)}
+      {annotationCategories.map((category) => <option value={category.code}>{category.label[ui]} [{category.code}]</option>)}
     </select>
   </div>
   <fieldset class="annotation-categories">
-    <legend>Kategoria</legend>
+    <legend>{copy.category}</legend>
     {annotationCategories.map((category, index) => (
       <label class="annotation-category" style={`--annotation-color: ${category.color}`}>
         <input type="radio" name="annotation-category" value={category.code} checked={index === 0} />
         <span class="annotation-dot" aria-hidden="true"></span>
-        <span class="annotation-category-name">{category.label}<small>[{category.code}]</small></span>
+        <span class="annotation-category-name">{category.label[ui]}<small>[{category.code}]</small></span>
         <svg class="annotation-check" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" /></svg>
       </label>
     ))}
-    <p class="annotation-category-hint" data-category-hint>{annotationCategories[0].hint}</p>
+    <p class="annotation-category-hint" data-category-hint>{annotationCategories[0].hint[ui]}</p>
   </fieldset>
 
   <div class="annotation-editor">
     <div class="annotation-editor-heading">
-      <h2>Muotoile merkintä</h2>
-      <fieldset class="annotation-language">
-        <legend>Annotaation kieli</legend>
-        <label><input type="radio" name="annotation-language" value="fi" checked /><span>Suomi</span></label>
-        <label><input type="radio" name="annotation-language" value="en" /><span lang="en">English</span></label>
-      </fieldset>
+      <h2>{copy.heading}</h2>
+      {fi && (
+        <fieldset class="annotation-language">
+          <legend>Annotaation kieli</legend>
+          <label><input type="radio" name="annotation-language" value="fi" checked /><span>Suomi</span></label>
+          <label><input type="radio" name="annotation-language" value="en" /><span lang="en">English</span></label>
+        </fieldset>
+      )}
     </div>
-    <p class="annotation-language-note" data-language-note hidden>Kielivalinta vaihtaa pohjat ja ehdotukset. Omat tekstit säilyvät alkuperäisellä kielellä.</p>
+    {fi && <p class="annotation-language-note" data-language-note hidden>Kielivalinta vaihtaa pohjat ja ehdotukset. Omat tekstit säilyvät alkuperäisellä kielellä.</p>}
 
     <div class="annotation-template-row">
       <div>
-        <label class="annotation-label" for="annotation-template">Tapahtumapohja</label>
+        <label class="annotation-label" for="annotation-template">{copy.template}</label>
         <select id="annotation-template" data-template>
-          {annotationCategories[0].templates.map((template) => <option value={template.id}>{template.label} [{template.code}]</option>)}
-          <option value="custom">Oma merkintä [{annotationCategories[0].code}]</option>
+          {annotationCategories[0].templates.map((template) => <option value={template.id}>{template.label[ui]} [{template.code}]</option>)}
+          <option value="custom">{copy.custom} [{annotationCategories[0].code}]</option>
         </select>
       </div>
     </div>
 
     <div class="annotation-field">
-      <div class="annotation-field-heading"><label class="annotation-label" for="annotation-title">Otsikko <span class="annotation-required">(pakollinen)</span></label><span class="annotation-count" id="annotation-title-count" data-title-count>0 / 60</span></div>
+      <div class="annotation-field-heading"><label class="annotation-label" for="annotation-title">{copy.title} <span class="annotation-required">{copy.required}</span></label><span class="annotation-count" id="annotation-title-count" data-title-count>0 / 60</span></div>
       <div class="annotation-title-input"><span data-prefix>[{annotationCategories[0].templates[0].code}]</span><input id="annotation-title" data-title type="text" autocomplete="off" required aria-describedby="annotation-title-count annotation-title-help" /></div>
-      <div class="annotation-field-footer"><p id="annotation-title-help" data-title-help>Täydennä hakasulkeissa oleva kohta.</p><button type="button" class="annotation-copy" data-copy-title disabled>Kopioi otsikko</button></div>
+      <div class="annotation-field-footer"><p id="annotation-title-help" data-title-help>{copy.titleHelp}</p><button type="button" class="annotation-copy" data-copy-title disabled>{copy.copyTitle}</button></div>
     </div>
 
     <div class="annotation-field">
-      <div class="annotation-field-heading"><label class="annotation-label" for="annotation-description">Kuvaus</label><button class="annotation-suggestions-toggle" type="button" data-toggle-suggestions aria-expanded="false" aria-controls="annotation-suggestions">Ehdotukset</button><span class="annotation-count" id="annotation-description-count" data-description-count>0 / 150</span></div>
+      <div class="annotation-field-heading"><label class="annotation-label" for="annotation-description">{copy.description}</label><button class="annotation-suggestions-toggle" type="button" data-toggle-suggestions aria-expanded="false" aria-controls="annotation-suggestions">{copy.suggestionsToggle}</button><span class="annotation-count" id="annotation-description-count" data-description-count>0 / 150</span></div>
       <div class="annotation-description-input">
-        <textarea id="annotation-description" data-description rows="3" aria-describedby="annotation-description-count annotation-description-help" placeholder="Mitä tapahtui, missä ja miksi?"></textarea>
+        <textarea id="annotation-description" data-description rows="3" aria-describedby="annotation-description-count annotation-description-help" placeholder={copy.placeholder[ui]}></textarea>
         <div id="annotation-suggestions" class="annotation-suggestions" data-suggestions hidden>
-          <div class="annotation-suggestions-heading"><p data-suggestions-label>Ehdotuksia kuvaukseen</p><button type="button" data-close-suggestions>Sulje</button></div>
-          <ul aria-label="Kuvauksen ehdotukset" data-suggestion-list></ul>
+          <div class="annotation-suggestions-heading"><p data-suggestions-label>{copy.suggestionsLabel}</p><button type="button" data-close-suggestions>{copy.close}</button></div>
+          <ul aria-label={copy.suggestionsList} data-suggestion-list></ul>
         </div>
       </div>
-      <div class="annotation-field-footer"><p id="annotation-description-help" data-description-help>Valinnainen. Lisää tapahtumaan olennaista taustaa.</p><button type="button" class="annotation-copy" data-copy-description disabled>Kopioi kuvaus</button></div>
+      <div class="annotation-field-footer"><p id="annotation-description-help" data-description-help>{copy.descriptionOk}</p><button type="button" class="annotation-copy" data-copy-description disabled>{copy.copyDescription}</button></div>
       <span class="visually-hidden" role="status" data-suggestion-status></span>
     </div>
 
     <p class="annotation-status visually-hidden" role="status" aria-live="polite" data-status></p>
     <div class="annotation-instructions">
-      <h3>Päivämäärä tai aikaväli</h3>
-      <p data-date-guidance>{annotationDateGuidance.newsletter}</p>
+      <h3>{copy.date}</h3>
+      <p data-date-guidance>{guidance.newsletter}</p>
     </div>
     <div class="annotation-instructions annotation-color-guide">
-      <h3>Väri</h3>
-      <p class="annotation-color-note"><span class="annotation-dot" data-color-dot aria-hidden="true"></span><strong data-color-name>Violetti</strong></p>
+      <h3>{copy.color}</h3>
+      <p class="annotation-color-note"><span class="annotation-dot" data-color-dot aria-hidden="true"></span><strong data-color-name>{annotationCategories[0].colorName[ui]}</strong></p>
     </div>
   </div>
-  <noscript>Ota JavaScript käyttöön, jotta voit valita tapahtumapohjan ja käyttää tekstiehdotuksia.</noscript>
+  <noscript>{copy.noscript}</noscript>
 </section>
 
 <script>
@@ -99,11 +143,14 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
     const status = el<HTMLElement>("[data-status]");
     const toggleSuggestions = el<HTMLButtonElement>("[data-toggle-suggestions]");
     const categorySelect = el<HTMLSelectElement>("[data-category-select]");
+    const { ui, copy } = JSON.parse(el("[data-annotation-config]").textContent!) as { ui: "fi" | "en"; copy: Record<string, any> };
+    const fill = (text: string, values: Record<string, string | number>) => text.replace(/\{(\w+)\}/g, (_, name) => String(values[name]));
+    const guidance = annotationDateGuidance[ui] as Record<string, string>;
     const dismissedSuggestions = new Set<string>();
-    let titleLanguage = "fi";
+    let titleLanguage: string = ui;
     let descriptionLanguage = "";
     let category = annotationCategories[0];
-    let language: "fi" | "en" = "fi";
+    let language: "fi" | "en" = ui;
     let templateId = category.templates[0].id;
     // Keep edits when exploring templates; drafts live only on this page.
     const drafts = new Map<string, { title: string; description: string; language: "fi" | "en"; titleLanguage: string; descriptionLanguage: string }>();
@@ -113,7 +160,7 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
     const fullTitle = () => `[${code()}] ${title.value}`;
 
     try {
-      if (localStorage.getItem("ga4-annotation-language") === "en") language = "en";
+      if (ui === "fi" && localStorage.getItem("ga4-annotation-language") === "en") language = "en";
     } catch { /* Language choice works even when browser storage is unavailable. */ }
 
     function saveDraft() {
@@ -123,8 +170,8 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
     function updateFields() {
       const titleLength = characterCount(fullTitle());
       const descriptionLength = characterCount(description.value);
-      const titleIssue = !title.value.trim() ? "Kirjoita otsikko." : titleLength > 60 ? `Lyhennä otsikkoa ${titleLength - 60} merkkiä.` : hasPlaceholder(title.value) ? "Täydennä hakasulkeissa olevat kohdat ennen kopiointia." : "Tunniste sisältyy otsikkoon ja merkkimäärään.";
-      const descriptionIssue = descriptionLength > 150 ? `Lyhennä kuvausta ${descriptionLength - 150} merkkiä.` : hasPlaceholder(description.value) ? "Täydennä hakasulkeissa olevat kohdat ennen kopiointia." : "Valinnainen. Lisää tapahtumaan olennaista taustaa.";
+      const titleIssue = !title.value.trim() ? copy.titleEmpty : titleLength > 60 ? fill(copy.shortenTitle, { n: titleLength - 60 }) : hasPlaceholder(title.value) ? copy.fillPlaceholders : copy.titleOk;
+      const descriptionIssue = descriptionLength > 150 ? fill(copy.shortenDescription, { n: descriptionLength - 150 }) : hasPlaceholder(description.value) ? copy.fillPlaceholders : copy.descriptionOk;
       el("[data-title-count]").textContent = `${titleLength} / 60`;
       el("[data-description-count]").textContent = `${descriptionLength} / 150`;
       el("[data-title-help]").textContent = titleIssue;
@@ -143,7 +190,7 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
       const draft = drafts.get(key());
       const template = selectedTemplate();
       el("[data-prefix]").textContent = `[${code()}]`;
-      el("[data-date-guidance]").textContent = annotationDateGuidance[templateId] ?? annotationDateGuidance.custom;
+      el("[data-date-guidance]").textContent = guidance[templateId] ?? guidance.custom;
       title.value = draft ? (template && draft.title === template.title[draft.language] ? template.title[language] : draft.title) : template?.title[language] ?? "";
       titleLanguage = !draft || (template && draft.title === template.title[draft.language]) ? language : draft.titleLanguage;
       descriptionLanguage = draft?.descriptionLanguage ?? "";
@@ -183,7 +230,7 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
       const wasHidden = suggestions.hidden;
       const items = getDescriptionSuggestions(category, templateId, language, description.value, description.selectionStart);
       suggestionList.replaceChildren();
-      el("[data-suggestions-label]").textContent = items.some((item) => item.completion) ? "Täydennä lausetta" : "Lisää kuvaukseen";
+      el("[data-suggestions-label]").textContent = items.some((item) => item.completion) ? copy.completeSentence : copy.addToDescription;
       for (const item of items) {
         const li = document.createElement("li");
         const button = document.createElement("button");
@@ -196,7 +243,7 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
         if (count > 150) {
           button.disabled = true;
           const note = document.createElement("small");
-          note.textContent = `Ylittää rajan ${count - 150} merkillä`;
+          note.textContent = fill(copy.overLimit, { n: count - 150 });
           button.append(note);
         }
         button.addEventListener("click", () => {
@@ -208,14 +255,14 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
           description.focus({ preventScroll: true });
           const start = placeholder ? Math.max(0, item.insertionStart) + placeholder.index : item.value.length;
           description.setSelectionRange(start, placeholder ? start + placeholder[0].length : start);
-          el("[data-suggestion-status]").textContent = placeholder ? "Ehdotus lisätty. Täydennä valittu kohta." : "Ehdotus lisätty kuvaukseen.";
+          el("[data-suggestion-status]").textContent = placeholder ? copy.addedFill : copy.added;
         });
         li.append(button);
         suggestionList.append(li);
       }
       suggestions.hidden = items.length === 0;
       toggleSuggestions.setAttribute("aria-expanded", String(!suggestions.hidden));
-      if (wasHidden && !suggestions.hidden) el("[data-suggestion-status]").textContent = "Kuvausehdotukset avattu. Valitse ehdotus tai jatka kirjoittamista.";
+      if (wasHidden && !suggestions.hidden) el("[data-suggestion-status]").textContent = copy.opened;
     }
 
     function changeCategory(code: string) {
@@ -224,9 +271,9 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
       categorySelect.value = category.code;
       root.querySelectorAll<HTMLInputElement>('input[name="annotation-category"]').forEach((radio) => { radio.checked = radio.value === code; });
       templateId = category.templates[0].id;
-      templateSelect.replaceChildren(...category.templates.map((template) => new Option(`${template.label} [${template.code}]`, template.id)), new Option(`Oma merkintä [${category.code}]`, "custom"));
-      el("[data-category-hint]").textContent = category.hint;
-      el("[data-color-name]").textContent = category.colorName;
+      templateSelect.replaceChildren(...category.templates.map((template) => new Option(`${template.label[ui]} [${template.code}]`, template.id)), new Option(`${copy.custom} [${category.code}]`, "custom"));
+      el("[data-category-hint]").textContent = category.hint[ui];
+      el("[data-color-name]").textContent = category.colorName[ui];
       el("[data-color-dot]").style.setProperty("--annotation-color", category.color);
       loadDraft();
     }
@@ -248,7 +295,7 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
         if (template && title.value === template.title[previousLanguage]) { title.value = template.title[language]; titleLanguage = language; }
         el("[data-language-note]").hidden = false;
         closeSuggestions();
-        description.placeholder = language === "fi" ? "Mitä tapahtui, missä ja miksi?" : "What happened, where and why?";
+        description.placeholder = copy.placeholder[language];
         try { localStorage.setItem("ga4-annotation-language", language); } catch { /* Optional preference. */ }
         status.textContent = "";
         updateFields();
@@ -257,8 +304,8 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
 
     function resetCopyFeedback() {
       status.textContent = "";
-      titleCopy.textContent = "Kopioi otsikko";
-      descriptionCopy.textContent = "Kopioi kuvaus";
+      titleCopy.textContent = copy.copyTitle;
+      descriptionCopy.textContent = copy.copyDescription;
     }
     title.addEventListener("input", () => { titleLanguage = ""; resetCopyFeedback(); updateFields(); });
     description.addEventListener("input", (event) => {
@@ -299,27 +346,29 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
     window.visualViewport?.addEventListener("scroll", reposition, { signal: viewportController.signal });
     document.addEventListener("astro:before-swap", () => viewportController.abort(), { once: true });
 
-    async function copy(field: HTMLInputElement | HTMLTextAreaElement, text: string, label: string) {
+    async function copyField(field: HTMLInputElement | HTMLTextAreaElement, text: string) {
+      const isTitle = field === title;
       try {
         await navigator.clipboard.writeText(text);
-        const button = field === title ? titleCopy : descriptionCopy;
-        button.textContent = "Kopioitu";
-        status.textContent = `${label} kopioitu.`;
-        window.setTimeout(() => { button.textContent = `Kopioi ${field === title ? "otsikko" : "kuvaus"}`; }, 2500);
+        const button = isTitle ? titleCopy : descriptionCopy;
+        button.textContent = copy.copied;
+        status.textContent = isTitle ? copy.titleCopied : copy.descriptionCopied;
+        window.setTimeout(() => { button.textContent = isTitle ? copy.copyTitle : copy.copyDescription; }, 2500);
       } catch {
         closeSuggestions(true);
         field.focus();
         field.select();
-        const message = field === title ? `Kopiointi ei onnistunut. Kopioi otsikko käsin ja lisää alkuun [${code()}].` : "Kopiointi ei onnistunut. Teksti on valittu: kopioi se käsin.";
-        el(field === title ? "[data-title-help]" : "[data-description-help]").textContent = message;
+        const message = isTitle ? fill(copy.titleCopyFailed, { code: code() }) : copy.descriptionCopyFailed;
+        el(isTitle ? "[data-title-help]" : "[data-description-help]").textContent = message;
         status.textContent = message;
       }
     }
-    titleCopy.addEventListener("click", () => copy(title, fullTitle(), "Otsikko"));
-    descriptionCopy.addEventListener("click", () => copy(description, description.value, "Kuvaus"));
+    titleCopy.addEventListener("click", () => copyField(title, fullTitle()));
+    descriptionCopy.addEventListener("click", () => copyField(description, description.value));
     el("[data-color-dot]").style.setProperty("--annotation-color", category.color);
-    description.placeholder = language === "fi" ? "Mitä tapahtui, missä ja miksi?" : "What happened, where and why?";
-    el("[data-language-note]").hidden = language === "fi";
+    description.placeholder = copy.placeholder[language];
+    const languageNote = root.querySelector<HTMLElement>("[data-language-note]");
+    if (languageNote) languageNote.hidden = language === ui;
     loadDraft();
   }
 
@@ -384,9 +433,10 @@ import { annotationCategories, annotationDateGuidance } from "../data/ga4-annota
   .annotation-field-heading { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; align-items: baseline; }
   .annotation-count { margin-left: auto; font-size: var(--font-size-ui-xs); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
   .annotation-count.is-over-limit { color: var(--color-danger); font-weight: var(--font-weight-bold); }
-  .annotation-title-input { display: flex; align-items: center; background: var(--bg); border: 1px solid var(--annotation-field-line); border-radius: var(--radius-sm); }
+  /* wraps the input under a long tag (e.g. [NEWSLETTER]) instead of overflowing at 200% zoom */
+  .annotation-title-input { display: flex; flex-wrap: wrap; align-items: center; background: var(--bg); border: 1px solid var(--annotation-field-line); border-radius: var(--radius-sm); }
   .annotation-title-input > span { padding-left: 0.8rem; color: var(--muted); white-space: nowrap; }
-  .annotation-title-input input[type="text"] { border: 0; background: transparent; }
+  .annotation-title-input input[type="text"] { flex: 1 1 8rem; width: auto; border: 0; background: transparent; }
   .annotation-title-input input:focus-visible { outline: none; }
   .annotation-title-input:has(input:focus-visible) { outline: var(--focus-ring-strong); outline-offset: 4px; }
   .annotation-title-input:has([aria-invalid="true"]) { border-color: var(--color-danger); }

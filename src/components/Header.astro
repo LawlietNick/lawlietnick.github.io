@@ -1,6 +1,6 @@
 ---
 import { toolkit } from "../data/toolkit.js";
-import { siteName } from "../data/site.js";
+import { siteName, showServices, contactUrl } from "../data/site.js";
 import LanguageMenu from "./LanguageMenu.astro";
 import LocaleList from "./LocaleList.astro";
 
@@ -21,6 +21,7 @@ const serviceGlob = fi
   ? import.meta.glob("../pages/fi/palvelut/*.md", { eager: true })
   : import.meta.glob("../pages/services/*.md", { eager: true });
 const services = Object.entries(serviceGlob)
+  .filter(([, mod]) => !mod.frontmatter.draft)
   .map(([path, mod]) => ({
     ...mod.frontmatter,
     href: `${workHref}${path.split("/").pop().replace(/\.md$/, "")}/`,
@@ -81,6 +82,7 @@ const showDesktopCta = false;
         <li class:list={["site-header__nav-item", { "is-active": isActive(root) }]}>
           <a class="site-header__nav-link" href={root} aria-current={isActive(root) ? "page" : undefined}>{t.home}</a>
         </li>
+        {showServices && (
         <li class:list={["site-header__nav-item", { "is-active": isActive(workHref) }]} data-nav-item>
           <button
             class="site-header__nav-trigger"
@@ -121,6 +123,7 @@ const showDesktopCta = false;
             </div>
           </div>
         </li>
+        )}
         <li class:list={["site-header__nav-item", { "is-active": writingActive }]} data-nav-item>
           <button
             class="site-header__nav-trigger"
@@ -202,7 +205,7 @@ const showDesktopCta = false;
     <div class="site-header__actions">
       <LanguageMenu {...locales} placement="header" idPrefix="header" />
       {showDesktopCta && (
-        <a class="cta site-header__cta" href="#">
+        <a class="cta site-header__cta" href={contactUrl}>
           <span class="cta__surface">{t.contact}</span>
         </a>
       )}
@@ -244,6 +247,7 @@ const showDesktopCta = false;
       <div class="mobile-nav-overlay__list">
         <a class="mobile-nav-overlay__plain" href={root}>{t.home}</a>
 
+        {showServices && (
         <section class="mobile-nav-overlay__section" data-mobile-nav-section>
           <button
             class="mobile-nav-overlay__summary"
@@ -281,6 +285,7 @@ const showDesktopCta = false;
             </div>
           </div>
         </section>
+        )}
         
         <section class="mobile-nav-overlay__section" data-mobile-nav-section>
           <button
@@ -346,7 +351,7 @@ const showDesktopCta = false;
 
       <div class="mobile-nav-overlay__actions">
         <LocaleList {...locales} />
-        <a class="cta" href="#">
+        <a class="cta" href={contactUrl}>
           <span class="cta__surface">{t.contact}</span>
         </a>
       </div>

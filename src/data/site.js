@@ -2,6 +2,11 @@
 // Page copy, navigation, tool settings, and generated-document branding do not.
 export const siteName = "Niko Karppinen";
 
+// Temporary: false hides every services link (header, footer, hero, sitemap,
+// llms.txt) and drops /services/ + /fi/palvelut/ from the production build.
+// The pages stay in src and still render under `astro dev`. Flip to true to publish.
+export const showServices = false;
+
 export const siteConfig = {
   url: "https://karppinen.one/",
   brand: {
@@ -62,3 +67,5 @@ export const siteConfig = {
 export const brandName = siteName;
 export const authorName = `${siteConfig.person.givenName} ${siteConfig.person.familyName}`;
 export const profiles = siteConfig.person.profiles;
+// every "Get in touch" / "Start a consultation" button points here
+export const contactUrl = profiles.find((p) => p.name === "LinkedIn").url;

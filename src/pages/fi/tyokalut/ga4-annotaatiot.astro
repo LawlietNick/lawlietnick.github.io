@@ -8,10 +8,10 @@ const title = "GA4-annotaatiotyökalu";
 const summary = "Kirjaa muutos, jonka haluat muistaa dataa tulkitessasi. Valitse tapahtumapohja, täydennä teksti ja kopioi valmis merkintä Google Analytics 4:ään.";
 ---
 
-<Base title={title} description={summary}>
+<Base title={title} description={summary} alternate={{ lang: "en", href: "/tools/ga4-annotations/" }}>
   <Breadcrumb fi crumbs={[{ label: "Etusivu", href: "/fi/", icon: true }, { label: "Työkalut", href: "/fi/tyokalut/" }, { label: title }]} />
   <div class="annotation-hero"><ToolHero title={title} summary={summary} /></div>
-  <div class="wide-band"><Ga4AnnotationBuilder /></div>
+  <div class="wide-band"><Ga4AnnotationBuilder fi /></div>
   <section class="annotation-guide">
     <h2>Hyvä merkintä auttaa myös myöhemmin</h2>
     <p>Kirjoita otsikkoon, mitä tapahtui. Täydennä kuvaukseen kohde, muutoksen syy tai huomio datan tulkintaan. Erota tavoite havaitusta vaikutuksesta: kampanjan aloitus ei vielä kerro sen tuloksista.</p>

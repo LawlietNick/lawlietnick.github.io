@@ -5,6 +5,7 @@ import ButtonLink from "../../components/ButtonLink.astro";
 import PostList from "../../components/PostList.astro";
 import SplitSection from "../../components/SplitSection.astro";
 import { selectRecentPosts } from "../../utils/recent-posts.ts";
+import { showServices } from "../../data/site.js";
 
 const withTrailingSlash = (path) => path.endsWith("/") ? path : `${path}/`;
 const posts = selectRecentPosts(Object.values(import.meta.glob("./blog/*.md", { eager: true }))
@@ -43,9 +44,11 @@ const posts = selectRecentPosts(Object.values(import.meta.glob("./blog/*.md", { 
         samat virheet nopeammin. Siksi kannattaa aloittaa siitä, mitä mitataan,
         kuka omistaa datan ja missä kohdassa ihminen tekee päätöksen.
       </p>
-      <p>
-        <ButtonLink href="/fi/palvelut/" label="Katso palvelut" variant="secondary" />
-      </p>
+      {showServices && (
+        <p>
+          <ButtonLink href="/fi/palvelut/" label="Katso palvelut" variant="secondary" />
+        </p>
+      )}
     </Fragment>
   </SplitSection>
 

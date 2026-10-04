@@ -1,0 +1,34 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import ToolHero from "../../components/ToolHero.astro";
+import Ga4AnnotationBuilder from "../../components/Ga4AnnotationBuilder.astro";
+
+const title = "GA4 annotation builder";
+const summary = "Record a change you want to remember when reading the data. Pick an event template, complete the text and copy a ready annotation into Google Analytics 4.";
+---
+
+<Base title={title} description={summary} alternate={{ lang: "fi", href: "/fi/tyokalut/ga4-annotaatiot/" }}>
+  <Breadcrumb crumbs={[{ label: "Home", href: "/", icon: true }, { label: "Tools", href: "/tools/" }, { label: title }]} />
+  <div class="annotation-hero"><ToolHero title={title} summary={summary} /></div>
+  <div class="wide-band"><Ga4AnnotationBuilder /></div>
+  <section class="annotation-guide">
+    <h2>A good annotation still helps months later</h2>
+    <p>Use the title for what happened. Use the description for the target, the reason for the change or a note on how to read the data. Keep the goal apart from the observed effect: a campaign launch does not yet tell you its results.</p>
+    <p>The title fits 60 characters and the description 150. <a href="https://support.google.com/analytics/answer/15884203?hl=en" target="_blank" rel="noopener noreferrer">See Google's guide to adding annotations.</a></p>
+  </section>
+</Base>
+
+<style>
+  .annotation-hero :global(.tool-hero > div) { min-width: 0; overflow-wrap: anywhere; }
+  .annotation-hero :global(.tool-hero) { margin-bottom: 1.5rem; padding-block: 1.5rem; }
+  @media (max-width: 760px) {
+    .annotation-hero :global(.tool-hero) { gap: 0.75rem; padding-block: 0.75rem; margin-bottom: 1rem; }
+    .annotation-hero :global(h1) { font-size: 2rem; }
+    .annotation-hero :global(.tool-hero__lead) { font-size: 1rem; line-height: 1.5; margin-bottom: 0; }
+  }
+  .annotation-guide { max-width: 65ch; margin: 0 0 var(--section-y-large); }
+  .annotation-guide h2 { margin-top: 0; }
+  .annotation-guide p { color: var(--muted); }
+  .annotation-guide a { color: var(--accent); text-underline-offset: 0.2em; }
+</style>

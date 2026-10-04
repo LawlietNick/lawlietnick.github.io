@@ -4,6 +4,7 @@
 // Self-contained bilingual copy — the homepage just passes `fi`.
 import { Picture } from "astro:assets";
 import ButtonLink from "./ButtonLink.astro";
+import { showServices } from "../data/site.js";
 // ponytail: replace this file (keep the size) with a real photo, then rebuild.
 // Swapping the image means rewriting `featureAlt` in both languages below.
 import featureImg from "../assets/hero/feature.jpeg";
@@ -14,14 +15,14 @@ const c = fi
   ? {
       pre: "Selkeämpää mittaamista. ", mark: "Parempia", post: " päätöksiä.",
       lead: "Niko Karppinen auttaa tiimejä parantamaan analytiikkaa, hakukonenäkyvyyttä ja digitaalista mittaamista.",
-      ctaPrimary: "Tehdään yhteistyötä", ctaPrimaryHref: "/fi/palvelut/",
+      ctaPrimary: "Tehdään yhteistyötä", ctaPrimaryHref: showServices ? "/fi/palvelut/" : "/fi/minusta/",
       ctaSecondary: "Lue kirjoituksia", ctaSecondaryHref: "/fi/blog/",
       featureAlt: "Niko Karppinen osoittaa kohti kameraa kosmisen tähtitaustan edessä",
     }
   : {
       pre: "Clearer measurement. ", mark: "Better", post: " decisions.",
       lead: "Niko Karppinen helps teams improve analytics, search visibility and digital measurement.",
-      ctaPrimary: "Work with me", ctaPrimaryHref: "/services/",
+      ctaPrimary: "Work with me", ctaPrimaryHref: showServices ? "/services/" : "/about/",
       ctaSecondary: "Read articles", ctaSecondaryHref: "/blog/",
       featureAlt: "Niko Karppinen pointing towards the camera against a cosmic star background",
     };

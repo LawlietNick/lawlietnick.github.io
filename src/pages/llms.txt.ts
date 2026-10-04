@@ -1,12 +1,12 @@
 import { interactiveTools } from "../data/interactive-tools.js";
-import { siteConfig, siteName } from "../data/site.js";
+import { siteConfig, siteName, showServices } from "../data/site.js";
 
 export const prerender = true;
 
 type Page = { url?: string; frontmatter?: Record<string, any> };
 
-const enServices = import.meta.glob<Page>("./services/*.md", { eager: true });
-const fiServices = import.meta.glob<Page>("./fi/palvelut/*.md", { eager: true });
+const enServices = showServices ? import.meta.glob<Page>("./services/*.md", { eager: true }) : {};
+const fiServices = showServices ? import.meta.glob<Page>("./fi/palvelut/*.md", { eager: true }) : {};
 const enPosts = import.meta.glob<Page>("./blog/*.md", { eager: true });
 const fiPosts = import.meta.glob<Page>("./fi/blog/*.md", { eager: true });
 const enTools = import.meta.glob<Page>("./tools/*.md", { eager: true });
@@ -23,7 +23,7 @@ type Entry = { title: string; href: string; summary: string; date?: string };
 
 const toEntries = (modules: Record<string, Page>): Entry[] =>
   Object.values(modules)
-    .filter((page) => !page.frontmatter?.noindex)
+    .filter((page) => !page.frontmatter?.noindex && !page.frontmatter?.draft)
     .map((page) => ({
       title: oneLine(page.frontmatter?.title),
       href: withTrailingSlash(page.url ?? ""),

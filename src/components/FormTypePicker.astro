@@ -1,20 +1,50 @@
 ---
 import { formCategories, formTypes } from "../data/form-types.js";
+import { localizeFormTaxonomy } from "../data/form-types.fi.js";
 
-const config = { types: formTypes, categories: formCategories };
+// fi: Finnish explanations and UI. Form names and the tracked value stay English.
+const { fi = false } = Astro.props;
+const taxonomy = fi ? localizeFormTaxonomy(formCategories, formTypes) : { categories: formCategories, types: formTypes };
+const copy = fi
+  ? {
+      intro: "Vastaa kahteen kysymykseen lomakkeesta ja anna sille nimi. Saat yhden yhtenäisen arvon, jolla lomaketta seurataan. Arvo on aina sama, vaikka seuraavan lomakkeen tekisi joku muu.",
+      q1: "Mitä kävijä tekee täyttäessään lomakkeen?", q2: "Mikä tyyppi tarkalleen?", q3: "Mikä tämän lomakkeen nimi on?",
+      nameNote: "Tämän lomakkeen oma nimi. Valinnainen, mutta sen avulla kaksi yhteydenottolomaketta erottuu toisistaan. Kirjoita nimi englanniksi, jotta raportit pysyvät yhtenäisinä kaikilla kielillä.",
+      strip: "Kaksoispiste ja pystyviiva erottavat arvon kolme osaa, joten ne poistetaan nimestä.",
+      outLabel: "Lomakkeen koko nimi", key: "mitä se on &nbsp;·&nbsp; mikä tyyppi &nbsp;·&nbsp; oma nimi",
+      copyValue: "Kopioi arvo", wait: "Valitse kategoria ja tyyppi, niin arvo valmistuu.", snippet: "dataLayer-koodi", copySnippet: "Kopioi koodi",
+      choose: "Valitse…", chooseCatFirst: "Valitse ensin kategoria", sensitive: "arkaluonteinen",
+      catPrompt: "Kuvaa kävijän toimintaa, älä lomakkeen otsikkoa. Vaihtoehtoja on kaksitoista.", forExample: "Esimerkiksi",
+      kindsOf: "{n} tyyppiä kategoriassa {cat}. Valitse yksi, niin näet, milloin sitä käytetään.", waiting: "Vastaa ensin yllä olevaan kysymykseen.",
+      mistaken: "Sekoitetaan useimmin tyyppiin", careful: "Käsittele varoen", note: "Huomio",
+      examples: "Esimerkkejä lomakkeiden nimistä:", catPart: "kategoria", typePart: "tyyppi", namePart: "oma nimi",
+      copied: "Kopioitu", copyManual: "Valitse ja kopioi käsin",
+    }
+  : {
+      intro: "Answer two questions about your form, give it a name, and you get one consistent value to track it with — the same value every time, whoever builds the next form.",
+      q1: "What is someone doing when they fill it in?", q2: "Which kind, exactly?", q3: "What do you call this form?",
+      nameNote: "Your own name for this exact form. Optional — but it is what tells two contact forms apart.",
+      strip: "A colon and a vertical bar separate the three parts, so they are removed from the name.",
+      outLabel: "Full form name", key: "what it is &nbsp;·&nbsp; which kind &nbsp;·&nbsp; your own name for it",
+      copyValue: "Copy value", wait: "Pick a category and a kind to finish the value.", snippet: "dataLayer snippet", copySnippet: "Copy snippet",
+      choose: "Choose one…", chooseCatFirst: "Choose a category first", sensitive: "sensitive",
+      catPrompt: "Describe the visitor's action, not the form's title. Twelve to choose from.", forExample: "For example",
+      kindsOf: "{n} kinds of {catLower} form. Pick one to see when it applies.", waiting: "Waiting on the question above.",
+      mistaken: "Most often mistaken for", careful: "Handle with care", note: "Note",
+      examples: "Examples of form names:", catPart: "category", typePart: "kind", namePart: "your name for it",
+      copied: "Copied", copyManual: "Select and copy manually",
+    };
+const config = { ...taxonomy, copy };
 ---
 
 <div class="ftp" data-form-type-picker>
   <script type="application/json" data-ftp-config set:html={JSON.stringify(config)} />
 
-  <p class="ftp__intro">
-    Answer two questions about your form, give it a name, and you get one consistent value to track
-    it with — the same value every time, whoever builds the next form.
-  </p>
+  <p class="ftp__intro">{copy.intro}</p>
 
   <div class="ftp__steps">
     <div class="ftp__step">
-      <label class="ftp__label" for="ftp-cat">What is someone doing when they fill it in?</label>
+      <label class="ftp__label" for="ftp-cat">{copy.q1}</label>
       <div class="ftp__field">
         <div class="ftp__select">
           <select id="ftp-cat" data-cat aria-describedby="ftp-cat-note"></select>
@@ -24,7 +54,7 @@ const config = { types: formTypes, categories: formCategories };
     </div>
 
     <div class="ftp__step">
-      <label class="ftp__label" for="ftp-type">Which kind, exactly?</label>
+      <label class="ftp__label" for="ftp-type">{copy.q2}</label>
       <div class="ftp__field">
         <div class="ftp__select">
           <select id="ftp-type" data-type disabled aria-describedby="ftp-type-note"></select>
@@ -34,12 +64,12 @@ const config = { types: formTypes, categories: formCategories };
     </div>
 
     <div class="ftp__step">
-      <label class="ftp__label" for="ftp-name">What do you call this form?</label>
+      <label class="ftp__label" for="ftp-name">{copy.q3}</label>
       <div class="ftp__field">
         <input id="ftp-name" type="text" data-name aria-describedby="ftp-name-note" placeholder="General Contact" autocomplete="off" spellcheck="false" />
         <div class="ftp__note" id="ftp-name-note">
-          <p>Your own name for this exact form. Optional — but it is what tells two contact forms apart.</p>
-          <p class="ftp__strip" data-strip hidden>A colon and a vertical bar separate the three parts, so they are removed from the name.</p>
+          <p>{copy.nameNote}</p>
+          <p class="ftp__strip" data-strip hidden>{copy.strip}</p>
           <p class="ftp__ex" data-ex hidden></p>
         </div>
       </div>
@@ -47,19 +77,19 @@ const config = { types: formTypes, categories: formCategories };
   </div>
 
   <div class="ftp__out">
-    <p class="ftp__outlabel">Full form name <code>form_full_name</code></p>
+    <p class="ftp__outlabel">{copy.outLabel} <code>form_full_name</code></p>
     <output class="ftp__value" data-value for="ftp-cat ftp-type ftp-name"></output>
-    <p class="ftp__key">what it is &nbsp;·&nbsp; which kind &nbsp;·&nbsp; your own name for it</p>
+    <p class="ftp__key" set:html={copy.key} />
 
     <div class="ftp__act">
-      <button type="button" class="cta" data-copy hidden><span class="cta__surface">Copy value</span></button>
-      <p class="ftp__wait" data-wait>Pick a category and a kind to finish the value.</p>
+      <button type="button" class="cta" data-copy hidden><span class="cta__surface">{copy.copyValue}</span></button>
+      <p class="ftp__wait" data-wait>{copy.wait}</p>
     </div>
 
     <details class="ftp__snippet" data-snippet hidden>
-      <summary>dataLayer snippet</summary>
+      <summary>{copy.snippet}</summary>
       <pre><code data-code></code></pre>
-      <button type="button" class="ftp__link" data-copy-code>Copy snippet</button>
+      <button type="button" class="ftp__link" data-copy-code>{copy.copySnippet}</button>
     </details>
   </div>
 </div>
@@ -68,7 +98,7 @@ const config = { types: formTypes, categories: formCategories };
   import { formValue } from "../data/form-types.js";
 
   document.querySelectorAll("[data-form-type-picker]").forEach((root) => {
-    const { types, categories } = JSON.parse(root.querySelector("[data-ftp-config]").textContent);
+    const { types, categories, copy } = JSON.parse(root.querySelector("[data-ftp-config]").textContent);
     const el = (s) => root.querySelector(s);
 
     const nameEl = el("[data-name]");
@@ -99,21 +129,21 @@ const config = { types: formTypes, categories: formCategories };
       return o;
     }
 
-    option("", "Choose one…", catEl);
+    option("", copy.choose, catEl);
     categories.forEach((c) => option(c.id, `${c.id} — ${c.action}`, catEl));
     catEl.selectedIndex = 0;
 
     function fillTypes() {
       typeEl.innerHTML = "";
       if (!catEl.value) {
-        option("", "Choose a category first", typeEl);
+        option("", copy.chooseCatFirst, typeEl);
         typeEl.disabled = true;
         typeEl.selectedIndex = 0;
         return;
       }
-      option("", "Choose one…", typeEl);
+      option("", copy.choose, typeEl);
       inCat(catEl.value).forEach((t) =>
-        option(t.id, t.note.startsWith("SENSITIVE") ? `${t.type} — sensitive` : t.type, typeEl)
+        option(t.id, t.note.startsWith("SENSITIVE") ? `${t.type} — ${copy.sensitive}` : t.type, typeEl)
       );
       typeEl.disabled = false;
       typeEl.selectedIndex = 0;
@@ -122,8 +152,8 @@ const config = { types: formTypes, categories: formCategories };
     function paintCatNote() {
       const c = categories.find((x) => x.id === catEl.value);
       catNote.textContent = c
-        ? `${c.hint}. For example: ${c.examples.toLowerCase()}.`
-        : "Describe the visitor's action, not the form's title. Eleven to choose from.";
+        ? `${c.hint}. ${copy.forExample}: ${c.examples.replace(/^\p{Lu}(?!\p{Lu})/u, (m) => m.toLowerCase())}.`
+        : copy.catPrompt;
     }
 
     function paintTypeNote() {
@@ -131,8 +161,8 @@ const config = { types: formTypes, categories: formCategories };
       if (!t) {
         typeNote.innerHTML = `<p>${
           catEl.value
-            ? `${inCat(catEl.value).length} kinds of ${catEl.value.toLowerCase()} form. Pick one to see when it applies.`
-            : "Waiting on the question above."
+            ? copy.kindsOf.replace("{n}", inCat(catEl.value).length).replace("{cat}", catEl.value).replace("{catLower}", catEl.value.toLowerCase())
+            : copy.waiting
         }</p>`;
         return;
       }
@@ -140,12 +170,12 @@ const config = { types: formTypes, categories: formCategories };
       typeNote.innerHTML =
         `<p>${t.description}.</p>` +
         (t.confusedWith
-          ? `<p>Most often mistaken for <button type="button" class="ftp__link" data-goto>${t.confusedWith}</button>.</p>`
+          ? `<p>${copy.mistaken} <button type="button" class="ftp__link" data-goto>${t.confusedWith}</button>.</p>`
           : "") +
         (actionable(t.note)
           ? `<p class="ftp__warn ${sensitive ? "is-alert" : ""}"><b>${
-              sensitive ? "Handle with care" : "Note"
-            }</b> ${t.note.replace(/^SENSITIVE - /, "").replace(/^./, (m) => m.toUpperCase())}</p>`
+              sensitive ? copy.careful : copy.note
+            }</b> ${t.noteText ?? t.note.replace(/^SENSITIVE - /, "").replace(/^./, (m) => m.toUpperCase())}</p>`
           : "");
 
       typeNote.querySelector("[data-goto]")?.addEventListener("click", () => {
@@ -171,11 +201,11 @@ const config = { types: formTypes, categories: formCategories };
       const name = typed.replace(/[|:]/g, "").replace(/\s+/g, " ").trim();
       stripEl.hidden = name === typed;
       valueEl.innerHTML =
-        part(catEl.value || "category", !catEl.value) +
+        part(catEl.value || copy.catPart, !catEl.value) +
         `<i aria-hidden="true">:</i>` +
-        part(t ? t.type : "kind", !t) +
+        part(t ? t.type : copy.typePart, !t) +
         `<i aria-hidden="true">|</i>` +
-        part(name || "your name for it", !name);
+        part(name || copy.namePart, !name);
 
       copyEl.hidden = !t;
       waitEl.hidden = Boolean(t);
@@ -198,7 +228,7 @@ const config = { types: formTypes, categories: formCategories };
       const t = selected();
       exEl.hidden = !t || !t.examples.length;
       if (exEl.hidden) return;
-      exEl.innerHTML = "Examples of form names: ";
+      exEl.textContent = `${copy.examples} `;
       t.examples.forEach((e, i) => {
         if (i) exEl.append(document.createTextNode(" · "));
         const b = document.createElement("button");
@@ -221,13 +251,13 @@ const config = { types: formTypes, categories: formCategories };
       paintValue();
     }
 
-    async function copy(text, btn, done) {
+    async function copyText(text, btn, done) {
       const html = btn.innerHTML;
       try {
         await navigator.clipboard.writeText(text);
         btn.innerHTML = done;
       } catch {
-        btn.innerHTML = done.replace(/>[^<]*</, ">Select and copy manually<");
+        btn.innerHTML = done.includes("<") ? done.replace(/>[^<]*</, `>${copy.copyManual}<`) : copy.copyManual;
       }
       setTimeout(() => (btn.innerHTML = html), 1800);
     }
@@ -239,9 +269,9 @@ const config = { types: formTypes, categories: formCategories };
     typeEl.addEventListener("change", paintAll);
     nameEl.addEventListener("input", paintValue);
     copyEl.addEventListener("click", (e) =>
-      copy(e.currentTarget.dataset.value, e.currentTarget, "<span class='cta__surface'>Copied</span>")
+      copyText(e.currentTarget.dataset.value, e.currentTarget, `<span class='cta__surface'>${copy.copied}</span>`)
     );
-    el("[data-copy-code]").addEventListener("click", (e) => copy(codeEl.textContent, e.currentTarget, "Copied"));
+    el("[data-copy-code]").addEventListener("click", (e) => copyText(codeEl.textContent, e.currentTarget, copy.copied));
 
     fillTypes();
     paintAll();
