@@ -2145,7 +2145,7 @@ declare(strict_types=1);
  * -------------------------------------------------------
  */
 
-const HUBSPOT_FORMS_API_VERSION = '2027-09-beta';
+const HUBSPOT_FORMS_API_VERSION = '2026-09-beta';
 const CACHE_TTL_SECONDS = 86400; // 24 hours
 const NOT_FOUND_TTL_SECONDS = 300; // unknown IDs stop reaching HubSpot for 5 minutes
 const HUBSPOT_LOOKUPS_PER_MINUTE = 30; // per client IP, cache misses only
@@ -4368,7 +4368,7 @@ const hubspotUrl =
 Tämä toteutus käyttää osoitetta:
 
 ```javascript
-const HUBSPOT_FORMS_API_VERSION = "2027-09-beta";
+const HUBSPOT_FORMS_API_VERSION = "2026-09-beta";
 ```
 
 Tunnusta käytetään vain palvelimella:
