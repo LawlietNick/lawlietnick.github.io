@@ -1,7 +1,7 @@
 {
   "astro.config.mjs": {
-    "mtime": 1791119927354.6057,
-    "hash": "f8e3a4b748559b36a5f779ac40a36eeb"
+    "mtime": 1791120355040.2725,
+    "hash": "63c0f227a9f587ff6ab038ce0b9a3f7f"
   },
   "scripts/generate-hero-placeholders.mjs": {
     "mtime": 1783662513918.7078,
@@ -32,8 +32,8 @@
     "hash": "74e5672e712c5c2c05f441b3742b4fff"
   },
   "src/components/Footer.astro": {
-    "mtime": 1791116336100.0364,
-    "hash": "e407738033081d63a5cb4a5b59564055"
+    "mtime": 1791120024065.493,
+    "hash": "237ff08bc59940a8cb3336b51a77e98b"
   },
   "src/components/Header.astro": {
     "mtime": 1791116336101.0603,
@@ -112,8 +112,8 @@
     "hash": "8c2c78e995632fdd029b70ddb06a7181"
   },
   "src/pages/design-system.astro": {
-    "mtime": 1789224266057.11,
-    "hash": "e80b45f7b2b5aaed91befa8921abba46"
+    "mtime": 1791120024065.0962,
+    "hash": "889411c037e71df28aab49c6724f0cab"
   },
   "src/pages/fi/[toolkit].astro": {
     "mtime": 1791116336103.027,
@@ -140,8 +140,8 @@
     "hash": "cb14ffed1fc323051466cfec733f3ff0"
   },
   "src/pages/fi/privacy.astro": {
-    "mtime": 1791119927355.2703,
-    "hash": "1fd136818b4cc068270d96f521094e3b"
+    "mtime": 1791120024064.653,
+    "hash": "63003c21372a3a217dc64d250cf846c0"
   },
   "src/pages/index.astro": {
     "mtime": 1791117436138.5493,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791119507768.4888,
-    "hash": "1281f30d3560ef84c48f838ce396ea1f"
+    "mtime": 1791119965498.6829,
+    "hash": "b528b5057d3a0a76fdde23b1805db7f7"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -880,23 +880,23 @@
     "hash": "0211ebb351d043af265ff94f9801ace1"
   },
   ".impeccable/review/ga4-desktop-dark.png": {
-    "mtime": 1791116214302.8801,
+    "mtime": 1791120406159.763,
     "hash": "166fd5d5df55c1e358cf01bbe7a17770"
   },
   ".impeccable/review/ga4-desktop.png": {
-    "mtime": 1791116214232.062,
+    "mtime": 1791120406160.495,
     "hash": "70ba622c708b364c3129c116c2c7d32a"
   },
   ".impeccable/review/ga4-mobile-dark.png": {
-    "mtime": 1791116214402.521,
+    "mtime": 1791120406161.0547,
     "hash": "28a300de05ce3611467e0f4bab38c205"
   },
   ".impeccable/review/ga4-mobile-initial.png": {
-    "mtime": 1791116215280.2192,
+    "mtime": 1791120406161.3574,
     "hash": "ade1edb5986ea65d69ac3bca7601161a"
   },
   ".impeccable/review/ga4-mobile.png": {
-    "mtime": 1791116214344.7786,
+    "mtime": 1791120406161.933,
     "hash": "d7b756198b34ba39b592a38399c3e192"
   },
   "src/assets/blog/examples/example-landscape.jpeg": {
@@ -982,5 +982,13 @@
   ".github/workflows/deploy.yml": {
     "mtime": 1791119634647.67,
     "hash": "fbad788df77dc9f91dfedd46fdda723d"
+  },
+  "src/pages/rss.xml.ts": {
+    "mtime": 1791120355044.9797,
+    "hash": "d7622632404ec069e235a0d7b159da2f"
+  },
+  "src/pages/sitemap-index.xml.js": {
+    "mtime": 1791120355047.5508,
+    "hash": "bd6a3e37908fc1bdd0cd990ecdc97bd9"
   }
 }
