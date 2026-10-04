@@ -29,3 +29,6 @@ playwright-report/
 
 # local working files, not part of the site
 /to be used/
+
+# raw audit dumps stay local; summaries (.md) and screenshots are tracked
+docs/reports/*.json
