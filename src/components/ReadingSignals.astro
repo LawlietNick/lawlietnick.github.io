@@ -1,9 +1,10 @@
 ---
-// Live demo of the reading model described in /blog/content-consumption-metrics/.
-// Rendered only when the post's frontmatter sets `readingSignals: true`.
+// The reading model described in /blog/content-consumption-metrics/, sent to
+// Rybbit on every blog post and template. The visual demo (lines + toasts)
+// renders only when the post's frontmatter sets `readingSignals: true`.
 // Start/Midpoint/End are lines at their real positions in the article body;
 // the time threshold and estimated read appear as short-lived toasts.
-const { fi = false } = Astro.props;
+const { fi = false, visual = false } = Astro.props;
 const markers = [
   // [event, position, label before, label after the event fires]
   ["article_scroll_started", "0%", fi ? "Artikkelin alku" : "Article start", fi ? "Artikkelin vieritys alkoi" : "Article scroll started"],
@@ -12,6 +13,7 @@ const markers = [
 ];
 ---
 
+{visual && (<>
 <div class="reading-markers" data-reading-markers aria-hidden="true">
   {markers.map(([type, top, text, done]) => (
     <span class="reading-marker" data-signal={type} data-done={done} style={`top: ${top}`}>{text}</span>
@@ -25,6 +27,7 @@ const markers = [
   data-article_time_threshold_reached={fi ? "Lukuajan kynnys saavutettu" : "Time threshold reached"}
   data-estimated_article_read={fi ? "Arvioitu lukukerta" : "Estimated article read"}
 ></div>
+</>)}
 
 <style>
   /* the markers are moved into the article body on load; 0/50/100 % match the
@@ -174,7 +177,7 @@ const markers = [
     });
   }
 
-  function start(content: Element, markers: Element, toasts: Element) {
+  function start(content: Element, markers: Element | null, toasts: Element | null) {
     const wordCount = countWords(content);
     if (!wordCount) return null;
     const estimatedArticleReadingTime =
@@ -214,6 +217,10 @@ const markers = [
         data.article_reading_time = Math.round(readingTimeMs() / 1000);
       }
       ((window as any).dataLayer ||= []).push(data);
+      // Rybbit: event name = reading type; page path is added by Rybbit itself
+      const { event, content_reading_type, ...props } = data;
+      (window as any).rybbit?.event(type, props);
+      if (!markers || !toasts) return;
       const marker = markers.querySelector<HTMLElement>(`[data-signal="${type}"]`);
       if (marker) {
         marker.dataset.fired = "";
@@ -363,8 +370,8 @@ const markers = [
     const markers = document.querySelector("[data-reading-markers]");
     const toasts = document.querySelector("[data-reading-toasts]");
     const content = document.querySelector(contentArea);
-    if (!markers || !toasts || !content) return;
-    content.append(markers);
+    if (!content) return;
+    if (markers) content.append(markers);
     // ClientRouter keeps `window` between pages, so drop the previous visit's
     // events to start each page view clean.
     // ponytail: in-place splice is fine without GTM; with GTM, leave dataLayer alone
@@ -373,7 +380,7 @@ const markers = [
       if (dataLayer[i]?.event === "content_reading") dataLayer.splice(i, 1);
     }
     // own listener: the tracker disposes itself after the estimated read
-    const paint = () => paintMarkers(markers);
+    const paint = () => markers && paintMarkers(markers);
     window.addEventListener("scroll", paint, { passive: true });
     window.addEventListener("resize", paint);
     const stop = start(content, markers, toasts);

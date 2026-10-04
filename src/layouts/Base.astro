@@ -265,7 +265,7 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
                 )}
                 {stats && <Postscript {...stats} {fi} />}
               </div>
-              {fm?.readingSignals && <ReadingSignals {fi} />}
+              <ReadingSignals {fi} visual={fm.readingSignals} />
             </div>
           </article>
           <div class="article-ending">

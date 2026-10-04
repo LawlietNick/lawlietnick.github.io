@@ -88,8 +88,8 @@
     "hash": "bdf1682e6ff17e412535c331576a6271"
   },
   "src/layouts/Base.astro": {
-    "mtime": 1791119927354.3691,
-    "hash": "1b24e91870c2760533279680623f73d1"
+    "mtime": 1791121681426.4639,
+    "hash": "5766d8183d4a8e91cc8cb21d302dbfba"
   },
   "src/pages/404.astro": {
     "mtime": 1784635640860.7234,
@@ -920,8 +920,8 @@
     "hash": "db1ba4c263e95a2657e57852bb930468"
   },
   "src/components/ReadingSignals.astro": {
-    "mtime": 1791117477825.7766,
-    "hash": "ec63e3237c0daede1acd0c6eba004ca7"
+    "mtime": 1791121681427.0579,
+    "hash": "867eb2042888c2841c116d45fdaf2cde"
   },
   "suomen-kielen-tarkistus.md": {
     "mtime": 1791117515186.9272,
