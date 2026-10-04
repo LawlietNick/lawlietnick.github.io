@@ -1,11 +1,12 @@
 ---
-// Inline locale list: both languages are always visible and the current one is
-// marked with aria-current, so nobody has to guess where a single toggle leads.
+// Mobile language list inside the burger menu, modelled on kela.fi: a labelled
+// group of full-width rows with each language named in its own language, and
+// the current one marked with aria-current. When the page has no translation
+// the other language leads to a homepage or a listing instead, so it moves
+// under its own "not translated" heading instead of hiding that in
+// screen-reader text.
 // Each link carries `lang` (how to pronounce it) as well as `hreflang` (what it
 // points at) — without `lang` a screen reader says "Suomi" in an English voice.
-// The visible label is the short code; the readable name follows as
-// visually-hidden text so the accessible name still contains the visible one
-// (WCAG 2.5.3 Label in Name).
 const {
   fi = false,
   enLanguageHref,
@@ -14,79 +15,98 @@ const {
   class: className = "",
 } = Astro.props;
 
-const locales = [
-  { code: "EN", name: "English", lang: "en", href: enLanguageHref, current: !fi },
-  { code: "FI", name: "Suomi", lang: "fi", href: fiLanguageHref, current: fi },
-];
+const current = fi
+  ? { name: "Suomi", lang: "fi", href: fiLanguageHref }
+  : { name: "English", lang: "en", href: enLanguageHref };
+const other = fi
+  ? { name: "English", lang: "en", href: enLanguageHref, home: "Homepage" }
+  : { name: "Suomi", lang: "fi", href: fiLanguageHref, home: "Etusivu" };
 
-// when a page has no translation the link lands on that language's homepage,
-// so it is not a genuine alternate and the detour is worth announcing
-const caveat = (locale) =>
-  postWithoutTranslation && !locale.current
-    ? locale.lang === "fi"
-      ? " (käännöstä ei ole, avaa suomenkielisen etusivun)"
-      : " (translation unavailable, opens the English homepage)"
-    : null;
+const groups = postWithoutTranslation
+  ? [
+      { id: "mobile-language-current", heading: fi ? "Nykyinen kieli" : "Current language", items: [current] },
+      { id: "mobile-language-other", heading: fi ? "Sivua ei ole käännetty" : "This page is not translated", items: [other] },
+    ]
+  : [
+      { id: "mobile-language-change", heading: fi ? "Vaihda sivun kieli" : "Change the page language", items: [current, other] },
+    ];
 ---
 
 <nav class:list={["locale-list", className]} aria-label={fi ? "Kielivalinta" : "Language selection"}>
-  <ul>
-    {locales.map((locale) => (
-      <li>
-        <a
-          class="locale-list__link"
-          href={locale.href}
-          lang={locale.lang}
-          hreflang={locale.lang}
-          rel={postWithoutTranslation ? undefined : "alternate"}
-          aria-current={locale.current ? "page" : undefined}
-        >{locale.code}<span class="visually-hidden"> – {locale.name}{caveat(locale)}</span></a>
-      </li>
-    ))}
-  </ul>
+  {groups.map((group) => (
+    <div class="locale-list__group">
+      <p class="locale-list__heading" id={group.id}>{group.heading}</p>
+      <ul role="list" aria-labelledby={group.id}>
+        {group.items.map((item) => {
+          const isCurrent = item === current;
+          return (
+            <li>
+              <a
+                class="locale-list__link"
+                href={item.href}
+                lang={item.lang}
+                hreflang={item.lang}
+                rel={postWithoutTranslation ? undefined : "alternate"}
+                aria-current={isCurrent ? "page" : undefined}
+              >
+                {item.name}
+                {!isCurrent && postWithoutTranslation && (item.href === "/" || item.href === "/fi/") && ` – ${item.home}`}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  ))}
 </nav>
 
 <style>
+  .locale-list {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+  }
+  .locale-list__heading {
+    margin: 0 0 0.35rem;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: var(--font-size-ui-xs);
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
   .locale-list ul {
-    display: flex;
-    align-items: center;
-    gap: 0.15rem;
+    display: grid;
+    gap: 2px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  /* separator between the codes, not part of either link's name */
-  .locale-list li + li::before {
-    content: "·";
-    margin-right: 0.15rem;
-    color: color-mix(in srgb, var(--muted) 55%, transparent);
-  }
-  .locale-list li {
+  /* full-width rows, 48px tall: a comfortable thumb target (WCAG 2.5.8) */
+  .locale-list__link {
     display: flex;
     align-items: center;
-  }
-
-  /* padding, not just text: a bare "FI" is a 13px-wide tap target (WCAG 2.5.8) */
-  .locale-list__link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.5rem;
-    min-height: 1.5rem;
-    padding: 0 0.35rem;
-    border-radius: var(--radius-xs);
-    font-size: 0.94rem;
-    font-weight: 600;
-    color: var(--muted);
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0 0.75rem;
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    font-size: 1rem;
     text-decoration: none;
-    transition: color var(--duration-fast) var(--ease-out);
+    transition: background-color var(--duration-fast) var(--ease-standard);
   }
   .locale-list__link:hover {
-    color: var(--ink);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
   .locale-list__link[aria-current="page"] {
-    color: var(--ink);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    font-weight: 700;
+  }
+  .locale-list__link[aria-current="page"]::after {
+    content: "✓";
+    margin-left: auto;
+    color: var(--accent);
   }
   .locale-list__link:focus-visible {
     outline: var(--focus-ring);

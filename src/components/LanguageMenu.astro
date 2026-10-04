@@ -10,7 +10,24 @@ const {
 } = Astro.props;
 
 const panelId = `${idPrefix}-language-menu`;
-const headingId = `${idPrefix}-language-heading`;
+
+// same grouping as the mobile LocaleList: an untranslated page's other language
+// leads to a homepage or a listing, so it sits under a "not translated" heading
+const current = fi
+  ? { name: "Suomi", lang: "fi", href: fiLanguageHref }
+  : { name: "English", lang: "en", href: enLanguageHref };
+const other = fi
+  ? { name: "English", lang: "en", href: enLanguageHref, home: "Homepage" }
+  : { name: "Suomi", lang: "fi", href: fiLanguageHref, home: "Etusivu" };
+
+const groups = postWithoutTranslation
+  ? [
+      { id: `${idPrefix}-language-current`, heading: fi ? "Nykyinen kieli" : "Current language", items: [current] },
+      { id: `${idPrefix}-language-other`, heading: fi ? "Sivua ei ole käännetty" : "This page is not translated", items: [other] },
+    ]
+  : [
+      { id: `${idPrefix}-language-heading`, heading: fi ? "Vaihda sivun kieli" : "Change the page language", items: [current, other] },
+    ];
 ---
 
 <nav
@@ -37,43 +54,31 @@ const headingId = `${idPrefix}-language-heading`;
   </button>
 
   <div class="lang-menu__panel" id={panelId} hidden>
-    <h3 class="lang-menu__heading" id={headingId}>
-      {fi ? "Vaihda sivun kieli" : "Change the page language"}
-    </h3>
-    <ul class="lang-menu__list" role="list" aria-labelledby={headingId}>
-      <li>
-        <a
-          href={enLanguageHref}
-          lang="en"
-          hreflang="en"
-          rel={hasLanguageAlternate ? "alternate" : undefined}
-          class="lang-menu__option"
-          aria-current={!fi ? "page" : undefined}
-        >
-          English
-          {!fi && <span class="visually-hidden">(current language)</span>}
-          {fi && postWithoutTranslation && (
-            <span class="visually-hidden">(translation unavailable, opens the English homepage)</span>
-          )}
-        </a>
-      </li>
-      <li>
-        <a
-          href={fiLanguageHref}
-          lang="fi"
-          hreflang="fi"
-          rel={hasLanguageAlternate ? "alternate" : undefined}
-          class="lang-menu__option"
-          aria-current={fi ? "page" : undefined}
-        >
-          Suomi
-          {fi && <span class="visually-hidden">(nykyinen kieli)</span>}
-          {!fi && postWithoutTranslation && (
-            <span class="visually-hidden">(käännöstä ei ole, avaa suomenkielisen etusivun)</span>
-          )}
-        </a>
-      </li>
-    </ul>
+    {groups.map((group) => (
+      <>
+        <h3 class="lang-menu__heading" id={group.id}>{group.heading}</h3>
+        <ul class="lang-menu__list" role="list" aria-labelledby={group.id}>
+          {group.items.map((item) => {
+            const isCurrent = item === current;
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  lang={item.lang}
+                  hreflang={item.lang}
+                  rel={hasLanguageAlternate ? "alternate" : undefined}
+                  class="lang-menu__option"
+                  aria-current={isCurrent ? "page" : undefined}
+                >
+                  {item.name}
+                  {!isCurrent && postWithoutTranslation && (item.href === "/" || item.href === "/fi/") && ` – ${item.home}`}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    ))}
   </div>
 </nav>
 
@@ -132,7 +137,7 @@ const headingId = `${idPrefix}-language-heading`;
   .lang-menu__panel {
     position: absolute;
     z-index: 30;
-    min-width: max(100%, 13rem);
+    min-width: max(100%, 15rem);
     padding: 0.4rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
@@ -158,6 +163,7 @@ const headingId = `${idPrefix}-language-heading`;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
   }
+  .lang-menu__list + .lang-menu__heading { margin-top: 0.35rem; }
   .lang-menu__list {
     display: grid;
     gap: 2px;
