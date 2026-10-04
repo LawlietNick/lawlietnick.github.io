@@ -4,6 +4,7 @@ title: "Track HubSpot form submissions in GTM with the real form name"
 description: "A Google Tag Manager template that pushes successful HubSpot form submissions to the dataLayer with the actual HubSpot form name, resolved through a Cloudflare Worker or PHP endpoint."
 date: 2026-09-20
 category: templates
+primaryCategory: analytics
 order: 3
 icon: "◆"
 summary: "Copy-ready GTM template, backend lookup service and dataLayer specification for HubSpot form success events that carry the real form name."

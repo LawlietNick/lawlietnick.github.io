@@ -1,13 +1,15 @@
-// Post categories — single source of truth for the visible category pill and
-// the Schema.org articleSection. Posts set `category: <slug>` in frontmatter;
-// components render the language-appropriate label via categoryLabel(). Add an
-// entry here to introduce a new category in both languages.
+// Topics — shared allowed values for primary_category, post category pills and
+// Schema.org articleSection. Posts use category; templates use primaryCategory
+// because their category names the collection. Astro pages pass primaryCategory
+// to Base. Add each new topic here with labels in both languages.
 export const categories = {
   "ai-prompting": { en: "AI & Prompting", fi: "Tekoäly & promptit" },
   "analytics": { en: "Analytics", fi: "Analytiikka" },
   "accessibility": { en: "Accessibility", fi: "Saavutettavuus" },
   "marketing-automation": { en: "Marketing automation", fi: "Markkinoinnin automaatio" },
   "seo": { en: "SEO", fi: "SEO" },
+  "reporting": { en: "Reporting", fi: "Raportointi" },
+  "general": { en: "General", fi: "Yleinen" },
   "privacy": { en: "Privacy & Consent", fi: "Tietosuoja & suostumus" },
 };
 

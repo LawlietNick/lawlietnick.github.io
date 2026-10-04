@@ -5,6 +5,7 @@ description: "A step-by-step guide to setting up Cookiebot and configuring and t
 date: 2025-08-07
 updatedDate: 2026-09-22
 category: templates
+primaryCategory: privacy
 order: 1
 icon: "🍪"
 summary: "Set up Cookiebot and manage Google and Microsoft consent states with configurable settings, copy-ready code and testing instructions."

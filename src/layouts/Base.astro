@@ -1,4 +1,5 @@
 ---
+import { classifyPage } from "../utils/page-classification.js";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import PostHero from "../components/PostHero.astro";
@@ -21,6 +22,7 @@ import "../styles/global.css";
 import "../styles/patterns.css";
 
 const fm = Astro.props.frontmatter;
+const classification = classifyPage(Astro.url.pathname, { ...fm, ...Astro.props });
 const { title, description = "", documentTitle } = fm ?? Astro.props;
 // pages/posts pass a page-specific title; the brand suffix is appended here (one place)
 const fullTitle = documentTitle ?? (title ? `${title} | ${siteName}` : siteName);
@@ -135,6 +137,8 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="page_type" content={classification.pageType} />
+    <meta name="primary_category" content={classification.primaryCategory} />
     <meta name="color-scheme" content="light dark" />
     <meta
       name="theme-color"

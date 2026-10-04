@@ -4,6 +4,7 @@ title: "HubSpot-lomakkeiden seuranta GTM:llä oikealla lomakkeen nimellä"
 description: "Google Tag Manager -malli, joka lähettää onnistuneet HubSpot-lomakkeiden lähetykset dataLayeriin HubSpotin todellisella lomakkeen nimellä. Nimi haetaan Cloudflare Workerin tai PHP-päätepisteen kautta."
 date: 2026-09-20
 category: templates
+primaryCategory: analytics
 order: 3
 icon: "◆"
 summary: "Kopioitava GTM-malli, taustapalvelu nimen hakuun ja dataLayer-määritys HubSpot-lomakkeiden onnistumistapahtumille, jotka sisältävät oikean lomakkeen nimen."

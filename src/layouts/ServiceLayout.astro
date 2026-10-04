@@ -58,7 +58,7 @@ const schemaService = {
 
 ---
 
-<Base title={fm.metaTitle ?? fm.title} description={fm.metaDescription ?? fm.summary} schemaPageType="service" {schemaService} alternate={fm.alternate}>
+<Base title={fm.metaTitle ?? fm.title} description={fm.metaDescription ?? fm.summary} schemaPageType="service" primaryCategory={fm.primaryCategory ?? fm.group} {schemaService} alternate={fm.alternate}>
   <div class="wide-band">
     <Breadcrumb
       fi={fi}

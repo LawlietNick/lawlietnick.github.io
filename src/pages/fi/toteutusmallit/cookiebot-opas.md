@@ -5,6 +5,7 @@ description: "Vaiheittainen opas Cookiebotin käyttöönottoon sekä Google Cons
 date: 2025-08-07
 updatedDate: 2026-09-28
 category: templates
+primaryCategory: privacy
 order: 1
 icon: "🍪"
 summary: "Cookiebotin käyttöönotto ja Googlen sekä Microsoftin suostumustilojen hallinta: asetukset, kopioitavat koodit ja testausohjeet."

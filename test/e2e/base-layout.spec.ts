@@ -14,6 +14,31 @@ async function navigate(page: Page, href: string) {
   await expect(page.locator("#test-navigation")).toHaveCount(0);
 }
 
+test("classification metadata follows ClientRouter navigation without duplicates", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => { (window as any).__classificationNavigation = true; });
+  for (const [route, pageType, category] of [
+    ["/fi/blog/sivujen-luokittelu-analytiikassa/", "article", "analytics"],
+    ["/templates/cookiebot-guide/", "template", "privacy"],
+    ["/fi/toteutusmallit/cookiebot-opas/", "template", "privacy"],
+    ["/tools/ga4-report-builder/", "tool", "reporting"],
+    ["/fi/palvelut/consent-mode-toteutus/", "service", "privacy"],
+    ["/fi/palvelut/digitaalisen-analyysin-paketti/", "service", "analytics"],
+    ["/fi/privacy/", "legal", "privacy"],
+    ["/fi/tyokalut/", "listing", "general"],
+    ["/about/", "about", "general"],
+    ["/fi/", "home", "general"],
+  ]) {
+    await navigate(page, route);
+    for (const [name, value] of [["page_type", pageType], ["primary_category", category]]) {
+      const tag = page.locator(`head meta[name="${name}"]`);
+      await expect(tag).toHaveCount(1);
+      await expect(tag).toHaveAttribute("content", value);
+    }
+    expect(await page.evaluate(() => (window as any).__classificationNavigation)).toBe(true);
+  }
+});
+
 test("normal pages and text-only articles do not fetch content enhancements or Mermaid", async ({ page }) => {
   const scripts: string[] = [];
   page.on("request", (request) => {

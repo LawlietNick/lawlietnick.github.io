@@ -9,6 +9,7 @@ import process from "node:process";
 import yaml from "js-yaml";
 import { z } from "zod";
 import { formCategories, formTypes } from "../src/data/form-types.js";
+import { classifyPage } from "../src/utils/page-classification.js";
 
 const root = process.cwd();
 const pagesRoot = path.join(root, "src/pages");
@@ -151,6 +152,11 @@ for (const type of types) {
       const rel = path.relative(root, file);
       const source = await readFile(file, "utf8");
       const data = frontmatter(source, rel);
+      try {
+        classifyPage(routeFor(file), data);
+      } catch (error) {
+        errors.push(`${rel}: ${error.message}`);
+      }
       checkTaxonomy(source, rel, errors);
 
       if (type.schema) {
@@ -214,6 +220,15 @@ for (const type of types) {
     }
     if (target.data.alternate?.href !== route) {
       errors.push(`${target.file}: reciprocal alternate must point back to ${route}.`);
+    }
+    try {
+      const current = classifyPage(route, entry.data);
+      const translated = classifyPage(alt.href, target.data);
+      if (current.pageType !== translated.pageType || current.primaryCategory !== translated.primaryCategory) {
+        errors.push(`${entry.file}: classification differs from ${target.file}.`);
+      }
+    } catch {
+      // Invalid categories have already been reported while reading the files.
     }
   }
 }

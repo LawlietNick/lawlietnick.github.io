@@ -3,12 +3,13 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && npm run validate:content",
+    "build": "astro build && npm run validate:content && npm run validate:classification",
     "test": "npm run test:unit && npm run test:legacy",
     "test:unit": "vitest run",
     "test:legacy": "node --test test/*.test.*",
     "test:e2e": "playwright test",
     "validate:content": "node scripts/validate-content.mjs",
+    "validate:classification": "node scripts/validate-page-classification.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
