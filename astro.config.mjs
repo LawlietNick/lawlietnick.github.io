@@ -1,9 +1,25 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
+import { createHash } from "node:crypto";
 import { readdir, readFile, rm } from "node:fs/promises";
 import { siteConfig, showServices } from "./src/data/site.js";
 import { allInteractiveTools } from "./src/data/interactive-tools.js";
 import { toolkit } from "./src/data/toolkit.js";
+
+// Astro hashes the scripts it bundles, but not `is:inline` scripts or raw <script>
+// blocks inside markdown. Hash those from source so the CSP <meta> allows them;
+// editing a script updates its hash on the next build.
+const srcDir = new URL("./src/", import.meta.url);
+const inlineScriptHashes = [];
+for (const file of (await readdir(srcDir, { recursive: true })).filter((f) => /\.(astro|md)$/.test(f))) {
+  let source = await readFile(new URL(file, srcDir), "utf8");
+  if (file.endsWith(".md")) source = source.replace(/^```[\s\S]*?^```/gm, "");
+  for (const [, attrs, body] of source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
+    if (/\bsrc=|type="application\/(ld\+)?json"/.test(attrs)) continue;
+    if (file.endsWith(".astro") && !/\bis:inline\b/.test(attrs)) continue;
+    inlineScriptHashes.push(`sha256-${createHash("sha256").update(body).digest("base64")}`);
+  }
+}
 
 export default defineConfig({
   site: siteConfig.url,
@@ -33,6 +49,19 @@ export default defineConfig({
       },
     },
   ],
+  // GitHub Pages cannot send response headers, so the CSP ships as a <meta> tag:
+  // Astro hashes every bundled script; see inlineScriptHashes for the rest.
+  security: {
+    csp: {
+      directives: ["object-src 'none'", "base-uri 'self'", "form-action 'self'"],
+      scriptDirective: { hashes: [...new Set(inlineScriptHashes)] },
+      styleDirective: {
+        // Mermaid and Shiki style at runtime, so styles stay inline-allowed;
+        // script-src (the part that stops XSS) keeps its strict hash list.
+        resources: ["'self'", "'unsafe-inline'"],
+      },
+    },
+  },
   trailingSlash: "always",
   prefetch: { prefetchAll: true },   // prefetch internal links on hover/tap
   // markdown ![]() images from src/assets get webp + srcset/sizes; components

@@ -1,7 +1,7 @@
 {
   "astro.config.mjs": {
-    "mtime": 1791116336098.271,
-    "hash": "6a7ccbe45aee3e41883747ed0efd9585"
+    "mtime": 1791119419487.62,
+    "hash": "440a7042bbcea9ad110d16a60f9d514b"
   },
   "scripts/generate-hero-placeholders.mjs": {
     "mtime": 1783662513918.7078,
@@ -740,8 +740,8 @@
     "hash": "ebfe0369b77bcb9f787ac3716f0f0dbf"
   },
   "src/pages/templates/hubspot-form-tracking-gtm.md": {
-    "mtime": 1791118899967.0547,
-    "hash": "cd67ffa2d36cd8629e16368b09950081"
+    "mtime": 1791119228292.8806,
+    "hash": "95fd84dd1149349bb32d3ec78769b1d6"
   },
   "public/images/blog/hubspot-form-submission-tracking-gtm.jpeg": {
     "mtime": 1789925276150.7463,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791118087457.5156,
-    "hash": "31f9e1e95b2750ddb5563ccd0b2881fe"
+    "mtime": 1791118926240.1934,
+    "hash": "fde2215456a4ee5fc82db8813c29e4d6"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -972,8 +972,8 @@
     "hash": "05b2a7880451187bb7ce6378be57bfe7"
   },
   "src/pages/fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm.md": {
-    "mtime": 1791118899967.482,
-    "hash": "7b7185fd946654f7411b6d538fcf19f9"
+    "mtime": 1791119228294.4429,
+    "hash": "32c4d8e8a596bd808f15d7ebdbfa4fac"
   },
   "public/robots.txt": {
     "mtime": 1791118184551.3455,

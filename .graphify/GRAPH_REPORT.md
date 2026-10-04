@@ -1,24 +1,24 @@
 # Graph Report - .  (2026-10-04)
 
 ## Corpus Check
-- Large corpus: 245 files · ~532,465 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
+- Large corpus: 245 files · ~532,641 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
 
 ## Summary
-- 489 nodes · 997 edges · 15 communities detected
+- 493 nodes · 1004 edges · 15 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
-- Edge kinds: contains: 315 · MODIFIES: 222 · imports_from: 165 · imports: 113 · ON_BRANCH: 97 · calls: 43 · PARENT_OF: 42
+- Edge kinds: contains: 317 · MODIFIES: 223 · imports_from: 165 · imports: 113 · ON_BRANCH: 99 · PARENT_OF: 44 · calls: 43
 
 
 ## Input Scope
 - Requested: auto
 - Resolved: committed (source: default-auto)
 - Included files: 245 · Candidates: 273
-- Excluded: 2 untracked · 26399 ignored · 1 sensitive · 0 missing committed
+- Excluded: 2 untracked · 26625 ignored · 1 sensitive · 0 missing committed
 - Recommendation: Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder.
 
 ## Graph Freshness
-- Built from Git commit: `5510f4b`
+- Built from Git commit: `8e66197`
 - Compare this hash to `git rev-parse HEAD` before trusting freshness-sensitive graph output.
 ## God Nodes (most connected - your core abstractions)
 1. `buildSelectedContainer()` - 9 edges
@@ -51,12 +51,12 @@ Cohesion: 0.07
 Nodes (43): 50bd599 Finnish language review 4.10.2026: fix new and changed texts, e500df6 Add Finnish GTM container builder, applyTagNamingConvention(), BuilderSettings, BuilderState, BuilderValidation, buildSelectedContainer(), clone() (+35 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.12
-Nodes (41): claude/sweet-lamport-b36507, datalayer-print-and-copy-edits, launch-prep, main, 0421511 Add short navSummary lines for services in the mega menu, 17b83c7 Add serviceType and about to service page schema, 1b5b266 Broaden toolkit copy beyond analytics, 1ca05d5 Match mega menu link heights within a grid row (+33 more)
+Cohesion: 0.11
+Nodes (43): claude/sweet-lamport-b36507, datalayer-print-and-copy-edits, launch-prep, main, 0421511 Add short navSummary lines for services in the mega menu, 17b83c7 Add serviceType and about to service page schema, 1b5b266 Broaden toolkit copy beyond analytics, 1ca05d5 Match mega menu link heights within a grid row (+35 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.08
-Nodes (29): appearances, categories, categoryLabel(), allInteractiveTools, profiles, siteConfig, toolkit, PERSON (+21 more)
+Cohesion: 0.07
+Nodes (31): inlineScriptHashes, srcDir, appearances, categories, categoryLabel(), allInteractiveTools, profiles, siteConfig (+23 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.07
@@ -103,7 +103,7 @@ Cohesion: 0.67
 Nodes (2): bg, logoWhite
 
 ## Knowledge Gaps
-- **100 isolated node(s):** `logoWhite`, `bg`, `root`, `pagesRoot`, `serviceSchema` (+95 more)
+- **102 isolated node(s):** `srcDir`, `inlineScriptHashes`, `logoWhite`, `bg`, `root` (+97 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Community 17`** (2 nodes): `collections`, `postSchema`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -120,14 +120,14 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `siteConfig` connect `Community 3` to `Community 4`, `Community 10`?**
   _High betweenness centrality (0.007) - this node is a cross-community bridge._
 - **Why does `toolkit` connect `Community 3` to `Community 2`, `Community 4`?**
-  _High betweenness centrality (0.001) - this node is a cross-community bridge._
-- **What connects `logoWhite`, `bg`, `root` to the rest of the system?**
-  _100 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+- **What connects `srcDir`, `inlineScriptHashes`, `logoWhite` to the rest of the system?**
+  _102 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.06317954745812518 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.07017543859649122 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.11673469387755102 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11085972850678733 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.07681365576102418 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07179487179487179 - nodes in this community are weakly interconnected._
