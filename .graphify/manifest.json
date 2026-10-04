@@ -1,7 +1,7 @@
 {
   "astro.config.mjs": {
-    "mtime": 1791120355040.2725,
-    "hash": "63c0f227a9f587ff6ab038ce0b9a3f7f"
+    "mtime": 1791122372612.2175,
+    "hash": "103b86b51815733f7c662e1bf5a1b367"
   },
   "scripts/generate-og.mjs": {
     "mtime": 1786044996796.3782,
@@ -88,8 +88,8 @@
     "hash": "bdf1682e6ff17e412535c331576a6271"
   },
   "src/layouts/Base.astro": {
-    "mtime": 1791122112853.7512,
-    "hash": "34d3a09be675b6f9734ff3ebe74bad95"
+    "mtime": 1791122372612.413,
+    "hash": "d075382727779e22678c6a4b990aedf5"
   },
   "src/pages/404.astro": {
     "mtime": 1784635640860.7234,
@@ -864,8 +864,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791121868956.451,
-    "hash": "a4aa49b3b982e3455e8517511541baf9"
+    "mtime": 1791122128960.8752,
+    "hash": "1da819022b0325afa0f806d8293f4c30"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,

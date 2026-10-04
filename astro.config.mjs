@@ -66,6 +66,9 @@ export default defineConfig({
     },
   },
   trailingSlash: "always",
+  // ponytail: CSS inline in every page (~17 KiB gz) removes the render-blocking
+  // request; most visits land on one page from search, so the lost cache costs little
+  build: { inlineStylesheets: "always" },
   prefetch: { prefetchAll: true },   // prefetch internal links on hover/tap
   // markdown ![]() images from src/assets get webp + srcset/sizes; components
   // that pass their own widths/sizes keep them (Astro only fills gaps)
