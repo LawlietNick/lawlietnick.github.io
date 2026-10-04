@@ -102,10 +102,9 @@ Keskitetyssä kappaleessa jokainen rivi alkaa eri kohdasta. Yhden rivinvaihdon k
 W3C:n Low Vision Accessibility Task Force -työryhmän [täydentävä ohje](https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Supplemental_Guidance%3A_Text_Justification) nostaa esiin saman mekanismin. Usean rivin keskitetty teksti tekee seuraavan rivin aloituskohdasta vaihtelevan, mikä voi vaikeuttaa tasaisen lukurytmin säilyttämistä. Ohje on informatiivinen suositus, ei itsenäinen WCAG-vaatimus.
 
 <figure>
-  <img
-    src="/src/assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg"
-    alt="Kaavio katseen paluuliikkeestä. Keskitetyssä tekstissä katse palaa vaihteleviin aloituskohtiin, vasemmalle tasatussa tekstissä samalle pystylinjalle, vaikka rivien pituudet vaihtelevat."
-  />
+
+![Kaavio katseen paluuliikkeestä. Keskitetyssä tekstissä katse palaa vaihteleviin aloituskohtiin, vasemmalle tasatussa tekstissä samalle pystylinjalle, vaikka rivien pituudet vaihtelevat.](@assets/blog/tekstin-tasaus-katseen-paluuliike.jpeg)
+
   <figcaption>Vasemmalla keskitetty teksti, jossa seuraavan rivin aloituskohta vaihtuu. Oikealla vasemmalle tasattu teksti, jossa katse voi palata aina samaan linjaan. Kuva luotu tekoälyllä.</figcaption>
 </figure>
 
@@ -150,10 +149,9 @@ Kun tila kapenee, rivejä ja epäsäännöllisiä aloituskohtia syntyy enemmän.
 Sama tapahtuu, kun käyttäjä suurentaa tekstiä. Siksi tasausta ei kannata hyväksyä vain leveän työpöytänäkymän perusteella.
 
 <figure>
-  <img
-    src="/src/assets/blog/tekstin-tasaus-mobiili.jpeg"
-    alt="Keskitetyn ja vasemmalle tasatun tekstin vertailu työpöytä- ja mobiilinäkymissä. Keskitetyn tekstin epätasainen rivinalku korostuu mobiilissa."
-  />
+
+![Keskitetyn ja vasemmalle tasatun tekstin vertailu työpöytä- ja mobiilinäkymissä. Keskitetyn tekstin epätasainen rivinalku korostuu mobiilissa.](@assets/blog/tekstin-tasaus-mobiili.jpeg)
+
   <figcaption>Vasemmalla keskitetty teksti ja oikealla vasemmalle tasattu teksti. Mobiilissa keskitetyn tekstin epätasainen vasen reuna korostuu. Kuva luotu tekoälyllä.</figcaption>
 </figure>
 
