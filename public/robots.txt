@@ -1,0 +1,11 @@
+# karppinen.one: everything public may be crawled, including by AI crawlers.
+# Draft and hidden pages are not part of the build, so nothing needs blocking here.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://karppinen.one/sitemap.xml
+
+# Not robots.txt directives; listed for discovery and ignored by crawlers that do not use them.
+# EntityMap: https://karppinen.one/entitymap.json
+# LLMs: https://karppinen.one/llms.txt
