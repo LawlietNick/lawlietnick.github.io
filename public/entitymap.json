@@ -5,7 +5,7 @@
     "name": "Niko Karppinen",
     "url": "https://karppinen.one"
   },
-  "generated": "2026-08-06T00:00:00Z",
+  "generated": "2026-10-04T00:00:00Z",
   "verificationStatus": "generator-draft",
   "entities": [
     {
@@ -17,11 +17,11 @@
       "hasChunks": [
         {
           "chunkId": "c_001",
-          "text": "I like turning messy tracking setups, scattered reports and unclear site structures into systems people can actually use — to measure results, improve their work and make the next decision with more confidence.",
+          "text": "I like untangling messy tracking setups, bringing scattered reports together and making site structures clearer. I want people to understand what is happening and decide what to do next.",
           "sourceUrl": "https://karppinen.one/about/",
           "pageTitle": "About Niko Karppinen",
           "publisher": "Niko Karppinen",
-          "retrieved": "2026-08-06T00:00:00Z",
+          "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "definition"
         }
       ]
@@ -35,20 +35,20 @@
       "hasChunks": [
         {
           "chunkId": "c_003",
-          "text": "I have worked with SEO, analytics, and digital marketing since 2017. Over the years, I have worked with ecommerce businesses, telecommunications companies, public-sector organisations, consumer brands, and B2B companies.",
+          "text": "I have worked with SEO, analytics, and digital marketing since 2017. In that time, I have worked with organisations in ecommerce, telecommunications, insurance, healthcare, the public sector, B2B, and consumer services.",
           "sourceUrl": "https://karppinen.one/about/",
           "pageTitle": "About Niko Karppinen",
           "publisher": "Niko Karppinen",
-          "retrieved": "2026-08-06T00:00:00Z",
+          "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "evidence"
         },
         {
           "chunkId": "c_004",
-          "text": "AI works best when the process is already clear enough for a human to repeat. Without that, it's just a confident intern with access to the printer.",
+          "text": "AI can help apply a clear process more consistently. It does not fix bad source data, unclear ownership, or a process that nobody really understands.",
           "sourceUrl": "https://karppinen.one/about/",
           "pageTitle": "About Niko Karppinen",
           "publisher": "Niko Karppinen",
-          "retrieved": "2026-08-06T00:00:00Z",
+          "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "example"
         }
       ]
@@ -145,50 +145,20 @@
       "hasChunks": [
         {
           "chunkId": "c_017",
-          "text": "Should the ConsentDefault section use the visitor's saved Cookiebot choices automatically on every page load?",
+          "text": "This guide takes a direct Cookiebot website implementation from adding the scripts to browser validation. Site owners can use the implementation notes, marketing and analytics specialists can use the expected consent states, and developers can copy and adapt the generated code.",
           "sourceUrl": "https://karppinen.one/templates/cookiebot-guide/",
           "pageTitle": "Cookiebot guide",
           "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
+          "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "procedure"
         },
         {
           "chunkId": "c_018",
-          "text": "Place the code as high in the <head> as possible. In WordPress, load it before the wp_head hook.",
+          "text": "Basic and Advanced Consent Mode describe when a tag loads, not which default snippet you copy. With Basic Consent Mode, the tag stays blocked until the relevant consent is granted. With Advanced Consent Mode, the tag loads with denied defaults and sends limited cookieless measurements.",
           "sourceUrl": "https://karppinen.one/templates/cookiebot-guide/",
           "pageTitle": "Cookiebot guide",
           "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "procedure"
-        }
-      ],
-      "relations": [
-        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
-      ]
-    },
-    {
-      "entityId": "e_013",
-      "@type": "Guide",
-      "name": "CEO appreciation speech prompt",
-      "description": "A reusable AI prompt for writing a sincere company-wide appreciation speech, with audience, goal and tone as adjustable inputs.",
-      "audienceType": "executive",
-      "hasChunks": [
-        {
-          "chunkId": "c_019",
-          "text": "Writing a company-wide thank-you speech sounds simple until you actually need to do it. The speech has to feel sincere, specific, and leadership-driven. It should recognize the pressure people have carried, connect their work to the company mission, and still look forward with energy.",
-          "sourceUrl": "https://karppinen.one/blog/ceo-appreciation-speech-prompt/",
-          "pageTitle": "CEO appreciation speech prompt for employees",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
-          "contentType": "definition"
-        },
-        {
-          "chunkId": "c_020",
-          "text": "This prompt is built for CEOs, founders, and leadership teams who need a clear appreciation speech for employees. The useful part is that you can change three inputs before you run it: audience, goal, and tone.",
-          "sourceUrl": "https://karppinen.one/blog/ceo-appreciation-speech-prompt/",
-          "pageTitle": "CEO appreciation speech prompt for employees",
-          "publisher": "Niko Karppinen",
-          "retrieved": "2026-07-20T08:00:00Z",
+          "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "procedure"
         }
       ],
@@ -205,11 +175,11 @@
       "hasChunks": [
         {
           "chunkId": "c_021",
-          "text": "Tools can surface patterns, but human judgment still decides what matters for the customer, the business, and the brand.",
+          "text": "Tools can surface patterns, but people still decide what matters for the customer, the business, and the brand.",
           "sourceUrl": "https://karppinen.one/about/",
           "pageTitle": "About Niko Karppinen",
           "publisher": "Niko Karppinen",
-          "retrieved": "2026-08-06T00:00:00Z",
+          "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "definition"
         }
       ],
