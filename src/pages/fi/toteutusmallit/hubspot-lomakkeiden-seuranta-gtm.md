@@ -4888,7 +4888,7 @@ Alkuperä ei ole listassa `ALLOWED_ORIGINS`. Lisää sekä `www`-alkuinen että 
 <details>
 <summary>Tapahtuma käynnistyy ilman lomakkeen nimeä</summary>
 
-Haku ei ehtinyt valmistua ennen lähetystä. Varmista, että tagi käynnistyy triggerillä **Initialization - All Pages**, jotta valmis-tapahtuma voi aloittaa haun ajoissa.
+Haku ei ehtinyt valmistua ennen lähetystä. Varmista, että tagi käynnistyy triggerillä **Initialization - All Pages**, jotta lomakkeen latautumistapahtuma voi aloittaa haun ajoissa.
 
 </details>
 

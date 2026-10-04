@@ -86,13 +86,13 @@ Kumpikaan ei riitä yksinään. Etenemistä voi syntyä nopealla vierityksellä.
 
 Mittausmalli yhdistää molemmat.
 
-## Neljä signaalia ja niistä johdettu lukutulos
+## Neljä signaalia ja niistä johdettu lukukerta
 
 Malli kirjaa neljä artikkelikohtaista signaalia ja johtaa niistä arvioidun lukukerran, kun sekä loppuun pääsemisen että ajan ehto täyttyvät. Kukin signaali lasketaan enintään kerran artikkelin sivun katselua kohden, joten saman kohdan ohi vierittäminen useasti ei kasvata lukua. Artikkelin avaaminen uudelleen voi luoda uuden sivun katselun: luvut kuvaavat käyntejä sisällössä, eivät yksittäisiä ihmisiä.
 
 Malli mittaa vain artikkeleita, jotka ovat pidempiä kuin yksi näytöllinen. Jos koko leipäteksti mahtuu näkymään sivun avautuessa, etenemistä ei voi havaita, eikä sivun katselu kirjaa yhtään näistä signaaleista.
 
-### 1. Artikkelin skrollaus alkoi
+### 1. Artikkelin vieritys alkoi
 
 **Ensimmäinen vieritys, joka tuo artikkelin tekstiä näkyviin, kun sivu on näkyvissä ja aktiivisena.**
 
@@ -165,13 +165,13 @@ GA4 mittaa jo sitoutumisaikaa, jonka verkkosivu on aktiivisena. Tämä oma signa
 
 Edes etualalla vietetty aika ei todista tarkkaavaisuutta. Joku voi poistua näytön ääreltä, pysähtyä miettimään tai tutkia kuvitusta. Kynnys hyväksyy ajan, mutta se ei varmista lukemista.
 
-### Johdettu tulos: Arvioitu artikkelin luku
+### Johdettu tulos: Arvioitu lukukerta
 
 **Sekä artikkelin loppu että lukuajan kynnys on saavutettu saman sivun katselun aikana.**
 
 <math display="block">
 <mrow>
-<mtext>Arvioitu artikkelin luku</mtext>
+<mtext>Arvioitu lukukerta</mtext>
 <mo>=</mo>
 <mtext>Artikkelin loppu saavutettu</mtext>
 <mo>∧</mo>
@@ -183,7 +183,7 @@ Edes etualalla vietetty aika ei todista tarkkaavaisuutta. Joku voi poistua näyt
 
 Kyse ei ole erillisestä käyttäytymissignaalista. Se on johdettu tulos, joka yhdistää kaksi havaintoa: kävijä pääsi loppuun, ja hyväksyttävää aikaa kertyi valitsemasi arvion verran.
 
-Raportissa nimen pitää kertoa, mitä luku tarkoittaa: **arvioidut artikkelin luvut**. Se on kulutuksen välillinen mittari, ja siihen periytyvät molempien ehtojen rajoitukset.
+Raportissa nimen pitää kertoa, mitä luku tarkoittaa: **arvioidut lukukerrat**. Se on kulutuksen välillinen mittari, ja siihen periytyvät molempien ehtojen rajoitukset.
 
 Sisällölle, joka on tarkoitettu luettavaksi alusta loppuun, tämä on hyödyllinen tulos seurata yksittäisten signaalien rinnalla.
 
@@ -195,20 +195,20 @@ Yksi kävijä voi viettää useita minuutteja artikkelin alkupuoliskolla ja jatk
 
 ```mermaid
 flowchart TD
-accTitle: Miten arvioitu artikkelin luku kirjataan
-accDescr: Artikkelin sivun katselulla on kaksi toisistaan riippumatonta ehtoa: artikkelin loppu tulee näkyviin ja hyväksyttävä aika saavuttaa asetetun kynnyksen. Arvioitu artikkelin luku kirjataan vain, kun molemmat ehdot täyttyvät saman sivun katselun aikana.
+accTitle: Miten arvioitu lukukerta kirjataan
+accDescr: Artikkelin sivun katselulla on kaksi toisistaan riippumatonta ehtoa: artikkelin loppu tulee näkyviin ja hyväksyttävä aika saavuttaa asetetun kynnyksen. Arvioitu lukukerta kirjataan vain, kun molemmat ehdot täyttyvät saman sivun katselun aikana.
 A["Sivun katselu"] --> B["Artikkelin loppu tulee näkyviin"]
 A --> C["Hyväksyttävä aika saavuttaa kynnyksen"]
 B --> D{"Täyttyvätkö molemmat ehdot?"}
 C --> D
-D -->|Kyllä| E["Arvioitu artikkelin luku"]
+D -->|Kyllä| E["Arvioitu lukukerta"]
 ```
 
 Alun ja puolivälin tapahtumat tuovat lisätietoa ongelmien selvittämiseen. Ne eivät ole arvioidun lukukerran edellytyksiä. Kävijä, joka avaa linkin suoraan loppupäätelmään, voi päästä loppuun ilman kirjattua vierityksen alkua.
 
 ## Mitä tämä malli ei kerro
 
-Arvioitu artikkelin luku on edelleen arvio, joka perustuu havaittavaan käyttäytymiseen. Se ei todista, että joku luki jokaisen sanan, keskittyi koko käynnin ajan tai ymmärsi sisällön.
+Arvioitu lukukerta on edelleen arvio, joka perustuu havaittavaan käyttäytymiseen. Se ei todista, että joku luki jokaisen sanan, keskittyi koko käynnin ajan tai ymmärsi sisällön.
 
 Malli ei myöskään kerro, oliko artikkeli hyödyllinen tai saavuttiko kävijä sen, mitä tuli hakemaan. Pitkä lukuaika voi kertoa kiinnostuksesta, mutta se voi myös tarkoittaa, että sisältöä oli vaikea käyttää.
 
@@ -235,13 +235,13 @@ Oletetaan, että artikkelista saadaan seuraavat tulokset. Luvut ovat kuviteltuja
 | Mittari | Määrä |
 | --- | ---: |
 | Sivun katselut | 1 000 |
-| Artikkelin skrollaus alkoi | 600 |
+| Artikkelin vieritys alkoi | 600 |
 | Artikkelin puoliväli saavutettu | 420 |
 | Artikkelin loppu saavutettu | 260 |
 | Lukuajan kynnys saavutettu | 310 |
-| Arvioitu artikkelin luku | 180 |
+| Arvioitu lukukerta | 180 |
 
-Aikakynnys täyttyi useammassa katselussa kuin loppuun pääsy. Se on mahdollista, koska aika ja sijainti ovat toisistaan riippumattomia ehtoja. 180 arvioitua lukua ovat katseluja, joissa molemmat täyttyivät.
+Aikakynnys täyttyi useammassa katselussa kuin loppuun pääsy. Se on mahdollista, koska aika ja sijainti ovat toisistaan riippumattomia ehtoja. 180 arvioitua lukukertaa ovat katseluja, joissa molemmat täyttyivät.
 
 Arvioitu lukuaste lasketaan näin:
 
@@ -250,7 +250,7 @@ Arvioitu lukuaste lasketaan näin:
 <mtext>Arvioitu lukuaste</mtext>
 <mo>=</mo>
 <mfrac>
-<mtext>Arvioidut artikkelin luvut</mtext>
+<mtext>Arvioidut lukukerrat</mtext>
 <mtext>Artikkelin sivun katselut</mtext>
 </mfrac>
 <mo>×</mo>
@@ -281,9 +281,9 @@ Nimittäjässä pitää käyttää GA4:n sivun katseluja samoilta mittaukseen ke
 
 Tulos tarkoittaa, että 18 % artikkelin sivun katseluista täytti asetetut ehdot. Se ei tarkoita, että täsmälleen 18 % kävijöistä luki artikkelin.
 
-## Valitse artikkelin tarkoitukseen sopiva KPI
+## Valitse artikkelin tarkoitukseen sopiva avainmittari
 
-Esseelle tai opettavalle artikkelille, joka on tarkoitettu luettavaksi loppuun, arvioitu lukuaste auttaa seuraamaan kulutusta. Pidä lukujen määrä ja sivun katselujen määrä sen rinnalla, jottei korkea prosentti hyvin pienestä käyntimäärästä ohjaa päätöksiä.
+Esseelle tai opettavalle artikkelille, joka on tarkoitettu luettavaksi loppuun, arvioitu lukuaste auttaa seuraamaan kulutusta. Pidä lukukertojen määrä ja sivun katselujen määrä sen rinnalla, jottei korkea prosentti hyvin pienestä käyntimäärästä ohjaa päätöksiä.
 
 Hakuteoksenomaisella artikkelilla on eri tehtävä. Jos kävijä löytää tarvitsemansa komennon, kopioi sen ja lähtee, käynti voi olla onnistunut, vaikka hän ei päässyt loppuun. Jos vastaus tehtäisiin vaikeammaksi löytää, sisällön parissa vietetty aika voisi kasvaa, mutta artikkelista tulisi vähemmän hyödyllinen.
 
@@ -295,6 +295,6 @@ Vertaa keskenään artikkeleita, joiden muoto, pituus ja yleisö ovat samankalta
 
 Aloita kysymyksestä, jonka perusteella voit toimia: pääsevätkö kävijät johdannon ohi, päätyvätkö he loppupäätelmään vai viettävätkö he aikaa sisällön parissa lukematta sitä loppuun?
 
-Neljä signaalia ja niistä johdettu lukutulos auttavat selvittämään näitä kysymyksiä ja päättämään, mitä tarkastella seuraavaksi. Niiden arvo syntyy päätöksistä, joita ne tukevat, ei siitä, että yksi laaja sitoutumismittari vaihdetaan toiseen.
+Neljä signaalia ja niistä johdettu arvioitu lukukerta auttavat selvittämään näitä kysymyksiä ja päättämään, mitä tarkastella seuraavaksi. Niiden arvo syntyy päätöksistä, joita ne tukevat, ei siitä, että yksi laaja sitoutumismittari vaihdetaan toiseen.
 
 Tulossa: toteutusmalli Google Tag Managerille ja GA4:lle, jossa on seurantakoodi, tapahtumien määritykset, raportoinnin kaavat ja testausvaiheet. Lisään linkin tähän, kun malli on valmis.

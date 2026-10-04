@@ -254,14 +254,14 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
                   label={tr("Default currency", "Oletusvaluutta")}
                   value={state.settings.defaultCurrency}
                   onChange={(value) => setting("defaultCurrency", value)}
-                  hint={tr("ISO code used when the data layer omits one.", "ISO-koodi, jota käytetään, kun datakerroksessa ei ole valuuttaa.")}
+                  hint={tr("ISO code used when the data layer omits one.", "ISO-koodi, jota käytetään, kun dataLayerissa ei ole valuuttaa.")}
                   options={CURRENCY_OPTIONS}
                   requiredText={tr("Default currency is required.", "Oletusvaluutta on pakollinen.")}
                 />
               ) : (
                 <div className="gtm-setting gtm-setting--note">
                   <span>{tr("Currency source", "Valuutan lähde")}</span>
-                  <p>{tr("Provided by", "Tulee kentästä")} <code>ecommerce.currency</code> {tr("in each data layer event.", "jokaisessa datakerroksen tapahtumassa.")}</p>
+                  <p>{tr("Provided by", "Tulee kentästä")} <code>ecommerce.currency</code> {tr("in each data layer event.", "jokaisessa dataLayer-tapahtumassa.")}</p>
                 </div>
               )}
               <Setting

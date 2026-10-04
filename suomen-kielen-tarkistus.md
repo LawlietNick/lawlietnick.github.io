@@ -1,3 +1,30 @@
+# Suomenkielisten tekstien tarkistus 4.10.2026
+
+Tarkistin koneellisesti kaikkien buildattujen suomenkielisten sivujen näkyvän tekstin (lainausmerkit, prosentit, luvut, viivat, kellonajat, pilkutus ja tyypilliset anglismit) ja luin käsin tekstit, jotka ovat muuttuneet 28.9. tarkistuksen jälkeen: etusivun ja Minusta-sivun lisäykset, Lomakkeiden nimeämistyökalu, GTM-säiliön rakentaja, blogikirjoitus sisällön kulutuksen mittaamisesta, HubSpot-toteutusmalli ja GA4-annotaatioiden uudet ehdotukset. Piilotetut palvelusivut ja draft-tilassa olevat sivut eivät kuulu tarkistukseen. Korjaukset on tehty sivuston tiedostoihin 4.10.2026.
+
+| Kohta | Ennen | Jälkeen | Peruste |
+|---|---|---|---|
+| `src/pages/fi/minusta.astro` | tarkistaa tuloksen ennen kuin se siirtyy eteenpäin | tarkistaa tuloksen, ennen kuin se siirtyy eteenpäin | *Ennen kuin* aloittaa sivulauseen, joten edelle tulee pilkku. |
+| `src/pages/fi/index.astro` | Sama koskee tekoälyä. – – AI tekee samat virheet | – – tekoäly tekee samat virheet | Sama käsite samalla nimellä. |
+| `src/components/LocaleList.astro` | FI — Suomi | FI – Suomi | Suomessa ajatusviiva on –, ei englannin pitkä viiva —. |
+| `src/pages/fi/blog/sisallon-kulutuksen-mittaaminen.md`, `src/components/ReadingSignals.astro` | Arvioitu artikkelin luku, arvioidut artikkelin luvut | Arvioitu lukukerta, arvioidut lukukerrat | *Luku* on monitulkintainen (numero vai lukeminen). |
+| sama | Artikkelin skrollaus alkoi | Artikkelin vieritys alkoi | Yleiskielinen ja yhtenäinen tekstin *vieritys*-sanan kanssa. |
+| sama | sopiva KPI | sopiva avainmittari | Suomenkielinen termi lyhenteen sijaan. |
+| `src/data/form-types.fi.js` | onko jotain vapaana tiettyinä päivinä tai tietty määrä | – – tai saatavilla tarvittava määrä | Rinnastuksesta puuttui verbi. |
+| sama | maksutiedot tapahtuman viimeistelemiseksi | maksutiedot ostoksen viimeistelemiseksi | *Tapahtuma* on analytiikkasivustolla monitulkintainen. |
+| sama | majoituksen, joka toteutetaan | majoituksen | Käännöslaina (*being delivered*), ei lisää tietoa. |
+| sama | monikysymyksiseen tutkimuskyselyyn | tutkimuskyselyyn, jossa on useita kysymyksiä | *Monikysymyksinen* ei ole vakiintunut sana. |
+| `src/components/FormTypePicker.astro` | kaksi lomaketta erottuu toisistaan | kaksi lomaketta erottuvat toisistaan | Vastavuoroinen *toisistaan* vaatii monikon. |
+| `src/pages/fi/tyokalut/lomakkeiden-nimeamistyokalu.astro` | Vastaa kysymykseen – – ja saat yhtenäisen arvon | Vastaamalla yhteen kysymykseen – – saat yhtenäisen arvon | Käskyn ja lupauksen rinnastus on kömpelö (sama havainto kuin 28.9.). |
+| sama | Lomaketyyppi korjaa tämän ennen nimeä. | Lomaketyyppi ratkaisee tämän, koska se tulee ennen nimeä. | Alkuperäinen oli epäselvä käännöslaina (*above the name*). |
+| `src/components/gtm-builder/*`, `src/pages/fi/tyokalut/gtm-sailion-rakentaja.astro` | datakerros | dataLayer | Sivusto käyttää muualla nimeä dataLayer. |
+| `src/components/gtm-builder/fi.ts` | pitää alkaa G- | pitää alkaa merkeillä G- | Taivutettava muoto puuttui. |
+| sama | Tiedostonimen pitää päättyä .json. | Tiedostonimen päätteen pitää olla .json. | Pääte ilmaistaan sanalla, ei pelkällä merkkijonolla. |
+| sama | Kävijä aloittaa kassalle siirtymisen. | Kävijä siirtyy kassalle. | Substantiivitauti. |
+| `src/pages/fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm.md` | valmis-tapahtuma | lomakkeen latautumistapahtuma | Käännöslaina (*ready event*). |
+
+Koneellinen tarkistus ei löytänyt suoria tai englantilaisia lainausmerkkejä, prosentteja ilman välilyöntiä, pilkulla tai pisteellä merkittyjä tuhaterottimia, kaksoispisteellisiä kellonaikoja eikä yhteen kirjoitettuja partisiippeja.
+
 # Suomenkielisten tekstien tarkistus 28.9.2026
 
 Tarkistin paikallisen lähdekoodin suomenkieliset palvelutekstit (10), blogiartikkelit (6), Cookiebot-oppaan leipätekstin, keskeiset sivutekstit sekä yhteisten komponenttien ja työkalujen suomenkielisiä merkkijonoja. Työkalujen kaikki dynaamisesti muodostuvat tekstit eivät kuulu kattavasti tarkistukseen. Tarkistus koskee kieltä, ei teknisten, oikeudellisten tai tutkimusta koskevien väitteiden paikkansapitävyyttä. Raportin kieli- ja tyylikorjaukset on toteutettu sivuston tiedostoihin 28.9.2026. Alla säilyvät alkuperäiset havainnot ja korjausehdotukset.

@@ -40,7 +40,7 @@ const caveat = (locale) =>
           hreflang={locale.lang}
           rel={postWithoutTranslation ? undefined : "alternate"}
           aria-current={locale.current ? "page" : undefined}
-        >{locale.code}<span class="visually-hidden"> — {locale.name}{caveat(locale)}</span></a>
+        >{locale.code}<span class="visually-hidden"> – {locale.name}{caveat(locale)}</span></a>
       </li>
     ))}
   </ul>

@@ -7,7 +7,7 @@ import FormTypeReference from "../../../components/FormTypeReference.astro";
 import { formTypes } from "../../../data/form-types.js";
 
 const title = "Lomakkeiden nimeämistyökalu";
-const summary = `Vastaa kysymykseen lomakkeesta ja saat yhtenäisen arvon sen seurantaan. Arvo valitaan rajatusta listasta, jossa on ${formTypes.length} tyyppiä.`;
+const summary = `Vastaamalla yhteen kysymykseen lomakkeesta saat yhtenäisen arvon sen seurantaan. Arvo valitaan rajatusta listasta, jossa on ${formTypes.length} tyyppiä.`;
 ---
 
 <Base title={title} description={summary} alternate={{ lang: "en", href: "/tools/form-name-builder/" }}>
@@ -23,7 +23,7 @@ const summary = `Vastaa kysymykseen lomakkeesta ja saat yhtenäisen arvon sen se
   <ToolHero title={title} summary={summary}>
     <p class="tool-note">
       Jos jokainen nimeää lomakkeensa itse, raportit riippuvat siitä, kuka lomakkeen teki. <em lang="en">Contact</em>, <em lang="en">Get in Touch</em> ja <em lang="en">Contact Form EN</em> näkyvät
-      kolmena rivinä yhden sijaan. Lomaketyyppi korjaa tämän ennen nimeä. Tyypit ja nimet kirjoitetaan
+      kolmena rivinä yhden sijaan. Lomaketyyppi ratkaisee tämän, koska se tulee ennen nimeä. Tyypit ja nimet kirjoitetaan
       englanniksi, jotta raportit pysyvät samoina kaikilla kielillä.
     </p>
   </ToolHero>

@@ -6,7 +6,7 @@
 const { fi = false } = Astro.props;
 const markers = [
   // [event, position, label before, label after the event fires]
-  ["article_scroll_started", "0%", fi ? "Artikkelin alku" : "Article start", fi ? "Artikkelin skrollaus alkoi" : "Article scroll started"],
+  ["article_scroll_started", "0%", fi ? "Artikkelin alku" : "Article start", fi ? "Artikkelin vieritys alkoi" : "Article scroll started"],
   ["article_midpoint_reached", "50%", fi ? "Artikkelin puoliväli" : "Article midpoint", fi ? "Artikkelin puoliväli saavutettu" : "Article midpoint reached"],
   ["article_end_reached", "100%", fi ? "Artikkelin loppu" : "Article end", fi ? "Artikkelin loppu saavutettu" : "Article end reached"],
 ];
@@ -23,7 +23,7 @@ const markers = [
   aria-live="polite"
   data-reading-toasts
   data-article_time_threshold_reached={fi ? "Lukuajan kynnys saavutettu" : "Time threshold reached"}
-  data-estimated_article_read={fi ? "Arvioitu artikkelin luku" : "Estimated article read"}
+  data-estimated_article_read={fi ? "Arvioitu lukukerta" : "Estimated article read"}
 ></div>
 
 <style>
