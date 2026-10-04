@@ -1,0 +1,32 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ToolHero from "../../../components/ToolHero.astro";
+import CookieBannerStyler from "../../../components/CookieBannerStyler.astro";
+
+const title = "Cookiebot-bannerin muotoilija";
+const summary =
+  "Valitse Cookiebot-bannerin värit ja tekstin tasaus, katso tulos heti esikatselussa ja kopioi valmis CSS, HTML ja JavaScript omaan pohjaasi.";
+---
+
+<Base title={title} description={summary} alternate={{ lang: "en", href: "/tools/cookie-banner-styler/" }}>
+  <Breadcrumb
+    fi
+    crumbs={[
+      { label: "Etusivu", href: "/fi/", icon: true },
+      { label: "Työkalut", href: "/fi/tyokalut/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="content-links">
+      Työkalu perustuu Generaxionin <a href="https://github.com/generaxion/cookiebot-accessible-template">saavutettavaan Cookiebot-pohjaan</a>.
+      Bannerin tekstit tulevat Cookiebotin kieliasetuksista, joten sama koodi toimii kaikilla kielillä.
+    </p>
+  </ToolHero>
+
+  <div class="wide-band">
+    <CookieBannerStyler fi />
+  </div>
+</Base>

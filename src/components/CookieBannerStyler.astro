@@ -6,6 +6,10 @@ import baseCss from "../assets/tools/cookie-banner/base.css?raw";
 import bannerHtml from "../assets/tools/cookie-banner/banner.html?raw";
 import bannerJs from "../assets/tools/cookie-banner/banner.js?raw";
 
+// fi: Finnish UI and preview sample text. The generated CSS, HTML and JS are identical.
+const { fi = false } = Astro.props;
+const t = (en, fiText) => (fi ? fiText : en);
+
 const defaults = {
   previewSize: "desktop",
   buttonMode: "same",
@@ -101,22 +105,39 @@ const defaults = {
 };
 
 // sample copy so the preview shows real text instead of [#TOKENS#]
-const sample = {
-  LANGUAGE: "en", TEXTDIRECTION: "ltr",
-  TITLE: "We use cookies",
-  TEXT: "We use cookies to improve the site and understand what works. You can change your choices at any time.",
-  DECLINE: "Only necessary", ACCEPT: "Allow cookies", DETAILS: "Show details",
-  LEVELOPTIN_ALLOW_SELECTION: "Allow selection",
-  COOKIETYPE_NECESSARY: "Necessary", COOKIETYPE_NECESSARY_RAW: "Necessary",
-  COOKIETYPEINTRO_NECESSARY: "These cookies are needed for the site to work.", COOKIETABLE_NECESSARY: "",
-  COOKIETYPE_PREFERENCE: "Preferences", COOKIETYPE_PREFERENCE_RAW: "Preferences",
-  COOKIETYPEINTRO_PREFERENCE: "Remember choices such as language.", COOKIETABLE_PREFERENCE: "",
-  COOKIETYPE_STATISTICS: "Statistics", COOKIETYPE_STATISTICS_RAW: "Statistics",
-  COOKIETYPEINTRO_STATISTICS: "Help us understand how the site is used.", COOKIETABLE_STATISTICS: "",
-  COOKIETYPE_ADVERTISING: "Marketing", COOKIETYPE_ADVERTISING_RAW: "Marketing",
-  COOKIETYPEINTRO_ADVERTISING: "Used to make marketing more relevant.", COOKIETABLE_ADVERTISING: "",
-  LASTUPDATED: "Your consent was last updated recently.",
-};
+const sample = fi
+  ? {
+      LANGUAGE: "fi", TEXTDIRECTION: "ltr",
+      TITLE: "Käytämme evästeitä",
+      TEXT: "Käytämme evästeitä sivuston kehittämiseen ja sen ymmärtämiseen, mikä toimii. Voit muuttaa valintojasi milloin tahansa.",
+      DECLINE: "Vain välttämättömät", ACCEPT: "Salli evästeet", DETAILS: "Näytä tiedot",
+      LEVELOPTIN_ALLOW_SELECTION: "Salli valinnat",
+      COOKIETYPE_NECESSARY: "Välttämättömät", COOKIETYPE_NECESSARY_RAW: "Välttämättömät",
+      COOKIETYPEINTRO_NECESSARY: "Nämä evästeet tarvitaan sivuston toimintaan.", COOKIETABLE_NECESSARY: "",
+      COOKIETYPE_PREFERENCE: "Asetukset", COOKIETYPE_PREFERENCE_RAW: "Asetukset",
+      COOKIETYPEINTRO_PREFERENCE: "Muistavat valintoja, kuten kielen.", COOKIETABLE_PREFERENCE: "",
+      COOKIETYPE_STATISTICS: "Tilastot", COOKIETYPE_STATISTICS_RAW: "Tilastot",
+      COOKIETYPEINTRO_STATISTICS: "Auttavat ymmärtämään, miten sivustoa käytetään.", COOKIETABLE_STATISTICS: "",
+      COOKIETYPE_ADVERTISING: "Markkinointi", COOKIETYPE_ADVERTISING_RAW: "Markkinointi",
+      COOKIETYPEINTRO_ADVERTISING: "Auttavat kohdentamaan markkinointia osuvammin.", COOKIETABLE_ADVERTISING: "",
+      LASTUPDATED: "Suostumuksesi on päivitetty äskettäin.",
+    }
+  : {
+      LANGUAGE: "en", TEXTDIRECTION: "ltr",
+      TITLE: "We use cookies",
+      TEXT: "We use cookies to improve the site and understand what works. You can change your choices at any time.",
+      DECLINE: "Only necessary", ACCEPT: "Allow cookies", DETAILS: "Show details",
+      LEVELOPTIN_ALLOW_SELECTION: "Allow selection",
+      COOKIETYPE_NECESSARY: "Necessary", COOKIETYPE_NECESSARY_RAW: "Necessary",
+      COOKIETYPEINTRO_NECESSARY: "These cookies are needed for the site to work.", COOKIETABLE_NECESSARY: "",
+      COOKIETYPE_PREFERENCE: "Preferences", COOKIETYPE_PREFERENCE_RAW: "Preferences",
+      COOKIETYPEINTRO_PREFERENCE: "Remember choices such as language.", COOKIETABLE_PREFERENCE: "",
+      COOKIETYPE_STATISTICS: "Statistics", COOKIETYPE_STATISTICS_RAW: "Statistics",
+      COOKIETYPEINTRO_STATISTICS: "Help us understand how the site is used.", COOKIETABLE_STATISTICS: "",
+      COOKIETYPE_ADVERTISING: "Marketing", COOKIETYPE_ADVERTISING_RAW: "Marketing",
+      COOKIETYPEINTRO_ADVERTISING: "Used to make marketing more relevant.", COOKIETABLE_ADVERTISING: "",
+      LASTUPDATED: "Your consent was last updated recently.",
+    };
 
 const previewBanner = bannerHtml
   .replace('id="CookieBanner"', 'id="CookieBanner" class="is-visible-cookie-banner"')
@@ -148,7 +169,7 @@ const previewCss = `
 // iframe srcdoc script for an Astro component script block.
 const scriptOpen = "<scr" + "ipt>";
 const scriptClose = "</scr" + "ipt>";
-const previewDoc = `<!doctype html><html lang="en" class="preview-desktop"><head><meta charset="utf-8"><style>${baseCss}${previewCss}</style></head><body>${previewBanner}${scriptOpen}${bannerJs}${scriptClose}</body></html>`;
+const previewDoc = `<!doctype html><html lang="${t("en", "fi")}" class="preview-desktop"><head><meta charset="utf-8"><style>${baseCss}${previewCss}</style></head><body>${previewBanner}${scriptOpen}${bannerJs}${scriptClose}</body></html>`;
 
 const rgba = (hex, opacity) => {
   const value = hex.replace("#", "");
@@ -162,43 +183,52 @@ const overrideBlock = (v) =>
 const defaultCss = `${overrideBlock(defaults)}\n${baseCss}`;
 
 const colorFields = [
-  { id: "accent", label: "Accent", hint: "Preference toggles" },
-  { id: "textColor", label: "Text", hint: "Title and description" },
+  { id: "accent", label: t("Accent", "Korostusväri"), hint: t("Preference toggles", "Asetusten valintakytkimet") },
+  { id: "textColor", label: t("Text", "Teksti"), hint: t("Title and description", "Otsikko ja kuvaus") },
 ];
 const buttonGroups = [
-  { id: "same", label: "All buttons", prefix: "" },
-  { id: "accept", label: "Accept button", prefix: "accept" },
-  { id: "deny", label: "Deny button", prefix: "deny" },
-  { id: "details", label: "Show details button", prefix: "details" },
-  { id: "selection", label: "Allow selection button", prefix: "selection" },
+  { id: "same", label: t("All buttons", "Kaikki painikkeet"), prefix: "" },
+  { id: "accept", label: t("Accept button", "Hyväksy-painike"), prefix: "accept" },
+  { id: "deny", label: t("Deny button", "Hylkää-painike"), prefix: "deny" },
+  { id: "details", label: t("Show details button", "Näytä tiedot -painike"), prefix: "details" },
+  { id: "selection", label: t("Allow selection button", "Salli valinnat -painike"), prefix: "selection" },
 ];
 const buttonColorFields = [
-  { suffix: "Bg", shared: "accent", label: "Button colour" },
-  { suffix: "Text", shared: "buttonText", label: "Text colour" },
-  { suffix: "HoverBg", shared: "hoverBg", label: "Hover colour" },
-  { suffix: "HoverText", shared: "hoverText", label: "Hover text colour" },
+  { suffix: "Bg", shared: "accent", label: t("Button colour", "Painikkeen väri") },
+  { suffix: "Text", shared: "buttonText", label: t("Text colour", "Tekstin väri") },
+  { suffix: "HoverBg", shared: "hoverBg", label: t("Hover colour", "Hover-väri") },
+  { suffix: "HoverText", shared: "hoverText", label: t("Hover text colour", "Tekstin hover-väri") },
 ];
+const scriptCopy = {
+  buttonContrast: t("Button text contrast is low ({r}:1).", "Painikkeen tekstin kontrasti on heikko ({r}:1)."),
+  textContrast: t("Text contrast is low ({r}:1).", "Tekstin kontrasti on heikko ({r}:1)."),
+  hoverContrast: t("Hover text contrast is low ({r}:1).", "Tekstin kontrasti hover-tilassa on heikko ({r}:1)."),
+  bodyContrast: t("Body text contrast is low ({r}:1).", "Leipätekstin kontrasti on heikko ({r}:1)."),
+  previewTitle: t("Cookie banner preview, {size} size", "Evästebannerin esikatselu, {size}"),
+  mobile: t("mobile", "mobiilikoko"), desktop: t("desktop", "työpöytäkoko"),
+  copied: t("Copied ✓", "Kopioitu ✓"),
+};
 const alignFields = [
-  { id: "titleAlign", label: "Title alignment" },
-  { id: "descriptionAlign", label: "Description alignment" },
+  { id: "titleAlign", label: t("Title alignment", "Otsikon tasaus") },
+  { id: "descriptionAlign", label: t("Description alignment", "Kuvauksen tasaus") },
 ];
 ---
 
-<div class="cbs" data-defaults={JSON.stringify(defaults)}>
-  <form class="cbs__controls" aria-label="Banner styling controls">
+<div class="cbs" data-defaults={JSON.stringify(defaults)} data-copy={JSON.stringify(scriptCopy)}>
+  <form class="cbs__controls" aria-label={t("Banner styling controls", "Bannerin tyyliasetukset")}>
     <details class="cbs__group" open>
-      <summary class="cbs__h">Button styles</summary>
+      <summary class="cbs__h">{t("Button styles", "Painikkeiden tyylit")}</summary>
       <div class="cbs__group-content">
         <div class="cbs__field">
-          <span class="cbs__legend">Banner buttons</span>
-          <div class="cbs__seg cbs__seg--stack" role="group" aria-label="Banner button styles">
+          <span class="cbs__legend">{t("Banner buttons", "Bannerin painikkeet")}</span>
+          <div class="cbs__seg cbs__seg--stack" role="group" aria-label={t("Banner button styles", "Bannerin painikkeiden tyylit")}>
             <label class="cbs__seg__opt">
               <input type="radio" name="buttonMode" value="same" checked />
-              <span>Use the same style</span>
+              <span>{t("Use the same style", "Sama tyyli kaikille")}</span>
             </label>
             <label class="cbs__seg__opt">
               <input type="radio" name="buttonMode" value="separate" />
-              <span>Style separately</span>
+              <span>{t("Style separately", "Erilliset tyylit")}</span>
             </label>
           </div>
         </div>
@@ -221,23 +251,23 @@ const alignFields = [
                   );
                 })}
                 <details class="cbs__advanced">
-                  <summary>Advanced settings</summary>
+                  <summary>{t("Advanced settings", "Lisäasetukset")}</summary>
                   <div class="cbs__advanced-content">
                     <div class="cbs__option-pair">
                       <label class="cbs__check">
                         <input type="checkbox" name={group.prefix ? `${group.prefix}Underline` : "underline"} checked={defaults[group.prefix ? `${group.prefix}Underline` : "underline"]} />
-                        <span>Underline text</span>
+                        <span>{t("Underline text", "Alleviivaa teksti")}</span>
                       </label>
                       <label class="cbs__check">
                         <input type="checkbox" name={group.prefix ? `${group.prefix}HoverUnderline` : "hoverUnderline"} checked={defaults[group.prefix ? `${group.prefix}HoverUnderline` : "hoverUnderline"]} />
-                        <span>Underline on hover</span>
+                        <span>{t("Underline on hover", "Alleviivaa hover-tilassa")}</span>
                       </label>
                     </div>
                     <div class="cbs__shape-grid">
                   {[
-                    { suffix: "Radius", shared: "radius", label: "Corner radius" },
-                    { suffix: "PaddingY", shared: "paddingY", label: "Vertical padding" },
-                    { suffix: "FontSize", shared: "fontSize", label: "Font size" },
+                    { suffix: "Radius", shared: "radius", label: t("Corner radius", "Kulmien pyöristys") },
+                    { suffix: "PaddingY", shared: "paddingY", label: t("Vertical padding", "Pystysuuntainen täyte") },
+                    { suffix: "FontSize", shared: "fontSize", label: t("Font size", "Fonttikoko") },
                   ].map((field) => {
                     const key = group.prefix ? `${group.prefix}${field.suffix}` : field.shared;
                     return (
@@ -252,47 +282,47 @@ const alignFields = [
                   })}
                     </div>
                     <div class="cbs__field">
-                      <label for={`cbs-${group.prefix || "shared"}-font-weight`}>Font weight</label>
+                      <label for={`cbs-${group.prefix || "shared"}-font-weight`}>{t("Font weight", "Fontin paksuus")}</label>
                       <select class="cbs__select" id={`cbs-${group.prefix || "shared"}-font-weight`} name={group.prefix ? `${group.prefix}FontWeight` : "fontWeight"}>
-                        <option value="400" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "400"}>Regular</option>
-                        <option value="600" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "600"}>Semibold</option>
-                        <option value="700" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "700"}>Bold</option>
+                        <option value="400" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "400"}>{t("Regular", "Normaali")}</option>
+                        <option value="600" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "600"}>{t("Semibold", "Puolilihava")}</option>
+                        <option value="700" selected={defaults[group.prefix ? `${group.prefix}FontWeight` : "fontWeight"] === "700"}>{t("Bold", "Lihava")}</option>
                       </select>
                     </div>
                     <label class="cbs__check">
                       <input type="checkbox" name={group.prefix ? `${group.prefix}BorderEnabled` : "borderEnabled"} checked={defaults[group.prefix ? `${group.prefix}BorderEnabled` : "borderEnabled"]} />
-                      <span>Show border</span>
+                      <span>{t("Show border", "Näytä reunaviiva")}</span>
                     </label>
                     <div class="cbs__field" data-border-setting={group.id}>
-                  <label for={`cbs-${group.prefix || "shared"}-border-width`}>Border width<span>Width in pixels</span></label>
+                  <label for={`cbs-${group.prefix || "shared"}-border-width`}>{t("Border width", "Reunaviivan leveys")}<span>{t("Width in pixels", "Leveys pikseleinä")}</span></label>
                   <div class="cbs__number">
                     <input type="number" id={`cbs-${group.prefix || "shared"}-border-width`} name={group.prefix ? `${group.prefix}BorderWidth` : "borderWidth"} value={defaults[group.prefix ? `${group.prefix}BorderWidth` : "borderWidth"]} min="0" max="12" step="1" />
                     <span aria-hidden="true">px</span>
                   </div>
                     </div>
                     <div class="cbs__field" data-border-setting={group.id}>
-                  <label for={`cbs-${group.prefix || "shared"}-border-color`}>Border colour</label>
+                  <label for={`cbs-${group.prefix || "shared"}-border-color`}>{t("Border colour", "Reunaviivan väri")}</label>
                   <div class="cbs__color">
                     <input type="color" id={`cbs-${group.prefix || "shared"}-border-color`} name={group.prefix ? `${group.prefix}BorderColor` : "borderColor"} value={defaults[group.prefix ? `${group.prefix}BorderColor` : "borderColor"]} />
-                    <input type="text" class="cbs__hex" aria-label={`${group.label} border colour hex`} value={defaults[group.prefix ? `${group.prefix}BorderColor` : "borderColor"]} data-hex-for={`cbs-${group.prefix || "shared"}-border-color`} spellcheck="false" />
+                    <input type="text" class="cbs__hex" aria-label={`${group.label} ${t("border colour", "reunaviivan väri")} hex`} value={defaults[group.prefix ? `${group.prefix}BorderColor` : "borderColor"]} data-hex-for={`cbs-${group.prefix || "shared"}-border-color`} spellcheck="false" />
                   </div>
                     </div>
                     <div class="cbs__field" data-border-setting={group.id}>
-                  <label for={`cbs-${group.prefix || "shared"}-border-hover-color`}>Border hover colour</label>
+                  <label for={`cbs-${group.prefix || "shared"}-border-hover-color`}>{t("Border hover colour", "Reunaviivan hover-väri")}</label>
                   <div class="cbs__color">
                     <input type="color" id={`cbs-${group.prefix || "shared"}-border-hover-color`} name={group.prefix ? `${group.prefix}BorderHoverColor` : "borderHoverColor"} value={defaults[group.prefix ? `${group.prefix}BorderHoverColor` : "borderHoverColor"]} />
-                    <input type="text" class="cbs__hex" aria-label={`${group.label} border hover colour hex`} value={defaults[group.prefix ? `${group.prefix}BorderHoverColor` : "borderHoverColor"]} data-hex-for={`cbs-${group.prefix || "shared"}-border-hover-color`} spellcheck="false" />
+                    <input type="text" class="cbs__hex" aria-label={`${group.label} ${t("border hover colour", "reunaviivan hover-väri")} hex`} value={defaults[group.prefix ? `${group.prefix}BorderHoverColor` : "borderHoverColor"]} data-hex-for={`cbs-${group.prefix || "shared"}-border-hover-color`} spellcheck="false" />
                   </div>
                     </div>
                   </div>
                 </details>
                 <p class="cbs__warn" data-contrast={group.id} role="status" hidden></p>
-                <button type="button" class="cbs__section-reset" data-reset-scope={group.id}>Reset {group.label.toLowerCase()}</button>
+                <button type="button" class="cbs__section-reset" data-reset-scope={group.id}>{t("Reset", "Palauta")} {group.label.toLowerCase()}</button>
                 {group.id === "accept" && (
                   <div class="cbs__copy-style">
-                    <button type="button" data-copy-style="deny">Copy Accept style to Deny</button>
-                    <button type="button" data-copy-style="details">Copy Accept style to Show details</button>
-                    <button type="button" data-copy-style="selection">Copy Accept style to Allow selection</button>
+                    <button type="button" data-copy-style="deny">{t("Copy Accept style to Deny", "Kopioi Hyväksy-tyyli Hylkää-painikkeeseen")}</button>
+                    <button type="button" data-copy-style="details">{t("Copy Accept style to Show details", "Kopioi Hyväksy-tyyli Näytä tiedot -painikkeeseen")}</button>
+                    <button type="button" data-copy-style="selection">{t("Copy Accept style to Allow selection", "Kopioi Hyväksy-tyyli Salli valinnat -painikkeeseen")}</button>
                   </div>
                 )}
               </div>
@@ -303,13 +333,13 @@ const alignFields = [
     </details>
 
     <details class="cbs__group">
-      <summary class="cbs__h">Banner</summary>
+      <summary class="cbs__h">{t("Banner", "Banneri")}</summary>
       <div class="cbs__group-content">
         {
           [
-            { id: "dialogBg", label: "Banner background" },
-            { id: "overlayColor", label: "Overlay colour" },
-            { id: "preferenceBg", label: "Preference-panel background" },
+            { id: "dialogBg", label: t("Banner background", "Bannerin tausta") },
+            { id: "overlayColor", label: t("Overlay colour", "Taustapeiton väri") },
+            { id: "preferenceBg", label: t("Preference-panel background", "Asetuspaneelin tausta") },
           ].map((field) => (
             <div class="cbs__field">
               <label for={`cbs-${field.id}`}>{field.label}</label>
@@ -323,9 +353,9 @@ const alignFields = [
         <div class="cbs__shape-grid">
           {
             [
-              { id: "overlayOpacity", label: "Overlay opacity", unit: "%" },
-              { id: "dialogPadding", label: "Outer padding", unit: "px" },
-              { id: "dialogRadius", label: "Corner radius", unit: "px" },
+              { id: "overlayOpacity", label: t("Overlay opacity", "Taustapeiton peittävyys"), unit: "%" },
+              { id: "dialogPadding", label: t("Outer padding", "Ulkoreunan täyte"), unit: "px" },
+              { id: "dialogRadius", label: t("Corner radius", "Kulmien pyöristys"), unit: "px" },
             ].map((field) => (
               <div class="cbs__field">
                 <label for={`cbs-${field.id}`}>{field.label}</label>
@@ -338,14 +368,14 @@ const alignFields = [
           }
         </div>
         <details class="cbs__advanced">
-          <summary>Typography and spacing</summary>
+          <summary>{t("Typography and spacing", "Typografia ja välistys")}</summary>
           <div class="cbs__advanced-content">
             <div class="cbs__shape-grid">
               {
                 [
-                  { id: "titleFontSize", label: "Title font size" },
-                  { id: "descriptionFontSize", label: "Description font size" },
-                  { id: "contentSpacing", label: "Content spacing" },
+                  { id: "titleFontSize", label: t("Title font size", "Otsikon fonttikoko") },
+                  { id: "descriptionFontSize", label: t("Description font size", "Kuvauksen fonttikoko") },
+                  { id: "contentSpacing", label: t("Content spacing", "Sisällön välistys") },
                 ].map((field) => (
                   <div class="cbs__field">
                     <label for={`cbs-${field.id}`}>{field.label}</label>
@@ -358,27 +388,27 @@ const alignFields = [
               }
             </div>
             <div class="cbs__field">
-              <label for="cbs-title-font-weight">Title font weight</label>
+              <label for="cbs-title-font-weight">{t("Title font weight", "Otsikon fontin paksuus")}</label>
               <select class="cbs__select" id="cbs-title-font-weight" name="titleFontWeight">
-                <option value="400">Regular</option>
-                <option value="600">Semibold</option>
-                <option value="700" selected>Bold</option>
+                <option value="400">{t("Regular", "Normaali")}</option>
+                <option value="600">{t("Semibold", "Puolilihava")}</option>
+                <option value="700" selected>{t("Bold", "Lihava")}</option>
               </select>
             </div>
           </div>
         </details>
-        <button type="button" class="cbs__section-reset" data-reset-scope="banner">Reset banner</button>
+        <button type="button" class="cbs__section-reset" data-reset-scope="banner">{t("Reset banner", "Palauta banneri")}</button>
       </div>
     </details>
 
     <details class="cbs__group">
-      <summary class="cbs__h">Preference toggles</summary>
+      <summary class="cbs__h">{t("Preference toggles", "Asetusten valintakytkimet")}</summary>
       <div class="cbs__group-content">
         {
           [
-            { title: "Off", fields: [["toggleOffTrack", "Track colour"], ["toggleOffHandle", "Handle colour"]] },
-            { title: "On", fields: [["toggleOnTrack", "Track colour"], ["toggleOnHandle", "Handle colour"]] },
-            { title: "Denied or disabled", fields: [["toggleDeniedTrack", "Track colour"], ["toggleDeniedHandle", "Handle colour"]] },
+            { title: t("Off", "Pois päältä"), fields: [["toggleOffTrack", t("Track colour", "Uran väri")], ["toggleOffHandle", t("Handle colour", "Nupin väri")]] },
+            { title: t("On", "Päällä"), fields: [["toggleOnTrack", t("Track colour", "Uran väri")], ["toggleOnHandle", t("Handle colour", "Nupin väri")]] },
+            { title: t("Denied or disabled", "Estetty tai pois käytöstä"), fields: [["toggleDeniedTrack", t("Track colour", "Uran väri")], ["toggleDeniedHandle", t("Handle colour", "Nupin väri")]] },
           ].map((group) => (
             <fieldset class="cbs__toggle-colours">
               <legend>{group.title}</legend>
@@ -394,12 +424,12 @@ const alignFields = [
             </fieldset>
           ))
         }
-        <button type="button" class="cbs__section-reset" data-reset-scope="toggles">Reset preference toggles</button>
+        <button type="button" class="cbs__section-reset" data-reset-scope="toggles">{t("Reset preference toggles", "Palauta valintakytkimet")}</button>
       </div>
     </details>
 
     <details class="cbs__group">
-      <summary class="cbs__h">Alignment</summary>
+      <summary class="cbs__h">{t("Alignment", "Tasaus")}</summary>
       <div class="cbs__group-content">
         {
           alignFields.map((f) => (
@@ -409,19 +439,19 @@ const alignFields = [
                 {["left", "center"].map((val) => (
                   <label class="cbs__seg__opt">
                     <input type="radio" name={f.id} value={val} checked={defaults[f.id] === val} />
-                    <span>{val === "left" ? "Left" : "Center"}</span>
+                    <span>{val === "left" ? t("Left", "Vasen") : t("Center", "Keskitetty")}</span>
                   </label>
                 ))}
               </div>
             </div>
           ))
         }
-        <button type="button" class="cbs__section-reset" data-reset-scope="alignment">Reset alignment</button>
+        <button type="button" class="cbs__section-reset" data-reset-scope="alignment">{t("Reset alignment", "Palauta tasaus")}</button>
       </div>
     </details>
 
     <details class="cbs__group">
-      <summary class="cbs__h">Colours</summary>
+      <summary class="cbs__h">{t("Colours", "Värit")}</summary>
       <div class="cbs__group-content">
         {
           colorFields.map((f) => (
@@ -435,44 +465,44 @@ const alignFields = [
           ))
         }
         <p class="cbs__warn" id="cbs-body-contrast" role="status" hidden></p>
-        <button type="button" class="cbs__section-reset" data-reset-scope="colours">Reset colours</button>
+        <button type="button" class="cbs__section-reset" data-reset-scope="colours">{t("Reset colours", "Palauta värit")}</button>
       </div>
     </details>
 
-    <button type="button" class="cbs__reset" id="cbs-reset">Reset to defaults</button>
+    <button type="button" class="cbs__reset" id="cbs-reset">{t("Reset to defaults", "Palauta oletukset")}</button>
   </form>
 
   <div class="cbs__right">
     <div class="cbs__preview">
       <div class="cbs__preview-toolbar">
-        <p class="cbs__preview__label">Live preview</p>
-        <div class="cbs__seg" role="group" aria-label="Preview size">
-          <button type="button" class="cbs__preview-size is-active" data-preview-size="desktop" aria-pressed="true">Desktop</button>
-          <button type="button" class="cbs__preview-size" data-preview-size="mobile" aria-pressed="false">Mobile</button>
+        <p class="cbs__preview__label">{t("Live preview", "Esikatselu")}</p>
+        <div class="cbs__seg" role="group" aria-label={t("Preview size", "Esikatselun koko")}>
+          <button type="button" class="cbs__preview-size is-active" data-preview-size="desktop" aria-pressed="true">{t("Desktop", "Työpöytä")}</button>
+          <button type="button" class="cbs__preview-size" data-preview-size="mobile" aria-pressed="false">{t("Mobile", "Mobiili")}</button>
         </div>
       </div>
       <div class="cbs__frame-wrap">
-        <iframe class="cbs__frame" title="Cookie banner preview, desktop size" srcdoc={previewDoc} loading="lazy"></iframe>
+        <iframe class="cbs__frame" title={t("Cookie banner preview, desktop size", "Evästebannerin esikatselu, työpöytäkoko")} srcdoc={previewDoc} loading="lazy"></iframe>
       </div>
     </div>
 
     <div class="cbs__output">
-      <div class="cbs__tabs" role="tablist" aria-label="Output">
+      <div class="cbs__tabs" role="tablist" aria-label={t("Output", "Koodi")}>
         <button type="button" role="tab" class="cbs__tab is-active" data-tab="css" aria-selected="true">CSS</button>
         <button type="button" role="tab" class="cbs__tab" data-tab="html" aria-selected="false">HTML</button>
         <button type="button" role="tab" class="cbs__tab" data-tab="js" aria-selected="false">JavaScript</button>
       </div>
 
       <div class="cbs__panel" data-panel="css">
-        <button type="button" class="cbs__copy" data-copy="cbs-css-out">Copy CSS</button>
+        <button type="button" class="cbs__copy" data-copy="cbs-css-out">{t("Copy CSS", "Kopioi CSS")}</button>
         <textarea id="cbs-css-out" class="cbs__code" readonly spellcheck="false">{defaultCss}</textarea>
       </div>
       <div class="cbs__panel" data-panel="html" hidden>
-        <button type="button" class="cbs__copy" data-copy="cbs-html-out">Copy HTML</button>
+        <button type="button" class="cbs__copy" data-copy="cbs-html-out">{t("Copy HTML", "Kopioi HTML")}</button>
         <textarea id="cbs-html-out" class="cbs__code" readonly spellcheck="false">{bannerHtml}</textarea>
       </div>
       <div class="cbs__panel" data-panel="js" hidden>
-        <button type="button" class="cbs__copy" data-copy="cbs-js-out">Copy JS</button>
+        <button type="button" class="cbs__copy" data-copy="cbs-js-out">{t("Copy JS", "Kopioi JS")}</button>
         <textarea id="cbs-js-out" class="cbs__code" readonly spellcheck="false">{bannerJs}</textarea>
       </div>
     </div>
@@ -801,6 +831,8 @@ const alignFields = [
   const root = document.querySelector(".cbs");
   if (root) {
     const defaults = JSON.parse(root.dataset.defaults);
+    const copy = JSON.parse(root.dataset.copy);
+    const fmt = (text, r) => text.replace("{r}", r.toFixed(1));
     const frame = root.querySelector(".cbs__frame");
     const cssOut = root.querySelector("#cbs-css-out");
     const baseCss = root.querySelector("#cbs-base").value;
@@ -884,8 +916,8 @@ const alignFields = [
         const messages = [];
         const normal = ratio(values.bg, values.text);
         const hover = ratio(values.hoverBg, values.hoverText);
-        if (normal < 4.5) messages.push(`Button text contrast is low (${normal.toFixed(1)}:1).`);
-        if (hover < 4.5) messages.push(`Hover text contrast is low (${hover.toFixed(1)}:1).`);
+        if (normal < 4.5) messages.push(fmt(copy.buttonContrast, normal));
+        if (hover < 4.5) messages.push(fmt(copy.hoverContrast, hover));
         setMessage(root.querySelector('[data-contrast="same"]'), messages);
       } else {
         ["accept", "deny", "details", "selection"].forEach((name) => {
@@ -893,8 +925,8 @@ const alignFields = [
           const values = buttonValues(name);
           const normal = ratio(values.bg, values.text);
           const hover = ratio(values.hoverBg, values.hoverText);
-          if (normal < 4.5) messages.push(`Text contrast is low (${normal.toFixed(1)}:1).`);
-          if (hover < 4.5) messages.push(`Hover text contrast is low (${hover.toFixed(1)}:1).`);
+          if (normal < 4.5) messages.push(fmt(copy.textContrast, normal));
+          if (hover < 4.5) messages.push(fmt(copy.hoverContrast, hover));
           setMessage(root.querySelector(`[data-contrast="${name}"]`), messages);
         });
       }
@@ -903,7 +935,7 @@ const alignFields = [
       });
       const bodyMessages = [];
       const rText = ratio(state.textColor, state.dialogBg);
-      if (rText < 4.5) bodyMessages.push(`Body text contrast is low (${rText.toFixed(1)}:1).`);
+      if (rText < 4.5) bodyMessages.push(fmt(copy.bodyContrast, rText));
       setMessage(bodyContrast, bodyMessages);
     };
 
@@ -1045,7 +1077,7 @@ const alignFields = [
     const setPreviewSize = (size) => {
       const mobile = size === "mobile";
       frame.classList.toggle("is-mobile", mobile);
-      frame.title = `Cookie banner preview, ${mobile ? "mobile" : "desktop"} size`;
+      frame.title = copy.previewTitle.replace("{size}", mobile ? copy.mobile : copy.desktop);
       frame.contentDocument?.documentElement.classList.toggle("preview-desktop", !mobile);
       root.querySelectorAll(".cbs__preview-size").forEach((item) => {
         const active = item.dataset.previewSize === size;
@@ -1075,7 +1107,7 @@ const alignFields = [
       btn.addEventListener("click", () => {
         const el = document.getElementById(btn.dataset.copy);
         navigator.clipboard.writeText(el.value);
-        btn.textContent = "Copied ✓";
+        btn.textContent = copy.copied;
         setTimeout(() => (btn.textContent = label), 1500);
       });
     });

@@ -27,6 +27,11 @@ export const allInteractiveTools = [
       title: "Cookiebot banner styler",
       summary: "Pick colours and alignment for a Cookiebot banner and copy ready CSS, HTML and JS.",
     },
+    fi: {
+      slug: "cookiebot-bannerin-muotoilija",
+      title: "Cookiebot-bannerin muotoilija",
+      summary: "Valitse Cookiebot-bannerin värit ja tasaus ja kopioi valmis CSS, HTML ja JS.",
+    },
   },
   {
     category: "tools",

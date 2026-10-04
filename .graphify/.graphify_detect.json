@@ -80,6 +80,7 @@
       "src/pages/fi/privacy.astro",
       "src/pages/fi/tyokalut/datalayer-dokumentaatiogeneraattori.astro",
       "src/pages/fi/tyokalut/ga4-annotaatiot.astro",
+      "src/pages/fi/tyokalut/lomakkeiden-nimeamistyokalu.astro",
       "src/pages/fi/tyokalut/mittarin-laatutarkistus.astro",
       "src/pages/index.astro",
       "src/pages/llms.txt.ts",
@@ -247,17 +248,17 @@
     ],
     "video": []
   },
-  "total_files": 238,
-  "total_words": 518437,
+  "total_files": 239,
+  "total_words": 518916,
   "needs_graph": true,
-  "warning": "Large corpus: 238 files · ~518,437 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
+  "warning": "Large corpus: 239 files · ~518,916 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
   "skipped_sensitive": [
     "src/styles/tokens.css"
   ],
   "graphifyignore_patterns": 12,
   "git": {
     "source_owner": "git",
-    "source_hash": "aef1e5686ffa63084cf9ae049ee9146b86ef3228",
+    "source_hash": "b7eb340dc578a266a8295ce3f6e51462b4b33acf",
     "branches": [
       "claude/sweet-lamport-b36507",
       "datalayer-print-and-copy-edits",
@@ -273,13 +274,13 @@
     "source": "default-auto",
     "root": ".",
     "git_root": ".",
-    "head": "aef1e5686ffa63084cf9ae049ee9146b86ef3228",
+    "head": "b7eb340dc578a266a8295ce3f6e51462b4b33acf",
     "candidate_count": 267,
-    "included_count": 238,
-    "excluded_untracked_count": 0,
-    "excluded_ignored_count": 26367,
+    "included_count": 239,
+    "excluded_untracked_count": 1,
+    "excluded_ignored_count": 26373,
     "excluded_sensitive_count": 1,
-    "missing_committed_count": 1,
+    "missing_committed_count": 0,
     "warnings": [],
     "recommendation": "Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder."
   }
