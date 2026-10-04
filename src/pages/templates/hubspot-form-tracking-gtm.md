@@ -1,7 +1,8 @@
 ---
 layout: ../../layouts/Base.astro
 title: "Track HubSpot form submissions in GTM with the real form name"
-description: "A Google Tag Manager template that pushes successful HubSpot form submissions to the dataLayer with the actual HubSpot form name, resolved through a Cloudflare Worker or PHP endpoint."
+documentTitle: "HubSpot form tracking in GTM with the real form name"
+description: "A GTM template that pushes successful HubSpot form submissions to the dataLayer with the real form name, fetched via a Cloudflare Worker or PHP."
 date: 2026-09-20
 category: templates
 primaryCategory: analytics

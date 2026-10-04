@@ -46,12 +46,14 @@ export function resolveLanguageLinks({ currentPath, isFinnish, frontmatter, alte
     validateAlternate(alt, currentLanguage);
     const enPath = isFinnish ? alt.href : currentPath;
     const fiPath = isFinnish ? currentPath : alt.href;
+    // `translated: false` = switcher target only (e.g. a listing page), no hreflang pair
+    const translated = alt.translated !== false;
     return {
       enPath,
       fiPath,
       languageHref: isFinnish ? enPath : fiPath,
-      hasLanguageAlternate: true,
-      postWithoutTranslation: false,
+      hasLanguageAlternate: translated,
+      postWithoutTranslation: !translated,
     };
   }
 

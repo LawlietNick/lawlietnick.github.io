@@ -1,8 +1,8 @@
 ---
 layout: ../../layouts/Base.astro
 title: "Are people reading your articles? A practical guide to content consumption metrics"
-documentTitle: "Content consumption metrics: Are people reading? | Niko Karppinen"
-description: "Page views, engagement rate and scroll depth only tell part of the story. This guide builds a practical article measurement model using progress, reading time and a clearly defined estimated read."
+documentTitle: "Content consumption metrics: Are people reading?"
+description: "Page views and scroll depth don't show whether anyone read your article. Measure reading progress, reading time and an estimated read instead."
 date: 2026-09-23
 category: analytics
 tags: ["GA4", "content analytics", "Google Tag Manager", "content measurement"]

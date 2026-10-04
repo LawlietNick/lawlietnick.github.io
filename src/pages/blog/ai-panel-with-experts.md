@@ -1,6 +1,7 @@
 ---
 layout: ../../layouts/Base.astro
 title: "Use AI for multi-expert analysis with one prompt"
+documentTitle: "Use AI for multi-expert analysis with one prompt"
 description: "Turn ChatGPT or Gemini into a panel of experts. The expert panel prompt helps you get nuanced, multi-angle insights instead of generic AI summaries."
 date: 2025-11-09
 category: ai-prompting

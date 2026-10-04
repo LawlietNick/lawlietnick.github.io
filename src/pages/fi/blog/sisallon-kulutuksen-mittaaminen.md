@@ -1,8 +1,8 @@
 ---
 layout: ../../../layouts/Base.astro
 title: "Luetaanko artikkeleitasi? Käytännön opas sisällön kulutuksen mittaamiseen"
-documentTitle: "Sisällön kulutuksen mittaaminen: luetaanko artikkeleita? | Niko Karppinen"
-description: "Sivun katselut, sitoutumisaste ja vierityssyvyys kertovat vain osan. Opas rakentaa artikkeleille käytännöllisen mittausmallin, joka yhdistää etenemisen, lukuajan ja selkeästi määritellyn arvioidun lukukerran."
+documentTitle: "Sisällön kulutuksen mittaaminen: luetaanko artikkeleita?"
+description: "Sivun katselut ja vierityssyvyys eivät kerro, luettiinko artikkeli. Mittaa lukemisen eteneminen, lukuaika ja arvioitu lukukerta."
 date: 2026-09-23
 category: analytics
 tags: ["GA4", "sisältöanalytiikka", "Google Tag Manager", "sisällön mittaaminen"]

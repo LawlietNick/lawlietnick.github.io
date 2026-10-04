@@ -2,7 +2,7 @@
 layout: ../../../layouts/Base.astro
 title: "Keskitetty vai vasemmalle tasattu teksti? Näin tasaus vaikuttaa luettavuuteen verkossa"
 documentTitle: "Tekstin tasaus ja luettavuus verkossa | Niko Karppinen"
-description: "Tekstin tasaus vaikuttaa lukurytmiin, silmäiltävyyteen ja saavutettavuuteen. Katso, milloin keskitys toimii ja miksi leipäteksti kannattaa yleensä tasata vasemmalle."
+description: "Tekstin tasaus vaikuttaa luettavuuteen ja saavutettavuuteen. Katso, milloin keskitys toimii ja miksi leipäteksti kannattaa tasata vasemmalle."
 date: 2026-07-21
 category: accessibility
 tags: ["saavutettavuus", "typografia", "käytettävyys", "WCAG"]

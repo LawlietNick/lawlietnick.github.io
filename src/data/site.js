@@ -30,7 +30,7 @@ export const siteConfig = {
     employerMonogram: "AB",
     employerUrl: "https://agencybobble.com/",
     profiles: [
-      { name: "LinkedIn", url: "https://www.linkedin.com/in/karppinenniko/" },
+      { name: "LinkedIn", url: "https://www.linkedin.com/in/karppinenniko" },
       { name: "GitHub", url: "https://github.com/LawlietNick" },
       { name: "YouTube", url: "https://www.youtube.com/@LawlietNick" },
       { name: "Bluesky", url: "https://bsky.app/profile/lawlietnick.bsky.social" },

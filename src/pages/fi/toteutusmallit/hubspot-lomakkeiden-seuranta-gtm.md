@@ -1,7 +1,8 @@
 ---
 layout: ../../../layouts/Base.astro
 title: "HubSpot-lomakkeiden seuranta GTM:llä oikealla lomakkeen nimellä"
-description: "Google Tag Manager -malli, joka lähettää onnistuneet HubSpot-lomakkeiden lähetykset dataLayeriin HubSpotin todellisella lomakkeen nimellä. Nimi haetaan Cloudflare Workerin tai PHP-päätepisteen kautta."
+documentTitle: "HubSpot-lomakkeiden seuranta GTM:llä lomakkeen nimellä"
+description: "GTM-malli, joka lähettää onnistuneet HubSpot-lomakelähetykset dataLayeriin oikealla lomakkeen nimellä. Nimi haetaan Cloudflare Workerilla tai PHP:llä."
 date: 2026-09-20
 category: templates
 primaryCategory: analytics

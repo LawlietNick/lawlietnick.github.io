@@ -16,7 +16,7 @@ export const toolkit = [
       label: "Työkalut",
       documentTitle: "Analytiikan ja SEO:n työkalupakki | Niko Karppinen",
       navDesc: "GTM-rakentaja, dataLayer-dokumentaatio, GA4-annotaatiot ja lomakkeiden nimet.",
-      desc: "Ilmaisia työkaluja analytiikkaan, hakukoneoptimointiin ja verkkosivutyöhön: rakenna GTM-säiliöitä, luo dataLayer-dokumentaatio, kirjoita GA4-annotaatioita, nimeä lomakkeet yhtenäisesti ja pisteytä mittareita.",
+      desc: "Ilmaisia analytiikkatyökaluja: rakenna GTM-säiliö, luo dataLayer-dokumentaatio, kirjoita GA4-annotaatiot, nimeä lomakkeet ja pisteytä mittarit.",
     },
   },
   {

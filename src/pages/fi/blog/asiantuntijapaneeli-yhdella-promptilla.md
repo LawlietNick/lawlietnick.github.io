@@ -1,7 +1,8 @@
 ---
 layout: ../../../layouts/Base.astro
 title: "Käytä tekoälyä asiantuntijapaneelina yhdellä promptilla"
-description: "Muuta ChatGPT tai Gemini pieneksi asiantuntijapaneeliksi. Tämä prompti auttaa saamaan moniäänisempiä ja käytännöllisempiä vastauksia geneeristen AI-yhteenvetojen sijaan."
+documentTitle: "Käytä tekoälyä asiantuntijapaneelina yhdellä promptilla"
+description: "Muuta ChatGPT tai Gemini asiantuntijapaneeliksi yhdellä promptilla. Saat useamman näkökulman vastauksia geneeristen yhteenvetojen sijaan."
 date: 2025-11-09
 category: ai-prompting
 tags: ["ChatGPT", "Gemini", "promptit", "tekoäly"]
