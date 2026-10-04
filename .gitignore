@@ -15,3 +15,14 @@ playwright-report/
 .graphify/worktree.json
 .graphify/needs_update
 .graphify/cache/
+
+# Local-only drafts: unfinished service pages and draft posts stay on disk but out of
+# the public repo. Remove a line here (and `git add` the file) to publish it.
+/src/pages/services/
+/src/pages/fi/palvelut/
+/src/pages/services.astro
+/src/pages/fi/palvelut.astro
+/initial-service-pages/
+/src/data/work.js
+/src/pages/blog/marketing-automation-flows.md
+/src/pages/templates/openai-ads-pixel-shopify.md
