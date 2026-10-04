@@ -3,10 +3,6 @@
     "mtime": 1791120355040.2725,
     "hash": "63c0f227a9f587ff6ab038ce0b9a3f7f"
   },
-  "scripts/generate-hero-placeholders.mjs": {
-    "mtime": 1783662513918.7078,
-    "hash": "0d433f05a865e61b51ed8691bbaac9e5"
-  },
   "scripts/generate-og.mjs": {
     "mtime": 1786044996796.3782,
     "hash": "68f3a5330245391b28ea6e578be08355"
@@ -40,8 +36,8 @@
     "hash": "e299d58ca21a788484f74b1f7f23fc33"
   },
   "src/components/Hero.astro": {
-    "mtime": 1791119739495.3347,
-    "hash": "81c4c2f90f0920c2a5b1611f4657b7f0"
+    "mtime": 1791121110201.725,
+    "hash": "0af573a646a8477547a88f13ebb55846"
   },
   "src/components/PatternList.astro": {
     "mtime": 1783578418395.9634,
@@ -208,8 +204,8 @@
     "hash": "5afb348af2b0f5e047b407937de618a8"
   },
   "src/assets/hero/feature.jpeg": {
-    "mtime": 1791119739471.7212,
-    "hash": "d078123b01867b7906b88f166f4652ef"
+    "mtime": 1791121110164.4875,
+    "hash": "46d7075b45315d8a221726f1bc298a95"
   },
   "src/components/Breadcrumb.astro": {
     "mtime": 1790232864184.566,
@@ -868,8 +864,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791119965498.6829,
-    "hash": "b528b5057d3a0a76fdde23b1805db7f7"
+    "mtime": 1791120479754.0002,
+    "hash": "42178b5308eae1cbb58d24b62e924fbb"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
