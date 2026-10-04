@@ -9,3 +9,4 @@ Sitemap: https://karppinen.one/sitemap.xml
 # Not robots.txt directives; listed for discovery and ignored by crawlers that do not use them.
 # EntityMap: https://karppinen.one/entitymap.json
 # LLMs: https://karppinen.one/llms.txt
+# AI: https://karppinen.one/ai.txt
