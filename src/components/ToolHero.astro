@@ -11,6 +11,14 @@ const { title, summary } = Astro.props;
 </section>
 
 <style>
+  .tool-hero > div {
+    min-inline-size: 0;
+  }
+
+  .tool-hero h1 {
+    overflow-wrap: anywhere;
+  }
+
   .tool-hero__lead {
     margin-top: 0;
     color: var(--ink);

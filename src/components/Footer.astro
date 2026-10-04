@@ -54,7 +54,7 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
         </div>
 
         <nav aria-label={t.explore}>
-          <h3 class="site-footer__col-title">{t.explore}</h3>
+          <h2 class="site-footer__col-title">{t.explore}</h2>
           <ul class="site-footer__links">
             <li><a href={root} class="site-footer__link">{t.home}</a></li>
             {showServices && <li><a href={servicesHref} class="site-footer__link">{t.work}</a></li>}
@@ -67,7 +67,7 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
         </nav>
 
         <div>
-          <h3 class="site-footer__col-title">{t.contact}</h3>
+          <h2 class="site-footer__col-title">{t.contact}</h2>
           <p class="site-footer__contact-text">{contactText}</p>
           <ButtonLink href={contactUrl} label={t.contact} class="site-footer__cta" />
         </div>
@@ -77,6 +77,7 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
         <div class="site-footer__legal">
           <p class="site-footer__copyright">© {new Date().getFullYear()}. {t.rights}</p>
           <a href={root + "privacy/"} class="site-footer__legal-link">{t.privacy}</a>
+          <a href={aboutHref + "#how-i-write"} class="site-footer__legal-link">{t.editorial}</a>
           <a href={feedHref} class="site-footer__legal-link">{t.feed}</a>
           <a href="/entitymap.html" class="site-footer__legal-link">EntityMap</a>
         </div>

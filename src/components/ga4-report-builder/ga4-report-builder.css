@@ -46,7 +46,7 @@
   align-items: start;
 }
 
-.report-builder__layout > main {
+.report-builder__content {
   min-width: 0;
   border-block: 1px solid var(--line);
 }

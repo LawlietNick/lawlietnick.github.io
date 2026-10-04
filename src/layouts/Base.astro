@@ -9,6 +9,7 @@ import PreferredSourceCTA from "../components/PreferredSourceCTA.astro";
 import RelatedArticles from "../components/RelatedArticles.astro";
 import Postscript from "../components/Postscript.astro";
 import ReadingSignals from "../components/ReadingSignals.astro";
+import AuthorBio from "../components/AuthorBio.astro";
 import Schema from "../components/Schema.astro";
 import { ClientRouter } from "astro:transitions";
 import { getCollection } from "astro:content";
@@ -90,7 +91,7 @@ const t = fi
   ? {
       home: "Etusivu", work: "Palvelut", about: "Minusta", writing: siteConfig.blogs.thoughts.fi.name, toolkit: "Työkalupakki", contact: "Ota yhteyttä",
       bannerTitle: "Onko dataongelma?", bannerAccent: "Kapinoidaan.", bannerBtn: "Aloita keskustelu",
-      explore: "Sivusto", language: "Kieli / Language", social: "Muualla", privacy: "Tietosuojaseloste",
+      explore: "Sivusto", language: "Kieli / Language", social: "Muualla", privacy: "Tietosuojaseloste", editorial: "Näin kirjoitan",
       blurb: "Analytiikan ammattilainen. Käännän sotkuisen datan päätöksiksi.",
       rights: "Kaikki oikeudet pidätetään.",
       feed: "Atom-syöte",
@@ -98,7 +99,7 @@ const t = fi
   : {
       home: "Home", work: "Services", about: "About", writing: siteConfig.blogs.thoughts.en.name, toolkit: "Toolkit", contact: "Get in touch",
       bannerTitle: "Have a data problem?", bannerAccent: "Let’s rebel.", bannerBtn: "Start a consultation",
-      explore: "Explore", language: "Language / Kieli", social: "Elsewhere", privacy: "Privacy Policy",
+      explore: "Explore", language: "Language / Kieli", social: "Elsewhere", privacy: "Privacy Policy", editorial: "How I write",
       blurb: "Analytics professional. I turn messy data into decisions.",
       rights: "All rights reserved.",
       feed: "Atom Feed",
@@ -272,6 +273,7 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
                     {fi ? "Lähde:" : "Source:"} <a href={ogUrl}>{ogUrl}</a>
                   </p>
                 )}
+                <AuthorBio {fi} {aboutHref} />
                 {stats && <Postscript {...stats} {fi} />}
               </div>
               <ReadingSignals {fi} visual={fm.readingSignals} />

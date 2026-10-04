@@ -105,7 +105,7 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
         <textarea id="annotation-description" data-description rows="3" aria-describedby="annotation-description-count annotation-description-help" placeholder={copy.placeholder[ui]}></textarea>
         <div id="annotation-suggestions" class="annotation-suggestions" data-suggestions hidden>
           <div class="annotation-suggestions-heading"><p data-suggestions-label>{copy.suggestionsLabel}</p><button type="button" data-close-suggestions>{copy.close}</button></div>
-          <ul aria-label={copy.suggestionsList} data-suggestion-list></ul>
+          <ul aria-label={copy.suggestionsList} tabindex="-1" data-suggestion-list></ul>
         </div>
       </div>
       <div class="annotation-field-footer"><p id="annotation-description-help" data-description-help>{copy.descriptionOk}</p><button type="button" class="annotation-copy" data-copy-description disabled>{copy.copyDescription}</button></div>
@@ -260,6 +260,7 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
         li.append(button);
         suggestionList.append(li);
       }
+      suggestionList.tabIndex = suggestionList.querySelector("button:enabled") ? -1 : 0;
       suggestions.hidden = items.length === 0;
       toggleSuggestions.setAttribute("aria-expanded", String(!suggestions.hidden));
       if (wasHidden && !suggestions.hidden) el("[data-suggestion-status]").textContent = copy.opened;

@@ -29,7 +29,7 @@ That’s why consultants at McKinsey, BCG, and Bain rely on a strict logic frame
 
 The good news is that you don’t need a strategy background to use it. With one AI prompt, you can create a complete executive-ready presentation outline using ChatGPT or Gemini. Here’s how.
 
-### 1. Start with the Framework: How consultants structure their story
+## 1. Start with the Framework: How consultants structure their story
 
 At McKinsey and similar strategy firms, every presentation follows two connected frameworks:
 **The SCQR Model** and **The Pyramid Principle**.
@@ -37,7 +37,7 @@ Together, they make your argument both *logical* and *action-oriented.*
 
 ---
 
-#### The SCQR model: The storyline
+### The SCQR model: The storyline
 
 The SCQR (Situation–Complication–Question–Resolution) structure is the foundation of a compelling executive narrative.
 It moves the audience from shared context to a decision point.
@@ -51,7 +51,7 @@ It moves the audience from shared context to a decision point.
 
 This storyline ensures your audience understands *why the topic matters* before they see your recommendations.
 
-#### The Pyramid principle: The structure
+### The Pyramid principle: The structure
 
 Once you have your storyline, the **Pyramid Principle** organizes your logic into a top-down argument.
 
@@ -65,7 +65,7 @@ Each layer supports the one above it:
 
 This structure ensures clarity: every detail has a reason to exist, and all points roll up into one message.
 
-### 2. Apply the framework with AI
+## 2. Apply the framework with AI
 
 Now that you understand the logic behind the presentation, you can let AI handle the formatting and structure for you.
 You only need to feed it a few key details about your topic.

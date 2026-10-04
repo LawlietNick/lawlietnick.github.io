@@ -160,12 +160,13 @@ test("About pages are ProfilePages whose mainEntity is the shared person", () =>
 });
 
 test("English and Finnish articles credit the shared person as author and publisher", () => {
-  for (const [canonicalUrl, pathname, language] of [
-    [url("/blog/prompt-optimization-chatgpt/"), "/blog/prompt-optimization-chatgpt/", "en"],
-    [url("/fi/blog/hei-maailma/"), "/fi/blog/hei-maailma/", "fi"],
+  for (const [canonicalUrl, pathname, language, aboutPath] of [
+    [url("/blog/prompt-optimization-chatgpt/"), "/blog/prompt-optimization-chatgpt/", "en", "/about/"],
+    [url("/fi/blog/hei-maailma/"), "/fi/blog/hei-maailma/", "fi", "/fi/minusta/"],
   ]) {
     const article = node(graph({ canonicalUrl, pathname, language, frontmatter: { title: "Post" } }), "BlogPosting");
-    assert.deepEqual(article.author, PERSON);
+    // author also names the person and links the about page in the article's language
+    assert.deepEqual(article.author, { ...PERSON, name: "Niko Karppinen", url: url(aboutPath) });
     assert.deepEqual(article.publisher, PERSON);
   }
 });

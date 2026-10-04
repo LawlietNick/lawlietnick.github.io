@@ -54,16 +54,17 @@ test("fills manual selections by relevance, then newest date, with slug as a sta
   assert.deepEqual(picked.map(({ slug }) => slug), ["manual", "two-tags", "a-tie"]);
 });
 
-test("uses recent fallback, isolates languages, and caps results", () => {
-  const current = post("current");
+test("only uses relevant posts, isolates languages, and caps results", () => {
+  const current = post("current", { tags: ["GA4"] });
   const picked = selectRelatedPosts(
     current,
     [
-      post("old", { date: new Date("2025-01-01") }),
-      post("new", { date: new Date("2026-06-01") }),
-      post("middle", { date: new Date("2026-03-01") }),
-      post("fourth", { date: new Date("2024-01-01") }),
-      post("finnish", { language: "fi", date: new Date("2026-07-01") }),
+      post("old", { tags: ["GA4"], date: new Date("2025-01-01") }),
+      post("new", { tags: ["GA4"], date: new Date("2026-06-01") }),
+      post("middle", { tags: ["GA4"], date: new Date("2026-03-01") }),
+      post("fourth", { tags: ["GA4"], date: new Date("2024-01-01") }),
+      post("unrelated", { date: new Date("2026-07-01") }),
+      post("finnish", { tags: ["GA4"], language: "fi", date: new Date("2026-07-01") }),
     ],
     { now },
   );
@@ -71,8 +72,25 @@ test("uses recent fallback, isolates languages, and caps results", () => {
 });
 
 test("handles empty metadata, fewer than three posts, and a custom limit", () => {
-  const current = post("current", { tags: undefined, relatedPosts: [] });
+  const current = post("current", { tags: undefined, relatedPosts: ["only"] });
   const candidate = post("only", { tags: undefined, image: undefined, minutes: undefined });
   assert.deepEqual(selectRelatedPosts(current, [candidate], { now }).map(({ slug }) => slug), ["only"]);
   assert.deepEqual(selectRelatedPosts(current, [candidate], { now, limit: 0 }), []);
+});
+
+test("does not fill empty topics or treat template format as a topic", () => {
+  const current = post("current", { category: "templates" });
+  assert.deepEqual(selectRelatedPosts(current, [post("unrelated", { category: "templates" })], { now }), []);
+  assert.deepEqual(selectRelatedPosts(post("current"), [post("unrelated")], { now }), []);
+});
+
+test("counts URLs once and excludes self URLs and noindex pages", () => {
+  const current = post("current", { tags: ["GTM"] });
+  const picked = selectRelatedPosts(current, [
+    post("alias", { url: current.url, tags: ["GTM"] }),
+    post("hidden", { noindex: true, tags: ["GTM"] }),
+    post("guide", { url: "/templates/guide/", tags: ["GTM"] }),
+    post("duplicate", { url: "/templates/guide/", tags: ["GTM"] }),
+  ], { now });
+  assert.deepEqual(picked.map(({ url }) => url), ["/templates/guide/"]);
 });

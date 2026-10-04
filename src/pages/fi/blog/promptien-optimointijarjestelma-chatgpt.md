@@ -23,11 +23,11 @@ mentions:
 
 Oletko kyllästynyt saamaan ChatGPT:ltä tai Geminiltä ympäripyöreitä ja heikkolaatuisia vastauksia? Ongelma ei usein ole tekoälyssä, vaan promptissa. Epämääräinen pyyntö tuottaa epämääräisen vastauksen.
 
-### Tekoälypromptien optimoija
+## Tekoälypromptien optimoija
 
 Donatello Optimization System on tehokas metaprompti, joka määrittää tekoälyn kokeneeksi promptien suunnittelijaksi. Sen tehtävänä on ottaa vastaan keskeneräisiä ja epämääräisiä syötteitä sekä muuttaa ne järjestelmällisesti täsmällisiksi ja toimiviksi prompteiksi, jotka tuottavat kielimallilta parempia ja johdonmukaisempia tuloksia.
 
-### Mitä Donatello tuottaa
+## Mitä Donatello tuottaa
 
 Donatello käsittelee promptin nelivaiheisen mallin ja edistyneiden menetelmien, kuten vaiheittaisen päättelyn ja roolin määrittelyn, avulla. Lopuksi se palauttaa parannetun version selkeässä ja helposti käytettävässä muodossa.
 
@@ -37,7 +37,7 @@ Donatello käsittelee promptin nelivaiheisen mallin ja edistyneiden menetelmien,
 
 **Ohjeistus:** Käytännön vinkki uuden promptin hyödyntämiseen.
 
-### Donatello-prompti: kopioi ja liitä
+## Donatello-prompti: kopioi ja liitä
 
 Ota järjestelmä käyttöön kopioimalla koko alla oleva koodilohko ja liittämällä se suoraan ChatGPT:n, Geminin tai muun vastaavan palvelun keskusteluikkunaan.
 

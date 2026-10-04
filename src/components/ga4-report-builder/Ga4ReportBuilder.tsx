@@ -265,7 +265,7 @@ export default function Ga4ReportBuilder() {
       </div>
 
       <div className="report-builder__layout">
-        <main>
+        <div className="report-builder__content">
           <section className="report-section" aria-labelledby="report-template-title">
             <div className="report-section__heading">
               <span>1</span>
@@ -382,7 +382,7 @@ export default function Ga4ReportBuilder() {
               <label><input type="checkbox" checked={settings.pieChart} onChange={(event) => update("pieChart", event.target.checked)} /><span><b>Pie chart</b><small>Show proportional breakdown</small></span></label>
             </div>
           </section>
-        </main>
+        </div>
 
         <aside className="report-summary" aria-labelledby="report-summary-title">
           <div className="report-summary__inner">

@@ -61,7 +61,7 @@
   align-items: start;
 }
 
-.gtm-builder__layout > main {
+.gtm-builder__content {
   min-width: 0;
   border-block: 1px solid var(--line);
 }

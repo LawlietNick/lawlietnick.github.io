@@ -3,6 +3,24 @@ import { readFile } from "node:fs/promises";
 
 const path = "/tools/gtm-container-builder/";
 
+test("validation describes the actual error and returns to the hint after correction", async ({ page }) => {
+  for (const route of [path, "/fi/tyokalut/gtm-sailion-rakentaja/"]) {
+    await page.goto(route);
+    const field = page.locator(".gtm-setting input").first();
+    const id = await field.getAttribute("id");
+    await expect(field).toHaveAttribute("aria-describedby", `${id}-hint`);
+    await field.fill("wrong");
+    await field.press("Tab");
+    await expect(field).toHaveAttribute("aria-invalid", "true");
+    await expect(field).toHaveAttribute("aria-describedby", `${id}-error`);
+    await expect(page.locator(`[id="${id}-error"]`)).toBeVisible();
+    await field.fill("G-ABC123");
+    await expect(field).not.toHaveAttribute("aria-invalid", "true");
+    await expect(field).toHaveAttribute("aria-describedby", `${id}-hint`);
+    await expect(page.locator(`[id="${id}-error"]`)).toBeHidden();
+  }
+});
+
 // Each export stamps its own exportTime, so compare everything else.
 const withoutExportTime = (json: string) => json.replace(/"exportTime": "[^"]*"/, "");
 

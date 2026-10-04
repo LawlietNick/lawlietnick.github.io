@@ -73,6 +73,6 @@
   --ease-standard: ease;
   --ease-out: ease-out;
   --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
-  --focus-ring: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  --focus-ring-strong: 3px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  --focus-ring: 3px solid var(--accent);
+  --focus-ring-strong: var(--focus-ring);
 }

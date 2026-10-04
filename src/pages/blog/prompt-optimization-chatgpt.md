@@ -23,10 +23,10 @@ mentions:
 
 Are you tired of getting generic, low-effort answers from ChatGPT or Gemini? The problem often isn't the AI—it's the prompt. A vague request gets a vague response.
 
-### Your AI Prompt Optimizer
+## Your AI Prompt Optimizer
 The Donatello Optimization System is a powerful "meta-prompt" that establishes the AI as a master-level prompt engineer. Its purpose is to take your rough, vague inputs and systematically transform them into highly precise, effective prompts that guarantee better, more reliable results from your LLM.
 
-### What Donatello Outputs
+## What Donatello Outputs
 Donatello applies a rigorous 4-step framework and advanced techniques (like Chain-of-Thought or Role Assignment) to your prompt, then outputs the improved version in a clean, easy-to-use format.
 
 Final Output: A completely optimized prompt you can immediately use for your task.
@@ -35,7 +35,7 @@ Analysis: A breakdown of What Changed and Techniques Applied.
 
 Guidance: A Pro Tip on how to best use the new prompt.
 
-### The Donatello Prompt: Copy and Paste
+## The Donatello Prompt: Copy and Paste
 To activate this expert system, copy the entire block of code below and paste it directly into your chat window (ChatGPT, Gemini, etc.). Once activated, Donatello will greet you and be ready to receive your rough prompts.
 
 ```markdown

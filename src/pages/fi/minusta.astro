@@ -68,29 +68,6 @@ import { contactUrl } from "../../data/site.js";
     </Fragment>
   </SplitSection>
 
-  <SplitSection id="how-i-write" variant="about">
-    <Fragment slot="title">
-      <h2>Näin kirjoitan</h2>
-    </Fragment>
-    <Fragment slot="copy">
-      <p>
-        Kirjoitan aiheista, joiden parissa työskentelen itse: analytiikasta,
-        seurannasta, hakukoneoptimoinnista ja tekoälyn käytöstä työssä.
-        Jokaisen artikkelin alussa näkyy julkaisupäivä ja, jos sisältö on
-        muuttunut, päivityspäivä.
-      </p>
-      <p>
-        Kun väite perustuu ulkoiseen lähteeseen, linkitän alkuperäiseen
-        lähteeseen, kuten palvelun omaan dokumentaatioon. Jos artikkelin
-        kuvitus on tehty tekoälyllä, se kerrotaan kuvatekstissä.
-      </p>
-      <p>
-        Jos huomaat virheen tai vanhentuneen tiedon, kerro siitä minulle.
-        Korjaan sen ja päivitän artikkelin päivityspäivän.
-      </p>
-    </Fragment>
-  </SplitSection>
-
   <SplitSection id="background" variant="about">
     <Fragment slot="title">
       <h2>Kokemus ja näkökulma</h2>
@@ -144,6 +121,30 @@ import { contactUrl } from "../../data/site.js";
 
   <Appearances fi={true} />
 
+  <SplitSection id="how-i-write" variant="about">
+    <Fragment slot="title">
+      <h2>Näin kirjoitan</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Kirjoitan aiheista, joiden parissa työskentelen itse: analytiikasta,
+        seurannasta, hakukoneoptimoinnista ja tekoälyn käytöstä työssä.
+        Hyödynnän kirjoittamisessa tekoälyä, mutta ajatukset ovat omiani.
+        Jokaisen artikkelin alussa näkyy julkaisupäivä ja, jos sisältö on
+        muuttunut, päivityspäivä.
+      </p>
+      <p>
+        Kun väite perustuu ulkoiseen lähteeseen, linkitän alkuperäiseen
+        lähteeseen, kuten palvelun omaan dokumentaatioon. Jos artikkelin
+        kuvitus on tehty tekoälyllä, se kerrotaan kuvatekstissä.
+      </p>
+      <p>
+        Jos huomaat virheen tai vanhentuneen tiedon, kerro siitä minulle.
+        Korjaan sen ja päivitän artikkelin päivityspäivän.
+      </p>
+    </Fragment>
+  </SplitSection>
+
   <SplitSection id="contact" variant="about">
     <Fragment slot="title">
       <h2>Yhteystiedot</h2>
@@ -153,7 +154,7 @@ import { contactUrl } from "../../data/site.js";
         Tavoitat minut helpoimmin LinkedInissä. Voit lähettää viestin
         yhteistyöstä, työstäni tai artikkeleista.
       </p>
-      <p><a href={contactUrl} rel="me noopener">Lähetä viesti LinkedInissä</a></p>
+      <p class="content-links"><a href={contactUrl} rel="me noopener">Lähetä viesti LinkedInissä</a></p>
     </Fragment>
   </SplitSection>
 </Base>

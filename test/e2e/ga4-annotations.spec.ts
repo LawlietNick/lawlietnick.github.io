@@ -3,6 +3,23 @@ import { mkdir } from "node:fs/promises";
 
 const path = "/fi/tyokalut/ga4-annotaatiot/";
 
+test("disabled suggestions remain readable by keyboard scrolling", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(path);
+  await page.locator("[data-description]").fill("x".repeat(170));
+  await page.locator("[data-toggle-suggestions]").click();
+  const list = page.locator("[data-suggestion-list]");
+  await expect(list.locator("button:enabled")).toHaveCount(0);
+  await expect(list).toHaveAttribute("tabindex", "0");
+  await page.keyboard.press("Tab");
+  await expect(list).toBeFocused();
+  expect(await list.evaluate((el) => el.scrollHeight > el.clientHeight)).toBe(true);
+  await page.keyboard.press("ArrowDown");
+  await expect.poll(() => list.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
+  await page.keyboard.press("Escape");
+  await expect(page.locator("[data-description]")).toBeFocused();
+});
+
 test("suggestions open, close and complete without moving the date and color guidance", async ({ page }) => {
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 });

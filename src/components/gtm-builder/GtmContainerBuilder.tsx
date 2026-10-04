@@ -63,6 +63,7 @@ function Setting({
   requiredText: string;
 }) {
   const id = `gtm-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  const [invalid, setInvalid] = useState(false);
   return (
     <div className="gtm-setting">
       <label htmlFor={id}>{label}</label>
@@ -71,20 +72,23 @@ function Setting({
           {options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
         </select>
       ) : (
-        /* ponytail: `required` + `pattern` let :user-invalid do the "don't shout before I've typed"
-           work in CSS, with no touched/blurred state to track in React */
         <input
           id={id}
           value={value}
           required
           pattern={pattern}
           placeholder={placeholder}
-          aria-describedby={`${id}-hint`}
-          onChange={(event) => onChange(event.target.value)}
+          aria-describedby={`${id}-${invalid ? "error" : "hint"}`}
+          aria-invalid={invalid || undefined}
+          onBlur={(event) => setInvalid(!event.currentTarget.validity.valid)}
+          onChange={(event) => {
+            if (invalid || event.currentTarget.matches(":user-invalid")) setInvalid(!event.currentTarget.validity.valid);
+            onChange(event.target.value);
+          }}
         />
       )}
       <small className="gtm-setting__hint" id={`${id}-hint`}>{hint}</small>
-      <small className="gtm-setting__error">{error ?? requiredText}</small>
+      <small className="gtm-setting__error" id={`${id}-error`}>{value.trim() ? error ?? requiredText : requiredText}</small>
     </div>
   );
 }
@@ -224,7 +228,7 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
       </div>
 
       <div className="gtm-builder__layout">
-        <main>
+        <div className="gtm-builder__content">
           <section className="gtm-builder__section" aria-labelledby="gtm-settings-title">
             <div className="gtm-section-heading">
               <div><span>1</span><h2 id="gtm-settings-title">{tr("Add your details", "Lisää omat tietosi")}</h2></div>
@@ -357,7 +361,7 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
               })}
             </table>
           </section>
-        </main>
+        </div>
 
         <aside className="gtm-summary" aria-labelledby="gtm-summary-title">
           <div className="gtm-summary__inner">

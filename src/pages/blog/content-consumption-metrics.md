@@ -74,13 +74,13 @@ If page-level metrics are not enough, the next question is what additional infor
 
 For this model, there are two dimensions:
 
-Progress through the article
+1. **Progress through the article**
 
-Where did the visitor get within the article body?
+   How far did the visitor get through the article?
 
-Time spent with the article
+2. **Time spent with the article**
 
-Did enough qualifying time accumulate for reading to be plausible?
+   Did the visitor spend enough time with the article to plausibly read that much of it?
 
 Neither is sufficient alone. Progress can happen through fast scrolling. Time can accumulate without the visitor reaching the end.
 

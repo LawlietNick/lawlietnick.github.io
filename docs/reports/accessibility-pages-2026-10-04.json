@@ -1,0 +1,372 @@
+[
+  {
+    "route": "/",
+    "title": "Niko Karppinen | SEO & Analytics Consultant",
+    "lang": "en",
+    "h1": [
+      "Clearer measurement. Better decisions."
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/tools/",
+    "title": "Analytics & SEO Toolkit | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Tools"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/tools/metric-quality-checker/",
+    "title": "Metric quality checker | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Metric quality checker"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/tools/gtm-container-builder/",
+    "title": "GTM container builder | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "GTM container builder"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/tools/ga4-annotations/",
+    "title": "GA4 annotation builder | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "GA4 annotation builder"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/tools/form-name-builder/",
+    "title": "Form name builder | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Form name builder"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/templates/",
+    "title": "Implementation Templates | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Implementation Templates"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/templates/hubspot-form-tracking-gtm/",
+    "title": "Track HubSpot form submissions in GTM with the real form name | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Track HubSpot form submissions in GTM with the real form name"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/templates/cookiebot-guide/",
+    "title": "Cookiebot guide | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Cookiebot guide"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/privacy/",
+    "title": "Privacy Policy | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Privacy Policy"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/",
+    "title": "Niko Karppinen | SEO- ja analytiikkakonsultti",
+    "lang": "fi",
+    "h1": [
+      "Selkeämpää mittaamista. Parempia päätöksiä."
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/tyokalut/",
+    "title": "Analytiikan ja SEO:n työkalupakki | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Työkalut"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/tyokalut/mittarin-laatutarkistus/",
+    "title": "Mittarin laatutarkistus | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Mittarin laatutarkistus"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/tyokalut/lomakkeiden-nimeamistyokalu/",
+    "title": "Lomakkeiden nimeämistyökalu | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Lomakkeiden nimeämistyökalu"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/tyokalut/gtm-sailion-rakentaja/",
+    "title": "GTM-säiliön rakentaja | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "GTM-säiliön rakentaja"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/tyokalut/ga4-annotaatiot/",
+    "title": "GA4-annotaatiotyökalu | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "GA4-annotaatiotyökalu"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/tyokalut/datalayer-dokumentaatiogeneraattori/",
+    "title": "dataLayer-dokumentaatiogeneraattori | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "dataLayer-dokumentaatiogeneraattori"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/toteutusmallit/",
+    "title": "Toteutusmallit | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Toteutusmallit"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm/",
+    "title": "HubSpot-lomakkeiden seuranta GTM:llä oikealla lomakkeen nimellä | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "HubSpot-lomakkeiden seuranta GTM:llä oikealla lomakkeen nimellä"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/toteutusmallit/cookiebot-opas/",
+    "title": "Cookiebot-opas | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Cookiebot-opas"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/privacy/",
+    "title": "Tietosuojaseloste | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Tietosuojaseloste"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/minusta/",
+    "title": "Minusta | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Hei, olen Niko Karppinen."
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/blog/",
+    "title": "Kirjoitukset | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Kirjoitukset"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/blog/tekstin-tasaus-saavutettavuus/",
+    "title": "Tekstin tasaus ja luettavuus verkossa | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Keskitetty vai vasemmalle tasattu teksti? Näin tasaus vaikuttaa luettavuuteen verkossa"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/blog/sivujen-luokittelu-analytiikassa/",
+    "title": "Sivujen luokittelu analytiikassa | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Mitä verkkosivustosi luvut kertovat? Sivujen luokittelu auttaa ymmärtämään kokonaisuutta"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/blog/sisallon-kulutuksen-mittaaminen/",
+    "title": "Sisällön kulutuksen mittaaminen: luetaanko artikkeleita? | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Luetaanko artikkeleitasi? Käytännön opas sisällön kulutuksen mittaamiseen"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/blog/promptien-optimointijarjestelma-chatgpt/",
+    "title": "Promptien optimointi ChatGPT:ssä | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Luo parempia prompteja ChatGPT:ssä promptien optimointijärjestelmän avulla"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/blog/mika-on-algoritmi/",
+    "title": "Mikä on algoritmi? Esimerkit ja selitys | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Mikä on algoritmi? Selitys, esimerkit ja algoritmin ero prosessiin"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/blog/mckinsey-tyylinen-esitys-chatgpt-gemini/",
+    "title": "McKinsey-tyylinen esitys ChatGPT:llä | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Luo McKinsey-tyylinen esitys ChatGPT:n tai Geminin avulla"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/fi/blog/asiantuntijapaneeli-yhdella-promptilla/",
+    "title": "Käytä tekoälyä asiantuntijapaneelina yhdellä promptilla | Niko Karppinen",
+    "lang": "fi",
+    "h1": [
+      "Käytä tekoälyä asiantuntijapaneelina yhdellä promptilla"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/blog/",
+    "title": "Thoughts | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Thoughts"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/blog/text-alignment-accessibility/",
+    "title": "Text alignment and online readability | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Centered or left-aligned text? How alignment affects online readability"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/blog/prompt-optimization-chatgpt/",
+    "title": "Prompt optimization system for ChatGPT | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Use prompt optimization system to create better prompts in ChatGPT"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/blog/mckinsey-style-presentation-chatgpt-gemini/",
+    "title": "McKinsey-style presentations with ChatGPT | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Create McKinsey-style presentation using ChatGPT or Gemini"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/blog/content-consumption-metrics/",
+    "title": "Content consumption metrics: Are people reading? | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Are people reading your articles? A practical guide to content consumption metrics"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/blog/ai-panel-with-experts/",
+    "title": "Use AI for multi-expert analysis with one prompt | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Use AI for multi-expert analysis with one prompt"
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  },
+  {
+    "route": "/about/",
+    "title": "About Niko Karppinen | Niko Karppinen",
+    "lang": "en",
+    "h1": [
+      "Hi, I'm Niko Karppinen."
+    ],
+    "imgMissingAlt": [],
+    "duplicateIds": []
+  }
+]

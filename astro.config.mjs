@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
+import githubDark from "@shikijs/themes/github-dark";
 import { createHash } from "node:crypto";
 import { readdir, readFile, rm } from "node:fs/promises";
 import { siteConfig, showServices } from "./src/data/site.js";
@@ -23,6 +24,18 @@ for (const file of (await readdir(srcDir, { recursive: true })).filter((f) => /\
 
 export default defineConfig({
   site: siteConfig.url,
+  markdown: {
+    shikiConfig: {
+      // Keep the existing code palette; make explanatory comments readable.
+      theme: {
+        ...githubDark,
+        name: "github-dark-accessible",
+        tokenColors: githubDark.tokenColors.map((token) => token.scope.includes("comment")
+          ? { ...token, settings: { ...token.settings, foreground: "#8b949e" } }
+          : token),
+      },
+    },
+  },
   integrations: [
     react(),
     // `draft: true` in any src/pages markdown frontmatter or interactive-tools.js entry (and the services

@@ -1,0 +1,75 @@
+---
+// Short author bio after the article body, before the article telemetry.
+// Facts mirror the about pages; update both when the profile changes.
+import { Picture } from "astro:assets";
+import portrait from "../assets/about/portrait.jpeg";
+import { authorName, siteConfig, contactUrl } from "../data/site.js";
+
+const { fi = false, aboutHref } = Astro.props;
+const c = fi
+  ? {
+      label: "Kirjoittajasta",
+      bio: "Olen työskennellyt SEO:n, analytiikan ja digimarkkinoinnin parissa vuodesta 2017. Autan tiimejä korjaamaan seurantaa, ymmärtämään dataansa ja parantamaan verkkosivustojaan.",
+      about: "Lisää minusta",
+    }
+  : {
+      label: "About the author",
+      bio: "I have worked in SEO, analytics and digital marketing since 2017. I help teams fix their tracking, understand their data and improve their websites.",
+      about: "More about me",
+    };
+---
+
+<aside class="author-bio" aria-label={c.label}>
+  <Picture class="author-bio__photo" src={portrait} alt="" widths={[64, 128]} sizes="4rem" formats={["avif", "webp"]} loading="lazy" />
+  <div class="author-bio__body">
+    <p class="author-bio__name">
+      <a href={aboutHref} rel="author">{authorName}</a>
+      <span class="author-bio__role">{siteConfig.person.jobTitle}</span>
+    </p>
+    <p class="author-bio__text">{c.bio}</p>
+    <p class="author-bio__links content-links">
+      <a href={aboutHref}>{c.about}</a>
+      <span aria-hidden="true"> · </span>
+      <a href={contactUrl} rel="me noopener">LinkedIn</a>
+    </p>
+  </div>
+</aside>
+
+<style>
+  .author-bio {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    margin: 3rem 0 0;
+    padding: 1.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+  }
+  .author-bio :global(.author-bio__photo) {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 15%; /* 4:5 portrait: keep the whole head in the circle */
+  }
+  .author-bio p { margin: 0; }
+  .author-bio__body {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .author-bio__name a {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .author-bio__role {
+    display: block;
+    color: var(--muted);
+    font-size: var(--font-size-ui-sm);
+  }
+  .author-bio__text { font-size: 0.95rem; }
+  .author-bio__links { font-size: var(--font-size-ui-sm); }
+
+  @media print { .author-bio { display: none; } }
+</style>

@@ -1,0 +1,1017 @@
+[
+  {
+    "route": "/entitymap.html",
+    "theme": "light",
+    "layout": {
+      "pageWidth": 1280,
+      "scrollWidth": 1280,
+      "lang": "en",
+      "headings": [
+        {
+          "tag": "H1",
+          "text": "EntityMap"
+        },
+        {
+          "tag": "H2",
+          "text": "Niko Karppinen"
+        },
+        {
+          "tag": "H3",
+          "text": "Source passages"
+        },
+        {
+          "tag": "H2",
+          "text": "Cookiebot guide"
+        },
+        {
+          "tag": "H3",
+          "text": "Source passages"
+        },
+        {
+          "tag": "H3",
+          "text": "Relations"
+        },
+        {
+          "tag": "H2",
+          "text": "Content consumption measurement"
+        },
+        {
+          "tag": "H3",
+          "text": "Source passages"
+        },
+        {
+          "tag": "H3",
+          "text": "Relations"
+        },
+        {
+          "tag": "H2",
+          "text": "Page classification for analytics"
+        },
+        {
+          "tag": "H3",
+          "text": "Source passages"
+        },
+        {
+          "tag": "H3",
+          "text": "Relations"
+        },
+        {
+          "tag": "H2",
+          "text": "HubSpot form tracking in GTM"
+        },
+        {
+          "tag": "H3",
+          "text": "Source passages"
+        },
+        {
+          "tag": "H3",
+          "text": "Relations"
+        },
+        {
+          "tag": "H2",
+          "text": "Form taxonomy"
+        },
+        {
+          "tag": "H3",
+          "text": "Source passages"
+        },
+        {
+          "tag": "H3",
+          "text": "Relations"
+        }
+      ]
+    },
+    "sizes": [
+      {
+        "width": 320,
+        "scrollWidth": 320,
+        "overflows": []
+      },
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "overflows": []
+      }
+    ],
+    "axe": {
+      "version": "4.13.0",
+      "violations": [],
+      "incomplete": [],
+      "passCount": 23
+    }
+  },
+  {
+    "route": "/404/",
+    "theme": "light",
+    "layout": {
+      "pageWidth": 1280,
+      "scrollWidth": 1280,
+      "theme": "light",
+      "lang": "en",
+      "headings": [
+        {
+          "tag": "H1",
+          "text": "This issue is missing a panel."
+        },
+        {
+          "tag": "H2",
+          "text": "Explore"
+        },
+        {
+          "tag": "H2",
+          "text": "Get in touch"
+        }
+      ]
+    },
+    "sizes": [
+      {
+        "width": 320,
+        "scrollWidth": 320,
+        "overflows": []
+      },
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "overflows": []
+      }
+    ],
+    "axe": {
+      "version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "description": "Ensure landmarks are unique",
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "landmark-is-unique",
+                  "data": {
+                    "role": "navigation",
+                    "accessibleText": "language selection"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<nav class=\"lang-menu lang-menu--footer\" aria-label=\"Language selection\" data-lang-menu=\"\" data-astro-cid-mnehnta4=\"\">",
+                      "target": [
+                        ".lang-menu--footer"
+                      ]
+                    }
+                  ],
+                  "impact": "moderate",
+                  "message": "The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "moderate",
+              "html": "<nav class=\"lang-menu lang-menu--header\" aria-label=\"Language selection\" data-lang-menu=\"\" data-astro-cid-mnehnta4=\"\">",
+              "target": [
+                ".lang-menu--header"
+              ],
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"header-language-menu\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"header-language-menu\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"lang-menu__trigger\" type=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"header-language-menu\" data-astro-cid-mnehnta4=\"\">",
+              "target": [
+                "button[aria-controls=\"header-language-menu\"]"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"header-language-menu\""
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": {
+                    "messageKey": "controlsWithinPopup",
+                    "needsReview": "aria-controls=\"footer-language-menu\""
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"footer-language-menu\""
+                }
+              ],
+              "none": [],
+              "impact": "critical",
+              "html": "<button class=\"lang-menu__trigger\" type=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"footer-language-menu\" data-astro-cid-mnehnta4=\"\">",
+              "target": [
+                "button[aria-controls=\"footer-language-menu\"]"
+              ],
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"footer-language-menu\""
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "messageKey": "nonBmp"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content contains only non-text characters"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span aria-hidden=\"true\" data-astro-cid-zf75jdti=\"\">→</span>",
+              "target": [
+                ".cta__surface > span[aria-hidden=\"true\"][data-astro-cid-zf75jdti=\"\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "messageKey": "nonBmp"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content contains only non-text characters"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"not-found__caption-arrow\" aria-hidden=\"true\" data-astro-cid-zf75jdti=\"\">→</span>",
+              "target": [
+                ".not-found__caption-arrow"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "messageKey": "nonBmp"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element content contains only non-text characters"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<b aria-hidden=\"true\" data-astro-cid-zf75jdti=\"\"> ★</b>",
+              "target": [
+                "b"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "14.4pt (19.2px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<strong class=\"site-footer__brand-primary\" data-astro-cid-jo6i4kqk=\"\">Niko Karppinen</strong>",
+              "target": [
+                ".site-footer__brand-primary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"site-footer__brand-desc\" data-astro-cid-jo6i4kqk=\"\">Analytics professional. I turn messy data into decisions.</p>",
+              "target": [
+                ".site-footer__brand-desc"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"https://www.linkedin.com/in/karppinenniko/\" class=\"site-footer__social-link\" rel=\"me noopener\" data-astro-cid-jo6i4kqk=\"\">LinkedIn</a>",
+              "target": [
+                ".site-footer__social-link[rel=\"me noopener\"]:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"https://github.com/LawlietNick\" class=\"site-footer__social-link\" rel=\"me noopener\" data-astro-cid-jo6i4kqk=\"\">GitHub</a>",
+              "target": [
+                "a[href$=\"LawlietNick\"]:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"https://www.youtube.com/@LawlietNick\" class=\"site-footer__social-link\" rel=\"me noopener\" data-astro-cid-jo6i4kqk=\"\">YouTube</a>",
+              "target": [
+                ".site-footer__social-link[rel=\"me noopener\"]:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"https://bsky.app/profile/lawlietnick.bsky.social\" class=\"site-footer__social-link\" rel=\"me noopener\" data-astro-cid-jo6i4kqk=\"\">Bluesky</a>",
+              "target": [
+                ".site-footer__social-link[rel=\"me noopener\"]:nth-child(4)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"https://wsocial.eu/profile/lawlietnick.wsocial.eu\" class=\"site-footer__social-link\" rel=\"me noopener\" data-astro-cid-jo6i4kqk=\"\">WSocial</a>",
+              "target": [
+                ".site-footer__social-link[rel=\"me noopener\"]:nth-child(5)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h2 class=\"site-footer__col-title\" data-astro-cid-jo6i4kqk=\"\">Explore</h2>",
+              "target": [
+                "nav[aria-label=\"Explore\"] > h2"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/\" class=\"site-footer__link\" data-astro-cid-jo6i4kqk=\"\">Home</a>",
+              "target": [
+                ".site-footer__link[href=\"/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/blog/\" class=\"site-footer__link\" data-astro-cid-jo6i4kqk=\"\">Thoughts</a>",
+              "target": [
+                ".site-footer__link[href$=\"blog/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/tools/\" class=\"site-footer__link\" data-astro-cid-jo6i4kqk=\"\">Tools</a>",
+              "target": [
+                ".site-footer__link[href$=\"tools/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/templates/\" class=\"site-footer__link\" data-astro-cid-jo6i4kqk=\"\">Implementation Templates</a>",
+              "target": [
+                ".site-footer__link[href$=\"templates/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/about/\" class=\"site-footer__link\" data-astro-cid-jo6i4kqk=\"\">About</a>",
+              "target": [
+                ".site-footer__link[href$=\"about/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h2 class=\"site-footer__col-title\" data-astro-cid-jo6i4kqk=\"\">Get in touch</h2>",
+              "target": [
+                "div:nth-child(3) > h2"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"site-footer__contact-text\" data-astro-cid-jo6i4kqk=\"\">Ready to turn your data into decisions?</p>",
+              "target": [
+                ".site-footer__contact-text"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.4pt (15.2px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"cta__surface\">Get in touch</span>",
+              "target": [
+                ".site-footer__cta > .cta__surface"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"site-footer__copyright\" data-astro-cid-jo6i4kqk=\"\">© 2026. All rights reserved.</p>",
+              "target": [
+                ".site-footer__copyright"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/privacy/\" class=\"site-footer__legal-link\" data-astro-cid-jo6i4kqk=\"\">Privacy Policy</a>",
+              "target": [
+                "a[href$=\"privacy/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/about/#how-i-write\" class=\"site-footer__legal-link\" data-astro-cid-jo6i4kqk=\"\">How I write</a>",
+              "target": [
+                "a[href$=\"about/#how-i-write\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/atom.xml\" class=\"site-footer__legal-link\" data-astro-cid-jo6i4kqk=\"\">Atom Feed</a>",
+              "target": [
+                ".site-footer__legal-link[href$=\"atom.xml\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"/entitymap.html\" class=\"site-footer__legal-link\" data-astro-cid-jo6i4kqk=\"\">EntityMap</a>",
+              "target": [
+                "a[href$=\"entitymap.html\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.2pt (13.6px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"site-footer\" data-astro-cid-jo6i4kqk=\"\">",
+                      "target": [
+                        ".site-footer"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span data-astro-cid-mnehnta4=\"\">English</span>",
+              "target": [
+                "button[aria-controls=\"footer-language-menu\"] > span[data-astro-cid-mnehnta4=\"\"]:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            }
+          ]
+        }
+      ],
+      "passCount": 43
+    }
+  }
+]

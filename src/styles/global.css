@@ -746,7 +746,7 @@ main:focus {
   overflow-wrap: break-word;
 }
 
-.prose > h1:first-child {
+.article-page .prose > h1:first-child {
   display: none;
 }
 
@@ -899,7 +899,7 @@ picture { display: contents; }
 /* first visible element sits flush with the padding — whether it's a heading,
    a paragraph, or the element after the hidden duplicate <h1> */
 .prose > :first-child,
-.prose > h1:first-child + * {
+.article-page .prose > h1:first-child + * {
   margin-top: 0;
 }
 

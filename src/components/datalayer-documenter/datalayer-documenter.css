@@ -274,7 +274,7 @@
 .dl-controls input:focus,
 .dl-controls select:focus {
   border-color: var(--accent);
-  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  outline: var(--focus-ring);
   outline-offset: 2px;
   background: var(--bg);
 }
@@ -381,6 +381,10 @@
 }
 
 /* The event name reads as the title's eyebrow, so it sits close above it. */
+.dl-section-title {
+  margin: 0;
+}
+
 .dl-event-name + .dl-section-title {
   margin-top: -1rem;
 }

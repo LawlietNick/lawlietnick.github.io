@@ -74,13 +74,13 @@ Jos sivutason mittarit eivät riitä, seuraava kysymys on, mikä lisätieto oike
 
 Tässä mallissa ulottuvuuksia on kaksi:
 
-Eteneminen artikkelissa
+1. **Eteneminen artikkelissa**
 
-Mihin asti kävijä pääsi artikkelin leipätekstissä?
+   Kuinka pitkälle kävijä pääsi artikkelissa?
 
-Artikkelin parissa vietetty aika
+2. **Artikkelin parissa vietetty aika**
 
-Kertyikö hyväksyttävää aikaa niin paljon, että lukeminen on uskottavaa?
+   Oliko kävijällä artikkelin parissa riittävästi aikaa lukea siihen asti, mihin hän pääsi?
 
 Kumpikaan ei riitä yksinään. Etenemistä voi syntyä nopealla vierityksellä. Aikaa voi kertyä, vaikka kävijä ei pääsisi loppuun.
 

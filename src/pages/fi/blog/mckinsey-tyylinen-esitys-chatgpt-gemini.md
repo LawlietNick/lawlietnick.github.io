@@ -30,7 +30,7 @@ Siksi McKinseyn, BCG:n ja Bainin kaltaiset konsulttiyhtiöt käyttävät esityst
 
 Hyvä puoli on se, ettei niiden hyödyntäminen vaadi taustaa strategiakonsultoinnissa. Yhdellä tekoälypromptilla voit luoda valmiin, johdolle sopivan esitysrungon ChatGPT:n tai Geminin avulla. Näin se tehdään.
 
-### 1. Aloita viitekehyksestä: näin konsultit rakentavat esityksen tarinan
+## 1. Aloita viitekehyksestä: näin konsultit rakentavat esityksen tarinan
 
 McKinseyn ja vastaavien strategiayhtiöiden esityksissä käytetään usein kahta toisiinsa liittyvää viitekehystä:
 
@@ -40,7 +40,7 @@ Yhdessä ne tekevät perustelusta sekä *loogisen* että *toimintaan ohjaavan*.
 
 ---
 
-#### SCQR-malli: esityksen tarina
+### SCQR-malli: esityksen tarina
 
 SCQR-rakenne muodostuu sanoista Situation, Complication, Question ja Resolution. Se vie yleisön yhteisestä lähtötilanteesta kohti päätöstä.
 
@@ -53,7 +53,7 @@ SCQR-rakenne muodostuu sanoista Situation, Complication, Question ja Resolution.
 
 Tämä rakenne auttaa yleisöä ymmärtämään aiheen merkityksen ennen suositusten esittämistä.
 
-#### Pyramidiperiaate: esityksen rakenne
+### Pyramidiperiaate: esityksen rakenne
 
 Kun tarina on määritelty, **pyramidiperiaate** järjestää perustelut ylhäältä alaspäin eteneväksi kokonaisuudeksi.
 
@@ -67,7 +67,7 @@ Jokainen taso tukee sen yläpuolella olevaa tasoa:
 
 Rakenne tekee esityksestä selkeän. Jokaisella yksityiskohdalla on tehtävä, ja kaikki havainnot tukevat yhtä pääviestiä.
 
-### 2. Hyödynnä viitekehystä tekoälyn avulla
+## 2. Hyödynnä viitekehystä tekoälyn avulla
 
 Kun esityksen logiikka on selvä, voit antaa tekoälyn auttaa rakenteen ja sisällön muodostamisessa.
 

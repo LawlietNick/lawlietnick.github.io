@@ -8,7 +8,7 @@ category: templates
 order: 1
 icon: "🍪"
 summary: "Set up Cookiebot and manage Google and Microsoft consent states with configurable settings, copy-ready code and testing instructions."
-tags: ["Cookiebot", "Consent Mode", "GDPR", "cookie consent"]
+tags: ["Cookiebot", "Consent Mode", "GDPR", "cookie consent", "Google Tag Manager"]
 image: /images/blog/cookiebot-guide.jpeg
 imageAlt: "Cartoon turtle with glasses standing beside a browser window showing the Cookiebot logo and a cookie shield"
 imageCredit: "Generated with OpenAI ImageGen"

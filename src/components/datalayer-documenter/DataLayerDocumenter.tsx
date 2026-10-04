@@ -220,7 +220,7 @@ export default function DataLayerDocumenter() {
           </div>
         </aside>
 
-        <main className="dl-document" id="datalayer-document">
+        <div className="dl-document" id="datalayer-document">
           <header className={`dl-document__header${state.settings.notes.trim() ? "" : " dl-document__header--no-notes"}`}>
             <EditableText className="dl-title" rows={1} label="Dokumentin otsikko" value={state.settings.title} onChange={(value) => updateSettings("title", value)} />
             <dl>
@@ -250,7 +250,9 @@ export default function DataLayerDocumenter() {
 
               <div className="dl-section__content">
                 {section.eventName && <code className="dl-event-name">{section.eventName}</code>}
-                <EditableText className="dl-section-title" rows={1} label={`${section.title}: otsikko`} value={section.title} onChange={(value) => updateSection(section.id, { title: value })} />
+                <h2 className="dl-section-title" aria-label={section.title}>
+                  <EditableText rows={1} label={`${section.title}: otsikko`} value={section.title} onChange={(value) => updateSection(section.id, { title: value })} />
+                </h2>
 
                 <div className="dl-copy-block">
                   <strong>Tarkoitus</strong>
@@ -318,7 +320,7 @@ export default function DataLayerDocumenter() {
               </div>
             </article>
           ))}
-        </main>
+        </div>
       </div>
     </section>
   );

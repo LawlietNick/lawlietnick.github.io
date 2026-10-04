@@ -19,7 +19,7 @@ const relevance = (current: RelatedPost, candidate: RelatedPost): number => {
   const tags = new Set((current.tags ?? []).map((tag) => tag.toLowerCase()));
   const tagMatches = (candidate.tags ?? []).filter((tag) => tags.has(tag.toLowerCase())).length;
   const categoryMatch =
-    current.category && candidate.category
+    current.category && current.category !== "templates" && candidate.category
       ? Number(current.category.toLowerCase() === candidate.category.toLowerCase())
       : 0;
   return tagMatches + categoryMatch;
@@ -40,11 +40,12 @@ export function selectRelatedPosts(
           (post) =>
             post.language === current.language &&
             post.slug !== current.slug &&
+            post.url !== current.url &&
             !post.draft &&
             !post.noindex &&
             post.date.getTime() <= now.getTime(),
         )
-        .map((post) => [post.slug, post]),
+        .map((post) => [post.url, post]),
     ).values(),
   ];
   const bySlug = new Map(eligible.map((post) => [post.slug, post]));
@@ -58,7 +59,7 @@ export function selectRelatedPosts(
     .filter((post) => relevance(current, post) > 0)
     .sort((a, b) => relevance(current, b) - relevance(current, a) || newestFirst(a, b));
 
-  for (const post of [...matching, ...remaining.sort(newestFirst)]) {
+  for (const post of matching) {
     if (selected.length === limit) break;
     if (!selectedSlugs.has(post.slug)) {
       selected.push(post);

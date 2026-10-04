@@ -28,8 +28,8 @@
     "hash": "74e5672e712c5c2c05f441b3742b4fff"
   },
   "src/components/Footer.astro": {
-    "mtime": 1791120024065.493,
-    "hash": "237ff08bc59940a8cb3336b51a77e98b"
+    "mtime": 1791124137046.222,
+    "hash": "f95f2f998b8108c386f5070a4465ee99"
   },
   "src/components/Header.astro": {
     "mtime": 1791116336101.0603,
@@ -88,8 +88,8 @@
     "hash": "bdf1682e6ff17e412535c331576a6271"
   },
   "src/layouts/Base.astro": {
-    "mtime": 1791123178273.353,
-    "hash": "85ef002e09c58a3077b236b439b46da7"
+    "mtime": 1791124137045.9028,
+    "hash": "dbf40ca8339ed3acc834a56d93845a92"
   },
   "src/pages/404.astro": {
     "mtime": 1784635640860.7234,
@@ -100,8 +100,8 @@
     "hash": "d1bfe80dd14dd5fe83110d1885d23a56"
   },
   "src/pages/about.astro": {
-    "mtime": 1791123073161.6655,
-    "hash": "60eaa99ecebd09d57a15660354c85378"
+    "mtime": 1791124636394.495,
+    "hash": "698e154dac8b0a02f60b064b93b2a944"
   },
   "src/pages/blog/index.astro": {
     "mtime": 1789233542253.0383,
@@ -128,8 +128,8 @@
     "hash": "48d308eb7008dfbcd8b3fd607a5692eb"
   },
   "src/pages/fi/minusta.astro": {
-    "mtime": 1791123073161.4922,
-    "hash": "8e5058ba84eed32bb081c7e34b02692d"
+    "mtime": 1791124636393.957,
+    "hash": "af65de896cbfcafcb50cc015159609da"
   },
   "src/pages/fi/palvelut.astro": {
     "mtime": 1791116336103.4434,
@@ -216,8 +216,8 @@
     "hash": "4d8f4d8c8d5456e81f5f7b77ab1b34b5"
   },
   "test/schema.test.ts": {
-    "mtime": 1790928193282.2666,
-    "hash": "a5808a80098dec12055df108384f63ad"
+    "mtime": 1791124171621.991,
+    "hash": "236688ab5865460caebb76fa1a0428ee"
   },
   "src/content.config.ts": {
     "mtime": 1791123178257.9028,
@@ -692,12 +692,12 @@
     "hash": "c6aa4a93787b7290c0417c48372dce64"
   },
   "src/pages/fi/toteutusmallit/cookiebot-opas.md": {
-    "mtime": 1791115245087.0127,
-    "hash": "7de235b79b5a7fd505519bea1b7a565d"
+    "mtime": 1791123243464.1777,
+    "hash": "39ba9a556d3c1b076340368dd86de56b"
   },
   "src/pages/templates/cookiebot-guide.md": {
-    "mtime": 1791115245085.354,
-    "hash": "ffd1a103939445ef46dedc96ea479b89"
+    "mtime": 1791123243444.4292,
+    "hash": "64a0602c89d442f9a1c6e31bea313f25"
   },
   "src/pages/templates/openai-ads-pixel-shopify.md": {
     "mtime": 1791116336104.69,
@@ -780,8 +780,8 @@
     "hash": "487f578fae2f231a84fa4897ece2c59e"
   },
   "src/pages/blog/content-consumption-metrics.md": {
-    "mtime": 1791116874079.7954,
-    "hash": "7376b90c7c9bff1af921dd2c7d5236f6"
+    "mtime": 1791124609443.5564,
+    "hash": "592a3d689a46345b69ae2215ab959e2a"
   },
   "src/pages/blog/marketing-automation-flows.md": {
     "mtime": 1791116336102.8323,
@@ -864,8 +864,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791122990720.6013,
-    "hash": "c14018c1073fcec82127af8605e070d2"
+    "mtime": 1791124487383.2004,
+    "hash": "b0afde45fb9f79b7f312aafbe2728ba4"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -964,8 +964,8 @@
     "hash": "e391995ab6d67d578fd151965f117612"
   },
   "src/pages/fi/blog/sisallon-kulutuksen-mittaaminen.md": {
-    "mtime": 1791117477825.3643,
-    "hash": "05b2a7880451187bb7ce6378be57bfe7"
+    "mtime": 1791124624745.9756,
+    "hash": "b7a7f9b03f7af8859ebb35b01b8bc661"
   },
   "src/pages/fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm.md": {
     "mtime": 1791119228294.4429,

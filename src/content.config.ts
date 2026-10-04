@@ -28,4 +28,6 @@ const posts = (base: string) =>
 export const collections = {
   blog: posts("./src/pages/blog"),
   blogFi: posts("./src/pages/fi/blog"),
+  templates: posts("./src/pages/templates"),
+  templatesFi: posts("./src/pages/fi/toteutusmallit"),
 };
