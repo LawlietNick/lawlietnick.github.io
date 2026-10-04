@@ -325,7 +325,6 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
-    transition: color var(--duration-base) var(--ease-out), background-color var(--duration-base) var(--ease-out);
   }
   .theme-switcher__icon {
     width: 17px;
@@ -349,9 +348,6 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
   .theme-switcher__option input:focus-visible + .theme-switcher__label {
     outline: var(--focus-ring);
     outline-offset: 2px;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .theme-switcher__label { transition: none; }
   }
   /* keep all three options visible on small screens: shrink padding, never hide labels or wrap */
   @media (max-width: 480px) {
