@@ -1,0 +1,342 @@
+/* ---- forms: panel fieldsets + token-driven controls ---- */
+
+.prose fieldset {
+  margin: 0 0 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-panel); /* faint lavender wash, in the accent family */
+}
+
+/* nested groups (radios, checkboxes) read as inner panels */
+.prose fieldset fieldset {
+  margin-block: 1rem;
+  background: var(--bg);
+}
+
+/* legend sits naturally in the panel edge and uses the fieldset's opaque fill */
+.prose legend {
+  max-inline-size: calc(100% - 1rem);
+  margin-inline-start: 0.5rem;
+  padding: 0.35rem clamp(0.75rem, 2cqi, 1.25rem);
+  color: var(--ink);
+  background: inherit;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 2cqi, 1.25rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-transform: none;
+}
+
+.prose fieldset fieldset > legend {
+  margin-inline-start: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 1rem;
+}
+
+.prose .form-field {
+  display: grid;
+  gap: 0.4rem;
+  margin-block: 1rem;
+}
+
+.prose .form-field > label {
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-strong);
+}
+
+.prose .form-field small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.prose .form-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-block: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+/* when the whole row is a label, the entire row is a comfortable click target */
+.prose label.form-choice {
+  cursor: pointer;
+}
+
+.prose label.form-choice:hover {
+  background: var(--color-accent-soft);
+}
+
+/* the chosen option lifts out of the group — obvious at a glance */
+.prose .form-choice:has(:checked) {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: var(--color-accent-soft);
+}
+
+/* markdown task lists (- [ ]) borrow the .form-choice row treatment so a
+   checklist reads as part of the same system as the form panels */
+.prose .contains-task-list {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.prose .task-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-block: 0.25rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+/* only promise a click target once the script has enabled the boxes */
+.prose .task-list-item:not(:has(:disabled)) {
+  cursor: pointer;
+}
+
+.prose .task-list-item:not(:has(:disabled)):hover {
+  background: var(--color-accent-soft);
+}
+
+/* done items recede without being struck through */
+.prose .task-list-item:has(:checked) {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: var(--color-accent-soft);
+  color: var(--muted);
+}
+
+.prose :is(input, select, textarea) {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  accent-color: var(--accent); /* radios, checkboxes, range in brand purple */
+}
+
+/* boxed text-like controls; radio/checkbox/range/color/file draw their own UI.
+   :where() keeps specificity flat so state rules ([aria-invalid], [readonly]) win */
+.prose :is(
+  input:where(:not([type="radio"], [type="checkbox"], [type="range"], [type="color"], [type="file"])),
+  select,
+  textarea
+) {
+  width: min(100%, 26rem);
+  min-block-size: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, var(--line));
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.prose :is(input, select, textarea):hover:not(:disabled, [readonly]) {
+  border-color: color-mix(in srgb, var(--ink) 60%, var(--line));
+}
+
+.prose :is(input, textarea)::placeholder {
+  color: var(--muted);
+}
+
+.prose textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.prose select[multiple] {
+  height: auto;
+}
+
+/* comic radios + checkboxes: chunky ink outline, hard offset shadow, and a
+   snappy pop when the mark appears */
+.prose :is(input[type="radio"], input[type="checkbox"]) {
+  appearance: none;
+  flex: 0 0 auto;
+  display: grid;
+  place-content: center;
+  inline-size: 1.3rem;
+  block-size: 1.3rem;
+  margin: 0;
+  border: 2px solid var(--ink);
+  background: var(--bg);
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--ink) 22%, transparent);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.prose input[type="radio"] { border-radius: var(--radius-pill); }
+.prose input[type="checkbox"] { border-radius: var(--radius-xs); }
+
+.prose :is(input[type="radio"], input[type="checkbox"])::before {
+  content: "";
+  transform: scale(0);
+  transition: transform var(--duration-base) var(--ease-snap);
+}
+
+.prose input[type="radio"]::before {
+  inline-size: 0.62rem;
+  block-size: 0.62rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+}
+
+.prose input[type="checkbox"]::before {
+  inline-size: 0.8rem;
+  block-size: 0.8rem;
+  /* a bold check drawn as a rotated corner, knocked out in the panel color */
+  background: var(--bg);
+  clip-path: polygon(14% 47%, 0 61%, 40% 100%, 100% 22%, 86% 10%, 38% 72%);
+}
+
+.prose input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.prose input[type="radio"]:checked { border-color: var(--accent); }
+
+.prose :is(input[type="radio"], input[type="checkbox"]):checked::before {
+  transform: scale(1);
+}
+
+/* the mark presses in on click, like the CTA */
+.prose :is(input[type="radio"], input[type="checkbox"]):active:not(:disabled) {
+  box-shadow: 0 0 0 color-mix(in srgb, var(--ink) 22%, transparent);
+  translate: 2px 2px;
+}
+
+/* disabled: flat and greyed — no ink outline, no raised shadow, muted fill, so
+   it clearly reads as inert rather than a clickable control */
+.prose :is(input[type="radio"], input[type="checkbox"]):disabled {
+  border: 2px solid color-mix(in srgb, var(--muted) 35%, transparent);
+  background: color-mix(in srgb, var(--muted) 12%, var(--color-surface));
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.prose :is(input[type="radio"], input[type="checkbox"]):disabled::before {
+  background: color-mix(in srgb, var(--muted) 60%, transparent);
+}
+
+/* dim the whole choice row (label text included) when its control is disabled */
+.prose .form-choice:has(:disabled) {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prose :is(input[type="radio"], input[type="checkbox"])::before {
+    transition: none;
+  }
+}
+
+.prose input[type="range"] {
+  width: min(100%, 26rem);
+}
+
+.prose input[type="color"] {
+  inline-size: 3.25rem;
+  block-size: 2.3rem;
+  padding: 3px;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, var(--line));
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.prose input[type="file"] {
+  width: min(100%, 26rem);
+  font-size: 0.9rem;
+}
+
+.prose input[type="file"]::file-selector-button {
+  margin-right: 0.75rem;
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1.5px solid color-mix(in srgb, var(--ink) 35%, var(--line));
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+/* field states */
+.prose :is(input, select, textarea, button):focus-visible {
+  outline: var(--focus-ring-strong);
+  outline-offset: 2px;
+}
+
+.prose :is(input, textarea)[readonly] {
+  background: var(--color-surface);
+  color: var(--muted);
+}
+
+.prose :is(input, select, textarea, button):disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.prose [aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
+.prose .form-field p[role="alert"] {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-medium);
+}
+
+/* buttons follow the site CTA family (.cta / .cta--secondary geometry and
+   colors). Default = the regular secondary button; only a submit inside a
+   button group steps up to the primary pop CTA — a button standing alone
+   stays regular. Injected code-copy buttons keep their own chip style. */
+.prose button:not(.copy) {
+  min-height: 2.75rem;
+  padding: 0.65rem 1.35rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-100);
+  background: var(--color-neutral-900);
+  border: 2px solid var(--color-neutral-500);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: translate var(--duration-fast) var(--ease-out);
+}
+
+.prose form button[type="submit"]:not(:only-child) {
+  color: var(--color-neutral-950);
+  background: var(--pop);
+  border-color: var(--pop);
+}
+
+.prose button:not(.copy):hover:not(:disabled) {
+  translate: -2px -2px; /* same lift as the .cta hover */
+}
+
+.prose .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block: 1.5rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prose button:not(.copy):hover:not(:disabled) {
+    translate: 0 0;
+  }
+}

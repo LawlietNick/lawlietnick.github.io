@@ -20,6 +20,8 @@ import { siteConfig, siteName } from "../data/site.js";
 import "../styles/tokens.css";
 import "../styles/global.css";
 import "../styles/patterns.css";
+import articleFormsCss from "../styles/article-forms.css?inline";
+import articleAlgorithmCss from "../styles/article-algorithm.css?inline";
 
 const fm = Astro.props.frontmatter;
 const classification = classifyPage(Astro.url.pathname, { ...fm, ...Astro.props });
@@ -34,6 +36,10 @@ const headings = Astro.props.headings ?? [];  // markdown layout gives this; .as
 // Render the Markdown slot once for both the statistics and the article body.
 // compiledContent() uses precompiled HTML too, but can repeat image resolution.
 const articleHtml = fm ? await Astro.slots.render("default") : "";
+// Keep optional content styles out of articles that never use them. Normal
+// pages can contain tool forms in their slot, so retain form styles there.
+const needsFormStyles = !fm || /<(?:form|fieldset|input|select|textarea|button)\b/i.test(articleHtml);
+const needsAlgorithmStyles = /class=["'][^"']*\balgorithm-/.test(articleHtml);
 let stats = null;
 if (fm) {
   const html = articleHtml;
@@ -241,6 +247,8 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
       })();
     </script>
     <ClientRouter />
+    {needsFormStyles && <style is:inline data-article-forms set:html={articleFormsCss} />}
+    {needsAlgorithmStyles && <style is:inline data-article-algorithm set:html={articleAlgorithmCss} />}
     <slot name="head" />
   </head>
   <body class:list={{ "article-page": fm }}>

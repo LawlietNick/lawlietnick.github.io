@@ -27,7 +27,9 @@ const { fm, fi = false, aboutHref } = Astro.props;
       class="article-hero__visual-panel article-hero__visual-panel--image"
       aria-hidden={fm.imageAlt ? undefined : "true"}
     >
-      <BlogImage src={fm.image} alt={fm.imageAlt ?? ""} widths={[400, 600, 900]} sizes="(min-width: 46rem) 30rem, 100vw" loading="eager" fetchpriority="high" />
+      {/* Match the wide band's 40% column, 1.25rem gap and 2.5rem gutter.
+          The container's 46rem breakpoint is reached at a 48.5rem viewport. */}
+      <BlogImage src={fm.image} alt={fm.imageAlt ?? ""} widths={[400, 600, 800, 1200, 1600]} sizes="(min-width: 102.5rem) 39.5rem, (min-width: 48.5rem) calc(40vw - 1.5rem), calc(100vw - 2.5rem)" loading="eager" fetchpriority="high" />
       {fm.imageCredit && <figcaption class="article-hero__credit">{fm.imageCredit}</figcaption>}
     </figure>
   ) : (
