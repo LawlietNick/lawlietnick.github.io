@@ -1,7 +1,7 @@
 {
   "astro.config.mjs": {
-    "mtime": 1791122372612.2175,
-    "hash": "103b86b51815733f7c662e1bf5a1b367"
+    "mtime": 1791125413907.2988,
+    "hash": "58f356c1e58a7855c4b61f4b207b1152"
   },
   "scripts/generate-og.mjs": {
     "mtime": 1786044996796.3782,
@@ -28,8 +28,8 @@
     "hash": "74e5672e712c5c2c05f441b3742b4fff"
   },
   "src/components/Footer.astro": {
-    "mtime": 1791124137046.222,
-    "hash": "f95f2f998b8108c386f5070a4465ee99"
+    "mtime": 1791125414253.008,
+    "hash": "d716f07ab29dd69747ec75061072452d"
   },
   "src/components/Header.astro": {
     "mtime": 1791116336101.0603,
@@ -88,8 +88,8 @@
     "hash": "bdf1682e6ff17e412535c331576a6271"
   },
   "src/layouts/Base.astro": {
-    "mtime": 1791124137045.9028,
-    "hash": "dbf40ca8339ed3acc834a56d93845a92"
+    "mtime": 1791126567151.323,
+    "hash": "7848a2485f56a79373cb60b537181422"
   },
   "src/pages/404.astro": {
     "mtime": 1784635640860.7234,
@@ -180,12 +180,12 @@
     "hash": "04ceaffd9010484b5a5610de8763cb38"
   },
   "src/pages/blog/mckinsey-style-presentation-chatgpt-gemini.md": {
-    "mtime": 1790233442458.7373,
-    "hash": "9cde9b8b1305bd8d4b53470da48ef6d5"
+    "mtime": 1791125414254.1921,
+    "hash": "10f17c868f886c60b243acf50a19da4f"
   },
   "src/pages/blog/prompt-optimization-chatgpt.md": {
-    "mtime": 1790233442459.3591,
-    "hash": "c33ebd3eb22b435f0ad6d512c054e5be"
+    "mtime": 1791125414253.6206,
+    "hash": "4716a4368914144e20e82024a3819fb7"
   },
   "src/pages/fi/blog/asiantuntijapaneeli-yhdella-promptilla.md": {
     "mtime": 1790701301122.9915,
@@ -308,12 +308,12 @@
     "hash": "4e0a698fa6ad19225b38a585d4b94b42"
   },
   "src/pages/fi/blog/mckinsey-tyylinen-esitys-chatgpt-gemini.md": {
-    "mtime": 1790701301123.1804,
-    "hash": "04b4c84af16c1ea5bd72148cff88e0e7"
+    "mtime": 1791125414254.5464,
+    "hash": "94c2a6778d087484cba6e1cc57cdedc8"
   },
   "src/pages/fi/blog/promptien-optimointijarjestelma-chatgpt.md": {
-    "mtime": 1790701301123.327,
-    "hash": "862362892572368e1c2e2822bf1f9235"
+    "mtime": 1791125414254.0232,
+    "hash": "e1039670f5b006edb83705b3da372f11"
   },
   "src/data/categories.js": {
     "mtime": 1790233446525.8748,
@@ -364,8 +364,8 @@
     "hash": "8021cc744070aba0c9f8f2dd8fcee90f"
   },
   "src/components/gtm-builder/GtmContainerBuilder.tsx": {
-    "mtime": 1791117477826.9932,
-    "hash": "a55a6bdf1754005f257ec94d05ed3568"
+    "mtime": 1791125413923.538,
+    "hash": "5b0127845b63b49d756149eb066126d7"
   },
   "src/components/gtm-builder/engine.ts": {
     "mtime": 1785127125102.6702,
@@ -408,8 +408,8 @@
     "hash": "2fc547290f9759831cf18977dcb4cfe4"
   },
   "test/e2e/gtm-export.spec.ts": {
-    "mtime": 1785127219994.6255,
-    "hash": "1dc963d745fc678f0657cbd963a3d0e2"
+    "mtime": 1791125510179.2222,
+    "hash": "24951cde7e98becbaa8d61e6edf7dc00"
   },
   "test/gtm/component.test.tsx": {
     "mtime": 1785127233878.4316,
@@ -612,12 +612,12 @@
     "hash": "89a5891f0008c313a0f016d860b35e2e"
   },
   "src/components/ToolHero.astro": {
-    "mtime": 1785161908101.3213,
-    "hash": "88e10355567dabf0968d5343d91a87c7"
+    "mtime": 1791125413891.473,
+    "hash": "0d97ef518e81ceafaf811ad978e80690"
   },
   "src/components/datalayer-documenter/DataLayerDocumenter.tsx": {
-    "mtime": 1790701769635.0378,
-    "hash": "92d3a36d282e7b2a0878e867092bf320"
+    "mtime": 1791125414000.9526,
+    "hash": "1dad03bf32d14f0c30990990d6db8603"
   },
   "src/components/datalayer-documenter/engine.test.ts": {
     "mtime": 1785159634744.6985,
@@ -660,8 +660,8 @@
     "hash": "f5df1fea4cd72e37dda3c04493a8bf71"
   },
   "src/components/ga4-report-builder/Ga4ReportBuilder.tsx": {
-    "mtime": 1785503892218.5442,
-    "hash": "95d13742b7d1d26b516ce765c8418d8b"
+    "mtime": 1791125413969.3496,
+    "hash": "de21db45b29c915868a661e751367f83"
   },
   "src/components/ga4-report-builder/engine.ts": {
     "mtime": 1785503892126.9302,
@@ -824,8 +824,8 @@
     "hash": "a187e6ddeac4b9d9ca0784ae25ef4a16"
   },
   "src/components/Ga4AnnotationBuilder.astro": {
-    "mtime": 1791116336100.7866,
-    "hash": "aab690aec03f1e2a96a4568a970ed540"
+    "mtime": 1791125464424.1946,
+    "hash": "de3e6d79164c8d11ba4414e09a7bf1f1"
   },
   "src/data/ga4-annotations.js": {
     "mtime": 1791116336101.9812,
@@ -836,8 +836,8 @@
     "hash": "a88b7c5e15a7a10e3fd6401e5efcfb00"
   },
   "test/e2e/ga4-annotations.spec.ts": {
-    "mtime": 1791116336105.6091,
-    "hash": "bdfab8122be4914fe7dbe5c7da392a8a"
+    "mtime": 1791125510194.1973,
+    "hash": "7cd5c9d152319088d217f3fcafebd249"
   },
   "test/ga4-annotations.test.mjs": {
     "mtime": 1791116336106.112,
@@ -864,8 +864,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791124487383.2004,
-    "hash": "b0afde45fb9f79b7f312aafbe2728ba4"
+    "mtime": 1791124660104.7688,
+    "hash": "fd8ab417b7295ac5b6b96929532a230a"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -876,24 +876,24 @@
     "hash": "0211ebb351d043af265ff94f9801ace1"
   },
   ".impeccable/review/ga4-desktop-dark.png": {
-    "mtime": 1791120406159.763,
-    "hash": "166fd5d5df55c1e358cf01bbe7a17770"
+    "mtime": 1791125548169.367,
+    "hash": "9a080df5e69be25518a58ba24891c100"
   },
   ".impeccable/review/ga4-desktop.png": {
-    "mtime": 1791120406160.495,
-    "hash": "70ba622c708b364c3129c116c2c7d32a"
+    "mtime": 1791125548076.5024,
+    "hash": "89c227f6909ae8ea46a08d08243949ff"
   },
   ".impeccable/review/ga4-mobile-dark.png": {
-    "mtime": 1791120406161.0547,
-    "hash": "28a300de05ce3611467e0f4bab38c205"
+    "mtime": 1791125548287.7524,
+    "hash": "4afa945b4b668bf73424a87bfdef6840"
   },
   ".impeccable/review/ga4-mobile-initial.png": {
-    "mtime": 1791120406161.3574,
-    "hash": "ade1edb5986ea65d69ac3bca7601161a"
+    "mtime": 1791125549346.1958,
+    "hash": "d9e8c6ca7c6046d431a8135c05077ab7"
   },
   ".impeccable/review/ga4-mobile.png": {
-    "mtime": 1791120406161.933,
-    "hash": "d7b756198b34ba39b592a38399c3e192"
+    "mtime": 1791125548245.2925,
+    "hash": "d55ff288532b7d1be68ef98a5cb263a3"
   },
   "src/assets/blog/examples/example-landscape.jpeg": {
     "mtime": 1790453549813.51,
@@ -986,5 +986,49 @@
   "src/pages/sitemap-index.xml.js": {
     "mtime": 1791120355047.5508,
     "hash": "bd6a3e37908fc1bdd0cd990ecdc97bd9"
+  },
+  "src/components/AuthorBio.astro": {
+    "mtime": 1791124304351.3086,
+    "hash": "a921a802ae4e79078a984d39c631f1f4"
+  },
+  "test/e2e/related-reading.spec.ts": {
+    "mtime": 1791123382971.2212,
+    "hash": "2c39e5537e45da4b4b652c5a7280e81f"
+  },
+  "README.md": {
+    "mtime": 1791124984769.2993,
+    "hash": "d9fc750945910e861efb995bae01c66a"
+  },
+  "docs/reports/accessibility-2026-10-04.md": {
+    "mtime": 1791125121123.131,
+    "hash": "f028487cb1caf59e84f91c6b51070809"
+  },
+  "docs/reports/accessibility-fixes-2026-10-04.md": {
+    "mtime": 1791125821779.6462,
+    "hash": "be2b3a59565e15c3a32ce531c0f356e3"
+  },
+  "docs/reports/related-reading-2026-10-04.md": {
+    "mtime": 1791123842469.6204,
+    "hash": "88006de7cadf228a735a96285c6c1c11"
+  },
+  "docs/reports/accessibility-fixed-mobile.jpg": {
+    "mtime": 1791125581325.424,
+    "hash": "96977ce83446c2cd81e7613231b9cc40"
+  },
+  "docs/reports/accessibility-fixed-privacy.jpg": {
+    "mtime": 1791125632146.7122,
+    "hash": "fbd3f0550907cb5af6b0c75b8884758d"
+  },
+  "docs/reports/accessibility-mobile-clipping.jpg": {
+    "mtime": 1791124853266.8262,
+    "hash": "5e3fc916c6478ae38427c6591cf47658"
+  },
+  "docs/reports/related-reading-desktop.jpg": {
+    "mtime": 1791123765423.3455,
+    "hash": "bd714ca4b9e51ccbc9c77b3a217c98ef"
+  },
+  "docs/reports/related-reading-mobile.jpg": {
+    "mtime": 1791123698551.5576,
+    "hash": "90037523ae4a54425c327d89de0dfbae"
   }
 }
