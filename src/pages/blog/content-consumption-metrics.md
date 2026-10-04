@@ -10,6 +10,9 @@ image: /images/blog/content-consumption-metrics.jpeg
 imageAlt: "Cartoon mouse sage in a purple robe pointing at an article layout, with speech bubbles showing a reading-time progress bar, a completion bar and a checkmark"
 imageCredit: "Generated with OpenAI ImageGen"
 readingSignals: true
+alternate:
+  lang: fi
+  href: /fi/blog/sisallon-kulutuksen-mittaaminen/
 about:
   - "Content consumption measurement"
   - "Article engagement measurement"

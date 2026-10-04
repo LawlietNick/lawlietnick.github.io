@@ -784,8 +784,8 @@
     "hash": "487f578fae2f231a84fa4897ece2c59e"
   },
   "src/pages/blog/content-consumption-metrics.md": {
-    "mtime": 1790521275630.7502,
-    "hash": "e15d3ad0b549fd10f05abca246b1dd3a"
+    "mtime": 1791116874079.7954,
+    "hash": "7376b90c7c9bff1af921dd2c7d5236f6"
   },
   "src/pages/blog/marketing-automation-flows.md": {
     "mtime": 1791116336102.8323,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791116659005.3113,
-    "hash": "7ddab83d3a55d85c773d54d62d36fd85"
+    "mtime": 1791116781350.3806,
+    "hash": "c660d9c1d8f5461b6bab931a1db4484c"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -958,5 +958,13 @@
   "src/pages/fi/tyokalut/cookiebot-bannerin-muotoilija.astro": {
     "mtime": 1791116634506.303,
     "hash": "f6fe8b2a07de88fadbdac4ef48f704a1"
+  },
+  "src/components/gtm-builder/fi.ts": {
+    "mtime": 1791116684109.1892,
+    "hash": "6a524975a6b5c2ce80e3c8015191f060"
+  },
+  "src/pages/fi/tyokalut/gtm-sailion-rakentaja.astro": {
+    "mtime": 1791116748539.0679,
+    "hash": "d17e4585e411d1e3aae129a0b37e276f"
   }
 }
