@@ -1,24 +1,25 @@
 # Graph Report - .  (2026-10-04)
 
 ## Corpus Check
-- Large corpus: 245 files · ~532,641 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.
+- 246 files · ~498,717 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 493 nodes · 1004 edges · 15 communities detected
+- 496 nodes · 1012 edges · 15 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
-- Edge kinds: contains: 317 · MODIFIES: 223 · imports_from: 165 · imports: 113 · ON_BRANCH: 99 · PARENT_OF: 44 · calls: 43
+- Edge kinds: contains: 317 · MODIFIES: 225 · imports_from: 165 · imports: 113 · ON_BRANCH: 102 · PARENT_OF: 47 · calls: 43
 
 
 ## Input Scope
 - Requested: auto
 - Resolved: committed (source: default-auto)
-- Included files: 245 · Candidates: 273
-- Excluded: 2 untracked · 26625 ignored · 1 sensitive · 0 missing committed
+- Included files: 246 · Candidates: 274
+- Excluded: 3 untracked · 26633 ignored · 1 sensitive · 0 missing committed
 - Recommendation: Use --scope all or graphify.yaml inputs.corpus for a knowledge-base folder.
 
 ## Graph Freshness
-- Built from Git commit: `8e66197`
+- Built from Git commit: `b6f7954`
 - Compare this hash to `git rev-parse HEAD` before trusting freshness-sensitive graph output.
 ## God Nodes (most connected - your core abstractions)
 1. `buildSelectedContainer()` - 9 edges
@@ -51,8 +52,8 @@ Cohesion: 0.07
 Nodes (43): 50bd599 Finnish language review 4.10.2026: fix new and changed texts, e500df6 Add Finnish GTM container builder, applyTagNamingConvention(), BuilderSettings, BuilderState, BuilderValidation, buildSelectedContainer(), clone() (+35 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.11
-Nodes (43): claude/sweet-lamport-b36507, datalayer-print-and-copy-edits, launch-prep, main, 0421511 Add short navSummary lines for services in the mega menu, 17b83c7 Add serviceType and about to service page schema, 1b5b266 Broaden toolkit copy beyond analytics, 1ca05d5 Match mega menu link heights within a grid row (+35 more)
+Cohesion: 0.10
+Nodes (46): claude/sweet-lamport-b36507, datalayer-print-and-copy-edits, launch-prep, main, 0421511 Add short navSummary lines for services in the mega menu, 17b83c7 Add serviceType and about to service page schema, 1b5b266 Broaden toolkit copy beyond analytics, 1ca05d5 Match mega menu link heights within a grid row (+38 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.07
@@ -128,6 +129,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.07017543859649122 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.11085972850678733 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10303030303030303 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.07179487179487179 - nodes in this community are weakly interconnected._

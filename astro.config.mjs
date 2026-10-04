@@ -54,7 +54,10 @@ export default defineConfig({
   security: {
     csp: {
       directives: ["object-src 'none'", "base-uri 'self'", "form-action 'self'"],
-      scriptDirective: { hashes: [...new Set(inlineScriptHashes)] },
+      scriptDirective: {
+        resources: ["'self'", "https://app.rybbit.io"], // Rybbit analytics (Base.astro)
+        hashes: [...new Set(inlineScriptHashes)],
+      },
       styleDirective: {
         // Mermaid and Shiki style at runtime, so styles stay inline-allowed;
         // script-src (the part that stops XSS) keeps its strict hash list.

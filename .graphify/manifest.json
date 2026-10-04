@@ -1,7 +1,7 @@
 {
   "astro.config.mjs": {
-    "mtime": 1791119419487.62,
-    "hash": "440a7042bbcea9ad110d16a60f9d514b"
+    "mtime": 1791119927354.6057,
+    "hash": "f8e3a4b748559b36a5f779ac40a36eeb"
   },
   "scripts/generate-hero-placeholders.mjs": {
     "mtime": 1783662513918.7078,
@@ -40,8 +40,8 @@
     "hash": "e299d58ca21a788484f74b1f7f23fc33"
   },
   "src/components/Hero.astro": {
-    "mtime": 1791116336101.2905,
-    "hash": "efe0e8ecd4672281fd3e752790d4a288"
+    "mtime": 1791119739495.3347,
+    "hash": "81c4c2f90f0920c2a5b1611f4657b7f0"
   },
   "src/components/PatternList.astro": {
     "mtime": 1783578418395.9634,
@@ -92,8 +92,8 @@
     "hash": "bdf1682e6ff17e412535c331576a6271"
   },
   "src/layouts/Base.astro": {
-    "mtime": 1791118080784.779,
-    "hash": "1b7db1aeb2830685fdf33e269324442c"
+    "mtime": 1791119927354.3691,
+    "hash": "1b24e91870c2760533279680623f73d1"
   },
   "src/pages/404.astro": {
     "mtime": 1784635640860.7234,
@@ -140,16 +140,16 @@
     "hash": "cb14ffed1fc323051466cfec733f3ff0"
   },
   "src/pages/fi/privacy.astro": {
-    "mtime": 1789231319585.8813,
-    "hash": "528a7a22018d3faca3be0adf20e07786"
+    "mtime": 1791119927355.2703,
+    "hash": "1fd136818b4cc068270d96f521094e3b"
   },
   "src/pages/index.astro": {
     "mtime": 1791117436138.5493,
     "hash": "7fd56cfa7173f070bbde4ff6b2f0d37a"
   },
   "src/pages/privacy.astro": {
-    "mtime": 1789231319585.5845,
-    "hash": "8efdff04f19156ad17480553ad037ea7"
+    "mtime": 1791119927354.9688,
+    "hash": "4298c850860757c5c62c3eddb4aa1784"
   },
   "src/pages/services.astro": {
     "mtime": 1791116336104.2432,
@@ -208,8 +208,8 @@
     "hash": "5afb348af2b0f5e047b407937de618a8"
   },
   "src/assets/hero/feature.jpeg": {
-    "mtime": 1783628941273.7515,
-    "hash": "8350f6bc3c238b08f44fc9a3ec47a46a"
+    "mtime": 1791119739471.7212,
+    "hash": "d078123b01867b7906b88f166f4652ef"
   },
   "src/components/Breadcrumb.astro": {
     "mtime": 1790232864184.566,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791118926240.1934,
-    "hash": "fde2215456a4ee5fc82db8813c29e4d6"
+    "mtime": 1791119507768.4888,
+    "hash": "1281f30d3560ef84c48f838ce396ea1f"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -978,5 +978,9 @@
   "public/robots.txt": {
     "mtime": 1791118184551.3455,
     "hash": "e485cab67cfe4b63622b81c3bc1d8221"
+  },
+  ".github/workflows/deploy.yml": {
+    "mtime": 1791119634647.67,
+    "hash": "fbad788df77dc9f91dfedd46fdda723d"
   }
 }

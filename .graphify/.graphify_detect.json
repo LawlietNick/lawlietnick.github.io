@@ -132,6 +132,7 @@
     "document": [
       ".claude/CLAUDE.md",
       ".claude/skills/graphify/SKILL.md",
+      ".github/workflows/deploy.yml",
       ".graphify/GRAPH_REPORT.md",
       ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md",
       ".impeccable/surfaces/src-pages-fi-tyokalut-ga4-annotaatiot-astro.md",
@@ -254,17 +255,17 @@
     ],
     "video": []
   },
-  "total_files": 245,
-  "total_words": 532641,
+  "total_files": 246,
+  "total_words": 498717,
   "needs_graph": true,
-  "warning": "Large corpus: 245 files · ~532,641 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder, or use --no-semantic to run AST-only.",
+  "warning": null,
   "skipped_sensitive": [
     "src/styles/tokens.css"
   ],
   "graphifyignore_patterns": 12,
   "git": {
     "source_owner": "git",
-    "source_hash": "8e661978cb5e72b669b63dc47459e90f681eeffc",
+    "source_hash": "b6f79548668ada0b4a0f76ab5ae07f66b960f901",
     "branches": [
       "claude/sweet-lamport-b36507",
       "datalayer-print-and-copy-edits",
@@ -280,11 +281,11 @@
     "source": "default-auto",
     "root": ".",
     "git_root": ".",
-    "head": "8e661978cb5e72b669b63dc47459e90f681eeffc",
-    "candidate_count": 273,
-    "included_count": 245,
-    "excluded_untracked_count": 2,
-    "excluded_ignored_count": 26625,
+    "head": "b6f79548668ada0b4a0f76ab5ae07f66b960f901",
+    "candidate_count": 274,
+    "included_count": 246,
+    "excluded_untracked_count": 3,
+    "excluded_ignored_count": 26633,
     "excluded_sensitive_count": 1,
     "missing_committed_count": 0,
     "warnings": [],
