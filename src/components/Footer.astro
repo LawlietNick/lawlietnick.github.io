@@ -58,11 +58,11 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
           <ul class="site-footer__links">
             <li><a href={root} class="site-footer__link">{t.home}</a></li>
             {showServices && <li><a href={servicesHref} class="site-footer__link">{t.work}</a></li>}
-            <li><a href={aboutHref} class="site-footer__link">{t.about}</a></li>
             <li><a href={root + "blog/"} class="site-footer__link">{t.writing}</a></li>
             {toolkit.map((item) => (
               <li><a href={root + (fi ? item.fiSlug : item.slug) + "/"} class="site-footer__link">{(fi ? item.fi : item.en).label}</a></li>
             ))}
+            <li><a href={aboutHref} class="site-footer__link">{t.about}</a></li>
           </ul>
         </nav>
 
