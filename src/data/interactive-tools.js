@@ -21,6 +21,7 @@ export const allInteractiveTools = [
   {
     category: "tools",
     slug: "cookie-banner-styler",
+    draft: true,
     icon: "◧",
     order: 1,
     en: {
