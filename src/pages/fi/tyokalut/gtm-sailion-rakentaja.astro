@@ -1,0 +1,66 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ToolHero from "../../../components/ToolHero.astro";
+import GtmContainerBuilder from "../../../components/gtm-builder/GtmContainerBuilder";
+
+const title = "GTM-säiliön rakentaja";
+const summary = "Valitse tarvitsemasi GA4:n verkkokauppatapahtumat ja lataa valmis GTM-säiliö, johon tarvittavat riippuvuudet on lisätty automaattisesti.";
+---
+
+<Base title={title} description={summary} alternate={{ lang: "en", href: "/tools/gtm-container-builder/" }}>
+  <Breadcrumb
+    fi
+    crumbs={[
+      { label: "Etusivu", href: "/fi/", icon: true },
+      { label: "Työkalut", href: "/fi/tyokalut/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">Ei tagien asetussokkeloa. Valitse tapahtumat, lisää GA4-tunnus ja vie säiliö. Tagien, triggereiden ja muuttujien nimet ovat englanniksi, jotta säiliö on sama kielestä riippumatta.</p>
+  </ToolHero>
+
+  <div class="gtm-tool-shell wide-band">
+    {/* client:only, not client:load — SSR'd markup would accept clicks before hydration and swallow them */}
+    <GtmContainerBuilder client:only="react" fi />
+  </div>
+
+  <section class="about gtm-usage">
+    <div>
+      <p class="eyebrow">Ennen julkaisua</p>
+      <h2>Tuonnin jälkeen alkaa tarkistus</h2>
+    </div>
+    <div>
+      <ol>
+        <li>Lisää GA4-mittaustunnus, yrityksen tunniste, valuutta ja säiliön nimi.</li>
+        <li>Valitse verkkokaupan tapahtumatagit, joita toteutuksesi tukee.</li>
+        <li>Kopioi tai lataa GTM:n tuontitiedosto (JSON).</li>
+        <li>Tuo se GTM-työtilaan ja käy ehdotetut muutokset läpi.</li>
+        <li>Testaa GTM:n esikatselussa datakerros ja suostumusten toiminta ennen julkaisua.</li>
+      </ol>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .gtm-tool-shell {
+    margin-bottom: 2rem;
+  }
+
+  .gtm-usage {
+    padding-top: 3rem;
+  }
+
+  .gtm-usage h2 {
+    max-width: 14ch;
+  }
+
+  .gtm-usage ol {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+</style>

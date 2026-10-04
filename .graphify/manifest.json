@@ -368,16 +368,16 @@
     "hash": "8021cc744070aba0c9f8f2dd8fcee90f"
   },
   "src/components/gtm-builder/GtmContainerBuilder.tsx": {
-    "mtime": 1785160705835.451,
-    "hash": "522d43f54fb4b69f0b610281200a86c0"
+    "mtime": 1791116732384.909,
+    "hash": "cb7b8961df299bb87462573ee3578042"
   },
   "src/components/gtm-builder/engine.ts": {
     "mtime": 1785127125102.6702,
     "hash": "c8bdfee3e8afdc0b202f61ec661f3f5b"
   },
   "src/data/interactive-tools.js": {
-    "mtime": 1791116634500.927,
-    "hash": "1ad6a64b56e542d6e932de4f4935ed3f"
+    "mtime": 1791116748562.9897,
+    "hash": "f88154c63215863ef1258e93caf8afab"
   },
   "src/layouts/ServiceLayout.astro": {
     "mtime": 1790701301122.6755,
@@ -396,8 +396,8 @@
     "hash": "42489a39289d0df8e1cf7d5b325e1457"
   },
   "src/pages/tools/gtm-container-builder.astro": {
-    "mtime": 1785328376650.427,
-    "hash": "ef805bc3d6643b5ae9dbba921cef9d53"
+    "mtime": 1791116748562.7961,
+    "hash": "8707305c05f6811e68c7a412aa24d898"
   },
   "src/pages/tools/metric-quality-checker.astro": {
     "mtime": 1785328377035.8096,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791116336096.4902,
-    "hash": "65ce90be1a69593951aeb87e7eb6b3d2"
+    "mtime": 1791116659005.3113,
+    "hash": "7ddab83d3a55d85c773d54d62d36fd85"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -954,5 +954,9 @@
   "src/pages/fi/tyokalut/lomakkeiden-nimeamistyokalu.astro": {
     "mtime": 1791116336103.7864,
     "hash": "b7d800cc88c1f6101c6cca0678053e5c"
+  },
+  "src/pages/fi/tyokalut/cookiebot-bannerin-muotoilija.astro": {
+    "mtime": 1791116634506.303,
+    "hash": "f6fe8b2a07de88fadbdac4ef48f704a1"
   }
 }

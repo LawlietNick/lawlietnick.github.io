@@ -57,6 +57,11 @@ export const allInteractiveTools = [
       title: "GTM container builder",
       summary: "Customize a complete ecommerce GTM container, check its dependencies, and export import-ready JSON.",
     },
+    fi: {
+      slug: "gtm-sailion-rakentaja",
+      title: "GTM-säiliön rakentaja",
+      summary: "Muokkaa kokonainen verkkokaupan GTM-säiliö, tarkista sen riippuvuudet ja vie tuontivalmis JSON.",
+    },
   },
   {
     category: "tools",
