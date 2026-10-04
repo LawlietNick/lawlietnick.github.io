@@ -206,6 +206,7 @@ Both options expose the same three endpoints and the same JSON, so the GTM templ
 ```javascript
 const HUBSPOT_FORMS_API_VERSION = "2026-09-beta";
 const CACHE_TTL_SECONDS = 86400; // 24 hours
+const NOT_FOUND_TTL_SECONDS = 300; // unknown IDs stop reaching HubSpot for 5 minutes
 const TRACKER_VERSION = "1";
 
 export default {
@@ -1497,6 +1498,23 @@ export default {
       const cachedData =
         await cachedResponse.json();
 
+      if (cachedData.notFound) {
+        return jsonResponse(
+          {
+            error:
+              "HubSpot form not found",
+
+            id: formId
+          },
+          404,
+          origin,
+          {
+            "X-HubSpot-Form-Cache":
+              "HIT"
+          }
+        );
+      }
+
       return jsonResponse(
         cachedData,
         200,
@@ -1509,6 +1527,38 @@ export default {
             "HIT"
         }
       );
+    }
+
+
+    /*
+     * -------------------------------------------------------
+     * RATE LIMIT
+     * -------------------------------------------------------
+     * Only cache misses reach HubSpot, so only they are limited.
+     * Optional: bind FORM_LOOKUP_LIMITER in wrangler.toml.
+     */
+
+    if (env.FORM_LOOKUP_LIMITER) {
+      const { success } =
+        await env.FORM_LOOKUP_LIMITER.limit({
+          key:
+            request.headers.get("CF-Connecting-IP") ||
+            "unknown"
+        });
+
+      if (!success) {
+        return jsonResponse(
+          {
+            error:
+              "Too many form lookups"
+          },
+          429,
+          origin,
+          {
+            "Retry-After": "60"
+          }
+        );
+      }
     }
 
 
@@ -1576,6 +1626,27 @@ export default {
         hubspotResponse.status ===
           404
       ) {
+        ctx.waitUntil(
+          cache.put(
+            cacheKey,
+            new Response(
+              JSON.stringify({
+                notFound: true
+              }),
+              {
+                headers: {
+                  "Content-Type":
+                    "application/json; charset=UTF-8",
+
+                  "Cache-Control":
+                    "public, max-age=" +
+                    NOT_FOUND_TTL_SECONDS
+                }
+              }
+            )
+          )
+        );
+
         return jsonResponse(
           {
             error:
@@ -1741,42 +1812,11 @@ export default {
  */
 
 function validateFormId(value) {
-  if (
-    !value ||
-    value.length > 100
-  ) {
-    return false;
-  }
-
-  for (
-    let i = 0;
-    i < value.length;
-    i++
-  ) {
-    const character =
-      value.charAt(i);
-
-    const valid =
-      (
-        character >= "a" &&
-        character <= "z"
-      ) ||
-      (
-        character >= "A" &&
-        character <= "Z"
-      ) ||
-      (
-        character >= "0" &&
-        character <= "9"
-      ) ||
-      character === "-";
-
-    if (!valid) {
-      return false;
-    }
-  }
-
-  return true;
+  // HubSpot form IDs are UUIDs. Anything else is rejected
+  // before it can cost a HubSpot API call.
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+    value || ""
+  );
 }
 
 
@@ -2031,6 +2071,22 @@ const allowedOrigins = (env.ALLOWED_ORIGINS || "")
 
 The origin check is a restriction on a public endpoint, not the thing protecting the token. The token is protected because it never leaves the Worker.
 
+#### Rate limiting
+
+Anyone can call `/form`, and every lookup that misses the cache spends one request from your HubSpot API limit. That daily limit is shared with every other private app in the account, so a flood of lookups could slow down your CRM integrations too. The Worker protects that budget in three ways: it accepts only UUID-shaped form IDs, it caches "form not found" answers for five minutes, and it can limit cache misses per visitor IP. Turn on the limit by adding a rate limiting binding to `wrangler.toml`:
+
+```toml
+[[ratelimits]]
+name = "FORM_LOOKUP_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 30
+  period = 60
+```
+
+Without the binding the Worker still runs, just without the per-IP limit. A Cloudflare WAF rate limiting rule on `/form` does the same job if you prefer to manage it in the dashboard.
+
 #### Caching
 
 Form metadata is cached in the Cloudflare cache for 24 hours, keyed by form ID:
@@ -2091,6 +2147,8 @@ declare(strict_types=1);
 
 const HUBSPOT_FORMS_API_VERSION = '2027-09-beta';
 const CACHE_TTL_SECONDS = 86400; // 24 hours
+const NOT_FOUND_TTL_SECONDS = 300; // unknown IDs stop reaching HubSpot for 5 minutes
+const HUBSPOT_LOOKUPS_PER_MINUTE = 30; // per client IP, cache misses only
 const TRACKER_VERSION = '1';
 
 
@@ -2684,6 +2742,27 @@ $cachedData =
         $formId
     );
 
+if (
+    $cachedData !== null &&
+    !empty($cachedData['notFound'])
+) {
+    sendJson(
+        [
+            'error' =>
+                'HubSpot form not found',
+
+            'id' =>
+                $formId
+        ],
+        404,
+        $origin,
+        [
+            'X-HubSpot-Form-Cache' =>
+                'HIT'
+        ]
+    );
+}
+
 if ($cachedData !== null) {
     sendJson(
         $cachedData,
@@ -2695,6 +2774,33 @@ if ($cachedData !== null) {
 
             'X-HubSpot-Form-Cache' =>
                 'HIT'
+        ]
+    );
+}
+
+
+/*
+ * -------------------------------------------------------
+ * RATE LIMIT
+ * -------------------------------------------------------
+ * Only cache misses reach HubSpot, so only they are limited.
+ */
+
+if (
+    isRateLimited(
+        $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+    )
+) {
+    sendJson(
+        [
+            'error' =>
+                'Too many form lookups'
+        ],
+        429,
+        $origin,
+        [
+            'Retry-After' =>
+                '60'
         ]
     );
 }
@@ -2760,6 +2866,14 @@ if (
     );
 
     if ($status === 404) {
+        cacheForm(
+            $formId,
+            [
+                'notFound' =>
+                    true
+            ]
+        );
+
         sendJson(
             [
                 'error' =>
@@ -2944,18 +3058,13 @@ function getQueryParameter(
 function validateFormId(
     ?string $value
 ): bool {
-    if (
-        $value === null ||
-        $value === '' ||
-        strlen($value) > 100
-    ) {
-        return false;
-    }
-
-    return preg_match(
-        '/^[A-Za-z0-9-]+$/',
-        $value
-    ) === 1;
+    // HubSpot form IDs are UUIDs. Anything else is rejected
+    // before it can cost a HubSpot API call.
+    return $value !== null &&
+        preg_match(
+            '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i',
+            $value
+        ) === 1;
 }
 
 
@@ -3168,8 +3277,18 @@ function getCachedForm(
             true
         );
 
+    if (!is_array($data)) {
+        return null;
+    }
+
+    if (!empty($data['notFound'])) {
+        return time() - $modified >
+            NOT_FOUND_TTL_SECONDS
+            ? null
+            : $data;
+    }
+
     if (
-        !is_array($data) ||
         empty($data['id']) ||
         empty($data['name'])
     ) {
@@ -3177,6 +3296,78 @@ function getCachedForm(
     }
 
     return $data;
+}
+
+
+/*
+ * Counts HubSpot lookups per client IP in one-minute windows,
+ * stored next to the form cache. Behind a reverse proxy
+ * REMOTE_ADDR is the proxy, so limit at the proxy instead.
+ */
+function isRateLimited(
+    string $clientIp
+): bool {
+    $directory =
+        getCacheDirectory();
+
+    if (!$directory) {
+        return false;
+    }
+
+    $directory =
+        rtrim(
+            $directory,
+            DIRECTORY_SEPARATOR
+        ) .
+        DIRECTORY_SEPARATOR;
+
+    $file =
+        $directory .
+        'rate-' .
+        hash(
+            'sha256',
+            $clientIp .
+            '|' .
+            intdiv(time(), 60)
+        ) .
+        '.txt';
+
+    $handle =
+        @fopen(
+            $file,
+            'c+'
+        );
+
+    if (!$handle) {
+        return false;
+    }
+
+    flock($handle, LOCK_EX);
+
+    $count =
+        (int) stream_get_contents($handle) + 1;
+
+    ftruncate($handle, 0);
+    rewind($handle);
+    fwrite($handle, (string) $count);
+
+    flock($handle, LOCK_UN);
+    fclose($handle);
+
+    // Occasionally remove counters from past minutes.
+    if (random_int(1, 100) === 1) {
+        foreach (
+            glob($directory . 'rate-*.txt') ?: []
+            as $old
+        ) {
+            if (time() - (int) @filemtime($old) > 120) {
+                @unlink($old);
+            }
+        }
+    }
+
+    return $count >
+        HUBSPOT_LOOKUPS_PER_MINUTE;
 }
 
 
@@ -4113,11 +4304,13 @@ JS;
 
 Each value is read from the environment first and from `$_SERVER` second, because php-fpm delivers `fastcgi_param` values only to the latter. Never commit the token, and keep any config file outside the document root.
 
+The endpoint accepts only UUID-shaped form IDs and allows 30 HubSpot lookups per minute per client IP (`HUBSPOT_LOOKUPS_PER_MINUTE` at the top of the file). Only cache misses count. Behind a reverse proxy or CDN, `REMOTE_ADDR` is the proxy address, so set the limit at the proxy instead.
+
 `PUBLIC_BASE_URL` is deliberately required rather than derived from the `Host` header. A request can send any `Host` it likes, and a tracker built from it would send every form lookup to that address instead of yours.
 
 #### Caching
 
-PHP has no platform cache, so the endpoint caches form metadata itself for 24 hours in `HUBSPOT_CACHE_DIR`. Each entry is a small JSON file named after the SHA-256 of the form ID, so a request can never steer the write anywhere unexpected. Form names change rarely and the payload is two fields. The cache signal header matches the Worker, so testing works identically:
+PHP has no platform cache, so the endpoint caches form metadata itself for 24 hours in `HUBSPOT_CACHE_DIR`. Each entry is a small JSON file named after the SHA-256 of the form ID, so a request can never steer the write anywhere unexpected. Form names change rarely and the payload is two fields. Unknown form IDs are cached as "not found" for five minutes, so repeating them does not reach HubSpot. The cache signal header matches the Worker, so testing works identically:
 
 ```text
 X-HubSpot-Form-Cache: HIT

@@ -488,8 +488,8 @@
     "hash": "337d2c08c57cdc913d876fc1a4ddfb26"
   },
   "public/entitymap.html": {
-    "mtime": 1791118053239.578,
-    "hash": "3a1fa91f50aad347462545df727a20ad"
+    "mtime": 1791118407999.085,
+    "hash": "422c00cd5612d7fc92b3ea9631c0eb05"
   },
   "src/assets/tools/cookie-banner/banner.html": {
     "mtime": 1784919803176.522,
@@ -720,16 +720,16 @@
     "hash": "c908caf05c5ed1d74c41470a6252e0e8"
   },
   "public/ai.txt": {
-    "mtime": 1791116336098.5408,
-    "hash": "db03b73f199e6c68336c7acfc6964aa5"
+    "mtime": 1791118330722.9124,
+    "hash": "6c977ae9b4972126f946806da86c07c5"
   },
   "test/e2e/cookiebot-guide.spec.ts": {
     "mtime": 1790701301126.5093,
     "hash": "92d831bf8077dd7c1a0abe8a4b63bbf7"
   },
   "src/components/FormTypePicker.astro": {
-    "mtime": 1791117477826.6487,
-    "hash": "2405f2e7d74f908e8da91618b7bef8b5"
+    "mtime": 1791118899967.8662,
+    "hash": "86ef5bfff789ccb2359c4d41e0811b19"
   },
   "src/data/form-types.js": {
     "mtime": 1790365568107.2637,
@@ -740,8 +740,8 @@
     "hash": "ebfe0369b77bcb9f787ac3716f0f0dbf"
   },
   "src/pages/templates/hubspot-form-tracking-gtm.md": {
-    "mtime": 1791117035618.202,
-    "hash": "f37268a3ea66ae5d490e8a6ec6f8810b"
+    "mtime": 1791118899967.0547,
+    "hash": "cd67ffa2d36cd8629e16368b09950081"
   },
   "public/images/blog/hubspot-form-submission-tracking-gtm.jpeg": {
     "mtime": 1789925276150.7463,
@@ -868,8 +868,8 @@
     "hash": "c1571f7a7f451058f7ef8173f62d2063"
   },
   ".graphify/GRAPH_REPORT.md": {
-    "mtime": 1791117520751.2317,
-    "hash": "ba5d9cb6b687f2112008ed99e52dbd00"
+    "mtime": 1791118087457.5156,
+    "hash": "31f9e1e95b2750ddb5563ccd0b2881fe"
   },
   ".impeccable/critique/2026-09-26T09-04-59Z__src-pages-fi-tyokalut-ga4-annotaatiot-astro.md": {
     "mtime": 1790413499332.03,
@@ -972,7 +972,11 @@
     "hash": "05b2a7880451187bb7ce6378be57bfe7"
   },
   "src/pages/fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm.md": {
-    "mtime": 1791117477827.5242,
-    "hash": "35677c12144aa095f0a2619ce9dd8630"
+    "mtime": 1791118899967.482,
+    "hash": "7b7185fd946654f7411b6d538fcf19f9"
+  },
+  "public/robots.txt": {
+    "mtime": 1791118184551.3455,
+    "hash": "e485cab67cfe4b63622b81c3bc1d8221"
   }
 }

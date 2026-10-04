@@ -38,7 +38,7 @@ const config = { ...taxonomy, copy };
 ---
 
 <div class="ftp" data-form-type-picker>
-  <script type="application/json" data-ftp-config set:html={JSON.stringify(config)} />
+  <script type="application/json" data-ftp-config set:html={JSON.stringify(config).replace(/</g, "\\u003c")} />
 
   <p class="ftp__intro">{copy.intro}</p>
 

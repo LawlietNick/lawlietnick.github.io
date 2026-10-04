@@ -206,6 +206,7 @@ Molemmat vaihtoehdot tarjoavat samat kolme päätepistettä ja saman JSONin, jot
 ```javascript
 const HUBSPOT_FORMS_API_VERSION = "2026-09-beta";
 const CACHE_TTL_SECONDS = 86400; // 24 hours
+const NOT_FOUND_TTL_SECONDS = 300; // unknown IDs stop reaching HubSpot for 5 minutes
 const TRACKER_VERSION = "1";
 
 export default {
@@ -1497,6 +1498,23 @@ export default {
       const cachedData =
         await cachedResponse.json();
 
+      if (cachedData.notFound) {
+        return jsonResponse(
+          {
+            error:
+              "HubSpot form not found",
+
+            id: formId
+          },
+          404,
+          origin,
+          {
+            "X-HubSpot-Form-Cache":
+              "HIT"
+          }
+        );
+      }
+
       return jsonResponse(
         cachedData,
         200,
@@ -1509,6 +1527,38 @@ export default {
             "HIT"
         }
       );
+    }
+
+
+    /*
+     * -------------------------------------------------------
+     * RATE LIMIT
+     * -------------------------------------------------------
+     * Only cache misses reach HubSpot, so only they are limited.
+     * Optional: bind FORM_LOOKUP_LIMITER in wrangler.toml.
+     */
+
+    if (env.FORM_LOOKUP_LIMITER) {
+      const { success } =
+        await env.FORM_LOOKUP_LIMITER.limit({
+          key:
+            request.headers.get("CF-Connecting-IP") ||
+            "unknown"
+        });
+
+      if (!success) {
+        return jsonResponse(
+          {
+            error:
+              "Too many form lookups"
+          },
+          429,
+          origin,
+          {
+            "Retry-After": "60"
+          }
+        );
+      }
     }
 
 
@@ -1576,6 +1626,27 @@ export default {
         hubspotResponse.status ===
           404
       ) {
+        ctx.waitUntil(
+          cache.put(
+            cacheKey,
+            new Response(
+              JSON.stringify({
+                notFound: true
+              }),
+              {
+                headers: {
+                  "Content-Type":
+                    "application/json; charset=UTF-8",
+
+                  "Cache-Control":
+                    "public, max-age=" +
+                    NOT_FOUND_TTL_SECONDS
+                }
+              }
+            )
+          )
+        );
+
         return jsonResponse(
           {
             error:
@@ -1741,42 +1812,11 @@ export default {
  */
 
 function validateFormId(value) {
-  if (
-    !value ||
-    value.length > 100
-  ) {
-    return false;
-  }
-
-  for (
-    let i = 0;
-    i < value.length;
-    i++
-  ) {
-    const character =
-      value.charAt(i);
-
-    const valid =
-      (
-        character >= "a" &&
-        character <= "z"
-      ) ||
-      (
-        character >= "A" &&
-        character <= "Z"
-      ) ||
-      (
-        character >= "0" &&
-        character <= "9"
-      ) ||
-      character === "-";
-
-    if (!valid) {
-      return false;
-    }
-  }
-
-  return true;
+  // HubSpot form IDs are UUIDs. Anything else is rejected
+  // before it can cost a HubSpot API call.
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+    value || ""
+  );
 }
 
 
@@ -2031,6 +2071,22 @@ const allowedOrigins = (env.ALLOWED_ORIGINS || "")
 
 Alkuperän tarkistus rajoittaa julkista päätepistettä, mutta se ei ole se, mikä suojaa tunnuksen. Tunnus on suojassa, koska se ei koskaan poistu Workerista.
 
+#### Pyyntöjen rajoittaminen
+
+Kuka tahansa voi kutsua `/form`-päätepistettä, ja jokainen haku, jota ei löydy välimuistista, kuluttaa yhden pyynnön HubSpot-rajapinnan kiintiöstäsi. Päiväkohtainen kiintiö on yhteinen tilin kaikille private appeille, joten hakujen tulva voi hidastaa myös CRM-integraatioitasi. Worker suojaa kiintiötä kolmella tavalla: se hyväksyy vain UUID-muotoiset lomakkeiden tunnisteet, se tallentaa ”lomaketta ei löydy” -vastaukset välimuistiin viideksi minuutiksi, ja se voi rajoittaa välimuistin ohi menevät haut kävijän IP-osoitetta kohden. Ota rajoitus käyttöön lisäämällä `wrangler.toml`-tiedostoon rate limiting -sidonta:
+
+```toml
+[[ratelimits]]
+name = "FORM_LOOKUP_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 30
+  period = 60
+```
+
+Ilman sidontaa Worker toimii edelleen, mutta ilman IP-kohtaista rajoitusta. Cloudflaren WAF-palvelun rate limiting -sääntö polulle `/form` tekee saman, jos hallitset asetusta mieluummin hallintapaneelissa.
+
 #### Välimuisti
 
 Lomakkeiden metatiedot tallennetaan Cloudflaren välimuistiin 24 tunniksi lomakkeen tunnisteen mukaan:
@@ -2091,6 +2147,8 @@ declare(strict_types=1);
 
 const HUBSPOT_FORMS_API_VERSION = '2027-09-beta';
 const CACHE_TTL_SECONDS = 86400; // 24 hours
+const NOT_FOUND_TTL_SECONDS = 300; // unknown IDs stop reaching HubSpot for 5 minutes
+const HUBSPOT_LOOKUPS_PER_MINUTE = 30; // per client IP, cache misses only
 const TRACKER_VERSION = '1';
 
 
@@ -2684,6 +2742,27 @@ $cachedData =
         $formId
     );
 
+if (
+    $cachedData !== null &&
+    !empty($cachedData['notFound'])
+) {
+    sendJson(
+        [
+            'error' =>
+                'HubSpot form not found',
+
+            'id' =>
+                $formId
+        ],
+        404,
+        $origin,
+        [
+            'X-HubSpot-Form-Cache' =>
+                'HIT'
+        ]
+    );
+}
+
 if ($cachedData !== null) {
     sendJson(
         $cachedData,
@@ -2695,6 +2774,33 @@ if ($cachedData !== null) {
 
             'X-HubSpot-Form-Cache' =>
                 'HIT'
+        ]
+    );
+}
+
+
+/*
+ * -------------------------------------------------------
+ * RATE LIMIT
+ * -------------------------------------------------------
+ * Only cache misses reach HubSpot, so only they are limited.
+ */
+
+if (
+    isRateLimited(
+        $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+    )
+) {
+    sendJson(
+        [
+            'error' =>
+                'Too many form lookups'
+        ],
+        429,
+        $origin,
+        [
+            'Retry-After' =>
+                '60'
         ]
     );
 }
@@ -2760,6 +2866,14 @@ if (
     );
 
     if ($status === 404) {
+        cacheForm(
+            $formId,
+            [
+                'notFound' =>
+                    true
+            ]
+        );
+
         sendJson(
             [
                 'error' =>
@@ -2944,18 +3058,13 @@ function getQueryParameter(
 function validateFormId(
     ?string $value
 ): bool {
-    if (
-        $value === null ||
-        $value === '' ||
-        strlen($value) > 100
-    ) {
-        return false;
-    }
-
-    return preg_match(
-        '/^[A-Za-z0-9-]+$/',
-        $value
-    ) === 1;
+    // HubSpot form IDs are UUIDs. Anything else is rejected
+    // before it can cost a HubSpot API call.
+    return $value !== null &&
+        preg_match(
+            '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i',
+            $value
+        ) === 1;
 }
 
 
@@ -3168,8 +3277,18 @@ function getCachedForm(
             true
         );
 
+    if (!is_array($data)) {
+        return null;
+    }
+
+    if (!empty($data['notFound'])) {
+        return time() - $modified >
+            NOT_FOUND_TTL_SECONDS
+            ? null
+            : $data;
+    }
+
     if (
-        !is_array($data) ||
         empty($data['id']) ||
         empty($data['name'])
     ) {
@@ -3177,6 +3296,78 @@ function getCachedForm(
     }
 
     return $data;
+}
+
+
+/*
+ * Counts HubSpot lookups per client IP in one-minute windows,
+ * stored next to the form cache. Behind a reverse proxy
+ * REMOTE_ADDR is the proxy, so limit at the proxy instead.
+ */
+function isRateLimited(
+    string $clientIp
+): bool {
+    $directory =
+        getCacheDirectory();
+
+    if (!$directory) {
+        return false;
+    }
+
+    $directory =
+        rtrim(
+            $directory,
+            DIRECTORY_SEPARATOR
+        ) .
+        DIRECTORY_SEPARATOR;
+
+    $file =
+        $directory .
+        'rate-' .
+        hash(
+            'sha256',
+            $clientIp .
+            '|' .
+            intdiv(time(), 60)
+        ) .
+        '.txt';
+
+    $handle =
+        @fopen(
+            $file,
+            'c+'
+        );
+
+    if (!$handle) {
+        return false;
+    }
+
+    flock($handle, LOCK_EX);
+
+    $count =
+        (int) stream_get_contents($handle) + 1;
+
+    ftruncate($handle, 0);
+    rewind($handle);
+    fwrite($handle, (string) $count);
+
+    flock($handle, LOCK_UN);
+    fclose($handle);
+
+    // Occasionally remove counters from past minutes.
+    if (random_int(1, 100) === 1) {
+        foreach (
+            glob($directory . 'rate-*.txt') ?: []
+            as $old
+        ) {
+            if (time() - (int) @filemtime($old) > 120) {
+                @unlink($old);
+            }
+        }
+    }
+
+    return $count >
+        HUBSPOT_LOOKUPS_PER_MINUTE;
 }
 
 
@@ -4113,11 +4304,13 @@ JS;
 
 Jokainen arvo luetaan ensin ympäristöstä ja sitten `$_SERVER`-muuttujasta, koska php-fpm välittää `fastcgi_param`-arvot vain jälkimmäiseen. Älä koskaan tallenna tunnusta versionhallintaan, ja pidä mahdollinen asetustiedosto julkisen hakemiston ulkopuolella.
 
+Päätepiste hyväksyy vain UUID-muotoiset lomakkeiden tunnisteet ja sallii 30 HubSpot-hakua minuutissa asiakkaan IP-osoitetta kohden (`HUBSPOT_LOOKUPS_PER_MINUTE` tiedoston alussa). Vain välimuistin ohi menevät haut lasketaan. Käänteisvälityspalvelimen tai CDN:n takana `REMOTE_ADDR` on välityspalvelimen osoite, joten aseta rajoitus silloin välityspalvelimelle.
+
 `PUBLIC_BASE_URL` on tarkoituksella pakollinen eikä sitä päätellä `Host`-otsakkeesta. Pyyntö voi lähettää minkä tahansa `Host`-arvon, ja sen perusteella rakennettu seurantaskripti lähettäisi jokaisen lomakehaun siihen osoitteeseen sinun osoitteesi sijaan.
 
 #### Välimuisti
 
-PHP:ssä ei ole alustan välimuistia, joten päätepiste tallentaa lomakkeiden metatiedot itse 24 tunniksi hakemistoon `HUBSPOT_CACHE_DIR`. Jokainen merkintä on pieni JSON-tiedosto, jonka nimi on lomakkeen tunnisteen SHA-256-tiiviste, joten pyyntö ei voi ohjata kirjoitusta mihinkään odottamattomaan paikkaan. Lomakkeiden nimet muuttuvat harvoin, ja tietoja on kaksi kenttää. Välimuistin tilan kertova otsake on sama kuin Workerissa, joten testaus toimii samalla tavalla:
+PHP:ssä ei ole alustan välimuistia, joten päätepiste tallentaa lomakkeiden metatiedot itse 24 tunniksi hakemistoon `HUBSPOT_CACHE_DIR`. Jokainen merkintä on pieni JSON-tiedosto, jonka nimi on lomakkeen tunnisteen SHA-256-tiiviste, joten pyyntö ei voi ohjata kirjoitusta mihinkään odottamattomaan paikkaan. Lomakkeiden nimet muuttuvat harvoin, ja tietoja on kaksi kenttää. Tuntemattomat lomakkeiden tunnisteet tallennetaan välimuistiin ”ei löydy” -tilaan viideksi minuutiksi, joten niiden toistaminen ei kuormita HubSpotia. Välimuistin tilan kertova otsake on sama kuin Workerissa, joten testaus toimii samalla tavalla:
 
 ```text
 X-HubSpot-Form-Cache: HIT
