@@ -19,6 +19,7 @@ about:
 mentions:
   - "ChatGPT"
   - "Gemini"
+  - "Claude"
   - "Pyramid Principle"
   - "MECE"
   - "SCQR"
@@ -29,7 +30,7 @@ Useimmat ammattilaiset osaavat tuottaa dataa. Harvempi osaa muuttaa datan tarina
 
 Siksi McKinseyn, BCG:n ja Bainin kaltaiset konsulttiyhtiöt käyttävät esitysten jäsentämiseen loogisia viitekehyksiä, kuten SCQR-mallia ja pyramidiperiaatetta. Niiden avulla hajanaisista havainnoista muodostetaan selkeä kokonaisuus, joka etenee havainnoista suosituksiin ja toimintaan.
 
-Hyvä puoli on se, ettei niiden hyödyntäminen vaadi taustaa strategiakonsultoinnissa. Yhdellä promptilla ChatGPT tai Gemini haastattelee sinua, rakentaa tarinan kanssasi ja tekee siitä valmiit diat. Näin se tehdään.
+Hyvä puoli on se, ettei niiden hyödyntäminen vaadi taustaa strategiakonsultoinnissa. Yhdellä promptilla ChatGPT, Gemini tai Claude haastattelee sinua, rakentaa tarinan kanssasi ja tekee siitä valmiit diat. Näin se tehdään.
 
 ## 1. Aloita viitekehyksestä: näin konsultit rakentavat esityksen tarinan
 
@@ -80,11 +81,11 @@ Alla oleva prompti etenee kolmessa kierroksessa. Ensin tekoäly haastattelee sin
 
 ### Vaihe 1: Kokoa keskeinen aineisto
 
-Kerää raportti, auditointi, taulukko tai muistiinpanot, jotka haluat esittää. Voit liittää tiedostot suoraan ChatGPT:hen tai Geminiin, joten lukuja ei tarvitse kirjoittaa uudelleen. Myös muutama ranskalainen viiva riittää.
+Kerää raportti, auditointi, taulukko tai muistiinpanot, jotka haluat esittää. Voit liittää tiedostot suoraan ChatGPT:hen, Geminiin tai Claudeen, joten lukuja ei tarvitse kirjoittaa uudelleen. Myös muutama ranskalainen viiva riittää.
 
 Poista ennen latausta kaikki luottamuksellinen tieto, jota yrityksesi ei salli tekoälytyökaluihin.
 
-### Vaihe 2: Liitä tämä prompti ChatGPT:hen tai Geminiin
+### Vaihe 2: Liitä tämä prompti ChatGPT:hen, Geminiin tai Claudeen
 
 Kopioi prompti ja liitä aineistosi samaan viestiin. Tekoäly lukee aineiston ja kysyy vain sen, mitä siitä vielä puuttuu.
 
@@ -152,5 +153,6 @@ Kun hyväksyt tarinan, tekoäly rakentaa diat:
 
 - **Gemini:** ota Canvas käyttöön ennen aloittamista. Sen avulla valmiin esityksen voi viedä Google Slidesiin.
 - **ChatGPT:** pyydä kolmannen kierroksen lopussa ladattava .pptx-tiedosto.
+- **Claude:** pyydä kolmannen kierroksen lopussa PowerPoint-tiedosto. Claude tekee siitä ladattavan .pptx-tiedoston.
 
-Tarkista kummassakin tapauksessa jokainen luku lähdettä vasten ennen esittämistä. Lisää sitten brändipohjasi ja vaihda tilalle oikeat kaaviot. Lopputuloksena saat konsulttityylisesti perustellun esityksen ilman tyhjästä diasta aloittamista.
+Tarkista työkalusta riippumatta jokainen luku lähdettä vasten ennen esittämistä. Lisää sitten brändipohjasi ja vaihda tilalle oikeat kaaviot. Lopputuloksena saat konsulttityylisesti perustellun esityksen ilman tyhjästä diasta aloittamista.

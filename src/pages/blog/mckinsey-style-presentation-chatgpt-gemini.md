@@ -19,6 +19,7 @@ about:
 mentions:
   - "ChatGPT"
   - "Gemini"
+  - "Claude"
   - "Pyramid Principle"
   - "MECE"
   - "SCQR"
@@ -28,7 +29,7 @@ mentions:
 Most professionals can produce data. Few can turn that data into a story that convinces decision-makers to act.
 That’s why consultants at McKinsey, BCG, and Bain rely on a strict logic framework called the SCQR and Pyramid Principle to structure every presentation. It turns messy findings into a clear narrative that moves from insight to action.
 
-The good news is that you don’t need a strategy background to use it. With one AI prompt, ChatGPT or Gemini interviews you, builds the storyline with you and then turns it into finished slides. Here’s how.
+The good news is that you don’t need a strategy background to use it. With one AI prompt, ChatGPT, Gemini or Claude interviews you, builds the storyline with you and then turns it into finished slides. Here’s how.
 
 ## 1. Start with the Framework: How consultants structure their story
 
@@ -79,11 +80,11 @@ The prompt below works in three rounds. The AI first interviews you and reads yo
 
 ### Step 1 – Gather your core material
 
-Collect the report, audit, spreadsheet or notes you want to present. You can attach files directly to ChatGPT or Gemini, so you don’t need to retype numbers. A few bullet points also work.
+Collect the report, audit, spreadsheet or notes you want to present. You can attach files directly to ChatGPT, Gemini or Claude, so you don’t need to retype numbers. A few bullet points also work.
 
 Remove anything confidential your company doesn’t allow in AI tools before you upload it.
 
-### Step 2 – Paste this prompt into ChatGPT or Gemini
+### Step 2 – Paste this prompt into ChatGPT, Gemini or Claude
 
 Copy the prompt and attach your material in the same message. The AI will read it and ask only for what’s still missing.
 
@@ -151,5 +152,6 @@ Once you approve the storyline, the AI builds the slides:
 
 - **Gemini:** Turn on Canvas before you start. It can export the finished presentation to Google Slides.
 - **ChatGPT:** Ask for a downloadable .pptx file at the end of round 3.
+- **Claude:** Ask for a PowerPoint file at the end of round 3. Claude creates it as a downloadable .pptx.
 
-Either way, check every number against your source before presenting. Then add your brand template and swap in any real charts. The result: a deck with consulting-style logic, without starting from a blank slide.
+Whichever tool you use, check every number against your source before presenting. Then add your brand template and swap in any real charts. The result: a deck with consulting-style logic, without starting from a blank slide.
