@@ -55,30 +55,21 @@ const WEBSITE_ID = `${SITE_URL}#website`;
 const PERSON_ID = `${SITE_URL}#person`;
 const PERSON_IMAGE_ID = `${SITE_URL}#personimage`;
 
-// Expertise topics for Person.knowsAbout. Link a topic to the exact same
-// external entity via its Wikidata Q-id (`wikidata`) and/or Wikipedia slug
-// (`wikipedia`) — full sameAs URLs are derived below — or pass full URLs in
-// `sameAs` directly. Leave all off for topics without a reliable match.
-export type KnowsAboutTopic = {
-  name: string;
-  sameAs?: string[];
-  wikidata?: string;
-  wikipedia?: string;
-};
+// A Thing named `name`, with sameAs links to Wikidata/Wikipedia when
+// siteConfig.entities knows the name; otherwise a plain Thing.
+type Entity = { wikidata?: string; wikipedia?: string };
+const entities: Record<string, Entity> = siteConfig.entities;
 
-export const personKnowsAbout: KnowsAboutTopic[] = siteConfig.person.knowsAbout;
-
-// A Thing with sameAs links; ids fall back to siteConfig.entities by name.
-const thing = (topic: KnowsAboutTopic) => {
-  const { name, sameAs, wikidata, wikipedia } = { ...siteConfig.entities[topic.name], ...topic };
-  const links = sameAs ?? [
+const thing = (name: string) => {
+  const { wikidata, wikipedia } = entities[name] ?? {};
+  const links = [
     wikidata && `https://www.wikidata.org/wiki/${wikidata}`,
     wikipedia && `https://en.wikipedia.org/wiki/${wikipedia}`,
   ].filter((url): url is string => Boolean(url));
   return { "@type": "Thing", name, ...(links.length ? { sameAs: links } : {}) };
 };
 
-const knowsAbout = personKnowsAbout.map(thing);
+const knowsAbout = siteConfig.person.knowsAbout.map(thing);
 
 export const absoluteUrl = (value: string) => new URL(value, SITE_URL).href;
 export const fragmentId = (canonicalUrl: string, fragment: string) =>
@@ -337,10 +328,10 @@ export function buildSchemaGraph(options: SchemaOptions) {
       wordCount: stats?.words || undefined,
       timeRequired: stats?.readTime ? `PT${stats.readTime}M` : undefined,
       about: frontmatter.about?.length
-        ? frontmatter.about.map((name) => thing({ name }))
+        ? frontmatter.about.map(thing)
         : undefined,
       mentions: frontmatter.mentions?.length
-        ? frontmatter.mentions.map((name) => thing({ name }))
+        ? frontmatter.mentions.map(thing)
         : undefined,
       citation: frontmatter.citations?.length
         ? frontmatter.citations.map(({ name, url, type }) => ({ "@type": type ?? "WebPage", name, url }))
