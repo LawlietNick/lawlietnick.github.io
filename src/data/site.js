@@ -47,9 +47,38 @@ export const siteConfig = {
       { name: "Measurement strategy" },
       { name: "Technical SEO" },
       { name: "Google Analytics", wikidata: "Q220577", wikipedia: "Google_Analytics" },
-      { name: "Google Tag Manager", wikidata: "Q11775280", wikipedia: "" },
-      { name: "Data Studio", wikidata: "", wikipedia: "Data_Studio" },
+      { name: "Google Tag Manager" },
+      { name: "Data Studio", wikidata: "Q60165325", wikipedia: "Data_Studio" },
+      { name: "GDPR" },
+      { name: "Web accessibility" },
+      { name: "Prompt engineering" },
+      { name: "Generative AI" },
+      { name: "Marketing automation" },
     ],
+  },
+  // External entity ids for schema `about`/`mentions` and `knowsAbout`, keyed
+  // by the exact name used in frontmatter. Each Wikidata item carries the
+  // Google Knowledge Graph id (P646/P2671), so the Q-id is the link to it.
+  // Names not listed here stay plain Things without sameAs.
+  entities: {
+    "ChatGPT": { wikidata: "Q115564437", wikipedia: "ChatGPT" },
+    "Claude": { wikidata: "Q118876059", wikipedia: "Claude_(AI)" },
+    "Dyslexia": { wikidata: "Q132971", wikipedia: "Dyslexia" },
+    "GDPR": { wikidata: "Q1172506", wikipedia: "General_Data_Protection_Regulation" },
+    "Generative AI": { wikidata: "Q117246174", wikipedia: "Generative_AI" },
+    "Google Tag Manager": { wikidata: "Q11775280", wikipedia: "Google_Tag_Manager" },
+    "HubSpot": { wikidata: "Q5926631", wikipedia: "HubSpot" },
+    "Klaviyo": { wikidata: "Q106631196", wikipedia: "Klaviyo" },
+    "Lukihäiriö": { wikidata: "Q132971", wikipedia: "Dyslexia" },
+    "Marketing automation": { wikidata: "Q17103526", wikipedia: "Marketing_automation" },
+    "McKinsey & Company": { wikidata: "Q310207", wikipedia: "McKinsey_%26_Company" },
+    "Prompt engineering": { wikidata: "Q108941486", wikipedia: "Prompt_engineering" },
+    "Saavutettavuus": { wikidata: "Q808932", wikipedia: "Web_accessibility" },
+    "Salesforce": { wikidata: "Q941127", wikipedia: "Salesforce" },
+    "Shopify": { wikidata: "Q7501150", wikipedia: "Shopify" },
+    "Typografia": { wikidata: "Q159964", wikipedia: "Typography" },
+    "Typography": { wikidata: "Q159964", wikipedia: "Typography" },
+    "Web accessibility": { wikidata: "Q808932", wikipedia: "Web_accessibility" },
   },
   // Blog collections, keyed by the identifier a post's frontmatter can set as
   // `blog: <key>`. Frontmatter without that field falls back to "thoughts" —

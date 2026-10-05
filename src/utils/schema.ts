@@ -68,13 +68,17 @@ export type KnowsAboutTopic = {
 
 export const personKnowsAbout: KnowsAboutTopic[] = siteConfig.person.knowsAbout;
 
-const knowsAbout = personKnowsAbout.map(({ name, sameAs, wikidata, wikipedia }) => {
+// A Thing with sameAs links; ids fall back to siteConfig.entities by name.
+const thing = (topic: KnowsAboutTopic) => {
+  const { name, sameAs, wikidata, wikipedia } = { ...siteConfig.entities[topic.name], ...topic };
   const links = sameAs ?? [
     wikidata && `https://www.wikidata.org/wiki/${wikidata}`,
     wikipedia && `https://en.wikipedia.org/wiki/${wikipedia}`,
   ].filter((url): url is string => Boolean(url));
   return { "@type": "Thing", name, ...(links.length ? { sameAs: links } : {}) };
-});
+};
+
+const knowsAbout = personKnowsAbout.map(thing);
 
 export const absoluteUrl = (value: string) => new URL(value, SITE_URL).href;
 export const fragmentId = (canonicalUrl: string, fragment: string) =>
@@ -333,10 +337,10 @@ export function buildSchemaGraph(options: SchemaOptions) {
       wordCount: stats?.words || undefined,
       timeRequired: stats?.readTime ? `PT${stats.readTime}M` : undefined,
       about: frontmatter.about?.length
-        ? frontmatter.about.map((name) => ({ "@type": "Thing", name }))
+        ? frontmatter.about.map((name) => thing({ name }))
         : undefined,
       mentions: frontmatter.mentions?.length
-        ? frontmatter.mentions.map((name) => ({ "@type": "Thing", name }))
+        ? frontmatter.mentions.map((name) => thing({ name }))
         : undefined,
       citation: frontmatter.citations?.length
         ? frontmatter.citations.map(({ name, url, type }) => ({ "@type": type ?? "WebPage", name, url }))
