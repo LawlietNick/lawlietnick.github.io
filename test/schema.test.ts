@@ -190,7 +190,7 @@ test("The shared Person is emitted once, points to the About page, and keeps str
     url: siteConfig.person.employerUrl,
   });
   assert.deepEqual(person.sameAs, siteConfig.person.profiles.map((profile) => profile.url));
-  assert.deepEqual(person.knowsAbout.map((topic) => topic.name), siteConfig.person.knowsAbout.map((topic) => topic.name));
+  assert.deepEqual(person.knowsAbout.map((topic) => topic.name), siteConfig.person.knowsAbout);
   assert.ok(person.knowsAbout.every((topic) => topic["@type"] === "Thing"));
   assert.ok(person.knowsAbout.every((topic) => !("sameAs" in topic) || topic.sameAs.length > 0));
   // Personal identity links live under Person.sameAs; topic links must not leak in here.
@@ -274,9 +274,34 @@ test("The About ProfilePage reuses one public portrait ImageObject", () => {
   assert.equal(imageObjects[0].height, 1250);
   assert.deepEqual(person.image, { "@id": portraitId });
   assert.deepEqual(breadcrumb.itemListElement, [
-    { "@type": "ListItem", position: 1, name: "Home", item: root },
+    { "@type": "ListItem", position: 1, item: { "@id": root, name: "Home" } },
     { "@type": "ListItem", position: 2, name: "About Niko Karppinen" },
   ]);
+});
+
+test("BreadcrumbList uses the Thing form for linked crumbs in EN and FI", () => {
+  const cases = [
+    ["/blog/content-consumption-metrics/", "en", [[root, "Home"], [url("/blog/"), "Thoughts"]]],
+    ["/fi/blog/esimerkki/", "fi", [[url("/fi/"), "Etusivu"], [url("/fi/blog/"), "Kirjoitukset"]]],
+  ];
+  for (const [path, language, linked] of cases) {
+    const canonicalUrl = url(path);
+    const data = graph({ canonicalUrl, pathname: path, language, title: "Current page", frontmatter: { title: "Current page" } });
+    const lists = data["@graph"].filter((entry) => entry["@type"] === "BreadcrumbList");
+    assert.equal(lists.length, 1);
+    assert.equal(lists[0]["@id"], `${canonicalUrl}#breadcrumb`);
+    assert.deepEqual(lists[0].itemListElement, [
+      ...linked.map(([id, name], i) => ({ "@type": "ListItem", position: i + 1, item: { "@id": id, name } })),
+      { "@type": "ListItem", position: linked.length + 1, name: "Current page" },
+    ]);
+    for (const entry of lists[0].itemListElement) {
+      assert.equal(typeof entry.position, "number");
+      assert.notEqual(typeof entry.item, "string");
+    }
+    const types = data["@graph"].map((entry) => entry["@type"]);
+    assert.equal(types.filter((t) => t === "WebPage").length, 1);
+    assert.equal(types.includes("Thing"), false);
+  }
 });
 
 test("article breadcrumbs include the visible hierarchy and omit the final item URL", () => {

@@ -55,16 +55,17 @@ const WEBSITE_ID = `${SITE_URL}#website`;
 const PERSON_ID = `${SITE_URL}#person`;
 const PERSON_IMAGE_ID = `${SITE_URL}#personimage`;
 
-// A Thing named `name`, with sameAs links to Wikidata/Wikipedia when
+// A Thing named `name`, with sameAs links to Wikidata/Wikipedia/Google KG when
 // siteConfig.entities knows the name; otherwise a plain Thing.
-type Entity = { wikidata?: string; wikipedia?: string };
+type Entity = { wikidata?: string; wikipedia?: string; kgmid?: string };
 const entities: Record<string, Entity> = siteConfig.entities;
 
 const thing = (name: string) => {
-  const { wikidata, wikipedia } = entities[name] ?? {};
+  const { wikidata, wikipedia, kgmid } = entities[name] ?? {};
   const links = [
     wikidata && `https://www.wikidata.org/wiki/${wikidata}`,
     wikipedia && `https://en.wikipedia.org/wiki/${wikipedia}`,
+    kgmid && `https://www.google.com/search?kgmid=${kgmid}`,
   ].filter((url): url is string => Boolean(url));
   return { "@type": "Thing", name, ...(links.length ? { sameAs: links } : {}) };
 };
@@ -229,12 +230,13 @@ export function buildSchemaGraph(options: SchemaOptions) {
     graph.push({
       "@type": "BreadcrumbList",
       "@id": breadcrumbId,
-      itemListElement: breadcrumbs(pathname, canonicalUrl, title, language).map((item, index, all) => compact({
-        "@type": "ListItem",
-        position: index + 1,
-        name: item.name,
-        item: index === all.length - 1 && all.length > 1 ? undefined : item.url,
-      })),
+      // Linked crumbs use the Thing form (item: { @id, name }); the current page keeps a bare name.
+      itemListElement: breadcrumbs(pathname, canonicalUrl, title, language).map((item, index, all) => {
+        const url = index === all.length - 1 && all.length > 1 ? undefined : item.url;
+        return url
+          ? { "@type": "ListItem", position: index + 1, item: { "@id": url, name: item.name } }
+          : { "@type": "ListItem", position: index + 1, name: item.name };
+      }),
     });
   }
 
