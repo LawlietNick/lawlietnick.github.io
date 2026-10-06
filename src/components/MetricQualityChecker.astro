@@ -15,9 +15,9 @@ const copy = fi
       noAnswer: "Ei",
       reset: "Tyhjennä vastaukset",
       caveat: "Pistemäärä jäsentää keskustelua. Lopullinen arvio vaatii aina liiketoimintakontekstin.",
-      ranges: ["0–2 kyllä", "3–4 kyllä", "5–6 kyllä", "7–8 kyllä"],
+      ranges: ["0–3 kyllä", "4–5 kyllä", "6–7 kyllä", "8–10 kyllä"],
       answeredLabel: "vastattu",
-      pending: "Vastaa kaikkiin kahdeksaan kysymykseen, niin näet arvion.",
+      pending: "Vastaa kaikkiin kymmeneen kysymykseen, niin näet arvion.",
       areaTitle: "Osa-alueittain",
       gapsTitle: "Korjattavaa",
       noGaps: "Ei puutteita – kaikki tarkistukset läpäisty.",
@@ -41,9 +41,9 @@ const copy = fi
       noAnswer: "No",
       reset: "Clear answers",
       caveat: "The score structures the discussion. Final judgment still depends on business context.",
-      ranges: ["0–2 yes", "3–4 yes", "5–6 yes", "7–8 yes"],
+      ranges: ["0–3 yes", "4–5 yes", "6–7 yes", "8–10 yes"],
       answeredLabel: "answered",
-      pending: "Answer all eight questions to see the verdict.",
+      pending: "Answer all ten questions to see the verdict.",
       areaTitle: "By area",
       gapsTitle: "Gaps to close",
       noGaps: "No gaps — every check passed.",
@@ -74,7 +74,8 @@ const tiers = fi
         title: "Päätökset ja vaikutus",
         questions: [
           { q: "Vaikuttaako mittarin arvon muuttuminen päätöksiin?", gap: "Arvon muuttuminen ei vaikuta päätöksentekoon" },
-          { q: "Mittaako se tehokkuutta, ei vain määrää?", gap: "Mittaa määrää, ei tehokkuutta" },
+          { q: "Mittaako se tehokkuutta, ei vain määrää?", hint: "Ei kertyvä kokonaismäärä, joka voi vain kasvaa", gap: "Mittaa määrää, ei tehokkuutta" },
+          { q: "Onko mittarin rinnalla laatu- tai vastamittari?", hint: "Esim. liikevaihto ja kate, liidit ja niiden konversio kaupaksi", gap: "Seisoo yksin ilman laatu- tai vastamittaria" },
         ],
       },
       {
@@ -86,6 +87,7 @@ const tiers = fi
           { q: "Onko mittari käyttökelpoinen eri segmenteissä?", hint: "Ei vain yhdessä osassa", gap: "Ei ole käyttökelpoinen eri segmenteissä" },
           { q: "Säilyykö mittari käyttökelpoisena ajan myötä?", hint: "Ei vain yksittäisessä hetkessä", gap: "Ei säily käyttökelpoisena ajan myötä" },
           { q: "Voiko sitä vertailla?", hint: "Aiemmat jaksot, kohortit tai verrokit", gap: "Ei ole vertailtavissa" },
+          { q: "Onko mittaria vaikea paisuttaa?", hint: "Arvoa ei voi nopeasti ostaa ylöspäin, esim. mainosnäytöillä", gap: "Arvoa on helppo paisuttaa" },
         ],
       },
     ]
@@ -105,7 +107,8 @@ const tiers = fi
         title: "Decisions and impact",
         questions: [
           { q: "Would it change decisions if it moved?", gap: "Would not change any decision" },
-          { q: "Does it measure efficiency, not just volume?", gap: "Measures volume, not efficiency" },
+          { q: "Does it measure efficiency, not just volume?", hint: "Not an all-time total that can only go up", gap: "Measures volume, not efficiency" },
+          { q: "Is it paired with a quality or counter metric?", hint: "Revenue with margin, leads with lead-to-deal conversion", gap: "Stands alone without a quality or counter metric" },
         ],
       },
       {
@@ -117,6 +120,7 @@ const tiers = fi
           { q: "Does it hold across segments?", hint: "Not just in one slice", gap: "Doesn't hold across segments" },
           { q: "Does it stay valid over time?", hint: "Not only in a snapshot", gap: "Doesn't stay valid over time" },
           { q: "Can it be benchmarked or compared?", hint: "Past periods, cohorts or peers", gap: "Can't be benchmarked or compared" },
+          { q: "Is it hard to inflate?", hint: "It can't be quickly bought up, as with ad impressions", gap: "Easy to inflate" },
         ],
       },
     ];
@@ -170,7 +174,7 @@ let questionNumber = 0;
           <p class="metric-checker__progress" data-progress></p>
         </div>
         <output class="metric-checker__number" aria-live="polite">
-          <strong data-score>0</strong><span>/8 {copy.yes}</span>
+          <strong data-score>0</strong><span>/10 {copy.yes}</span>
         </output>
       </div>
 
@@ -203,7 +207,7 @@ let questionNumber = 0;
 
       <div class="metric-checker__scale" aria-hidden="true">
         <div class="metric-checker__segments">
-          {Array.from({ length: 8 }, (_, index) => <span data-segment={index + 1}></span>)}
+          {Array.from({ length: 10 }, (_, index) => <span data-segment={index + 1}></span>)}
         </div>
         <div class="metric-checker__ranges">
           {copy.ranges.map((range) => <span>{range}</span>)}
@@ -657,7 +661,7 @@ let questionNumber = 0;
 
   .metric-checker__segments {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(10, 1fr);
     gap: 3px;
   }
 
@@ -669,10 +673,10 @@ let questionNumber = 0;
 
   .metric-checker__segments span:first-child { border-radius: var(--radius-pill) 0 0 var(--radius-pill); }
   .metric-checker__segments span:last-child { border-radius: 0 var(--radius-pill) var(--radius-pill) 0; }
-  .metric-checker__segments span:nth-child(-n + 2).is-filled { background: var(--score-vanity); border-color: var(--score-vanity); }
-  .metric-checker__segments span:nth-child(n + 3):nth-child(-n + 4).is-filled { background: var(--score-diagnostic); border-color: var(--score-diagnostic); }
-  .metric-checker__segments span:nth-child(n + 5):nth-child(-n + 6).is-filled { background: var(--score-supporting); border-color: var(--score-supporting); }
-  .metric-checker__segments span:nth-child(n + 7).is-filled { background: var(--score-critical); border-color: var(--score-critical); }
+  .metric-checker__segments span:nth-child(-n + 3).is-filled { background: var(--score-vanity); border-color: var(--score-vanity); }
+  .metric-checker__segments span:nth-child(n + 4):nth-child(-n + 5).is-filled { background: var(--score-diagnostic); border-color: var(--score-diagnostic); }
+  .metric-checker__segments span:nth-child(n + 6):nth-child(-n + 7).is-filled { background: var(--score-supporting); border-color: var(--score-supporting); }
+  .metric-checker__segments span:nth-child(n + 8).is-filled { background: var(--score-critical); border-color: var(--score-critical); }
   /* during progress the verdict isn't final, so keep the fill neutral */
   .metric-checker__score:not([data-state="complete"]) .metric-checker__segments span.is-filled {
     background: var(--score-neutral);
@@ -681,7 +685,7 @@ let questionNumber = 0;
 
   .metric-checker__ranges {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 3fr 2fr 2fr 3fr;
     gap: 0.25rem;
     margin-top: 0.45rem;
     color: var(--muted);

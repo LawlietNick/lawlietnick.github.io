@@ -37,7 +37,7 @@ test("uses the optional metric name throughout a completed assessment", async ({
   await page.getByRole("button", { name: "Copy link" }).click();
   const sharedLink = await page.evaluate(() => navigator.clipboard.readText());
   expect(sharedLink).toContain("m=Customer+acquisition+cost");
-  expect(sharedLink).toContain("a=yyyyyyyy");
+  expect(sharedLink).toContain("a=yyyyyyyyyy");
 
   await page.goto(sharedLink);
   await expect(input).toHaveValue("Customer acquisition cost");

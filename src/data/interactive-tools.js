@@ -41,12 +41,12 @@ export const allInteractiveTools = [
     order: 2,
     en: {
       title: "Metric quality checker",
-      summary: "Score a metric against eight questions and see how useful it is for managing the business.",
+      summary: "Score a metric against ten questions and see how useful it is for managing the business.",
     },
     fi: {
       slug: "mittarin-laatutarkistus",
       title: "Mittarin laatutarkistus",
-      summary: "Pisteytä mittari kahdeksalla kysymyksellä ja arvioi, kuinka hyödyllinen se on liiketoiminnan johtamisessa.",
+      summary: "Pisteytä mittari kymmenellä kysymyksellä ja arvioi, kuinka hyödyllinen se on liiketoiminnan johtamisessa.",
     },
   },
   {
