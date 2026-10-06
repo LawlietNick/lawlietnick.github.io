@@ -14,6 +14,7 @@ export const siteConfig = {
   },
   website: {
     name: siteName,
+    alternateName: "karppinen.one",
     description: "Digital measurement, SEO and analytics consulting by Niko Karppinen.",
     atomFeedPath: "/atom.xml",
   },

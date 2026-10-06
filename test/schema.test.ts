@@ -37,7 +37,15 @@ test("English and Finnish homepages use canonical WebPage IDs and language", () 
     [root, "/", "en"],
     [url("/fi/"), "/fi/", "fi"],
   ]) {
-    const page = node(graph({ canonicalUrl, pathname, language }), "WebPage");
+    const data = graph({ canonicalUrl, pathname, language });
+    const page = node(data, "WebPage");
+    // Both front pages stay a plain WebPage about the Person: no ProfilePage, breadcrumb or ReadAction.
+    assert.equal(node(data, "ProfilePage"), undefined);
+    assert.equal(node(data, "BreadcrumbList"), undefined);
+    assert.equal("breadcrumb" in page || "potentialAction" in page || "mainEntity" in page, false);
+    assert.deepEqual(page.about, PERSON);
+    assert.deepEqual(page.isPartOf, { "@id": `${root}#website` });
+    assert.equal(data["@graph"].filter((entry) => entry["@type"] === "Person").length, 1);
     assert.equal(page["@id"], canonicalUrl);
     assert.equal(page.url, canonicalUrl);
     assert.equal(page.inLanguage, language);
@@ -229,7 +237,7 @@ test("The WebSite identity comes from siteConfig", () => {
   assert.equal(website["@id"], `${root}#website`);
   assert.equal(website.url, root);
   assert.equal(website.name, siteConfig.website.name);
-  assert.equal("alternateName" in website, false);
+  assert.equal(website.alternateName, "karppinen.one");
   assert.equal(website.description, siteConfig.website.description);
   assert.deepEqual(website.publisher, PERSON);
   assert.equal("potentialAction" in website, false);
