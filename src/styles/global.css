@@ -758,17 +758,28 @@ picture { display: contents; }
 /* formula panels: same border/radius/surface as figures and code blocks.
    Font stays the browser's native math font (Cambria Math / STIX Two Math /
    Latin Modern Math) — overriding it breaks fraction and radical layout. */
-.prose math {
-  display: block;
+/* the panel lives on a wrapper div: WebKit ignores overflow on <math>, so a
+   wide fraction would widen the whole page on iOS instead of scrolling */
+.prose .formula {
   margin-block: 1.5rem;
   padding: 0.75rem 1.00rem;
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--color-surface);
+}
+
+.prose math {
   color: var(--ink);
   font-size: clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
   text-align: center;
+}
+
+/* long formulas are stacked as an mtable (lhs = on row 1, rhs indented below)
+   so they fit a phone; Chromium ignores columnalign, so align rows here */
+.prose math mtd {
+  text-align: left;
+  padding-block: 0.15em;
 }
 
 .prose math mtext {
@@ -791,13 +802,11 @@ picture { display: contents; }
 }
 
 /* MathML atoms (mfrac, mrow) don't line-wrap — a long fraction just gets
-   wider. Shrink to fit narrow screens first; overflow-x above is the
+   wider. Shrink to fit narrow screens first; .formula's overflow-x is the
    fallback for whatever still doesn't fit. */
 @media (max-width: 32rem) {
-  .prose math {
-    padding-inline: 0.6rem;
-    font-size: clamp(0.8rem, 0.6rem + 2vw, 1rem);
-  }
+  .prose .formula { padding-inline: 0.6rem; }
+  .prose math { font-size: clamp(0.8rem, 0.6rem + 2vw, 1rem); }
 }
 
 .copy {
