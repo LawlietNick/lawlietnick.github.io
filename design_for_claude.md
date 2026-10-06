@@ -1,6 +1,8 @@
 # Design and Product Guide for Claude
 
-Use this file as the self-contained source of truth when designing or implementing this website. Preserve the existing visual language and product intent. Do not redesign the site unless the user explicitly asks for a redesign.
+This file carries everything needed to design or build for this website without access to the repository. Inside the repo, `DESIGN.md`, `PRODUCT.md` and `src/styles/tokens.css` are the sources it summarises.
+
+Work inside the existing visual language: extend what is here, and treat a redesign as a separate request the user makes explicitly. The site's character comes from a small set of deliberate details, and changes that drift from them read as a different site.
 
 ## Product
 
@@ -22,18 +24,18 @@ The brand is Finnish, precise, practical, calm, and quietly playful. It should f
 
 Use plain language, concrete examples, and occasional dry humor. Technical depth should be visible through useful detail, not jargon or performance. Lead with the useful outcome or situation, then explain the implementation.
 
-The visual system is minimal and asymmetric, with restrained violet accents, punchy yellow labels, subtle halftone details, tactile controls, and soft abstract panels. Personality must never reduce clarity or credibility.
+The visual system is minimal and asymmetric, with restrained violet accents, punchy yellow labels, subtle halftone details, tactile controls, and soft abstract panels. Personality sits on top of clarity and credibility, never in place of them.
 
-Avoid:
+What that means in practice, and why:
 
-- Generic consultancy claims about transformation, innovation, or growth.
-- Enterprise SaaS layouts, feature theatre, aggressive funnels, and repeated conversion blocks.
-- Portfolio-first pages dominated by dashboards, tool logos, or screenshots.
-- AI hype or language that makes automation sound magical or autonomous.
-- Dense technical documentation without hierarchy or context.
-- Fully cartoon-like, novelty-led, noisy, or over-polished personal-brand styling.
-- Invented prices, client facts, metrics, case studies, testimonials, or proof points.
-- Decorative glassmorphism, gradient text, colored side stripes, and repetitive card grids.
+- **Specific over generic.** Name the situation and the result ("dashboards that agree with each other"), because claims about transformation or growth could sit on any consultancy site.
+- **One clear route to contact.** Visitors come to judge fit, so a single human call to action works better than repeated conversion blocks or funnel pressure.
+- **Decisions over artefacts.** Show what a setup helps a team decide; dashboards, tool logos and screenshots support that story rather than carry it.
+- **AI as a tool people direct.** Describe what a person does with it, which keeps the site credible with readers wary of AI hype.
+- **Hierarchy before density.** Give technical material a path a non-specialist can follow.
+- **Comic details as accents.** Halftone shadows and yellow labels add memory; the page underneath stays calm and exact.
+- **Only facts the user supplied.** Prices, clients, metrics, case studies and testimonials come from Niko. An empty slot is better than an invented one, because one false number undermines every true one.
+- **Flat, tonal surfaces.** Borders and tinted panels carry structure, which keeps the look away from glassmorphism, gradient text, colored side stripes and repetitive card grids.
 
 ## Design tokens
 
@@ -69,7 +71,7 @@ Semantic aliases are `--ink`, `--bg`, `--muted`, `--line`, `--accent`, and `--po
 - Use `--accent` for links, emphasis, and quiet active states.
 - Use `--pop` for the yellow comic accent, badges, and primary tactile moments.
 - Use tinted neutrals instead of pure black or white.
-- Never communicate state through color alone.
+- Pair color with a second signal (weight, underline, icon, text) for every state, so it survives color blindness and forced-colors mode.
 - Maintain WCAG AA contrast in both themes.
 
 ### Typography
@@ -90,10 +92,10 @@ Semantic aliases are `--ink`, `--bg`, `--muted`, `--line`, `--accent`, and `--po
 
 - Roboto Flex is for body copy, navigation, controls, metadata, and labels.
 - Fraunces is for page headings, section headings, post titles, and selected brand moments.
-- Monospace is only for code and technical samples, never a generic signal for “technical.”
+- Monospace is for code and technical samples only; technical credibility comes from the content.
 - Keep paragraphs near 65–75 characters wide.
 - Use a clear type hierarchy with meaningful scale and weight contrast.
-- Use uppercase only for short labels and eyebrows, never body copy.
+- Use uppercase only for short labels and eyebrows; body copy stays in sentence case for readability.
 - Use `text-wrap: pretty` for body content and `text-wrap: balance` for headings.
 
 ### Layout, shape, and motion
@@ -119,7 +121,7 @@ Semantic aliases are `--ink`, `--bg`, `--muted`, `--line`, `--accent`, and `--po
 - Prefer calm asymmetric layouts and varied spacing rhythm.
 - Keep the standard page container at `68rem`; article heroes may break out to `100rem` while retaining the viewport gutter.
 - Use borders and tonal surfaces for structure. Use shadows sparingly and purposefully.
-- Do not wrap every section in a card or nest cards.
+- Let most sections sit directly on the page; reserve cards for genuinely separate items, one level deep.
 - Animate transforms, opacity, and similar compositor-friendly properties rather than layout properties.
 - Respect `prefers-reduced-motion: reduce`; motion must never be required to understand state.
 
@@ -142,7 +144,7 @@ Use `ButtonLink.astro` rather than recreating CTA markup.
 - `.eyebrow` and `.label`: compact uppercase violet labels with tracking.
 - `.badge`: yellow pill label with a crisp border and small hard shadow. Use `Badge.astro` for repeated badges.
 - `.tag`: soft violet pill for categories or metadata.
-- `.byline`: compact flexible metadata row. Do not display the author name when all content is by Niko.
+- `.byline`: compact flexible metadata row. It omits the author name, since all content is by Niko.
 
 ### Surfaces and lists
 
@@ -154,7 +156,7 @@ Use `ButtonLink.astro` rather than recreating CTA markup.
 
 ## Components and architecture
 
-The stack is Astro with global CSS and local component styles. Avoid dependencies for behavior achievable with semantic HTML, CSS, or small native JavaScript.
+The stack is Astro with global CSS and local component styles. Reach for semantic HTML, CSS, or small native JavaScript before a dependency.
 
 Reusable components include:
 
@@ -165,7 +167,7 @@ Reusable components include:
 - `ArticleCard.astro`: article preview card.
 - `PostHero.astro`, `TableOfContents.astro`, `AskAI.astro`, `Postscript.astro`, and `RelatedArticles.astro`: article-page patterns.
 
-Header, footer, hero artwork, and large navigation patterns are intentionally bespoke. Do not force them into generic abstractions. Extract a component only when purpose is genuinely shared and repeated.
+Header, footer, hero artwork, and large navigation patterns are intentionally bespoke. Extract a component only when purpose is genuinely shared and repeated.
 
 ## Article and prose styling
 
@@ -187,12 +189,12 @@ Accessibility is a design requirement, not a cleanup step.
 - Use semantic HTML and meaningful heading order.
 - Preserve complete keyboard access and visible `:focus-visible` states.
 - Use `aria-current`, `aria-expanded`, `aria-controls`, `aria-hidden`, and accessible names where their semantics apply.
-- Keep disabled controls truly disabled. Do not simulate disabled state with appearance alone.
+- Use native `disabled` for disabled controls, so assistive technology and keyboards treat them as disabled too.
 - Ensure active and selected states use more than color.
 - Keep touch targets usable and responsive layouts free from horizontal page scrolling.
 - Provide meaningful alt text for informative images and hide decorative artwork from assistive technology.
 - Use `lang`, `hreflang`, canonical URLs, and alternate-language links correctly.
-- Do not add motion for reduced-motion users or rely on motion to communicate meaning.
+- Remove nonessential motion for reduced-motion users, and carry meaning in something besides motion.
 
 ## Bilingual content
 
@@ -202,27 +204,25 @@ English and Finnish experiences must be equivalent in intent and structure, but 
 - Use clear, human calls to action such as starting a project, getting in touch, or exploring a useful resource.
 - Prefer concrete nouns and short direct sentences.
 - Explain what a technical setup helps a team do, who uses it, and what becomes clearer.
-- Never invent facts to fill a layout.
+- Fill layouts only with facts the user supplied; leave a slot empty rather than invent one.
 
-## Implementation rules for Claude
+## How to make a change
 
-Before changing a design:
-
-1. Inspect the existing component, nearby patterns, `src/styles/tokens.css`, `src/styles/global.css`, and `src/styles/patterns.css`.
+1. Read the existing component, nearby patterns, `src/styles/tokens.css`, `src/styles/global.css`, and `src/styles/patterns.css`.
 2. Reuse an existing component or token when its purpose matches.
-3. Make the smallest coherent change at the shared source of truth.
-4. Preserve current behavior in light and dark themes, keyboard navigation, mobile layouts, and reduced-motion mode.
-5. Keep one-off art direction local rather than creating speculative abstractions.
+3. Make the smallest coherent change at the shared source of truth, so the fix reaches every page that uses it.
+4. Keep current behavior intact in light and dark themes, keyboard navigation, mobile layouts, and reduced-motion mode.
+5. Keep one-off art direction local; extract only what is already repeated.
 
-Do not:
+Defaults that keep the site consistent:
 
-- Add a dependency for styling or interaction that native CSS or JavaScript handles.
-- Introduce a new color, font, radius, shadow, or motion curve when an existing token fits.
-- Move clickable hit areas during animation.
-- Animate width, height, margins, or other layout properties.
-- Add modals as the first solution when inline or progressive disclosure works.
-- Use more copy to compensate for weak hierarchy.
-- Change language variants inconsistently.
+- Native CSS and small JavaScript for styling and interaction; the site ships few dependencies and stays fast.
+- Existing tokens for color, font, radius, shadow, and motion. A new value is a design decision to raise with the user.
+- Stable hit areas: animate the visual surface inside a control, so the target never moves under the pointer.
+- Transform and opacity for motion, because animating layout properties causes jank and reflow.
+- Inline content or progressive disclosure first; a modal is the fallback.
+- Stronger hierarchy rather than more copy when a section reads weakly.
+- English and Finnish variants changed together in the same edit.
 
 ## Quality checklist
 
@@ -236,5 +236,5 @@ Before handing off a change, verify:
 - Finnish and English paths remain equivalent where applicable.
 - Mobile layouts do not overflow horizontally.
 - `npm test` passes.
-- `npx astro build` passes.
+- `npm run build` passes (it also validates frontmatter and EN↔FI links).
 - `/design-system/` still represents the shared visual patterns accurately.

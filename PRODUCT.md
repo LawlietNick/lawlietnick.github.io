@@ -95,8 +95,8 @@ The site should feel calm and considered, with a subtle comic-inspired twist tha
 - Use short, direct sentences and concrete nouns whenever possible.
 - Prefer “what this helps a team do” over generic descriptions of capability.
 - Keep calls to action clear and human: start a project, get in touch, or explore a useful resource.
-- Avoid enterprise jargon, exaggerated certainty, and language that makes AI sound autonomous or magical.
-- Do not invent prices, client facts, case studies, metrics, testimonials, or proof points.
+- Use plain words and calibrated certainty. Describe AI as a tool a person directs.
+- Use only prices, client facts, case studies, metrics, testimonials, and proof points Niko has supplied. One invented number undermines every real one.
 - Small dry humor is welcome when it sharpens the point and remains understandable in context.
 
 ## Accessibility & Inclusion

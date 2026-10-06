@@ -15,7 +15,7 @@ The system should support services, writing, resources and public proof without 
 3. Keep layouts calm, asymmetric and readable.
 4. Add personality through small, deliberate details.
 5. Meet WCAG AA in light and dark themes.
-6. Do not invent claims, metrics, testimonials or proof points.
+6. Use only claims, metrics, testimonials and proof points the user supplied.
 
 ## Token layers
 
@@ -26,7 +26,7 @@ Design tokens live in `src/styles/tokens.css`.
 - Radius, spacing, focus and motion tokens should be used before introducing hard-coded values.
 - Light and dark themes are handled with `color-scheme` and `light-dark()`.
 
-Use `--pop` for the yellow comic accent. Use `--accent` for links, emphasis and quiet active states. Do not use accent color as the only way to communicate state.
+Use `--pop` for the yellow comic accent. Use `--accent` for links, emphasis and quiet active states. Pair accent color with a second signal (weight, underline, icon) whenever it marks state.
 
 ## Global styles
 
@@ -45,7 +45,7 @@ Typography is part of the brand voice: practical body text with a slightly odd, 
 
 - `--font-body`: Roboto Flex. Use for body copy, navigation, buttons, metadata, labels, service cards and most UI text.
 - `--font-display`: Fraunces. Use for page headings, section headings, post titles and selected brand moments.
-- Monospace: use only for code inside prose or technical examples. Do not use monospace as a generic signal for “technical”.
+- Monospace: use only for code inside prose or technical examples. Technical credibility comes from the content, not the typeface.
 
 ### Type rules
 
@@ -54,24 +54,24 @@ Typography is part of the brand voice: practical body text with a slightly odd, 
 - Keep paragraphs readable. Aim for roughly 65 to 75 characters per line.
 - Use Fraunces for hierarchy and personality, not for long paragraphs, labels, badges or navigation.
 - Use Roboto Flex with `--font-weight-body`, `--font-weight-medium`, `--font-weight-strong` and `--font-weight-bold` instead of hard-coded weight values.
-- Use `.eyebrow` and `.label` for short uppercase labels with tracking. Do not use all caps for body copy.
+- Use `.eyebrow` and `.label` for short uppercase labels with tracking. Body copy stays in sentence case.
 - Tool heroes never use an eyebrow. The breadcrumb already provides category context.
 - The `.brand-mark` pattern is the only highlighted-word treatment. It uses the display context around it, with italic styling and the soft rotated accent band.
-- In dark mode, keep muted text large enough and spacious enough to stay readable. Do not reduce body size or line-height to make dense sections fit.
+- In dark mode, keep muted text large enough and spacious enough to stay readable. Make dense sections fit by restructuring them, keeping body size and line-height.
 
 ## Reusable patterns
 
 Shared patterns live in `src/styles/patterns.css`.
 
-- `.cta`: comic CTA with a clean solid face and a full-size neutral halftone shadow. The outer `.cta` is the stable hit area; `.cta__surface` lifts while the shadow separates farther down and right on hover, then compresses on press. Do not move the clickable hitbox itself or let the dots overlap the label. Secondary CTAs use a dark face with a muted neutral outline.
+- `.cta`: comic CTA with a clean solid face and a full-size neutral halftone shadow. The outer `.cta` is the stable hit area; `.cta__surface` lifts while the shadow separates farther down and right on hover, then compresses on press. The hitbox stays still, so the target never moves under the pointer, and the dots stay clear of the label. Secondary CTAs use a dark face with a muted neutral outline.
 - `.editorial-hero`: shared visual family for the homepage bento and blog post split hero. Reuse its outer frame, panel surfaces, spacing, radii and dark visual treatment while allowing page-specific composition. Posts without images use deterministic CSS artwork; posts with images use a dark lower scrim and restrained halftone overlay.
 - `.eyebrow`: small uppercase section label.
 - `.about`: two-column split section used for intro/about-style content.
 - `.page-section`: two-column content section used for services and structured pages.
 - `.process-list`: numbered process list.
 - `.formats-list`: arrow list for compact project formats or options.
-- `.badge`: yellow label for content type or status. Use the `Badge.astro` component for repeated labels such as `Podcast`. Do not add a badge when layout already communicates prominence, such as the larger first post card.
-- `.tag` and `.byline`: compact metadata and label rows. Do not show the author name visually when all content is written by the site owner.
+- `.badge`: yellow label for content type or status. Use the `Badge.astro` component for repeated labels such as `Podcast`. Add one only where layout does not already communicate prominence (the larger first post card needs none).
+- `.tag` and `.byline`: compact metadata and label rows. They omit the author name, since all content is written by the site owner.
 - `.surface`: quiet bordered surface.
 
 Keep existing class names when they are already part of the site language.
@@ -87,7 +87,7 @@ Reusable components live in `src/components/`.
 - `ToolHero.astro`: shared heading and lead structure for interactive and content-based tool pages.
 - `Ga4AnnotationBuilder.astro`: category-led annotation editor using the existing tool typography, surfaces and controls; route-specific behavior is recorded in [.impeccable/surfaces/src-pages-fi-tyokalut-ga4-annotaatiot-astro.md](.impeccable/surfaces/src-pages-fi-tyokalut-ga4-annotaatiot-astro.md).
 
-Header, footer, hero artwork and large navigation patterns remain bespoke. They may use shared tokens, but should not be forced into generic components.
+Header, footer, hero artwork and large navigation patterns remain bespoke. They use shared tokens and keep their own markup.
 
 ## Accessibility rules
 
@@ -98,9 +98,9 @@ Header, footer, hero artwork and large navigation patterns remain bespoke. They 
 - Keep layouts responsive without horizontal scrolling.
 - Respect reduced motion.
 
-## When not to abstract
+## When to abstract
 
-Do not extract a component just because two things look similar. Extract only when the purpose is shared and the pattern is likely to be reused.
+Extract a component when the purpose is shared and the pattern is likely to be reused. Visual similarity alone is not enough.
 
 Keep one-off art direction local. The home hero, mega navigation, footer theme toggle and appearance list can stay bespoke until the same pattern appears in more places.
 
