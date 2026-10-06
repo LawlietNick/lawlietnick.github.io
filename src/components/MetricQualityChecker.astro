@@ -21,7 +21,7 @@ const copy = fi
       areaTitle: "Osa-alueittain",
       gapsTitle: "Korjattavaa",
       noGaps: "Ei puutteita – kaikki tarkistukset läpäisty.",
-      cappedNote: "Luokitus rajattu diagnostiseksi: mittari ei kytkeydy liiketoiminnan keskeisiin tuloksiin.",
+      cappedNote: "Luokitus on rajattu diagnostiseksi: mittari ei kytkeydy liiketoiminnan keskeisiin tuloksiin.",
       copySummary: "Kopioi yhteenveto",
       copyLink: "Kopioi linkki",
       copied: "Kopioitu ✓",
@@ -65,7 +65,7 @@ const tiers = fi
         title: "Yhteys liiketoimintaan",
         questions: [
           { q: "Kytkeytyykö mittari liiketoiminnan keskeisiin tuloksiin?", hint: "Liikevaihto, tulos, asiakaspito tai asiakasarvo", gap: "Ei kytkeydy liiketoiminnan keskeisiin tuloksiin" },
-          { q: "Ohjaako mittari konkreettista toimintaa tai liittyykö se selkeästi tulosten ajureihin?", hint: "Suora toimenpide tai selkeä ajuripuu", gap: "Ei ohjaa toimintaa eikä liity selkeästi tulosten ajureihin" },
+          { q: "Ohjaako mittari toimintaa tai liittyykö se selvästi tulokseen vaikuttaviin tekijöihin?", hint: "Suora toimenpide tai selkeä ajuripuu", gap: "Ei ohjaa toimintaa eikä liity selvästi tulokseen vaikuttaviin tekijöihin" },
         ],
       },
       {
@@ -75,7 +75,7 @@ const tiers = fi
         questions: [
           { q: "Vaikuttaako mittarin arvon muuttuminen päätöksiin?", gap: "Arvon muuttuminen ei vaikuta päätöksentekoon" },
           { q: "Mittaako se tehokkuutta, ei vain määrää?", hint: "Ei kertyvä kokonaismäärä, joka voi vain kasvaa", gap: "Mittaa määrää, ei tehokkuutta" },
-          { q: "Onko mittarin rinnalla laatu- tai vastamittari?", hint: "Esim. liikevaihto ja kate, liidit ja niiden konversio kaupaksi", gap: "Seisoo yksin ilman laatu- tai vastamittaria" },
+          { q: "Onko mittarin rinnalla laatu- tai vastamittari?", hint: "Esim. liikevaihto ja kate tai liidit ja niiden konversio kaupoiksi", gap: "Rinnalla ei ole laatu- tai vastamittaria" },
         ],
       },
       {
@@ -84,10 +84,10 @@ const tiers = fi
         title: "Mittarin luotettavuus",
         questions: [
           { q: "Onko määritelmä selkeä ja johdonmukainen?", hint: "Kaikki tulkitsevat sen samalla tavalla", gap: "Määritelmä ei ole selkeä tai johdonmukainen" },
-          { q: "Onko mittari käyttökelpoinen eri segmenteissä?", hint: "Ei vain yhdessä osassa", gap: "Ei ole käyttökelpoinen eri segmenteissä" },
-          { q: "Säilyykö mittari käyttökelpoisena ajan myötä?", hint: "Ei vain yksittäisessä hetkessä", gap: "Ei säily käyttökelpoisena ajan myötä" },
-          { q: "Voiko sitä vertailla?", hint: "Aiemmat jaksot, kohortit tai verrokit", gap: "Ei ole vertailtavissa" },
-          { q: "Onko mittaria vaikea paisuttaa?", hint: "Arvoa ei voi nopeasti ostaa ylöspäin, esim. mainosnäytöillä", gap: "Arvoa on helppo paisuttaa" },
+          { q: "Onko mittari käyttökelpoinen eri segmenteissä?", hint: "Ei vain yhdessä asiakasryhmässä tai kanavassa", gap: "Ei ole käyttökelpoinen eri segmenteissä" },
+          { q: "Säilyykö mittari käyttökelpoisena ajan myötä?", hint: "Ei vain yhtenä ajankohtana", gap: "Ei säily käyttökelpoisena ajan myötä" },
+          { q: "Voiko mittarin arvoja vertailla?", hint: "Aiemmat jaksot, kohortit tai verrokit", gap: "Ei ole vertailtavissa" },
+          { q: "Onko mittaria vaikea paisuttaa?", hint: "Arvoa ei voi nostaa nopeasti esimerkiksi ostamalla mainosnäyttöjä", gap: "Arvoa on helppo paisuttaa" },
         ],
       },
     ]
