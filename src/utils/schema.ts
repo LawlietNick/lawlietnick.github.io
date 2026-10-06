@@ -230,15 +230,12 @@ export function buildSchemaGraph(options: SchemaOptions) {
     graph.push({
       "@type": "BreadcrumbList",
       "@id": breadcrumbId,
-      // Linked crumbs carry the target page node (@type, @id, name); the current page keeps a bare name.
-      // ponytail: Home is the only WebPage crumb; every middle crumb (blog, services, toolkit hub) is a
-      // CollectionPage. Move the type into breadcrumbs() if a non-collection middle level appears.
-      itemListElement: breadcrumbs(pathname, canonicalUrl, title, language).map((item, index, all) => {
-        const url = index === all.length - 1 && all.length > 1 ? undefined : item.url;
-        return url
-          ? { "@type": "ListItem", position: index + 1, item: { "@type": index === 0 ? "WebPage" : "CollectionPage", "@id": url, name: item.name } }
-          : { "@type": "ListItem", position: index + 1, name: item.name };
-      }),
+      itemListElement: breadcrumbs(pathname, canonicalUrl, title, language).map((item, index, all) => compact({
+        "@type": "ListItem",
+        position: index + 1,
+        item: index === all.length - 1 && all.length > 1 ? undefined : item.url,
+        name: item.name,
+      })),
     });
   }
 
@@ -305,15 +302,9 @@ export function buildSchemaGraph(options: SchemaOptions) {
       : undefined,
   }));
 
-  // The counterpart lives on another page, so it is typed here rather than a bare @id
-  // that a single-page reader could not resolve.
+  // Cross-page reference: a reader that sees only this page shows it as unresolved.
   const translatedArticle = hasTranslation && translatedPath
-    ? {
-        "@type": "BlogPosting",
-        "@id": `${absoluteUrl(translatedPath)}#article`,
-        url: absoluteUrl(translatedPath),
-        inLanguage: language === "fi" ? "en" : "fi",
-      }
+    ? { "@id": `${absoluteUrl(translatedPath)}#article` }
     : undefined;
 
   if (frontmatter) {

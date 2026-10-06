@@ -276,12 +276,12 @@ test("The About ProfilePage reuses one public portrait ImageObject", () => {
   assert.equal(imageObjects[0].height, 1250);
   assert.deepEqual(person.image, { "@id": portraitId });
   assert.deepEqual(breadcrumb.itemListElement, [
-    { "@type": "ListItem", position: 1, item: { "@type": "WebPage", "@id": root, name: "Home" } },
+    { "@type": "ListItem", position: 1, item: root, name: "Home" },
     { "@type": "ListItem", position: 2, name: "About Niko Karppinen" },
   ]);
 });
 
-test("BreadcrumbList links typed page nodes for linked crumbs in EN and FI", () => {
+test("BreadcrumbList uses Google's name + URL item form in EN and FI", () => {
   const cases = [
     ["/blog/content-consumption-metrics/", "en", [[root, "Home"], [url("/blog/"), "Thoughts"]]],
     ["/fi/blog/esimerkki/", "fi", [[url("/fi/"), "Etusivu"], [url("/fi/blog/"), "Kirjoitukset"]]],
@@ -293,16 +293,12 @@ test("BreadcrumbList links typed page nodes for linked crumbs in EN and FI", () 
     assert.equal(lists.length, 1);
     assert.equal(lists[0]["@id"], `${canonicalUrl}#breadcrumb`);
     assert.deepEqual(lists[0].itemListElement, [
-      ...linked.map(([id, name], i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        item: { "@type": i === 0 ? "WebPage" : "CollectionPage", "@id": id, name },
-      })),
+      ...linked.map(([item, name], i) => ({ "@type": "ListItem", position: i + 1, item, name })),
       { "@type": "ListItem", position: linked.length + 1, name: "Current page" },
     ]);
     for (const entry of lists[0].itemListElement) {
       assert.equal(typeof entry.position, "number");
-      assert.notEqual(typeof entry.item, "string");
+      assert.ok(!("item" in entry) || typeof entry.item === "string");
     }
     const types = data["@graph"].map((entry) => entry["@type"]);
     assert.equal(types.filter((t) => t === "WebPage").length, 1);
@@ -347,7 +343,7 @@ test("posts belong to a language-specific Blog; WebPage stays part of the WebSit
   assert.equal("blogPost" in blogEn, false);
 });
 
-test("translation relations are typed counterpart nodes and only exist with a counterpart", () => {
+test("translation relations are @id references and only exist with a counterpart", () => {
   const post = (path, language, extra = {}) => node(graph({
     canonicalUrl: url(path),
     pathname: path,
@@ -357,9 +353,9 @@ test("translation relations are typed counterpart nodes and only exist with a co
   }), "BlogPosting");
   const enPost = post("/blog/a/", "en", { hasTranslation: true, translatedPath: "/fi/blog/b/" });
   const fiPost = post("/fi/blog/b/", "fi", { hasTranslation: true, translatedPath: "/blog/a/" });
-  assert.deepEqual(enPost.workTranslation, { "@type": "BlogPosting", "@id": url("/fi/blog/b/#article"), url: url("/fi/blog/b/"), inLanguage: "fi" });
+  assert.deepEqual(enPost.workTranslation, { "@id": url("/fi/blog/b/#article") });
   assert.equal("translationOfWork" in enPost, false);
-  assert.deepEqual(fiPost.translationOfWork, { "@type": "BlogPosting", "@id": url("/blog/a/#article"), url: url("/blog/a/"), inLanguage: "en" });
+  assert.deepEqual(fiPost.translationOfWork, { "@id": url("/blog/a/#article") });
   assert.equal("workTranslation" in fiPost, false);
   const lone = post("/blog/c/", "en");
   assert.equal("workTranslation" in lone || "translationOfWork" in lone, false);
