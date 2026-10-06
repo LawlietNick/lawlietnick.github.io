@@ -1,5 +1,6 @@
 ---
 import { classifyPage } from "../utils/page-classification.js";
+import { isoDate } from "../utils/schema.ts";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import PostHero from "../components/PostHero.astro";
@@ -176,8 +177,8 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
     {ogImage && <meta property="og:image" content={ogImage} />}
     {ogImage && <meta property="og:image:width" content="1200" />}
     {ogImage && <meta property="og:image:height" content="630" />}
-    {fm?.date && <meta property="article:published_time" content={new Date(fm.date).toISOString()} />}
-    {fm?.updatedDate && <meta property="article:modified_time" content={new Date(fm.updatedDate).toISOString()} />}
+    {fm?.date && <meta property="article:published_time" content={isoDate(fm.date)} />}
+    {fm?.updatedDate && <meta property="article:modified_time" content={isoDate(fm.updatedDate)} />}
     <meta name="twitter:card" content="summary_large_image" />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
     <Schema

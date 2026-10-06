@@ -106,10 +106,19 @@ function resolveBlog(key: string | undefined, language: Language) {
   return { id: `${url}#blog`, url, name: localized.name };
 }
 
+// Frontmatter dates are calendar days (YAML parses them to UTC midnight).
+// Emit them as midnight in Helsinki with that day's offset (+02:00 or +03:00).
+// ponytail: date-only by design; a frontmatter time of day would be dropped.
+const helsinkiOffset = new Intl.DateTimeFormat("en", { timeZone: "Europe/Helsinki", timeZoneName: "longOffset" });
 export function isoDate(value?: string | Date) {
   if (!value) return undefined;
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
+  if (Number.isNaN(date.getTime())) return undefined;
+  const day = date.toISOString().slice(0, 10);
+  // Read the offset just before Helsinki midnight's UTC instant, so DST-switch days get the right one.
+  const offset = helsinkiOffset.formatToParts(new Date(Date.parse(day) - 2 * 3600e3))
+    .find((part) => part.type === "timeZoneName")!.value.replace("GMT", "") || "+00:00";
+  return `${day}T00:00:00${offset}`;
 }
 
 export function publicImage(image?: SchemaImage) {

@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import { authorName, siteConfig, siteName } from "../data/site.js";
 import { feedDate, selectFeedEntries } from "./feed-entries.ts";
 import { categoryTerm, escapeXml, imageMimeType } from "./feed-xml.ts";
+import { isoDate } from "./schema.ts";
 
 export type FeedLang = "en" | "fi";
 
@@ -75,8 +76,8 @@ export async function feedResponse(context: APIContext, lang: FeedLang): Promise
       `    <id>${escapeXml(url)}</id>`,
       `    <title>${escapeXml(data.title)}</title>`,
       `    <link rel="alternate" type="text/html" hreflang="${config.language}" href="${escapeXml(url)}"/>`,
-      `    <published>${data.date.toISOString()}</published>`,
-      `    <updated>${feedDate(data).toISOString()}</updated>`,
+      `    <published>${isoDate(data.date)}</published>`,
+      `    <updated>${isoDate(feedDate(data))}</updated>`,
       `    <summary>${escapeXml(data.description)}</summary>`,
       ...categories,
       ...(data.image && enclosureType
@@ -92,7 +93,7 @@ export async function feedResponse(context: APIContext, lang: FeedLang): Promise
     `  <id>${escapeXml(abs(config.path))}</id>`,
     `  <title>${escapeXml(siteName)}</title>`,
     `  <subtitle>${escapeXml(config.description)}</subtitle>`,
-    `  <updated>${feedDate(items[0].data).toISOString()}</updated>`,
+    `  <updated>${isoDate(feedDate(items[0].data))}</updated>`,
     `  <link rel="alternate" type="text/html" hreflang="${config.language}" href="${escapeXml(abs(config.homePath))}"/>`,
     `  <link rel="self" type="application/atom+xml" href="${escapeXml(abs(config.path))}"/>`,
     "  <author>",

@@ -127,20 +127,25 @@ Tässä mallissa hyväksyttävän ajan laskenta alkaa, kun artikkelin tekstiä t
 
 Laske kynnys artikkelin sanamäärästä ja muokattavasta lukunopeusoletuksesta:
 
-<math display="block">
-<mrow>
+<div class="formula"><math display="block">
+<mtable columnalign="left">
+<mtr><mtd><mrow>
 <mtext>Arvioitu lukuaika</mtext>
-<mo>=</mo>
+<mspace width="0.28em"/><mo>=</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
 <mfrac>
 <mtext>Artikkelin sanamäärä</mtext>
 <mtext>Oletettu sanaa minuutissa</mtext>
 </mfrac>
-</mrow>
-</math>
+</mrow></mtd></mtr>
+</mtable>
+</math></div>
 
 Esimerkiksi 1 000 sanan artikkeli ja oletettu 250 sanan minuuttivauhti antavat neljän minuutin kynnyksen:
 
-<math display="block">
+<div class="formula"><math display="block">
 <mrow>
 <mfrac>
 <mrow>
@@ -156,7 +161,7 @@ Esimerkiksi 1 000 sanan artikkeli ja oletettu 250 sanan minuuttivauhti antavat n
 <mn>4</mn>
 <mtext> minuuttia</mtext>
 </mrow>
-</math>
+</math></div>
 
 Luku on esimerkkiasetus, ei yleispätevä lukunopeus. Malli lisää myös yhden sekunnin jokaista kuvaa tai kuviota kohden, joten kuvitetut artikkelit saavat hieman enemmän aikaa.
 
@@ -170,15 +175,23 @@ Edes etualalla vietetty aika ei todista tarkkaavaisuutta. Joku voi poistua näyt
 
 **Sekä artikkelin loppu että lukuajan kynnys on saavutettu saman sivun katselun aikana.**
 
-<math display="block">
-<mrow>
+<div class="formula"><math display="block">
+<mtable columnalign="left">
+<mtr><mtd><mrow>
 <mtext>Arvioitu lukukerta</mtext>
-<mo>=</mo>
+<mspace width="0.28em"/><mo>=</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
 <mtext>Artikkelin loppu saavutettu</mtext>
-<mo>∧</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
+<mo>∧</mo><mspace width="0.22em"/>
 <mtext>Lukuajan kynnys saavutettu</mtext>
-</mrow>
-</math>
+</mrow></mtd></mtr>
+</mtable>
+</math></div>
 
 ∧-merkki tarkoittaa, että molempien ehtojen on täytyttävä saman sivun katselun aikana.
 
@@ -246,25 +259,34 @@ Aikakynnys täyttyi useammassa katselussa kuin loppuun pääsy. Se on mahdollist
 
 Arvioitu lukuaste lasketaan näin:
 
-<math display="block">
-<mrow>
+<div class="formula"><math display="block">
+<mtable columnalign="left">
+<mtr><mtd><mrow>
 <mtext>Arvioitu lukuaste</mtext>
-<mo>=</mo>
+<mspace width="0.28em"/><mo>=</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
 <mfrac>
 <mtext>Arvioidut lukukerrat</mtext>
 <mtext>Artikkelin sivun katselut</mtext>
 </mfrac>
 <mo>×</mo>
 <mn>100</mn>
-</mrow>
-</math>
+</mrow></mtd></mtr>
+</mtable>
+</math></div>
 
 Yllä olevan esimerkin luvuilla:
 
-<math display="block">
-<mrow>
+<div class="formula"><math display="block">
+<mtable columnalign="left">
+<mtr><mtd><mrow>
 <mtext>Arvioitu lukuaste</mtext>
-<mo>=</mo>
+<mspace width="0.28em"/><mo>=</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
 <mfrac>
 <mn>180</mn>
 <mn>1000</mn>
@@ -275,8 +297,9 @@ Yllä olevan esimerkin luvuilla:
 <mn>18</mn>
 <mtext> </mtext>
 <mo>%</mo>
-</mrow>
-</math>
+</mrow></mtd></mtr>
+</mtable>
+</math></div>
 
 Nimittäjässä pitää käyttää GA4:n sivun katseluja samoilta mittaukseen kelpaavilta artikkelisivuilta kuin artikkelitapahtumissa. Yhden näytöllisen mittaiset artikkelit eivät lähetä signaaleja, joten jätä ne pois molemmista luvuista. Jos artikkelitapahtumia verrataan laajempaan, eri säännöillä kerättyyn sivun katselujen kokonaismäärään, aste vääristyy.
 

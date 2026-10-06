@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import { appearances } from "../src/data/appearances.js";
 import { authorName, brandName, siteConfig, siteName } from "../src/data/site.js";
-import { buildSchemaGraph, breadcrumbs, publicImage } from "../src/utils/schema.ts";
+import { buildSchemaGraph, breadcrumbs, isoDate, publicImage } from "../src/utils/schema.ts";
 
 const root = siteConfig.url;
 const url = (path) => new URL(path, root).href;
@@ -101,8 +101,8 @@ test("article modification date uses updatedDate when provided", () => {
       updatedDate: "2026-09-22",
     },
   }), "BlogPosting");
-  assert.equal(article.datePublished, "2025-08-07T00:00:00.000Z");
-  assert.equal(article.dateModified, "2026-09-22T00:00:00.000Z");
+  assert.equal(article.datePublished, "2025-08-07T00:00:00+03:00");
+  assert.equal(article.dateModified, "2026-09-22T00:00:00+03:00");
 });
 
 test("service pages use their Service as mainEntity and Person only as provider", () => {
@@ -163,7 +163,7 @@ test("About pages are ProfilePages whose mainEntity is the shared person", () =>
     assert.deepEqual(page.about, PERSON);
     assert.deepEqual(page.mainEntity, PERSON);
     assert.equal(page.inLanguage, language);
-    assert.equal(page.dateModified, new Date(siteConfig.person.profileDateModified).toISOString());
+    assert.equal(page.dateModified, `${siteConfig.person.profileDateModified}T00:00:00+03:00`);
   }
 });
 
@@ -465,4 +465,13 @@ test("image rights: all rights reserved by default, CC0 when marked, photographe
     assert.equal(photo.license, terms);
     assert.match(photo.creditText, language === "fi" ? /^Kuva: Pinja Tuominen/ : /^Photo: Pinja Tuominen/);
   }
+});
+
+test("isoDate writes calendar days as Helsinki midnight with the day's offset", () => {
+  assert.equal(isoDate("2026-09-23"), "2026-09-23T00:00:00+03:00");
+  assert.equal(isoDate(new Date("2026-01-15")), "2026-01-15T00:00:00+02:00");
+  // DST starts 29 March 2026 at 03:00 local, so midnight that day is still +02:00
+  assert.equal(isoDate("2026-03-29"), "2026-03-29T00:00:00+02:00");
+  assert.equal(isoDate("2026-10-25"), "2026-10-25T00:00:00+03:00");
+  assert.equal(isoDate("not a date"), undefined);
 });

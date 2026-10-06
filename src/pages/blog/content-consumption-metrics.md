@@ -127,20 +127,25 @@ In this model, qualifying time starts when article text first comes into view. F
 
 Calculate the threshold from the article's word count and a configurable reading-speed assumption:
 
-<math display="block">
-<mrow>
+<div class="formula"><math display="block">
+<mtable columnalign="left">
+<mtr><mtd><mrow>
 <mtext>Estimated reading time</mtext>
-<mo>=</mo>
+<mspace width="0.28em"/><mo>=</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
 <mfrac>
 <mtext>Article word count</mtext>
 <mtext>Assumed words per minute</mtext>
 </mfrac>
-</mrow>
-</math>
+</mrow></mtd></mtr>
+</mtable>
+</math></div>
 
 For example, a 1,000-word article at an assumed 250 words per minute gives a four-minute threshold:
 
-<math display="block">
+<div class="formula"><math display="block">
 <mrow>
 <mfrac>
 <mrow>
@@ -156,7 +161,7 @@ For example, a 1,000-word article at an assumed 250 words per minute gives a fou
 <mn>4</mn>
 <mtext> minutes</mtext>
 </mrow>
-</math>
+</math></div>
 
 That is an illustrative setting, not a universal reading speed. The model also adds one second for each image or figure, so illustrated articles get slightly more time.
 
@@ -168,15 +173,23 @@ Even foreground time cannot establish attention. Someone may leave the screen, p
 
 **Both the article end and the time threshold have been reached during the same page view.**
 
-<math display="block">
-<mrow>
+<div class="formula"><math display="block">
+<mtable columnalign="left">
+<mtr><mtd><mrow>
 <mtext>Estimated Article Read</mtext>
-<mo>=</mo>
+<mspace width="0.28em"/><mo>=</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
 <mtext>Article End Reached</mtext>
-<mo>∧</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
+<mo>∧</mo><mspace width="0.22em"/>
 <mtext>Article Time Threshold Reached</mtext>
-</mrow>
-</math>
+</mrow></mtd></mtr>
+</mtable>
+</math></div>
 
 The ∧ symbol means that both conditions must be satisfied during the same page view.
 
@@ -244,25 +257,34 @@ More views met the time threshold than reached the end. That is possible because
 
 The estimated read rate is:
 
-<math display="block">
-<mrow>
+<div class="formula"><math display="block">
+<mtable columnalign="left">
+<mtr><mtd><mrow>
 <mtext>Estimated Article Read Rate</mtext>
-<mo>=</mo>
+<mspace width="0.28em"/><mo>=</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
 <mfrac>
 <mtext>Estimated Article Reads</mtext>
 <mtext>Page views for the article</mtext>
 </mfrac>
 <mo>×</mo>
 <mn>100</mn>
-</mrow>
-</math>
+</mrow></mtd></mtr>
+</mtable>
+</math></div>
 
 Using the example above:
 
-<math display="block">
-<mrow>
+<div class="formula"><math display="block">
+<mtable columnalign="left">
+<mtr><mtd><mrow>
 <mtext>Estimated Article Read Rate</mtext>
-<mo>=</mo>
+<mspace width="0.28em"/><mo>=</mo>
+</mrow></mtd></mtr>
+<mtr><mtd><mrow>
+<mspace width="1em"/>
 <mfrac>
 <mn>180</mn>
 <mn>1000</mn>
@@ -272,8 +294,9 @@ Using the example above:
 <mo>=</mo>
 <mn>18</mn>
 <mo>%</mo>
-</mrow>
-</math>
+</mrow></mtd></mtr>
+</mtable>
+</math></div>
 
 The denominator should use GA4 page views for the same set of eligible article pages as the article events. Articles short enough to fit on one screen send no signals, so leave them out of both counts. Mixing the article events with a broader page-view total collected under different rules can distort the rate.
 
