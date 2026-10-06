@@ -164,9 +164,11 @@ test("English and Finnish articles credit the shared person as author and publis
     [url("/blog/prompt-optimization-chatgpt/"), "/blog/prompt-optimization-chatgpt/", "en", "/about/"],
     [url("/fi/blog/hei-maailma/"), "/fi/blog/hei-maailma/", "fi", "/fi/minusta/"],
   ]) {
-    const article = node(graph({ canonicalUrl, pathname, language, frontmatter: { title: "Post" } }), "BlogPosting");
-    // author also names the person and links the about page in the article's language
-    assert.deepEqual(article.author, { ...PERSON, name: "Niko Karppinen", url: url(aboutPath) });
+    const data = graph({ canonicalUrl, pathname, language, frontmatter: { title: "Post" } });
+    const article = node(data, "BlogPosting");
+    // author is a bare @id reference; the Person node in the same @graph links the about page in the page's language
+    assert.deepEqual(article.author, PERSON);
+    assert.equal(node(data, "Person").url, url(aboutPath));
     assert.deepEqual(article.publisher, PERSON);
   }
 });
@@ -274,12 +276,12 @@ test("The About ProfilePage reuses one public portrait ImageObject", () => {
   assert.equal(imageObjects[0].height, 1250);
   assert.deepEqual(person.image, { "@id": portraitId });
   assert.deepEqual(breadcrumb.itemListElement, [
-    { "@type": "ListItem", position: 1, item: { "@id": root, name: "Home" } },
+    { "@type": "ListItem", position: 1, item: { "@type": "WebPage", "@id": root, name: "Home" } },
     { "@type": "ListItem", position: 2, name: "About Niko Karppinen" },
   ]);
 });
 
-test("BreadcrumbList uses the Thing form for linked crumbs in EN and FI", () => {
+test("BreadcrumbList links typed page nodes for linked crumbs in EN and FI", () => {
   const cases = [
     ["/blog/content-consumption-metrics/", "en", [[root, "Home"], [url("/blog/"), "Thoughts"]]],
     ["/fi/blog/esimerkki/", "fi", [[url("/fi/"), "Etusivu"], [url("/fi/blog/"), "Kirjoitukset"]]],
@@ -291,7 +293,11 @@ test("BreadcrumbList uses the Thing form for linked crumbs in EN and FI", () => 
     assert.equal(lists.length, 1);
     assert.equal(lists[0]["@id"], `${canonicalUrl}#breadcrumb`);
     assert.deepEqual(lists[0].itemListElement, [
-      ...linked.map(([id, name], i) => ({ "@type": "ListItem", position: i + 1, item: { "@id": id, name } })),
+      ...linked.map(([id, name], i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: { "@type": i === 0 ? "WebPage" : "CollectionPage", "@id": id, name },
+      })),
       { "@type": "ListItem", position: linked.length + 1, name: "Current page" },
     ]);
     for (const entry of lists[0].itemListElement) {
@@ -341,7 +347,7 @@ test("posts belong to a language-specific Blog; WebPage stays part of the WebSit
   assert.equal("blogPost" in blogEn, false);
 });
 
-test("translation relations are @id references and only exist with a counterpart", () => {
+test("translation relations are typed counterpart nodes and only exist with a counterpart", () => {
   const post = (path, language, extra = {}) => node(graph({
     canonicalUrl: url(path),
     pathname: path,
@@ -351,9 +357,9 @@ test("translation relations are @id references and only exist with a counterpart
   }), "BlogPosting");
   const enPost = post("/blog/a/", "en", { hasTranslation: true, translatedPath: "/fi/blog/b/" });
   const fiPost = post("/fi/blog/b/", "fi", { hasTranslation: true, translatedPath: "/blog/a/" });
-  assert.deepEqual(enPost.workTranslation, { "@id": url("/fi/blog/b/#article") });
+  assert.deepEqual(enPost.workTranslation, { "@type": "BlogPosting", "@id": url("/fi/blog/b/#article"), url: url("/fi/blog/b/"), inLanguage: "fi" });
   assert.equal("translationOfWork" in enPost, false);
-  assert.deepEqual(fiPost.translationOfWork, { "@id": url("/blog/a/#article") });
+  assert.deepEqual(fiPost.translationOfWork, { "@type": "BlogPosting", "@id": url("/blog/a/#article"), url: url("/blog/a/"), inLanguage: "en" });
   assert.equal("workTranslation" in fiPost, false);
   const lone = post("/blog/c/", "en");
   assert.equal("workTranslation" in lone || "translationOfWork" in lone, false);
@@ -403,4 +409,24 @@ test("The shared head emits one Atom discovery link using the WebSite name", () 
 
   const feed = readFileSync(new URL("../src/utils/feed.ts", import.meta.url), "utf8");
   assert.match(feed, /<title>\$\{escapeXml\(siteName\)\}<\/title>/);
+});
+
+test("every in-graph @id has one typed node; nested @id objects are bare references", () => {
+  for (const [path, language] of [["/blog/a/", "en"], ["/fi/blog/b/", "fi"], ["/about/", "en"]]) {
+    const data = graph({ canonicalUrl: url(path), pathname: path, language, frontmatter: { title: "Post" } });
+    const ids = data["@graph"].map((entry) => entry["@id"]);
+    assert.equal(new Set(ids).size, ids.length, "each @id appears once as a top-level node");
+    assert.ok(data["@graph"].every((entry) => entry["@type"]));
+    const walk = (value) => {
+      if (Array.isArray(value)) return value.forEach(walk);
+      if (!value || typeof value !== "object") return;
+      // A nested @id object must be a bare reference or a typed node, never an untyped fragment.
+      if ("@id" in value && Object.keys(value).length > 1) assert.ok(value["@type"], JSON.stringify(value));
+      if ("@id" in value && Object.keys(value).length === 1 && value["@id"].startsWith(root) && !/\/#article$/.test(value["@id"])) {
+        assert.ok(ids.includes(value["@id"]), `unresolved ${value["@id"]}`);
+      }
+      Object.values(value).forEach(walk);
+    };
+    data["@graph"].forEach((entry) => Object.values(entry).forEach(walk));
+  }
 });

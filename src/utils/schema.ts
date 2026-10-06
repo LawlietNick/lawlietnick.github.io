@@ -230,11 +230,13 @@ export function buildSchemaGraph(options: SchemaOptions) {
     graph.push({
       "@type": "BreadcrumbList",
       "@id": breadcrumbId,
-      // Linked crumbs use the Thing form (item: { @id, name }); the current page keeps a bare name.
+      // Linked crumbs carry the target page node (@type, @id, name); the current page keeps a bare name.
+      // ponytail: Home is the only WebPage crumb; every middle crumb (blog, services, toolkit hub) is a
+      // CollectionPage. Move the type into breadcrumbs() if a non-collection middle level appears.
       itemListElement: breadcrumbs(pathname, canonicalUrl, title, language).map((item, index, all) => {
         const url = index === all.length - 1 && all.length > 1 ? undefined : item.url;
         return url
-          ? { "@type": "ListItem", position: index + 1, item: { "@id": url, name: item.name } }
+          ? { "@type": "ListItem", position: index + 1, item: { "@type": index === 0 ? "WebPage" : "CollectionPage", "@id": url, name: item.name } }
           : { "@type": "ListItem", position: index + 1, name: item.name };
       }),
     });
@@ -280,7 +282,7 @@ export function buildSchemaGraph(options: SchemaOptions) {
     name: authorName,
     givenName: siteConfig.person.givenName,
     familyName: siteConfig.person.familyName,
-    url: absoluteUrl(siteConfig.person.aboutPath),
+    url: absoluteUrl(language === "fi" ? "/fi/minusta/" : siteConfig.person.aboutPath),
     jobTitle: siteConfig.person.jobTitle,
     worksFor: {
       "@type": "Organization",
@@ -303,8 +305,15 @@ export function buildSchemaGraph(options: SchemaOptions) {
       : undefined,
   }));
 
-  const translatedArticleId = hasTranslation && translatedPath
-    ? `${absoluteUrl(translatedPath)}#article`
+  // The counterpart lives on another page, so it is typed here rather than a bare @id
+  // that a single-page reader could not resolve.
+  const translatedArticle = hasTranslation && translatedPath
+    ? {
+        "@type": "BlogPosting",
+        "@id": `${absoluteUrl(translatedPath)}#article`,
+        url: absoluteUrl(translatedPath),
+        inLanguage: language === "fi" ? "en" : "fi",
+      }
     : undefined;
 
   if (frontmatter) {
@@ -316,11 +325,8 @@ export function buildSchemaGraph(options: SchemaOptions) {
       description: frontmatter.description,
       datePublished: isoDate(frontmatter.date),
       dateModified: isoDate(frontmatter.updatedDate ?? frontmatter.modified ?? frontmatter.date),
-      author: {
-        "@id": PERSON_ID,
-        name: authorName,
-        url: absoluteUrl(language === "fi" ? "/fi/minusta/" : siteConfig.person.aboutPath),
-      },
+      // Plain reference: the Person node in this @graph carries name and url.
+      author: { "@id": PERSON_ID },
       publisher: { "@id": PERSON_ID },
       isPartOf: { "@id": blog ? blog.id : WEBSITE_ID },
       inLanguage: language,
@@ -338,8 +344,8 @@ export function buildSchemaGraph(options: SchemaOptions) {
       citation: frontmatter.citations?.length
         ? frontmatter.citations.map(({ name, url, type }) => ({ "@type": type ?? "WebPage", name, url }))
         : undefined,
-      workTranslation: translatedArticleId && language === "en" ? { "@id": translatedArticleId } : undefined,
-      translationOfWork: translatedArticleId && language === "fi" ? { "@id": translatedArticleId } : undefined,
+      workTranslation: translatedArticle && language === "en" ? translatedArticle : undefined,
+      translationOfWork: translatedArticle && language === "fi" ? translatedArticle : undefined,
     }));
   }
 
