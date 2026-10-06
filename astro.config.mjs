@@ -95,6 +95,7 @@ export default defineConfig({
     "/projects": "/about/",
     "/projects/podcast-hakuammuntaa": "/about/",
     "/projects/podcast-signal": "/about/",
+    "/fi/privacy": "/fi/tietosuojaseloste/",
     "/fi/tools": "/fi/tyokalut/",
     "/fi/templates": "/fi/toteutusmallit/",
     "/tools/form-type-picker": "/tools/form-name-builder/",

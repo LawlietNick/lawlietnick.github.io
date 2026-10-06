@@ -76,7 +76,7 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
       <div class="site-footer__bottom">
         <div class="site-footer__legal">
           <p class="site-footer__copyright">© {new Date().getFullYear()}. {t.rights}</p>
-          <a href={root + "privacy/"} class="site-footer__legal-link">{t.privacy}</a>
+          <a href={root + (fi ? "tietosuojaseloste/" : "privacy/")} class="site-footer__legal-link">{t.privacy}</a>
           <a href={aboutHref + "#how-i-write"} class="site-footer__legal-link">{t.editorial}</a>
           <a href={feedHref} class="site-footer__legal-link">{t.feed}</a>
           <a href="/entitymap.html" class="site-footer__legal-link">EntityMap</a>

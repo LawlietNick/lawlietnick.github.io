@@ -14,7 +14,7 @@ export function classifyPage(pathname, metadata = {}) {
       : ["templates", "toteutusmallit"].includes(section) ? "template" : "tool";
   } else if (["services", "palvelut"].includes(section)) pageType = parts.length === 1 ? "listing" : "service";
   else if (["about", "minusta"].includes(section)) pageType = "about";
-  else if (section === "privacy") pageType = "legal";
+  else if (["privacy", "tietosuojaseloste"].includes(section)) pageType = "legal";
   else if (["404", "404.html"].includes(section)) pageType = "error";
 
   const primaryCategory = metadata.primaryCategory

@@ -7,11 +7,9 @@ const staticRoutes = [
   "/",
   "/blog/",
   "/about/",
-  "/privacy/",
   "/fi/",
   "/fi/minusta/",
   "/fi/blog/",
-  "/fi/privacy/",
   ...(showServices ? ["/services/", "/fi/palvelut/"] : []),
 ];
 
