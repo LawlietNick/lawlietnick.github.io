@@ -7,7 +7,7 @@ export type Language = "en" | "fi";
 export type PageType = "about" | "blog-index" | "collection" | "service" | "toolkit" | "webpage";
 
 type SchemaItem = { title?: string; label?: string; url: string };
-type SchemaImage = { src: string; width?: number; height?: number; alt?: string; creditText?: string };
+type SchemaImage = { src: string; width?: number; height?: number; alt?: string; creditText?: string; license?: string };
 type Frontmatter = {
   title?: string;
   description?: string;
@@ -17,6 +17,7 @@ type Frontmatter = {
   image?: string;
   imageAlt?: string;
   imageCredit?: string;
+  imageLicense?: "cc0";
   tags?: string[];
   category?: string;
   blog?: string;
@@ -54,6 +55,7 @@ const SITE_URL = siteConfig.url;
 const WEBSITE_ID = `${SITE_URL}#website`;
 const PERSON_ID = `${SITE_URL}#person`;
 const PERSON_IMAGE_ID = `${SITE_URL}#personimage`;
+const portraitCreator = siteConfig.person.portraitCreator;
 
 // A Thing named `name`, with sameAs links to Wikidata/Wikipedia/Google KG when
 // siteConfig.entities knows the name; otherwise a plain Thing.
@@ -73,6 +75,21 @@ const thing = (name: string) => {
 const knowsAbout = siteConfig.person.knowsAbout.map(thing);
 
 export const absoluteUrl = (value: string) => new URL(value, SITE_URL).href;
+const CC0_URL = "https://creativecommons.org/publicdomain/zero/1.0/";
+
+// Image rights: all rights reserved by default, with the Terms of Use #images
+// section as both license and acquireLicensePage; `imageLicense: cc0` frees an image.
+const imageRights = (language: Language, license?: string, holder: { notice: string; id?: string } = { notice: authorName, id: PERSON_ID }) => {
+  if (license === "cc0") return { license: CC0_URL };
+  const terms = absoluteUrl(language === "fi" ? "/fi/kayttoehdot/#images" : "/terms/#images");
+  return {
+    license: terms,
+    acquireLicensePage: terms,
+    copyrightNotice: `© ${holder.notice}`,
+    copyrightHolder: holder.id ? { "@id": holder.id } : undefined,
+  };
+};
+
 export const fragmentId = (canonicalUrl: string, fragment: string) =>
   `${canonicalUrl}#${fragment}`;
 
@@ -155,7 +172,7 @@ export function buildSchemaGraph(options: SchemaOptions) {
   // article hero image from frontmatter is the primary image on posts;
   // an explicit pageImage (home/about portrait) still wins where set
   const articleImage = frontmatter?.image
-    ? publicImage({ src: frontmatter.image, alt: frontmatter.imageAlt, creditText: frontmatter.imageCredit })
+    ? publicImage({ src: frontmatter.image, alt: frontmatter.imageAlt, creditText: frontmatter.imageCredit, license: frontmatter.imageLicense })
     : undefined;
   const pageImage = publicImage(options.pageImage) ?? articleImage;
   const breadcrumbId = fragmentId(canonicalUrl, "breadcrumb");
@@ -223,6 +240,7 @@ export function buildSchemaGraph(options: SchemaOptions) {
       height: pageImage.height,
       caption: pageImage.alt,
       creditText: pageImage.creditText,
+      ...imageRights(language, pageImage.license),
     }));
   }
 
@@ -271,6 +289,9 @@ export function buildSchemaGraph(options: SchemaOptions) {
       width: personImage.width,
       height: personImage.height,
       caption: personImage.alt,
+      creator: { "@type": "Person", name: portraitCreator.name, url: portraitCreator.url },
+      creditText: `${language === "fi" ? "Kuva" : "Photo"}: ${portraitCreator.name} / ${portraitCreator.studio}`,
+      ...imageRights(language, undefined, { notice: portraitCreator.name }),
     }));
   }
 

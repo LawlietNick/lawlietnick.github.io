@@ -9,6 +9,7 @@ tags: ["saavutettavuus", "typografia", "käytettävyys", "WCAG"]
 image: /images/blog/tekstin-tasaus-saavutettavuus.jpeg
 imageAlt: "Vihreä silmälasipäinen sarjakuvakilpikonna vertailee keskitettyä ja vasemmalle tasattua tekstikappaletta"
 imageCredit: "Luotu OpenAI ImageGenillä"
+imageLicense: cc0
 relatedHeading: "Lisää luettavaa"
 alternate:
   lang: en

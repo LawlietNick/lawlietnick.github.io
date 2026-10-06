@@ -9,6 +9,7 @@ tags: ["ChatGPT", "Gemini", "prompt engineering", "AI workflows"]
 image: /images/blog/ai-panel-with-experts.jpeg
 imageAlt: "Animal expert panel around a meeting table: an owl, a robot, a turtle, a fox and a bear, each with a specialty speech bubble"
 imageCredit: "Generated with OpenAI ImageGen"
+imageLicense: cc0
 alternate:
   lang: fi
   href: /fi/blog/asiantuntijapaneeli-yhdella-promptilla/

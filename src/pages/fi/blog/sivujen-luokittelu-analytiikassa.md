@@ -8,6 +8,7 @@ category: analytics
 image: /images/blog/page-classification-for-website-analytics.jpeg
 imageAlt: "Kilpikonna järjestää verkkosivuja kuvaavia kortteja riveihin ja sarakkeisiin luokittelutaulukossa."
 imageCredit: "Luotu OpenAI ImageGenillä"
+imageLicense: cc0
 tags: ["analytiikka", "sisällön luokittelu", "sivutyyppi", "sisällönhallinta"]
 relatedHeading: "Lisää luettavaa"
 about:

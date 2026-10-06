@@ -13,6 +13,7 @@ tags: ["HubSpot", "Google Tag Manager", "form tracking", "Cloudflare Workers"]
 image: /images/blog/hubspot-form-submission-tracking-gtm.jpeg
 imageAlt: "Cartoon turtle with glasses inspecting a HubSpot form through a magnifying glass, with a successful submission passing through a cloud lookup service into a Google Tag Manager window"
 imageCredit: "Generated with OpenAI ImageGen"
+imageLicense: cc0
 alternate:
   lang: fi
   href: /fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm/

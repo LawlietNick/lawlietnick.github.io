@@ -10,6 +10,7 @@ tags: ["ChatGPT", "Gemini", "presentations", "Pyramid Principle"]
 image: /images/blog/mckinsey-style-presentation-chatgpt-gemini.jpeg
 imageAlt: "Turtle in a business suit presenting a pyramid-structured slide and charts on a whiteboard"
 imageCredit: "Generated with OpenAI ImageGen"
+imageLicense: cc0
 alternate:
   lang: fi
   href: /fi/blog/mckinsey-tyylinen-esitys-chatgpt-gemini/

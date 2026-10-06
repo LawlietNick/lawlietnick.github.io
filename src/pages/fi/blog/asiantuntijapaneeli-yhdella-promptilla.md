@@ -9,6 +9,7 @@ tags: ["ChatGPT", "Gemini", "promptit", "tekoäly"]
 image: /images/blog/ai-panel-with-experts.jpeg
 imageAlt: "Eläinasiantuntijapaneeli kokouspöydän ääressä: pöllö, robotti, kilpikonna, kettu ja karhu puhekuplineen"
 imageCredit: "Luotu OpenAI ImageGenillä"
+imageLicense: cc0
 alternate:
   lang: en
   href: /blog/ai-panel-with-experts/

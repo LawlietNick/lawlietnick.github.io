@@ -9,6 +9,7 @@ tags: ["GA4", "sisältöanalytiikka", "Google Tag Manager", "sisällön mittaami
 image: /images/blog/content-consumption-metrics.jpeg
 imageAlt: "Violettiin kaapuun pukeutunut sarjakuvahiiri osoittaa artikkelin asettelua. Puhekuplissa näkyvät lukuajan edistymispalkki, valmistumispalkki ja valintamerkki."
 imageCredit: "Luotu OpenAI ImageGenillä"
+imageLicense: cc0
 readingSignals: true
 alternate:
   lang: en

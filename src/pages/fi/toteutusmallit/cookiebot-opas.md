@@ -13,6 +13,7 @@ tags: ["Cookiebot", "Consent Mode", "GDPR", "evästeet", "Google Tag Manager"]
 image: /images/blog/cookiebot-guide.jpeg
 imageAlt: "Silmälasipäinen sarjakuvakilpikonna seisoo Cookiebot-logon ja evästesuojan näyttävän selainikkunan vieressä"
 imageCredit: "Luotu OpenAI ImageGenillä"
+imageLicense: cc0
 alternate:
   lang: en
   href: /templates/cookiebot-guide/

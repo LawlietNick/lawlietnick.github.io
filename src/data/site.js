@@ -30,6 +30,8 @@ export const siteConfig = {
     employerName: "Agency Bobble",
     employerMonogram: "AB",
     employerUrl: "https://agencybobble.com/",
+    // Portrait photographer; the copyright stays with her (Finnish default).
+    portraitCreator: { name: "Pinja Tuominen", studio: "Pinja’s Photography", url: "https://www.pinjasphotography.com/" },
     profiles: [
       { name: "LinkedIn", url: "https://www.linkedin.com/in/karppinenniko" },
       { name: "GitHub", url: "https://github.com/LawlietNick" },

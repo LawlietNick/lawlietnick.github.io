@@ -8,6 +8,7 @@ category: analytics
 image: /images/blog/example-parts.jpeg
 imageAlt: "A turtle points to a visual blog post layout containing headings, paragraphs, lists, tables, images, code, quotes, forms, and embedded media"
 imageCredit: "Generated with OpenAI ImageGen"
+imageLicense: cc0
 ---
 The purpose of this page is to check the default content styles and confirm that common HTML elements have been considered when creating the site design.
 

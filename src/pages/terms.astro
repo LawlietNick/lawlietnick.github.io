@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+import { contactUrl } from "../data/site.js";
+---
+
+<Base noindex title="Terms of Use" description="How you may use the texts, images, tools and other content on karppinen.one, and how to ask for permission to use an image.">
+  <div class="prose">
+    <h1>Terms of Use</h1>
+    <p><strong>Last updated: 6 October 2026.</strong></p>
+    <p>
+      These terms apply to the content on karppinen.one. They explain what you
+      may do with the texts, images and tools on the site.
+    </p>
+
+    <h2>Content and copyright</h2>
+    <p>
+      Texts, images and other content on this site are © Niko Karppinen, all
+      rights reserved, unless stated otherwise. You may quote short passages
+      when you name the source and link to the original page.
+    </p>
+
+    <h2 id="images">Images</h2>
+    <p>
+      Unless an image is marked as free to use, you may not copy, publish or
+      modify it without permission. This applies to my portrait photos, among
+      others.
+    </p>
+    <p>
+      To request permission, <a href={contactUrl}>contact me on LinkedIn</a>.
+      Tell me which image you would like to use, where, and for what purpose.
+    </p>
+    <p>
+      Article images credited “Generated with OpenAI ImageGen” are released
+      under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>.
+      You may use them for any purpose without asking or giving credit.
+    </p>
+
+    <h2>No advice or warranty</h2>
+    <p>
+      Articles, tools and templates are general information, not advice for
+      your specific situation. They are provided as is. I am not liable for
+      damage arising from their use.
+    </p>
+
+    <h2>External links</h2>
+    <p>
+      The site links to external services and sources. I am not responsible
+      for their content; their own terms and privacy policies apply.
+    </p>
+
+    <p>This page will be updated if these terms change.</p>
+  </div>
+</Base>

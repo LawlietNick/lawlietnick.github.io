@@ -9,6 +9,7 @@ tags: ["GA4", "content analytics", "Google Tag Manager", "content measurement"]
 image: /images/blog/content-consumption-metrics.jpeg
 imageAlt: "Cartoon mouse sage in a purple robe pointing at an article layout, with speech bubbles showing a reading-time progress bar, a completion bar and a checkmark"
 imageCredit: "Generated with OpenAI ImageGen"
+imageLicense: cc0
 readingSignals: true
 alternate:
   lang: fi

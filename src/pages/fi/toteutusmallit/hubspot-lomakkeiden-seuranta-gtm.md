@@ -13,6 +13,7 @@ tags: ["HubSpot", "Google Tag Manager", "lomakkeiden seuranta", "Cloudflare Work
 image: /images/blog/hubspot-form-submission-tracking-gtm.jpeg
 imageAlt: "Silmälasipäinen sarjakuvakilpikonna tutkii HubSpot-lomaketta suurennuslasilla. Onnistunut lähetys kulkee pilvessä toimivan hakupalvelun kautta Google Tag Manager -ikkunaan."
 imageCredit: "Luotu OpenAI ImageGenillä"
+imageLicense: cc0
 alternate:
   lang: en
   href: /templates/hubspot-form-tracking-gtm/

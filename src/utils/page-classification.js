@@ -14,13 +14,13 @@ export function classifyPage(pathname, metadata = {}) {
       : ["templates", "toteutusmallit"].includes(section) ? "template" : "tool";
   } else if (["services", "palvelut"].includes(section)) pageType = parts.length === 1 ? "listing" : "service";
   else if (["about", "minusta"].includes(section)) pageType = "about";
-  else if (["privacy", "tietosuojaseloste"].includes(section)) pageType = "legal";
+  else if (["privacy", "tietosuojaseloste", "terms", "kayttoehdot"].includes(section)) pageType = "legal";
   else if (["404", "404.html"].includes(section)) pageType = "error";
 
   const primaryCategory = metadata.primaryCategory
     ?? (pageType === "article" ? metadata.category
       : pageType === "service" ? metadata.group
-      : pageType === "legal" ? "privacy"
+      : pageType === "legal" ? (["privacy", "tietosuojaseloste"].includes(section) ? "privacy" : "general")
       : ["template", "tool"].includes(pageType) ? undefined : "general");
   if (!Object.hasOwn(categories, primaryCategory)) {
     throw new Error(`${pathname}: missing or invalid primaryCategory (${primaryCategory}).`);

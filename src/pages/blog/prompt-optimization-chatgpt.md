@@ -9,6 +9,7 @@ tags: ["ChatGPT", "Gemini", "prompt engineering"]
 image: /images/blog/prompt-optimization-chatgpt.jpeg
 imageAlt: "Cartoon turtle dressed as a prompt engineer, holding a tablet between prompt and target symbols"
 imageCredit: "Generated with OpenAI ImageGen"
+imageLicense: cc0
 alternate:
   lang: fi
   href: /fi/blog/promptien-optimointijarjestelma-chatgpt/

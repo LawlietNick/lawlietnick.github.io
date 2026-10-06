@@ -9,6 +9,7 @@ tags: ["accessibility", "typography", "usability", "WCAG"]
 image: /images/blog/tekstin-tasaus-saavutettavuus.jpeg
 imageAlt: "Green cartoon turtle wearing glasses compares centered and left-aligned paragraphs"
 imageCredit: "Generated with OpenAI ImageGen"
+imageLicense: cc0
 relatedHeading: "More to read"
 alternate:
   lang: fi

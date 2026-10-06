@@ -434,3 +434,35 @@ test("every in-graph @id has one typed node; nested @id objects are bare referen
     data["@graph"].forEach((entry) => Object.values(entry).forEach(walk));
   }
 });
+
+test("image rights: all rights reserved by default, CC0 when marked, photographer holds the portrait", () => {
+  const post = (path, language, extra = {}) => graph({
+    canonicalUrl: url(path),
+    pathname: path,
+    language,
+    frontmatter: { title: "Post", image: "/images/hero.webp", ...extra },
+    personImage: { src: "/_astro/portrait.test.webp", width: 1000, height: 1250, alt: authorName },
+  });
+  const primary = (data) => data["@graph"].find((entry) => entry["@id"]?.endsWith("#primaryimage"));
+  const portrait = (data) => data["@graph"].find((entry) => entry["@id"] === `${root}#personimage`);
+
+  for (const [path, language, terms] of [["/blog/a/", "en", url("/terms/#images")], ["/fi/blog/b/", "fi", url("/fi/kayttoehdot/#images")]]) {
+    const reserved = primary(post(path, language));
+    assert.equal(reserved.license, terms);
+    assert.equal(reserved.acquireLicensePage, terms);
+    assert.equal(reserved.copyrightNotice, `© ${authorName}`);
+    assert.deepEqual(reserved.copyrightHolder, PERSON);
+
+    const free = primary(post(path, language, { imageLicense: "cc0", imageCredit: "Generated with OpenAI ImageGen" }));
+    assert.equal(free.license, "https://creativecommons.org/publicdomain/zero/1.0/");
+    assert.equal(free.creditText, "Generated with OpenAI ImageGen");
+    assert.equal("acquireLicensePage" in free || "copyrightNotice" in free || "copyrightHolder" in free, false);
+
+    const photo = portrait(post(path, language));
+    assert.deepEqual(photo.creator, { "@type": "Person", name: "Pinja Tuominen", url: "https://www.pinjasphotography.com/" });
+    assert.equal(photo.copyrightNotice, "© Pinja Tuominen");
+    assert.equal("copyrightHolder" in photo, false);
+    assert.equal(photo.license, terms);
+    assert.match(photo.creditText, language === "fi" ? /^Kuva: Pinja Tuominen/ : /^Photo: Pinja Tuominen/);
+  }
+});

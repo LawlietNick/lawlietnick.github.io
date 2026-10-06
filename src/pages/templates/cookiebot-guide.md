@@ -13,6 +13,7 @@ tags: ["Cookiebot", "Consent Mode", "GDPR", "cookie consent", "Google Tag Manage
 image: /images/blog/cookiebot-guide.jpeg
 imageAlt: "Cartoon turtle with glasses standing beside a browser window showing the Cookiebot logo and a cookie shield"
 imageCredit: "Generated with OpenAI ImageGen"
+imageLicense: cc0
 alternate:
   lang: fi
   href: /fi/toteutusmallit/cookiebot-opas/

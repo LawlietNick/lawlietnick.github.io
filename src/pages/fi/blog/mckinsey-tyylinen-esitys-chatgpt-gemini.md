@@ -10,6 +10,7 @@ tags: ["ChatGPT", "Gemini", "esitykset"]
 image: /images/blog/mckinsey-style-presentation-chatgpt-gemini.jpeg
 imageAlt: "Liikemiehen pukuun pukeutunut kilpikonna esittelee pyramidimalliin rakennettua diaa ja kaavioita valkotaululla"
 imageCredit: "Luotu OpenAI ImageGenillä"
+imageLicense: cc0
 alternate:
   lang: en
   href: /blog/mckinsey-style-presentation-chatgpt-gemini/

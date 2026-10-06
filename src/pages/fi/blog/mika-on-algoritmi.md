@@ -9,6 +9,7 @@ tags: ["algoritmit", "data", "päätöksenteko", "prosessit"]
 image: /images/blog/what-is-an-algorithm-steps-and-process.jpeg
 imageAlt: "Piirroskilpikonna osoittaa kahta taulua, joista toisessa algoritmi etenee syötteestä vaiheiden kautta tulokseen ja toisessa prosessi haarautuu ja palaa takaisin"
 imageCredit: "Luotu OpenAI ImageGenillä"
+imageLicense: cc0
 relatedHeading: "Lisää käytännönläheisiä kirjoituksia"
 about:
   - "Algoritmit"
