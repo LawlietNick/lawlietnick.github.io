@@ -7,7 +7,7 @@ import ButtonLink from "./ButtonLink.astro";
 import { showServices } from "../data/site.js";
 // Swapping the image means rewriting `featureAlt` in both languages below and
 // checking `object-position` on .hero-feature__img, which keeps the face in frame.
-import featureImg from "../assets/hero/feature.jpeg";
+import featureImg from "../assets/hero/feature.jpg";
 
 const { fi = false } = Astro.props;
 
@@ -17,14 +17,14 @@ const c = fi
       lead: "Niko Karppinen auttaa tiimejä parantamaan analytiikkaa, hakukonenäkyvyyttä ja digitaalista mittaamista.",
       ctaPrimary: "Tehdään yhteistyötä", ctaPrimaryHref: showServices ? "/fi/palvelut/" : "/fi/minusta/",
       ctaSecondary: "Lue kirjoituksia", ctaSecondaryHref: "/fi/blog/",
-      featureAlt: "Piirretty muotokuva Niko Karppisesta katsomassa suoraan kohti maaliroiskeiden edessä",
+      featureAlt: "Niko Karppinen kuvattuna ylhäältä: hän hymyilee kameraan ja pitää kiinni mustan taulunkehyksen reunoista sarjakuvamaisen rasteritaustan edessä",
     }
   : {
       pre: "Clearer measurement. ", mark: "Better", post: " decisions.",
       lead: "Niko Karppinen helps teams improve analytics, search visibility and digital measurement.",
       ctaPrimary: "Work with me", ctaPrimaryHref: showServices ? "/services/" : "/about/",
       ctaSecondary: "Read articles", ctaSecondaryHref: "/blog/",
-      featureAlt: "Illustrated portrait of Niko Karppinen looking straight ahead against paint splashes",
+      featureAlt: "Niko Karppinen seen from above, smiling up at the camera and gripping the edges of a black picture frame against a comic-style halftone background",
     };
 ---
 
@@ -112,6 +112,6 @@ const c = fi
   }
   .hero-feature__img {
     position: absolute; inset: 0;
-    width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; display: block;
   }
 </style>
