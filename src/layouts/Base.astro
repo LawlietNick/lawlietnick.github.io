@@ -7,6 +7,7 @@ import PostHero from "../components/PostHero.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import AskAI from "../components/AskAI.astro";
+import PreferredSourceCTA from "../components/PreferredSourceCTA.astro";
 import RelatedArticles from "../components/RelatedArticles.astro";
 import Postscript from "../components/Postscript.astro";
 import ReadingSignals from "../components/ReadingSignals.astro";
@@ -294,6 +295,9 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
               <ReadingSignals {fi} visual={fm.readingSignals} />
             </div>
           </article>
+          <div class="article-ending">
+            <PreferredSourceCTA {fi} />
+          </div>
           <RelatedArticles posts={relatedPosts} {fi} heading={fm.relatedHeading} />
         </>
       ) : (

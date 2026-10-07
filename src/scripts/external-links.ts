@@ -3,7 +3,7 @@ import { isExternalLink } from "../utils/external-links.js";
 // Use a decorative span so link pseudo-elements remain available.
 function updateLink(link: HTMLAnchorElement) {
   const existing = link.querySelector<HTMLElement>(".external-link-icon");
-  if (link.closest(".ask-ai, .site-footer__social, .cta, .about-employer, [role='button']") || !isExternalLink(link.getAttribute("href"), document.baseURI)) {
+  if (link.closest(".ask-ai, .site-footer__social, .cta, .preferred-source__link, .about-employer, [role='button']") || !isExternalLink(link.getAttribute("href"), document.baseURI)) {
     existing?.remove();
     return;
   }
