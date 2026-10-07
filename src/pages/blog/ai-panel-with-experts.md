@@ -4,6 +4,7 @@ title: "Use AI for multi-expert analysis with one prompt"
 documentTitle: "Use AI for multi-expert analysis with one prompt"
 description: "Turn ChatGPT or Gemini into a panel of experts. The expert panel prompt helps you get nuanced, multi-angle insights instead of generic AI summaries."
 date: 2025-11-09
+updatedDate: 2026-10-06
 category: ai-prompting
 tags: ["ChatGPT", "Gemini", "prompt engineering", "AI workflows"]
 image: /images/blog/ai-panel-with-experts.jpeg
@@ -59,67 +60,54 @@ Before you run the prompt, set up six short pieces of context. This is where mos
    Tell the model which language to write the discussion in.  
    *Example: English, Finnish, or bilingual output.*
 
-Once you have these six defined, you’re ready to paste the full prompt into your AI tool and start the simulated panel.
+Once you have these six defined, you’re ready to fill them into the prompt.
 
 
 ---
 
 ## Step 2. Run the prompt
 
-Paste the full template below into your AI tool of choice (ChatGPT, Claude, Gemini, etc.).
+Copy the template below, fill in the six fields at the top, and paste it into your AI tool of choice (ChatGPT, Claude, Gemini, etc.). If you leave a field empty, the AI asks for it before starting.
 
-The AI will first ask you for the six inputs. After that, it will generate a 500–700 word simulated discussion where each expert responds to the others, references previous points, and adjusts their stance as the conversation moves forward.
+The AI then writes a 500–700 word discussion where the experts respond to each other by name, push back on weak points, and change their view when someone makes a better argument.
 
-The panel ends with one clear recommendation that reflects realistic trade-offs between theory, day to day execution, and innovation.
+The panel ends with a moderator summary and one concrete recommendation, including the condition under which it would be the wrong call.
 
 ```markdown
-**[System Instruction/Role Assignment]**
+<inputs>
+Topic:
+Central question:
+Expert A (role and focus):
+Expert B (role and focus):
+Expert C (role and focus):
+Output language:
+</inputs>
 
-You are the AI Dialogue Generator, Mx. Talk, tasked with simulating a professional expert panel discussion. Your primary goal is to generate an analytical, progressive, multi-perspective conversation that adheres strictly to the input and constraints provided below.
+<task>
+Simulate a panel discussion between the three experts above. I will use it to decide the central question, so I need the real trade-offs, not a balanced summary. Each expert argues from their own incentives and priorities. The value of the panel comes from where they disagree.
 
-**[USER INPUT - MANDATORY DATA GATHERING]**
+If any field in <inputs> is empty, ask me for the missing fields in one short message and wait for my answer. Otherwise, start right away.
+</task>
 
-You **must** wait for the user to provide the following six pieces of information before proceeding with the simulation:
+<structure>
+1. Opening: each expert states their position and their biggest concern in two or three sentences.
+2. Exchange: the experts respond to each other by name, challenge weak points, and concede when another expert makes a better argument. Every turn adds something new: an argument, a risk, a counterexample, or a concession.
+3. Close: a moderator sums up where the panel agreed, what they traded off, and what is still unresolved. Then the moderator gives one specific recommendation with a concrete first step, and names the main condition under which it would be the wrong call.
+</structure>
 
-1.  **Topic:** [The precise subject matter, e.g., 'The Future of Remote Work']
+<guidelines>
+- Keep the disagreement real. Don't let the experts drift into polite consensus before the close.
+- Support claims with reasoning and concrete examples. Don't invent statistics or sources. If a number matters, say what would need to be checked.
+- Write the turns as people would speak in a room, not as bullet lists.
+</guidelines>
 
-2.  **Central Question:** [The specific problem/question the panel must answer, e.g., 'How can mid-sized companies maintain culture and innovation in a fully distributed model?']
-
-3.  **Expert A - Role & Focus:** [Specify the background AND core viewpoint, e.g., 'Organizational Psychologist - Focus on team cohesion and individual well-being.']
-
-4.  **Expert B - Role & Focus:** [Specify the background AND core viewpoint, e.g., 'Chief Financial Officer (CFO) - Focus on overhead costs and long-term financial viability.']
-
-5.  **Expert C - Role & Focus:** [Specify the background AND core viewpoint, e.g., 'Technology Implementation Consultant - Focus on security, tool stacks, and operational efficiency.']
-
-6.  **Preferred Output Language:** [e.g., Finnish English]
-
-**[Discussion Framework: Structure & Flow]**
-
-Upon receiving the 6 required inputs, immediately begin the simulation in the specified language, strictly adhering to this structure:
-
-1.  **Opening Statements (3 sentences max each):** Each expert concisely outlines their initial position, a key concern, or a core thesis based on their assigned focus.
-
-2.  **Interactive Exchange (Core Dialogue):**
-
-    * Experts must **reference and respond directly** to the prior speaker's arguments, using their professional lens to challenge or support the point.
-
-    * The conversation must **build progressively**, demonstrating critical insight evolution and avoiding isolated monologues.
-
-    * Use reasoning, brief data points, or concise, relevant examples to support assertions.
-
-3.  **Conclusion & Recommendation:**
-
-    * Summarize the primary consensus, key compromise, or core tensions identified.
-
-    * Conclude with **ONE** specific, actionable recommendation that balances theory, practicality, and innovation.
-
-**[Output Constraints]**
-
-* **Tone:** Professional, informed, and conversational.
-
-* **Format:** Present the discussion as a continuous, flowing dialogue, using the expert's name/role as a label (e.g., "Psychologist:", "CFO:").
-
-* **Length:** Target **500–700 words** total for the discussion.
-
-**Simulate the panel discussion now, using the provided information, starting with Expert A's opening statement.**
+<format>
+Write the whole discussion in the output language. Label each turn with the speaker's role in bold, for example **CFO:**, and use **Moderator:** for the close. Aim for 500–700 words.
+</format>
 ```
+
+## Why the prompt is written this way
+
+- **Plain instructions with a reason.** Current Claude and ChatGPT models follow instructions literally. Explaining *why* (you need trade-offs for a decision) works better than capital letters and words like "must" and "strictly".
+- **Tagged sections.** The XML-style tags keep your inputs separate from the instructions. Both Claude and ChatGPT read them reliably.
+- **No made-up data.** The old version asked for "brief data points", which invites invented numbers. Now the panel flags what needs checking instead.

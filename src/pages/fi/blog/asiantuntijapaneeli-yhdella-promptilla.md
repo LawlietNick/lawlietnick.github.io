@@ -4,6 +4,7 @@ title: "Käytä tekoälyä asiantuntijapaneelina yhdellä promptilla"
 documentTitle: "Käytä tekoälyä asiantuntijapaneelina yhdellä promptilla"
 description: "Muuta ChatGPT tai Gemini asiantuntijapaneeliksi yhdellä promptilla. Saat useamman näkökulman vastauksia geneeristen yhteenvetojen sijaan."
 date: 2025-11-09
+updatedDate: 2026-10-06
 category: ai-prompting
 tags: ["ChatGPT", "Gemini", "promptit", "tekoäly"]
 image: /images/blog/ai-panel-with-experts.jpeg
@@ -59,66 +60,53 @@ Ennen kuin ajat promptin, määrittele kuusi lyhyttä taustatietoa. Suurin osa l
    Kerro, millä kielellä keskustelu kirjoitetaan.  
    *Esimerkki: suomi, englanti tai kaksikielinen vastaus.*
 
-Kun nämä kuusi kohtaa ovat valmiina, voit liittää koko promptipohjan valitsemaasi tekoälytyökaluun.
+Kun nämä kuusi kohtaa ovat valmiina, voit täyttää ne promptiin.
 
 ---
 
 ## Vaihe 2. Aja prompti
 
-Liitä alla oleva pohja valitsemaasi tekoälytyökaluun, esimerkiksi ChatGPT:hen, Claudeen tai Geminiin.
+Kopioi alla oleva pohja, täytä sen alussa olevat kuusi kenttää ja liitä se valitsemaasi tekoälytyökaluun, esimerkiksi ChatGPT:hen, Claudeen tai Geminiin. Jos jätät kentän tyhjäksi, tekoäly kysyy sitä ennen aloittamista.
 
-Tekoäly pyytää ensin kuusi lähtötietoa. Sen jälkeen se tuottaa 500–700 sanan simuloidun keskustelun, jossa jokainen asiantuntija reagoi toisten kommentteihin, viittaa aiempiin huomioihin ja tarkentaa kantaansa keskustelun edetessä.
+Tämän jälkeen tekoäly kirjoittaa 500–700 sanan keskustelun. Siinä asiantuntijat vastaavat toisilleen nimeltä, haastavat heikkoja perusteluja ja muuttavat kantaansa, kun joku esittää paremman argumentin.
 
-Paneeli päättyy yhteen selkeään suositukseen, jossa huomioidaan realistiset kompromissit teorian, arjen toteutuksen ja uuden kehittämisen välillä.
+Paneeli päättyy moderaattorin yhteenvetoon ja yhteen konkreettiseen suositukseen. Suosituksessa kerrotaan myös, missä tilanteessa se olisi väärä valinta.
 
 ```markdown
-**[Järjestelmäohje / roolitus]**
+<inputs>
+Aihe:
+Pääkysymys:
+Asiantuntija A (rooli ja näkökulma):
+Asiantuntija B (rooli ja näkökulma):
+Asiantuntija C (rooli ja näkökulma):
+Vastauskieli:
+</inputs>
 
-Olet tekoälypohjainen dialogigeneraattori, Mx. Talk. Tehtäväsi on simuloida ammatillista asiantuntijapaneelia. Päätavoitteesi on tuottaa analyyttinen, etenevä ja moniääninen keskustelu, joka noudattaa tarkasti alla annettuja lähtötietoja ja rajoitteita.
+<task>
+Simuloi paneelikeskustelu yllä mainittujen kolmen asiantuntijan välillä. Käytän keskustelua pääkysymystä koskevan päätöksen tukena, joten tarvitsen todelliset kompromissit enkä tasapainoista yhteenvetoa. Jokainen asiantuntija perustelee omista lähtökohdistaan ja prioriteeteistaan. Paneelin arvo syntyy kohdista, joissa he ovat eri mieltä.
 
-**[KÄYTTÄJÄN LÄHTÖTIEDOT, PAKOLLINEN TIEDONKERUU]**
+Jos jokin <inputs>-kenttä on tyhjä, kysy puuttuvia tietoja yhdellä lyhyellä viestillä ja odota vastaustani. Muuten aloita heti.
+</task>
 
-Sinun **täytyy** odottaa, että käyttäjä antaa seuraavat kuusi tietoa ennen keskustelun aloittamista:
+<structure>
+1. Avaus: jokainen asiantuntija kertoo kantansa ja suurimman huolensa kahdella tai kolmella virkkeellä.
+2. Keskustelu: asiantuntijat vastaavat toisilleen nimeltä, haastavat heikkoja kohtia ja myöntävät, kun toinen esittää paremman argumentin. Jokainen puheenvuoro tuo jotain uutta: perustelun, riskin, vastaesimerkin tai myönnytyksen.
+3. Lopetus: moderaattori kokoaa, mistä paneeli oli samaa mieltä, mistä se joutui tinkimään ja mikä jäi auki. Sen jälkeen moderaattori antaa yhden tarkan suosituksen ja konkreettisen ensimmäisen askeleen sekä nimeää tärkeimmän tilanteen, jossa suositus olisi väärä valinta.
+</structure>
 
-1. **Aihe:** [Tarkka aihe, esimerkiksi ”Etätyön tulevaisuus”]
+<guidelines>
+- Pidä erimielisyys aitona. Älä anna asiantuntijoiden liukua kohteliaaseen yksimielisyyteen ennen lopetusta.
+- Tue väitteitä perusteluilla ja konkreettisilla esimerkeillä. Älä keksi tilastoja tai lähteitä. Jos jokin luku on tärkeä, kerro, mikä pitäisi tarkistaa.
+- Kirjoita puheenvuorot niin kuin ihmiset puhuisivat samassa huoneessa, ei luetteloina.
+</guidelines>
 
-2. **Pääkysymys:** [Tarkka ongelma tai kysymys, johon paneelin pitää vastata, esimerkiksi ”Miten keskisuuret yritykset voivat säilyttää kulttuurin ja innovaation täysin hajautetussa työmallissa?”]
-
-3. **Asiantuntija A, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi ”Organisaatiopsykologi, keskittyy tiimin yhtenäisyyteen ja yksilöiden hyvinvointiin.”]
-
-4. **Asiantuntija B, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi ”Talousjohtaja, keskittyy kustannuksiin ja pitkän aikavälin taloudelliseen kestävyyteen.”]
-
-5. **Asiantuntija C, rooli ja näkökulma:** [Määrittele tausta JA ydinnäkökulma, esimerkiksi ”Teknisen toteutuksen konsultti, keskittyy tietoturvaan, työkaluihin ja operatiiviseen tehokkuuteen.”]
-
-6. **Toivottu vastauskieli:** [Esimerkiksi suomi, englanti tai kaksikielinen vastaus]
-
-**[Keskustelun rakenne ja eteneminen]**
-
-Kun olet saanut kaikki kuusi pakollista lähtötietoa, aloita simulaatio heti valitulla kielellä ja noudata tätä rakennetta:
-
-1. **Avauspuheenvuorot, enintään 3 virkettä per asiantuntija:** Jokainen asiantuntija esittää lyhyesti alkuperäisen kantansa, keskeisen huolensa tai pääväitteensä oman näkökulmansa perusteella.
-
-2. **Vuorovaikutteinen keskustelu:**
-
-   * Asiantuntijoiden täytyy **viitata suoraan aiempien puhujien väitteisiin ja vastata niihin** oman ammatillisen näkökulmansa kautta.
-
-   * Keskustelun täytyy **edetä rakentavasti**, näyttää ajattelun kehittymistä ja välttää irrallisia monologeja.
-
-   * Käytä perusteluja, lyhyitä datapisteitä tai napakoita esimerkkejä väitteiden tukena.
-
-3. **Yhteenveto ja suositus:**
-
-   * Tiivistä tärkein yhteisymmärrys, keskeinen kompromissi tai keskustelussa esiin noussut jännite.
-
-   * Päätä keskustelu **yhteen** konkreettiseen ja toteuttamiskelpoiseen suositukseen, joka tasapainottaa teorian, käytännön ja uuden kehittämisen.
-
-**[Vastauksen rajoitteet]**
-
-* **Sävy:** Ammatillinen, asiantunteva ja keskusteleva.
-
-* **Muoto:** Esitä keskustelu yhtenä etenevänä dialogina. Käytä puhujan roolia tunnisteena, esimerkiksi ”Organisaatiopsykologi:” tai ”Talousjohtaja:”.
-
-* **Pituus:** Tavoittele 500–700 sanaa koko keskustelulle.
-
-**Simuloi asiantuntijapaneeli nyt annettujen tietojen perusteella. Aloita asiantuntija A:n avauspuheenvuorolla.**
+<format>
+Kirjoita koko keskustelu valitulla vastauskielellä. Merkitse jokainen puheenvuoro puhujan roolilla lihavoituna, esimerkiksi **Talousjohtaja:**, ja käytä lopetuksessa merkintää **Moderaattori:**. Tavoittele 500–700 sanaa.
+</format>
 ```
+
+## Miksi prompti on kirjoitettu näin
+
+- **Selkeät ohjeet ja perustelu.** Nykyiset Claude- ja ChatGPT-mallit noudattavat ohjeita kirjaimellisesti. Kun kerrot, *miksi* (tarvitset kompromissit päätöksen tueksi), tulos on parempi kuin isoilla kirjaimilla ja sanoilla ”täytyy” ja ”tarkasti”.
+- **Tageilla erotetut osiot.** XML-tyyliset tagit pitävät lähtötietosi erillään ohjeista. Sekä Claude että ChatGPT lukevat ne luotettavasti.
+- **Ei keksittyä dataa.** Vanha versio pyysi ”lyhyitä datapisteitä”, mikä houkuttelee keksimään lukuja. Nyt paneeli kertoo, mitä pitäisi tarkistaa.
