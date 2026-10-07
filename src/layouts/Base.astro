@@ -7,7 +7,6 @@ import PostHero from "../components/PostHero.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import AskAI from "../components/AskAI.astro";
-import PreferredSourceCTA from "../components/PreferredSourceCTA.astro";
 import RelatedArticles from "../components/RelatedArticles.astro";
 import Postscript from "../components/Postscript.astro";
 import ReadingSignals from "../components/ReadingSignals.astro";
@@ -126,8 +125,11 @@ const {
   hasLanguageAlternate,
   postWithoutTranslation,
 } = resolveLanguageLinks({ currentPath, isFinnish: fi, frontmatter: fm, alternate });
-const enLanguageHref = noindex ? (fi ? "/" : currentPath) : enPath;
-const fiLanguageHref = noindex ? (fi ? currentPath : "/fi/") : fiPath;
+// a 404 has no page to switch to, so both languages lead to their homepage
+// (the EN 404 builds to /404.html, so /404/ would be a broken link)
+const is404 = currentPath === "/404/" || currentPath === "/fi/404/";
+const enLanguageHref = noindex ? (fi || is404 ? "/" : currentPath) : enPath;
+const fiLanguageHref = noindex ? (fi && !is404 ? currentPath : "/fi/") : fiPath;
 const effectiveHasLanguageAlternate = noindex ? false : hasLanguageAlternate;
 const effectivePostWithoutTranslation = noindex ? true : postWithoutTranslation;
 const hreflang = Astro.site && effectiveHasLanguageAlternate;
@@ -265,6 +267,7 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
       postWithoutTranslation={effectivePostWithoutTranslation}
     />
 
+    <!-- Skip-link target: focusable on demand, excluded from sequential tab order. -->
     <main class="container" id="main" tabindex="-1">
       {fm ? (
         <>
@@ -291,9 +294,6 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
               <ReadingSignals {fi} visual={fm.readingSignals} />
             </div>
           </article>
-          <div class="article-ending">
-            <PreferredSourceCTA {fi} />
-          </div>
           <RelatedArticles posts={relatedPosts} {fi} heading={fm.relatedHeading} />
         </>
       ) : (
@@ -315,6 +315,8 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
     />
 
     <script>
+      import "../scripts/external-links";
+
       // Check the DOM, not just fm: tools can have copyable code blocks too.
       document.addEventListener("astro:page-load", async () => {
         const root = document.body;

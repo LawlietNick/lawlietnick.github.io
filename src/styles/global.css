@@ -543,9 +543,30 @@ picture { display: contents; }
   margin-block: 2.2rem 0.8rem;
 }
 
+/* One shared asset; currentColor follows each link's theme and hover state.
+   A span avoids clobbering CTA effects and print URL pseudo-elements. */
+.external-link-icon {
+  --external-link-icon: url("/icons/arrow-up-right.svg");
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: 0 0 1em;
+  margin-inline-start: 0.25em;
+  vertical-align: -0.1em;
+  background-color: currentColor;
+  -webkit-mask: var(--external-link-icon) center / contain no-repeat;
+  mask: var(--external-link-icon) center / contain no-repeat;
+}
+
+@media print {
+  .external-link-icon { display: none; }
+}
+
 /* content links: multiline comic highlight with a delayed yellow underline.
-   `.content-links` opts any block outside prose (e.g. tool pages) into the same style. */
-:is(.prose, .content-links) a {
+   `.content-links` opts any block outside prose (e.g. tool pages) into the same style.
+   `.content-link` applies it to a text label inside a larger link with an icon. */
+:is(.prose, .content-links) a,
+.content-link {
   --link-hover-color: light-dark(oklch(44% 0.22 286), oklch(64% 0.16 286));
   --link-hover-background: color-mix(in oklab, var(--accent) 11%, var(--bg));
   --link-underline-thickness: 0.075em;
@@ -580,7 +601,8 @@ picture { display: contents; }
     box-shadow 1400ms var(--link-ease) 180ms;
 }
 
-:is(.prose, .content-links) a:is(:hover, :focus-visible) {
+:is(.prose, .content-links) a:is(:hover, :focus-visible),
+a:is(:hover, :focus-visible) > .content-link {
   color: var(--link-hover-color);
   background-color: var(--link-hover-background);
   background-position:
@@ -937,6 +959,27 @@ picture { display: contents; }
   font-weight: 600;
 }
 
+/* global strong (520) is lighter than the semibold first column, so a
+   highlighted row would read as de-emphasized without this step up */
+.prose td strong {
+  font-weight: var(--font-weight-bold);
+}
+
+/* a totals row closes the panel: heavy rule above it, mirroring the header */
+.prose tfoot :is(td, td:first-child) {
+  border-top: 2px solid var(--ink);
+  font-weight: var(--font-weight-bold);
+  background: var(--color-accent-panel);
+}
+
+.prose tfoot tr:last-child td:first-child {
+  border-bottom-left-radius: calc(var(--radius-md) - 1px);
+}
+
+.prose tfoot tr:last-child td:last-child {
+  border-bottom-right-radius: calc(var(--radius-md) - 1px);
+}
+
 .prose tbody tr:nth-child(odd) {
   background: color-mix(in srgb, var(--accent) 4%, transparent);
 }
@@ -950,14 +993,34 @@ picture { display: contents; }
 }
 
 @media (max-width: 32rem) {
+  /* auto layout sizes columns by content, so short numeric columns give
+     their width to text. Words wrap at spaces and hyphenate; break-word
+     (unlike anywhere) keeps a column from collapsing to a few letters */
   .prose table {
-    table-layout: fixed;
     font-size: 0.82rem;
   }
 
   .prose :is(th, td) {
     padding: 0.55rem 0.45rem;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* tracked uppercase headers are the widest words in a narrow table */
+  .prose th {
+    letter-spacing: 0;
+  }
+
+  /* long identifiers and URLs are what actually overflow: they may break
+     anywhere, but never take a hyphen that would change the code */
+  .prose td code {
     overflow-wrap: anywhere;
+    hyphens: manual;
+  }
+
+  .prose td[style*="text-align: right"] {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 }
 

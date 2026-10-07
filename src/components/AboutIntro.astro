@@ -67,7 +67,7 @@ const c = fi
 
   <div class="about-hero__media">
     <div class="about-hero__frame">
-      <Picture src={portrait} alt={c.portraitAlt} widths={[360, 540, 720]} sizes="(min-width: 46rem) 22rem, 80vw" />
+      <Picture src={portrait} alt={c.portraitAlt} widths={[360, 540, 720]} sizes="(min-width: 46rem) 22rem, 80vw" loading="eager" fetchpriority="high" />
     </div>
     <span class="about-badge about-badge--status">
       <span class="about-badge__dot" aria-hidden="true"></span>{c.status}

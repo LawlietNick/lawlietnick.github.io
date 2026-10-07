@@ -77,14 +77,26 @@ Taulukossa aineistoa voidaan rajata koko sivustosta yhä tarkempaan vertailuryhm
 
 Koko sivuston luku kertoo käytön kokonaismäärän, mutta ei sitä, mitä sisältöjä käytetään. Sivutyyppi ja pääaihe rajaavat aineistoa kumpikin omalla tavallaan: sivutyypillä voidaan tarkastella esimerkiksi kaikkia palvelusivuja, ja pääaiheen avulla aihealueesta vastaava henkilö näkee oman kokonaisuutensa käytön.
 
-Kun rajaukset yhdistetään, päivähoitopaikan hakeminen saa vertailuryhmän sivuista, joilla on sekä samankaltainen tehtävä että yhteinen aihealue. Yksittäistä sivua voidaan tarkastella tämän ryhmän sisällä. Kuvitteellisen esimerkin 12 000 katselua voisivat jakautua näin:
+Kun rajaukset yhdistetään, päivähoitopaikan hakeminen saa vertailuryhmän sivuista, joilla on sekä samankaltainen tehtävä että yhteinen aihealue. Yksittäistä sivua voidaan tarkastella tämän ryhmän sisällä.
 
-| Varhaiskasvatuksen ja koulutuksen palvelusivu | Sivukatselut |
-|---|---:|
-| Päivähoitopaikan hakeminen | 3 600 |
-| Esiopetukseen ilmoittautuminen | 4 200 |
-| Kouluun ilmoittautuminen | 2 900 |
-| Koulukuljetuksen hakeminen | 1 300 |
+Kun raportti rajataan palvelusivuihin, joiden pääaihe on varhaiskasvatus ja koulutus, jäljelle jää neljä sivua. Kuvitteellisen esimerkin 12 000 katselua jakautuisivat niille näin:
+
+<table>
+  <thead>
+    <tr><th>Sivu</th><th style="text-align: right">Sivukatselut</th><th style="text-align: right">Osuus ryhmästä</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Esiopetukseen ilmoittautuminen</td><td style="text-align: right">4 200</td><td style="text-align: right">35 %</td></tr>
+    <tr><td><strong>Päivähoitopaikan hakeminen</strong></td><td style="text-align: right"><strong>3 600</strong></td><td style="text-align: right"><strong>30 %</strong></td></tr>
+    <tr><td>Kouluun ilmoittautuminen</td><td style="text-align: right">2 900</td><td style="text-align: right">24 %</td></tr>
+    <tr><td>Koulukuljetuksen hakeminen</td><td style="text-align: right">1 300</td><td style="text-align: right">11 %</td></tr>
+  </tbody>
+  <tfoot>
+    <tr><td>Yhteensä</td><td style="text-align: right">12 000</td><td style="text-align: right">100 %</td></tr>
+  </tfoot>
+</table>
+
+Pelkkä luku 3 600 ei kerro paljon. Ryhmässä näkyy, että päivähoitopaikan hakeminen on toiseksi katsotuin palvelu ja sen osuus on lähes kolmannes.
 
 Nyt päivähoitopaikan hakemista voidaan tarkastella suhteessa muihin saman ryhmän sivuihin. Jos katselut muuttuvat, voidaan selvittää, näkyykö vastaava muutos myös muilla sivuilla vai koskeeko se vain tätä palvelua.
 

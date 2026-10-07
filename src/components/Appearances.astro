@@ -38,11 +38,11 @@ const languageNames = new Intl.DisplayNames([language], { type: "language" });
           <Badge class="appearance__type">Podcast</Badge>
           <span class="appearance__language">{languageNames.of(appearance.inLanguage)}</span>
         </div>
-        <div class="appearance__body">
+        <div class="appearance__body content-links">
           <h3>{appearance.name}</h3>
           <p>{appearance[language].description}</p>
           <a class="appearance__link" href={appearance.url}>
-            {t.link} <span aria-hidden="true">→</span>
+            {t.link}
           </a>
         </div>
       </article>
@@ -97,25 +97,6 @@ const languageNames = new Intl.DisplayNames([language], { type: "language" });
     max-width: 58ch;
     margin: 0.5rem 0 0.9rem;
     color: var(--muted);
-  }
-  .appearance__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: var(--accent);
-    font-weight: 650;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 0.2em;
-    transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out);
-  }
-  .appearance__link span { transition: transform var(--duration-base) var(--ease-snap); }
-  .appearance__link:hover { text-decoration-color: currentColor; }
-  .appearance__link:hover span { transform: translateX(0.2rem); }
-  .appearance__link:focus-visible {
-    outline: 3px solid var(--pop);
-    outline-offset: 4px;
-    border-radius: var(--radius-xs);
   }
   @container page (min-width: 46rem) {
     .appearances {
