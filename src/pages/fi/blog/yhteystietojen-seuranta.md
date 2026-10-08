@@ -156,7 +156,7 @@ Tässä seurannassa tarkastellaan yrityksen omalla verkkosivustolla julkaistujen
 
 Seurattava arvo voi olla esimerkiksi:
 
-`info@company.com`
+<p><!--email_off--><code>info@company.com</code><!--/email_off--></p>
 
 tai yrityksen yleinen puhelinnumero.
 

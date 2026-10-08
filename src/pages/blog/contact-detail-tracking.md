@@ -110,7 +110,7 @@ A report could then show `contact_detail_interaction` events where `contact_deta
 
 This tracking examines how people use contact details published on the business's own website.
 
-The tracked value could be `info@company.com` or the business's general phone number. These are contact details published by the business. A visitor's own email address or phone number is outside the scope of this tracking and should not be collected by it.
+The tracked value could be <!--email_off-->`info@company.com`<!--/email_off--> or the business's general phone number. These are contact details published by the business. A visitor's own email address or phone number is outside the scope of this tracking and should not be collected by it.
 
 For reporting, the actual email address or phone number does not necessarily need to be used as a parameter. Classifying contact details as sales or customer service, for example, often makes the report easier to interpret too.
 
