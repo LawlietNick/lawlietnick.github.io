@@ -5,7 +5,7 @@ documentTitle: "Contact detail tracking: what link clicks miss"
 description: "Tracking email and phone link clicks alone can give an incomplete picture of contact detail use. Check what your reports actually measure."
 date: 2026-10-08
 category: analytics
-tags: ["GA4", "contact detail tracking", "marketing measurement"]
+tags: ["event tracking", "contact detail tracking", "marketing measurement"]
 image: /images/blog/contact-detail-clicks-and-copy-tracking.jpeg
 imageAlt: "A green turtle character examines a contact detail report through a magnifying glass, revealing email address and phone number copy events alongside link clicks."
 imageCredit: "Generated with OpenAI ImageGen"

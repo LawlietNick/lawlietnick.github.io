@@ -5,7 +5,7 @@ documentTitle: "Yhteystietojen seuranta: mitä klikkaukset eivät kerro?"
 description: "Pelkkä sähköposti- ja puhelinlinkkien klikkausseuranta voi antaa vajaan kuvan yhteystietojen käytöstä. Tarkista, mitä raporttisi todella mittaa."
 date: 2026-10-08
 category: analytics
-tags: ["GA4", "yhteystietojen seuranta", "markkinoinnin mittaaminen"]
+tags: ["tapahtumaseuranta", "yhteystietojen seuranta", "markkinoinnin mittaaminen"]
 image: /images/blog/contact-detail-clicks-and-copy-tracking.jpeg
 imageAlt: "Vihreä kilpikonnahahmo tutkii suurennuslasilla yhteystietojen käyttöä kuvaavaa näkymää, jossa sähköposti- ja puhelinlinkkien klikkausten lisäksi paljastuvat myös yhteystietojen kopiointitapahtumat."
 imageCredit: "Luotu OpenAI ImageGenillä"
