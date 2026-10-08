@@ -210,7 +210,8 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
     <link rel="preload" href="/fonts/roboto-flex.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
     <!-- favicons -->
-    <link rel="icon" href="/nk-logo.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/nk-logo.svg" />
     <!-- scripts: theme init is intentionally render-blocking (end-of-head still runs before first paint) -->
     <script is:inline>
       // Resolve the theme preference (system|light|dark) before first paint to avoid a flash,
