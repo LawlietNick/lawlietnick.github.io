@@ -262,26 +262,26 @@ Keskitetty teksti toimii lyhyissä, erillisissä elementeissä, joiden tehtävä
 
 ## Lähteet
 
-- **Vertaisarvioitu tutkimus:** Ling, J. & van Schaik, P. (2007). [*The influence of line spacing and text alignment on visual search of web pages*](https://doi.org/10.1016/j.displa.2007.04.003). Displays, 28(2), 60–67. Tutkimus käsittelee vasemmalle tasatun ja molempiin reunoihin tasatun tekstin vaikutuksia visuaaliseen hakuun.
+- **Vertaisarvioitu tutkimus:** Ling, J. & van Schaik, P. (2007). <a href="https://doi.org/10.1016/j.displa.2007.04.003" lang="en" hreflang="en"><em>The influence of line spacing and text alignment on visual search of web pages</em></a>. Displays, 28(2), 60–67. Tutkimus käsittelee vasemmalle tasatun ja molempiin reunoihin tasatun tekstin vaikutuksia visuaaliseen hakuun.
 
-- **Suora vasemmalle tasaus vs. keskitys -vertailu:** Figueroa, I., Rivas, A. & Wang, L. (2022). [*Mobile Survey Design Research - Experiment 13: Text Alignment*](https://www.census.gov/library/working-papers/2022/adrm/rsm2022-05.html). U.S. Census Bureau. Tutkimuksessa ei havaittu merkitsevää eroa lukunopeudessa tai ymmärtämisessä, mutta 80 % osallistujista suosi vasemmalle tasausta.
+- **Suora vasemmalle tasaus vs. keskitys -vertailu:** Figueroa, I., Rivas, A. & Wang, L. (2022). <a href="https://www.census.gov/library/working-papers/2022/adrm/rsm2022-05.html" lang="en" hreflang="en"><em>Mobile Survey Design Research - Experiment 13: Text Alignment</em></a>. U.S. Census Bureau. Tutkimuksessa ei havaittu merkitsevää eroa lukunopeudessa tai ymmärtämisessä, mutta 80 % osallistujista suosi vasemmalle tasausta.
 
-- **Vertaisarvioitu silmänliiketutkimus:** Scaltritti, M., Miniukovich, A., Venuti, P. et al. (2019). [*Investigating Effects of Typographic Variables on Webpage Reading Through Eye Movements*](https://doi.org/10.1038/s41598-019-49051-x). Scientific Reports, 9, 12711. Suurempi vasemmalle tasatun tekstin osuus liittyi pienempään fiksaatiomäärään todellisia verkkosivuja luettaessa.
+- **Vertaisarvioitu silmänliiketutkimus:** Scaltritti, M., Miniukovich, A., Venuti, P. et al. (2019). <a href="https://doi.org/10.1038/s41598-019-49051-x" lang="en" hreflang="en"><em>Investigating Effects of Typographic Variables on Webpage Reading Through Eye Movements</em></a>. Scientific Reports, 9, 12711. Suurempi vasemmalle tasatun tekstin osuus liittyi pienempään fiksaatiomäärään todellisia verkkosivuja luettaessa.
 
-- **Vertaisarvioitu tutkimussarja:** Coll, J. H., Fjermestad, J. & Coll, R. (1998). [*An eight experiment sequence to determine reading equality*](https://doi.org/10.1016/S0378-7206(98)00059-7). Information & Management, 34(4), 231–242. Kahdeksan kokeen sarjassa tasaustapojen välillä löytyi vain yksi merkitsevä ero lukuajassa eikä merkitseviä eroja muistamisessa.
+- **Vertaisarvioitu tutkimussarja:** Coll, J. H., Fjermestad, J. & Coll, R. (1998). <a href="https://doi.org/10.1016/S0378-7206(98)00059-7" lang="en" hreflang="en"><em>An eight experiment sequence to determine reading equality</em></a>. Information & Management, 34(4), 231–242. Kahdeksan kokeen sarjassa tasaustapojen välillä löytyi vain yksi merkitsevä ero lukuajassa eikä merkitseviä eroja muistamisessa.
 
-- **WCAG-standardi:** W3C. [*Web Content Accessibility Guidelines 2.2*](https://www.w3.org/TR/WCAG22/). Onnistumiskriteerit 1.4.4, 1.4.8 ja 1.4.10.
+- **WCAG-standardi:** W3C. <a href="https://www.w3.org/TR/WCAG22/" lang="en" hreflang="en"><em>Web Content Accessibility Guidelines 2.2</em></a>. Onnistumiskriteerit 1.4.4, 1.4.8 ja 1.4.10.
 
-- **W3C:n selittävä ohje:** W3C. [*Understanding Success Criterion 1.4.8: Visual Presentation*](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html). Selitys tekstiblokkien visuaalista esitystä koskevalle AAA-tason kriteerille.
+- **W3C:n selittävä ohje:** W3C. <a href="https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html" lang="en" hreflang="en"><em>Understanding Success Criterion 1.4.8: Visual Presentation</em></a>. Selitys tekstiblokkien visuaalista esitystä koskevalle AAA-tason kriteerille.
 
-- **W3C:n opetussisältö:** W3C Web Accessibility Initiative. [*Page Structure Tutorial*](https://www.w3.org/WAI/tutorials/page-structure/). Ohje verkkosisällön selkeästä rakenteesta ja esittämisestä.
+- **W3C:n opetussisältö:** W3C Web Accessibility Initiative. <a href="https://www.w3.org/WAI/tutorials/page-structure/" lang="en" hreflang="en"><em>Page Structure Tutorial</em></a>. Ohje verkkosisällön selkeästä rakenteesta ja esittämisestä.
 
-- **W3C-työryhmän informatiivinen ohje:** Low Vision Accessibility Task Force. [*Supplemental Guidance: Text Justification*](https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Supplemental_Guidance%3A_Text_Justification). Täydentävä ohje keskitetyn ja molempiin reunoihin tasatun tekstin käytöstä; ei itsenäinen WCAG-vaatimus.
+- **W3C-työryhmän informatiivinen ohje:** Low Vision Accessibility Task Force. <a href="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Supplemental_Guidance%3A_Text_Justification" lang="en" hreflang="en"><em>Supplemental Guidance: Text Justification</em></a>. Täydentävä ohje keskitetyn ja molempiin reunoihin tasatun tekstin käytöstä; ei itsenäinen WCAG-vaatimus.
 
-- **Saavutettavuusorganisaation käytännön ohje:** WebAIM. [*Text/Typographical Layout*](https://webaim.org/techniques/textlayout/). Ohje tekstin tasauksesta, rivin pituudesta ja tyhjästä tilasta.
+- **Saavutettavuusorganisaation käytännön ohje:** WebAIM. <a href="https://webaim.org/techniques/textlayout/" lang="en" hreflang="en"><em>Text/Typographical Layout</em></a>. Ohje tekstin tasauksesta, rivin pituudesta ja tyhjästä tilasta.
 
-- **Saavutettavuusorganisaation tyyliopas:** British Dyslexia Association. [*Dyslexia Style Guide 2023*](https://cdn.bdadyslexia.org.uk/uploads/documents/Advice/style-guide/BDA-Style-Guide-2023.pdf?v=1680084017). Suosituksia vasemmalle tasauksesta, rivin pituudesta ja dokumentin rakenteesta.
+- **Saavutettavuusorganisaation tyyliopas:** British Dyslexia Association. <a href="https://cdn.bdadyslexia.org.uk/uploads/documents/Advice/style-guide/BDA-Style-Guide-2023.pdf?v=1680084017" lang="en" hreflang="en"><em>Dyslexia Style Guide 2023</em></a>. Suosituksia vasemmalle tasauksesta, rivin pituudesta ja dokumentin rakenteesta.
 
-- **Käytännön asiantuntijalähde:** Bureau of Internet Accessibility. [*Why Justified (or Centered) Text is Bad for Accessibility*](https://www.boia.org/blog/why-justified-or-centered-text-is-bad-for-accessibility). Tulkinta keskitetyn ja molempiin reunoihin tasatun tekstin saavutettavuusvaikutuksista.
+- **Käytännön asiantuntijalähde:** Bureau of Internet Accessibility. <a href="https://www.boia.org/blog/why-justified-or-centered-text-is-bad-for-accessibility" lang="en" hreflang="en"><em>Why Justified (or Centered) Text is Bad for Accessibility</em></a>. Tulkinta keskitetyn ja molempiin reunoihin tasatun tekstin saavutettavuusvaikutuksista.
 
-- **Käytännön asiantuntijalähde:** Traci Gardner. [*Centered Text Is Harder to Read*](https://tracigardner.github.io/TechComm/document-design/page--centered-text-is-harder-to-read.html). Havainnollistus keskitetyn tekstin epätasaisesta vasemmasta reunasta.
+- **Käytännön asiantuntijalähde:** Traci Gardner. <a href="https://tracigardner.github.io/TechComm/document-design/page--centered-text-is-harder-to-read.html" lang="en" hreflang="en"><em>Centered Text Is Harder to Read</em></a>. Havainnollistus keskitetyn tekstin epätasaisesta vasemmasta reunasta.

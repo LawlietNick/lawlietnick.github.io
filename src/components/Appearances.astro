@@ -31,22 +31,26 @@ const languageNames = new Intl.DisplayNames([language], { type: "language" });
   </header>
 
   <div class="appearances__list">
-    {appearances.map((appearance) => (
-      <article class="appearance">
-        <div class="appearance__meta">
-          <time datetime={appearance.datePublished}>{dateFormat.format(new Date(appearance.datePublished))}</time>
-          <Badge class="appearance__type">Podcast</Badge>
-          <span class="appearance__language">{languageNames.of(appearance.inLanguage)}</span>
-        </div>
-        <div class="appearance__body content-links">
-          <h3>{appearance.name}</h3>
-          <p>{appearance[language].description}</p>
-          <a class="appearance__link" href={appearance.url} aria-label={`${t.link}: ${appearance.name}`}>
-            {t.link}
-          </a>
-        </div>
-      </article>
-    ))}
+    {appearances.map((appearance) => {
+      // Only mark the language where it differs from the page; the page's own lang covers the rest
+      const otherLang = appearance.inLanguage === language ? undefined : appearance.inLanguage;
+      return (
+        <article class="appearance">
+          <div class="appearance__meta">
+            <time datetime={appearance.datePublished}>{dateFormat.format(new Date(appearance.datePublished))}</time>
+            <Badge class="appearance__type">Podcast</Badge>
+            <span class="appearance__language">{languageNames.of(appearance.inLanguage)}</span>
+          </div>
+          <div class="appearance__body content-links">
+            <h3 lang={otherLang}>{appearance.name}</h3>
+            <p>{appearance[language].description}</p>
+            <a class="appearance__link" href={appearance.url} hreflang={otherLang}>
+              {t.link}<span class="visually-hidden">: <span lang={otherLang}>{appearance.name}</span></span>
+            </a>
+          </div>
+        </article>
+      );
+    })}
   </div>
 </section>
 
