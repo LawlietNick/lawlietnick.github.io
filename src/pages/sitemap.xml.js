@@ -41,7 +41,7 @@ const uniqueRoutes = (routes) => [...new Set(routes)].sort();
 // noindex and draft pages never belong in the sitemap
 const isIndexable = (page) => !page.frontmatter?.noindex && !page.frontmatter?.draft;
 // lastmod comes from frontmatter where the content type has a date; static hubs have none
-const lastmodOf = (page) => page.frontmatter?.updated ?? page.frontmatter?.date;
+const lastmodOf = (page) => page.frontmatter?.updatedDate ?? page.frontmatter?.date;
 
 export function GET({ site }) {
   const baseUrl = new URL(site ?? siteConfig.url);
