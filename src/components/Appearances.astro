@@ -41,7 +41,7 @@ const languageNames = new Intl.DisplayNames([language], { type: "language" });
         <div class="appearance__body content-links">
           <h3>{appearance.name}</h3>
           <p>{appearance[language].description}</p>
-          <a class="appearance__link" href={appearance.url}>
+          <a class="appearance__link" href={appearance.url} aria-label={`${t.link}: ${appearance.name}`}>
             {t.link}
           </a>
         </div>

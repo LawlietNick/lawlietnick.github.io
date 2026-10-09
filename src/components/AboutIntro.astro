@@ -320,7 +320,7 @@ const c = fi
       const lead = p * (N + BAND);
       for (let i = 0; i < N; i++) {
         const wp = clamp((lead - i) / BAND, 0, 1);
-        words[i].style.opacity = (0.16 + 0.84 * wp).toFixed(3);
+        words[i].style.opacity = (0.4 + 0.6 * wp).toFixed(3);
         words[i].style.transform = `translateY(${((1 - wp) * 0.4).toFixed(2)}em)`;
       }
     };
