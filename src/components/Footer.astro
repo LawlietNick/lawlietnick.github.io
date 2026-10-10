@@ -40,7 +40,7 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
       <div class="site-footer__grid">
         <div>
           <div class="site-footer__brand">
-            <img class="site-footer__brand-logo" src="/nk-logo.svg" alt="" width="300" height="210" loading="lazy" />
+            <span class="site-footer__brand-logo" aria-hidden="true"></span>
             <p class="site-footer__brand-line">
               <strong class="site-footer__brand-primary">{authorName}</strong>
             </p>
@@ -159,7 +159,8 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
     width: clamp(28rem, 52vw, 46rem);
     aspect-ratio: 10 / 7;
     translate: -50% -48%;
-    background: url("/nk-logo.svg") center / contain no-repeat;
+    background: currentColor;
+    mask: url("/nk-logo.svg") center / contain no-repeat;
     opacity: 0.02;
     pointer-events: none;
   }
@@ -193,7 +194,7 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
     align-items: flex-start;
     margin-bottom: 1.25rem;
   }
-  .site-footer__brand-logo { height: 2.75rem; width: auto; margin-bottom: 0.75rem; }
+  .site-footer__brand-logo { display: block; height: 2.75rem; aspect-ratio: 10 / 7; margin-bottom: 0.75rem; background: currentColor; mask: url("/nk-logo.svg") center / contain no-repeat; }
   .site-footer__brand-line {
     margin: 0;
     font-size: 1.2rem;

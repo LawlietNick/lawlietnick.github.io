@@ -73,7 +73,7 @@ const showDesktopCta = false;
 <header class="site-header" data-site-header>
   <div class="site-header__inner">
     <a class="site-header__logo" href={root} aria-label={`${siteName} — ${fi ? "etusivu" : "home"}`}>
-      <img src="/nk-logo.svg" alt="" width="300" height="210" fetchpriority="high" />
+      <span class="site-header__mark" aria-hidden="true"></span>
       <span>{siteName}</span>
     </a>
 
@@ -393,7 +393,8 @@ const showDesktopCta = false;
     line-height: 1;
     text-decoration: none;
   }
-  .site-header__logo img { flex: none; height: min(2.5rem, 48px); width: auto; }
+  /* ponytail: mask + currentColor so the mark follows the site theme, not the OS one baked into the SVG */
+  .site-header__logo .site-header__mark { flex: none; height: min(2.5rem, 48px); aspect-ratio: 10 / 7; background: currentColor; mask: url("/nk-logo.svg") center / contain no-repeat; }
   .site-header__logo span { min-width: 0; overflow-wrap: anywhere; line-height: 1.15; font-family: var(--font-display); }
 
   /* desktop nav: pill triggers */
