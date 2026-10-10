@@ -4,6 +4,7 @@ title: "Mitä verkkosivustosi luvut kertovat? Sivujen luokittelu auttaa ymmärt�
 documentTitle: "Sivujen luokittelu analytiikassa | Niko Karppinen"
 description: "Mitä sivutyyppi ja pääaihe tarkoittavat? Kaupungin verkkosivuston esimerkit näyttävät, miten kaksi valintaa auttaa sisällöntuottajaa ja selkeyttää raportointia."
 date: 2026-09-24
+updatedDate: 2026-10-10
 category: analytics
 image: /images/blog/page-classification-for-website-analytics.jpeg
 imageAlt: "Kilpikonna järjestää verkkosivuja kuvaavia kortteja riveihin ja sarakkeisiin luokittelutaulukossa."
@@ -21,15 +22,17 @@ mentions:
   - "dataLayer"
 ---
 
+Analytiikkaraportti näyttää sivuista osoitteet, otsikot ja katselumäärät. Se ei kerro, millainen sivu oli, mistä aiheesta siellä puhuttiin tai mitä sivulla oli tarkoitus saada aikaan. Juuri niitä organisaatio kuitenkin tarvitsee, koska se tarkastelee sivustoaan palveluina, aihealueina ja tavoitteina eikä osoitteina.
+
 Kaupungin verkkosivuston analytiikkaraportissa voivat olla rinnakkain päivähoitopaikan hakeminen, rakennusluvat, syysloman tapahtumat ja jätteiden lajitteluohjeet. Niitä kaikkia mitataan sivuina, vaikka niiden tehtävät ovat aivan erilaisia.
 
 Jos kaikki sivut päätyvät samaan keskiarvoon, raportti kertoo vähän siitä, miten sivuston eri sisältöjä käytetään. Yksittäisten sivuosoitteiden lista voi puolestaan olla tuhansien rivien mittainen.
 
-Kokonaisuutta voidaan selkeyttää antamalla jokaiselle sivulle kaksi perustietoa: **millainen sivu se on ja mihin pääaiheeseen se kuuluu.** Näin raportissa voidaan tarkastella ymmärrettäviä ryhmiä ja verrata yksittäistä sivua muihin samankaltaisiin sivuihin.
+Kokonaisuutta voidaan selkeyttää antamalla jokaiselle sivulle kaksi perustietoa: **millainen sivu se on ja mihin pääaiheeseen se kuuluu.** Ne tuovat dataan sen, mitä osoite ei kerro. Raportissa voidaan silloin tarkastella ymmärrettäviä ryhmiä ja verrata yksittäistä sivua muihin samankaltaisiin sivuihin.
 
 ## Sivutyyppi kertoo, millainen sivu on. Pääaihe kertoo, mistä se kertoo.
 
-**Sivutyyppi vastaa kysymykseen: millainen sivu tämä on?** Kaupungin sivustolla sivu voi olla esimerkiksi palvelu, tapahtuma, ohje tai uutinen.
+**Sivutyyppi vastaa kysymykseen: millainen sivu tämä on?** Kaupungin sivustolla sivu voi olla esimerkiksi palvelu, tapahtuma, ohje tai uutinen. Sivutyyppi kertoo usein myös sivun tarkoituksen: palvelusivu ohjaa asiointiin, ohje vastaa kysymykseen ja tapahtumasivu kertoo, mitä on tulossa.
 
 **Pääaihe vastaa kysymykseen: mistä tämä sivu ensisijaisesti kertoo?** Aihe voi olla esimerkiksi varhaiskasvatus ja koulutus, asuminen ja rakentaminen, kulttuuri ja vapaa-aika tai ympäristö.
 
@@ -99,6 +102,26 @@ Kun raportti rajataan palvelusivuihin, joiden pääaihe on varhaiskasvatus ja ko
 Pelkkä luku 3 600 ei kerro paljon. Ryhmässä näkyy, että päivähoitopaikan hakeminen on toiseksi katsotuin palvelu ja sen osuus on lähes kolmannes.
 
 Nyt päivähoitopaikan hakemista voidaan tarkastella suhteessa muihin saman ryhmän sivuihin. Jos katselut muuttuvat, voidaan selvittää, näkyykö vastaava muutos myös muilla sivuilla vai koskeeko se vain tätä palvelua.
+
+## Muutos koskee harvoin koko sivustoa
+
+Kun kokonaisluku laskee, näyttää siltä, että koko sivusto menettää kävijöitä. Yleensä muutos on kuitenkin keskittynyt pieneen osaan sivustoa.
+
+Kuvitellaan, että kaupungin sivuston kuukausittaiset sivukatselut laskevat 15 prosenttia. Raportissa näkyy laskeva käyrä ja tuhansien osoitteiden lista. Kun samat katselut jaetaan sivutyypeittäin, kuva muuttuu:
+
+| Sivutyyppi | Sivukatselut ennen | Sivukatselut jälkeen | Muutos |
+|---|---:|---:|---:|
+| Palvelu | 40 000 | 39 000 | −2,5 % |
+| Ohje | 30 000 | 16 000 | −47 % |
+| Uutinen | 15 000 | 15 000 | 0 % |
+| Tapahtuma | 15 000 | 15 000 | 0 % |
+| **Koko sivusto** | **100 000** | **85 000** | **−15 %** |
+
+Luvut ovat kuvitteellisia.
+
+Lähes koko lasku tulee ohjesivuilta. Palveluja, uutisia ja tapahtumia katsotaan lähes yhtä paljon kuin ennenkin. **Lasku ei koskenut koko sivustoa vaan yhtä sivutyyppiä.**
+
+Silloin edessä ei ole koko sivuston kriisi vaan rajattu joukko sivuja, jotka voidaan käydä läpi. Pääaiheen avulla joukkoa voidaan rajata vielä tarkemmin: koskeeko lasku kaikkia ohjeita vai esimerkiksi pelkästään ympäristöaiheisia?
 
 ## Vertailuryhmä auttaa löytämään kysymyksen, ei vielä vastausta
 

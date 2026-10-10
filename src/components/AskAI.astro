@@ -1,7 +1,14 @@
 ---
 // "Ask AI to summarize" — static row of links that open the post in an AI tool.
 // Config-driven: edit `tools` to change prompts/destinations. No client JS.
+// Right side: Google "preferred source" link (same URL as PreferredSourceCTA).
+import { siteConfig } from "../data/site.js";
+
 const { url, title, fi = false } = Astro.props;
+const sourceHref = `https://www.google.com/preferences/source?q=${new URL(Astro.site ?? siteConfig.url).host}`;
+const source = fi
+  ? { text: "Lisää Karppinen.one lähteeksesi", label: "Lisää lähteeksi", aria: "Lisää Karppinen.one ensisijaiseksi lähteeksi Google-haussa" }
+  : { text: "Add Karppinen.one as a source", label: "Add as source", aria: "Add Karppinen.one as a preferred source in Google Search" };
 const label = fi ? "Pyydä tekoälyä tiivistämään:" : "Ask AI to summarize:";
 const open = fi ? "Avaa" : "Open";
 
@@ -48,6 +55,22 @@ const tools = [
         </a>
       ))}
     </div>
+    <div class="ask-ai__source">
+      <span class="ask-ai__source-text">{source.text}</span>
+      <a
+        href={sourceHref}
+        class="ask-ai__link ask-ai__link--source"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={source.aria}
+        data-link-area="ask-ai"
+        data-link-type="preferred-source"
+      >
+        <img class="ask-ai__icon" src="/icons/google.svg" alt="" width="18" height="18" />
+        <span>{source.label}</span>
+        <svg class="ask-ai__arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </a>
+    </div>
   </section>
 )}
 
@@ -81,7 +104,8 @@ const tools = [
   }
 
   .ask-ai__label,
-  .ask-ai__actions {
+  .ask-ai__actions,
+  .ask-ai__source {
     position: relative;
     z-index: 1;
   }
@@ -106,6 +130,27 @@ const tools = [
     height: 1.125rem;
     fill: currentColor;
     stroke: none;
+  }
+  .ask-ai__source {
+    margin-left: auto;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem;
+  }
+  .ask-ai__source-text { font-size: 0.85rem; color: var(--muted); }
+  .ask-ai__link { white-space: nowrap; }
+  /* the one emphasised action in the strip: bold label + arrow, same pill and border */
+  .ask-ai__link--source { font-weight: var(--font-weight-bold); }
+  .ask-ai__arrow {
+    width: 1rem; height: 1rem;
+    fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+  .ask-ai__link--source:hover .ask-ai__arrow { transform: translateX(2px); }
+  @media (prefers-reduced-motion: reduce) {
+    .ask-ai__link--source:hover .ask-ai__arrow { transform: none; }
+  }
+  @media (max-width: 34rem) {
+    .ask-ai__source { margin-left: 0; width: 100%; }
+    .ask-ai__link--source { width: 100%; justify-content: center; }
   }
   .ask-ai__link:hover {
     border-color: color-mix(in srgb, var(--ink) 24%, var(--line));
