@@ -291,8 +291,8 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
                     {fi ? "Lähde:" : "Source:"} <a href={ogUrl}>{ogUrl}</a>
                   </p>
                 )}
-                {Astro.url.pathname.replace(/\/$/, "") === "/fi/blog/lampokartat-ja-sisaltoelementtien-seuranta" ? (
-                  <AuthorVisibilityDemo><AuthorBio {fi} {aboutHref} /></AuthorVisibilityDemo>
+                {["/fi/blog/lampokartat-ja-sisaltoelementtien-seuranta", "/blog/heatmaps-and-content-element-tracking"].includes(Astro.url.pathname.replace(/\/$/, "")) ? (
+                  <AuthorVisibilityDemo {fi}><AuthorBio {fi} {aboutHref} /></AuthorVisibilityDemo>
                 ) : (
                   <AuthorBio {fi} {aboutHref} />
                 )}

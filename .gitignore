@@ -33,5 +33,3 @@ playwright-report/
 
 # raw audit dumps stay local; summaries (.md) and screenshots are tracked
 docs/reports/*.json
-/src/pages/fi/blog/lampokartat-ja-sisaltoelementtien-seuranta.md
-/src/pages/blog/heatmaps-and-content-element-tracking.md

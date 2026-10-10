@@ -1,11 +1,24 @@
+---
+const { fi = false } = Astro.props;
+const copy = fi ? {
+  waiting: "Odottaa näkyvyysehdon täyttymistä",
+  complete: "Kirjoittajalaatikon näkyvyysehto täyttyi",
+  explanation: "Näkyvyyden esimerkki: vähintään 50 % kirjoittajalaatikosta näkyvissä yhden sekunnin ajan. Merkintä kertoo ehdon täyttymisestä, ei siitä, että sisältö luettiin.",
+} : {
+  waiting: "Waiting for the visibility condition",
+  complete: "Author box visibility condition met",
+  explanation: "Visibility example: at least 50% of the author box is visible for one second. The marker confirms that this condition was met, not that the content was read.",
+};
+---
+
 <div class="author-visibility-demo" data-author-visibility-demo>
   <slot />
   <div class="author-visibility-demo__note" hidden data-visibility-note>
     <p class="author-visibility-demo__status" role="status">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></svg>
-      <span data-visibility-status>Odottaa näkyvyysehdon täyttymistä</span>
+      <span data-visibility-status data-visibility-complete={copy.complete}>{copy.waiting}</span>
     </p>
-    <p>Näkyvyyden esimerkki: vähintään 50 % kirjoittajalaatikosta näkyvissä yhden sekunnin ajan. Merkintä kertoo ehdon täyttymisestä, ei siitä, että sisältö luettiin.</p>
+    <p>{copy.explanation}</p>
   </div>
 </div>
 

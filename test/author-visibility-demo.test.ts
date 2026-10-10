@@ -3,9 +3,10 @@ import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
 import { observeAuthorVisibility } from "../src/scripts/author-visibility-demo.ts";
 
-test("author visibility requires continuous foreground exposure and records only once", (t) => {
+for (const complete of ["Kirjoittajalaatikon näkyvyysehto täyttyi", "Author box visibility condition met"]) {
+test(`author visibility requires continuous foreground exposure: ${complete}`, (t) => {
   t.mock.timers.enable({ apis: ["setTimeout"] });
-  const dom = new JSDOM('<div data-author-visibility-demo><aside class="author-bio"></aside><div data-visibility-note hidden><span data-visibility-status>Waiting</span></div></div>');
+  const dom = new JSDOM(`<div data-author-visibility-demo><aside class="author-bio"></aside><div data-visibility-note hidden><span data-visibility-status data-visibility-complete="${complete}">Waiting</span></div></div>`);
   let onIntersection;
   let disconnected = false;
   class Observer {
@@ -44,15 +45,16 @@ test("author visibility requires continuous foreground exposure and records only
   assert.equal(root.hasAttribute("data-seen"), false);
   t.mock.timers.tick(1);
   assert.equal(root.hasAttribute("data-seen"), true);
-  assert.match(root.querySelector("[data-visibility-status]").textContent, /näkyvyysehto täyttyi/);
+  assert.equal(root.querySelector("[data-visibility-status]").textContent, complete);
   assert.equal(disconnected, true);
   cleanup();
   dom.window.close();
 });
+}
 
 test("leaving the article cancels a pending visibility marker", (t) => {
   t.mock.timers.enable({ apis: ["setTimeout"] });
-  const dom = new JSDOM('<div><aside class="author-bio"></aside><p data-visibility-note hidden><span data-visibility-status>Waiting</span></p></div>');
+  const dom = new JSDOM('<div><aside class="author-bio"></aside><p data-visibility-note hidden><span data-visibility-status data-visibility-complete="Complete">Waiting</span></p></div>');
   let callback;
   class Observer {
     constructor(cb) { callback = cb; }

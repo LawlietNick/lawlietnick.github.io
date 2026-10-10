@@ -2,8 +2,9 @@
 export function observeAuthorVisibility(root: Element | null): () => void {
   const target = root?.querySelector(".author-bio");
   const status = root?.querySelector("[data-visibility-status]");
+  const complete = status?.getAttribute("data-visibility-complete");
   const note = root?.querySelector<HTMLElement>("[data-visibility-note]");
-  if (!root || !target || !status || !note || !("IntersectionObserver" in window)) return () => {};
+  if (!root || !target || !status || !complete || !note || !("IntersectionObserver" in window)) return () => {};
 
   note.hidden = false;
   let visible = false;
@@ -17,7 +18,7 @@ export function observeAuthorVisibility(root: Element | null): () => void {
     if (!visible || document.hidden) return;
     timer = setTimeout(() => {
       root.setAttribute("data-seen", "");
-      status.textContent = "Kirjoittajalaatikon näkyvyysehto täyttyi";
+      status.textContent = complete;
       cleanup();
     }, 1000);
   };
