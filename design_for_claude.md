@@ -18,6 +18,18 @@ Primary visitors are marketing, SEO, analytics, content, product, development, a
 
 The core offering includes technical SEO, analytics and measurement design, GA4, dataLayer planning, conversion tracking, Google Tag Manager, consent, marketing pixels, reporting, BigQuery, dashboards, practical AI workflows, documentation, and repeatable digital operating models.
 
+## Article hero images
+
+- Create new article hero images at **1536 × 1024 pixels (3:2)**. This is the standard for new assets; existing images may keep their dimensions.
+- Keep the subject and essential visual details within the central 75% of the width and 70% of the height. Heroes and article cards use `object-fit: cover` with different frame proportions; check the actual crops at desktop and mobile widths before finishing.
+- Use a simple editorial illustration that remains readable as a thumbnail. Keep article titles in HTML rather than inside the image.
+- Build continuity through restrained cream, lavender and yellow accents, clear shapes and a quietly playful tone. Vary the subject and scene: a character, an object metaphor, a miniature environment or an abstract composition can each carry an article's idea. Choose the visual metaphor from the specific topic.
+- Before generating, inspect the five most recent article heroes. Make the new image differ from the nearest similar hero in at least two of these dimensions: subject or character, setting, composition or camera angle, illustration technique, and dominant background color. A new screen or prop in the same scene is not sufficient variation.
+- Characters are optional. When using one, choose a character and action that fit the topic; the turtle is one option, not a default mascot for every article. Alternate character scenes with images focused on objects or environments. Likewise, alternate tactile 3D scenes with flat editorial, paper-cut or restrained line illustrations when they suit the idea.
+- Describe the chosen subject, action, setting, framing and medium explicitly in the generation prompt. When supplying a previous hero as a reference, specify which qualities to retain and which to vary. Compare the result with recent heroes at thumbnail size; revise if it repeats their scene or silhouette.
+- Save the JPEG source under `public/images/blog/` and an identically named copy under `src/assets/blog/` so the shared image component can generate responsive formats. Use a descriptive lowercase filename with hyphens.
+- Set `image`, a meaningful `imageAlt`, and `imageCredit` in article frontmatter. AI-generated images use `imageCredit: "Luotu OpenAI ImageGenillä"` for Finnish articles and the corresponding English credit for English articles.
+
 ## Brand direction
 
 The brand is Finnish, precise, practical, calm, and quietly playful. It should feel like a well-kept technical notebook with a small comic-inspired twist: exact enough to trust, human enough to remember.

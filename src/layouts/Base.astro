@@ -12,6 +12,7 @@ import RelatedArticles from "../components/RelatedArticles.astro";
 import Postscript from "../components/Postscript.astro";
 import ReadingSignals from "../components/ReadingSignals.astro";
 import AuthorBio from "../components/AuthorBio.astro";
+import AuthorVisibilityDemo from "../components/AuthorVisibilityDemo.astro";
 import Schema from "../components/Schema.astro";
 import { ClientRouter } from "astro:transitions";
 import { getCollection } from "astro:content";
@@ -290,7 +291,11 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
                     {fi ? "Lähde:" : "Source:"} <a href={ogUrl}>{ogUrl}</a>
                   </p>
                 )}
-                <AuthorBio {fi} {aboutHref} />
+                {Astro.url.pathname.replace(/\/$/, "") === "/fi/blog/lampokartat-ja-sisaltoelementtien-seuranta" ? (
+                  <AuthorVisibilityDemo><AuthorBio {fi} {aboutHref} /></AuthorVisibilityDemo>
+                ) : (
+                  <AuthorBio {fi} {aboutHref} />
+                )}
                 {stats && <Postscript {...stats} {fi} />}
               </div>
               <ReadingSignals {fi} visual={fm.readingSignals} />

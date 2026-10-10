@@ -1,0 +1,44 @@
+<div class="author-visibility-demo" data-author-visibility-demo>
+  <slot />
+  <div class="author-visibility-demo__note" hidden data-visibility-note>
+    <p class="author-visibility-demo__status" role="status">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></svg>
+      <span data-visibility-status>Odottaa näkyvyysehdon täyttymistä</span>
+    </p>
+    <p>Näkyvyyden esimerkki: vähintään 50 % kirjoittajalaatikosta näkyvissä yhden sekunnin ajan. Merkintä kertoo ehdon täyttymisestä, ei siitä, että sisältö luettiin.</p>
+  </div>
+</div>
+
+<script>
+  import { observeAuthorVisibility } from "../scripts/author-visibility-demo";
+
+  let cleanup = () => {};
+  function init() {
+    cleanup();
+    cleanup = observeAuthorVisibility(document.querySelector("[data-author-visibility-demo]"));
+  }
+  init();
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:before-swap", () => cleanup());
+  window.addEventListener("pagehide", () => cleanup());
+  window.addEventListener("pageshow", (event) => { if (event.persisted) init(); });
+</script>
+
+<style>
+  .author-visibility-demo__note {
+    margin-top: 1rem;
+    font-size: var(--font-size-ui-sm);
+    line-height: var(--line-height-ui);
+  }
+  .author-visibility-demo__note p { margin: 0.5rem 0 0; }
+  .author-visibility-demo__status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: var(--font-weight-strong);
+  }
+  .author-visibility-demo__status svg { flex-shrink: 0; }
+  .author-visibility-demo[data-seen] .author-visibility-demo__status { color: var(--accent); }
+  .author-visibility-demo[data-seen] :global(.author-bio) { outline: 2px solid var(--accent); outline-offset: 4px; }
+  @media print { .author-visibility-demo__note { display: none; } }
+</style>
