@@ -54,15 +54,21 @@ test("English and Finnish homepages use canonical WebPage IDs and language", () 
 
 test("The English homepage keeps only its useful graph entities", () => {
   const description = "Personal portfolio and blog of Niko Karppinen, analytics professional.";
-  const data = graph({ description });
+  const portrait = { src: "/_astro/portrait.webp", width: 1000, height: 1250, alt: "Niko Karppinen" };
+  const data = graph({ description, personImage: portrait, pageImage: portrait });
   const page = node(data, "WebPage");
   const website = node(data, "WebSite");
+  const portraitRef = { "@id": `${root}#personimage` };
 
   assert.deepEqual(data["@graph"].map((entry) => entry["@type"]), [
     "WebPage",
     "WebSite",
+    "ImageObject",
     "Person",
   ]);
+  assert.deepEqual(page.primaryImageOfPage, portraitRef);
+  assert.deepEqual(node(data, "Person").image, portraitRef);
+  assert.equal(node(data, "ImageObject")["@id"], portraitRef["@id"]);
   assert.equal(page["@id"], root);
   assert.equal(page.url, root);
   assert.equal(page.name, siteConfig.website.name);
@@ -160,7 +166,7 @@ test("About pages are ProfilePages whose mainEntity is the shared person", () =>
     const page = node(graph({ canonicalUrl, pathname, language, pageType: "about", title: "About" }), "ProfilePage");
     assert.equal(page["@id"], `${canonicalUrl}#profilepage`);
     assert.equal(page.url, canonicalUrl);
-    assert.deepEqual(page.about, PERSON);
+    assert.equal("about" in page, false);
     assert.deepEqual(page.mainEntity, PERSON);
     assert.equal(page.inLanguage, language);
     assert.equal(page.dateModified, `${siteConfig.person.profileDateModified}T00:00:00+03:00`);
@@ -206,13 +212,14 @@ test("The shared Person is emitted once, points to the About page, and keeps str
   // Personal identity links live under Person.sameAs; topic links must not leak in here.
   assert.ok(Array.isArray(person.sameAs) && person.sameAs.length > 0);
   assert.ok(person.sameAs.every((url) => !url.includes("wikidata.org") && !url.includes("wikipedia.org")));
-  assert.deepEqual(person.subjectOf, appearances.map((appearance) => ({
+  assert.equal("subjectOf" in person, false);
+  assert.deepEqual(node(data, "ProfilePage").mentions, appearances.map((appearance) => ({
     "@type": appearance.type,
     name: appearance.name,
     url: appearance.url,
     datePublished: appearance.datePublished,
     inLanguage: appearance.inLanguage,
-    sameAs: appearance.alsoOn?.map((link) => link.url),
+    ...(appearance.alsoOn ? { sameAs: appearance.alsoOn.map((link) => link.url) } : {}),
     contributor: PERSON,
   })));
 });
@@ -225,13 +232,9 @@ test("The visible About employer lockup reads centralized identity values", () =
   assert.doesNotMatch(aboutIntro, /Agency Bobble|Senior SEO & Analytics Consultant/);
 });
 
-test("Person subjectOf evidence is limited to About pages", () => {
-  const article = graph({
-    canonicalUrl: url("/blog/example/"),
-    pathname: "/blog/example/",
-    frontmatter: { title: "Example" },
-  });
-  assert.equal("subjectOf" in node(article, "Person"), false);
+test("Podcast appearances are mentioned only by About pages", () => {
+  const page = node(graph({ canonicalUrl: url("/blog/"), pathname: "/blog/", pageType: "blog-index" }), "CollectionPage");
+  assert.equal("mentions" in page, false);
 });
 
 test("The WebSite identity comes from siteConfig", () => {
@@ -273,7 +276,7 @@ test("The About ProfilePage reuses one public portrait ImageObject", () => {
   assert.equal(profile["@id"], `${canonicalUrl}#profilepage`);
   assert.equal(profile.url, canonicalUrl);
   assert.deepEqual(profile.isPartOf, { "@id": `${root}#website` });
-  assert.deepEqual(profile.about, PERSON);
+  assert.equal("about" in profile, false);
   assert.deepEqual(profile.mainEntity, PERSON);
   assert.deepEqual(profile.primaryImageOfPage, { "@id": portraitId });
   assert.deepEqual(profile.image, { "@id": portraitId });

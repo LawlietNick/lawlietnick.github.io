@@ -201,7 +201,6 @@ export function buildSchemaGraph(options: SchemaOptions) {
   const articleId = fragmentId(canonicalUrl, "article");
   const serviceId = fragmentId(canonicalUrl, "service");
   const pageId = pageType === "about" ? fragmentId(canonicalUrl, "profilepage") : canonicalUrl;
-  const describesPerson = pageType === "about" || pathname === "/" || pathname === "/fi/";
   // Blog membership only applies to actual posts under /blog/ — template
   // guides also carry `frontmatter` but aren't part of the Thoughts blog.
   const isBlogPost = Boolean(frontmatter) && pathname.includes("/blog/");
@@ -214,7 +213,8 @@ export function buildSchemaGraph(options: SchemaOptions) {
     name: title,
     description,
     isPartOf: { "@id": WEBSITE_ID },
-    about: describesPerson ? { "@id": PERSON_ID } : undefined,
+    // ProfilePage says this once, via mainEntity; the front pages are about the Person.
+    about: isHomepage ? { "@id": PERSON_ID } : undefined,
     primaryImageOfPage: pageImage ? { "@id": pageImageId } : undefined,
     // articles describe their image via primaryImageOfPage + the shared ImageObject only
     image: pageImage && !frontmatter ? { "@id": pageImageId } : undefined,
@@ -228,6 +228,20 @@ export function buildSchemaGraph(options: SchemaOptions) {
     potentialAction: isHomepage || pageType === "about"
       ? undefined
       : [{ "@type": "ReadAction", target: [canonicalUrl] }],
+    // The About page lists these guest episodes; they are about SEO and analytics,
+    // not about Niko, so the page mentions them rather than Person.subjectOf.
+    mentions: pageType === "about"
+      ? appearances.map((appearance) => compact({
+          "@type": appearance.type,
+          name: appearance.name,
+          url: appearance.url,
+          datePublished: appearance.datePublished,
+          inLanguage: appearance.inLanguage,
+          sameAs: appearance.alsoOn?.map((link) => link.url),
+          // A guest spot: contributor, never author or publisher.
+          contributor: { "@id": PERSON_ID },
+        }))
+      : undefined,
     mainEntity: pageType === "about"
       ? { "@id": PERSON_ID }
       : frontmatter
@@ -322,18 +336,6 @@ export function buildSchemaGraph(options: SchemaOptions) {
     image: personImage ? { "@id": PERSON_IMAGE_ID } : undefined,
     knowsAbout,
     sameAs: siteConfig.person.profiles.map((profile) => profile.url),
-    subjectOf: pageType === "about"
-      ? appearances.map((appearance) => ({
-          "@type": appearance.type,
-          name: appearance.name,
-          url: appearance.url,
-          datePublished: appearance.datePublished,
-          inLanguage: appearance.inLanguage,
-          sameAs: appearance.alsoOn?.map((link) => link.url),
-          // Every listed appearance is a guest spot: contributor, never author or publisher.
-          contributor: { "@id": PERSON_ID },
-        }))
-      : undefined,
   }));
 
   // Cross-page reference: a reader that sees only this page shows it as unresolved.

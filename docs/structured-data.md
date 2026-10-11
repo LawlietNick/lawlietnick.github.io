@@ -45,15 +45,17 @@ URL makes the production `href` absolute.
 
 ## Homepage graph
 
-The English root homepage emits only `WebPage`, `WebSite`, and `Person`. Its
+The English root homepage emits only `WebPage`, `WebSite`, the shared portrait
+`ImageObject`, and `Person`, the same as the Finnish homepage at `/fi/`. Its
 `WebPage` keeps the canonical identity, website relationship, Person subject,
-description, and language. It deliberately has no `ReadAction`: loading the
+description, and language; `primaryImageOfPage` and `Person.image` both
+reference `https://karppinen.one/#personimage`. It deliberately has no `ReadAction`: loading the
 homepage is not a useful reading action. It also has no `BreadcrumbList` or
 breadcrumb reference because a one-item breadcrumb that points only to the
 current root page adds no hierarchy.
 
 These conditions apply only to `/`. Deeper pages retain their ReadAction and
-breadcrumb graph, while the About page retains its shared portrait ImageObject.
+breadcrumb graph.
 The WebSite's single Atom SubscribeAction remains present on the homepage.
 
 ## About-page graph
@@ -70,7 +72,8 @@ The Finnish page at `https://karppinen.one/fi/minusta/` emits the same shape
 with `#profilepage`, `#breadcrumb`, `inLanguage: fi` and the two-level
 `Etusivu > Minusta` breadcrumb.
 
-The `ProfilePage` uses the Person as both `about` and `mainEntity`. Its
+The `ProfilePage` names the Person once, as `mainEntity`, with no separate
+`about`. Its
 `primaryImageOfPage` and `image`, and the Person's `image`, all reference the
 same `ImageObject`. This avoids two nodes describing one file under different
 IDs. The page keeps the two-level `Home > About Niko Karppinen` breadcrumb.
@@ -89,9 +92,11 @@ entry in `siteConfig.entities` become a `Thing` with Wikidata, Wikipedia and,
 where known, Google Knowledge Graph (`search?kgmid=`) `sameAs` links; the rest
 stay plain strings.
 
-`Person.subjectOf` lists the podcast episodes shown on the About pages, from
-`src/data/appearances.js`. Each `PodcastEpisode` names the Person as
-`contributor`, because Niko appeared as a guest; it never claims author or
+`ProfilePage.mentions` lists the podcast episodes shown on the About pages,
+from `src/data/appearances.js`, as nested `PodcastEpisode` objects. They sit
+on the page rather than `Person.subjectOf` because the episodes are about SEO
+and analytics, not about Niko. Each names the Person as `contributor`,
+because Niko appeared as a guest; it never claims author, creator or
 publisher. `sameAs` holds the same episode on other platforms.
 
 ## Portrait asset
@@ -116,8 +121,9 @@ publishing a local filesystem path.
 
 - `src/data/site.js`: stores the single official site-name source.
 - `src/utils/feed.ts`: uses the centralized primary Atom feed path.
-- `src/components/Schema.astro`: keeps the homepage graph free of portrait
-  image nodes while preserving portrait schema elsewhere.
+- `src/components/Schema.astro`: resolves the portrait once and passes it as
+  the Person image everywhere and as the page image on both homepages and
+  About pages.
 - `src/layouts/Base.astro`: emits the canonical Atom discovery link and title.
 - `src/components/Footer.astro`: displays the official name without appending
   the author as part of the brand name.

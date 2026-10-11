@@ -21,15 +21,13 @@ const canonicalUrl = Astro.site
   ? new URL(Astro.url.pathname, Astro.site).href
   : undefined;
 const generatedPortrait = await getImage({ src: portrait, format: "webp" });
-const generatedPersonImage = Astro.site ? {
+const personImage = Astro.site ? {
   src: new URL(generatedPortrait.src, Astro.site).href,
   width: generatedPortrait.attributes.width,
   height: generatedPortrait.attributes.height,
   alt: authorName,
 } : undefined;
-// Keep the root homepage graph intentionally limited to WebPage, WebSite and Person.
-const personImage = Astro.url.pathname === "/" ? undefined : generatedPersonImage;
-const pageImage = Astro.url.pathname === "/fi/" || pageType === "about"
+const pageImage = Astro.url.pathname === "/" || Astro.url.pathname === "/fi/" || pageType === "about"
   ? personImage
   : undefined;
 
