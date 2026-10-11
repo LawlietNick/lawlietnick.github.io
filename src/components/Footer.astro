@@ -46,13 +46,16 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
             </p>
           </div>
           <p class="site-footer__brand-desc">{t.blurb}</p>
-          <div class="site-footer__social">
+          <!-- role="list": Safari drops list semantics when list-style is none -->
+          <ul class="site-footer__social" role="list" aria-label={t.social}>
             {profiles.filter((p) => p.footer !== false).map((p) => (
-              <a href={p.url} class="site-footer__social-link" rel="me noopener" aria-label={p.name} title={p.name}>
-                <svg class="site-footer__social-icon" aria-hidden="true" focusable="false"><use href={`/icons/social.svg#${p.icon}`} /></svg>
-              </a>
+              <li>
+                <a href={p.url} class="site-footer__social-link" rel="me noopener" aria-label={p.name} title={p.name}>
+                  <svg class="site-footer__social-icon" aria-hidden="true" focusable="false"><use href={`/icons/social.svg#${p.icon}`} /></svg>
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         <nav aria-label={t.explore}>
@@ -211,7 +214,7 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
     margin: 0 0 1.5rem;
     max-width: 32ch;
   }
-  .site-footer__social { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .site-footer__social { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
   .site-footer__social-link {
     width: 44px;
     height: 44px;
