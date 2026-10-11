@@ -11,9 +11,14 @@ WebP, converts the emitted path to an absolute URL using `Astro.site`, and calls
 Changeable site, WebSite, and Person identity values live in
 `src/data/site.js`. The single official `siteName` is
 `Niko Karppinen`; `brandName` and both configuration properties derive from it.
-`Funky Analytics` is the supporting concept name and is exposed separately as
-`conceptName` and `WebSite.alternateName`. Niko remains identified through the
-Person entity, descriptions, feed author, and article author metadata.
+`WebSite` has no `alternateName`: `karppinen.one` is the address, not a second
+name. Niko remains identified through the Person entity, descriptions, feed
+author, and article author metadata.
+
+`Person.url` points to the About page in the page's language:
+`https://karppinen.one/about/` on English pages and
+`https://karppinen.one/fi/minusta/` on Finnish pages. The identity stays the
+single `@id` `https://karppinen.one/#person` in both languages.
 
 `Person.worksFor` embeds Agency Bobble's Organization type, name, and canonical
 URL alongside its external `@id`. This keeps the relationship self-contained
@@ -61,10 +66,33 @@ The English About page emits one connected `@graph` containing:
 - one shared portrait `ImageObject` at `https://karppinen.one/#personimage`
 - `Person` at `https://karppinen.one/#person`
 
+The Finnish page at `https://karppinen.one/fi/minusta/` emits the same shape
+with `#profilepage`, `#breadcrumb`, `inLanguage: fi` and the two-level
+`Etusivu > Minusta` breadcrumb.
+
 The `ProfilePage` uses the Person as both `about` and `mainEntity`. Its
 `primaryImageOfPage` and `image`, and the Person's `image`, all reference the
 same `ImageObject`. This avoids two nodes describing one file under different
 IDs. The page keeps the two-level `Home > About Niko Karppinen` breadcrumb.
+About pages carry no `ReadAction`, and the Person has no `mainEntityOfPage`;
+`ProfilePage.mainEntity` already states that relationship.
+
+`dateModified` comes from `siteConfig.person.profileDateModified`. Update it
+only when the visible profile content changes. Google's ProfilePage guidance
+says adding outlinks to places that reference the profile is not a
+modification, so new appearance or platform links leave it unchanged. There is no `dateCreated`
+because the original publication date is not recorded; the first commit in
+this repository is a later baseline.
+
+`Person.knowsAbout` lists only topics the About pages describe. Topics with an
+entry in `siteConfig.entities` become a `Thing` with Wikidata, Wikipedia and,
+where known, Google Knowledge Graph (`search?kgmid=`) `sameAs` links; the rest
+stay plain strings.
+
+`Person.subjectOf` lists the podcast episodes shown on the About pages, from
+`src/data/appearances.js`. Each `PodcastEpisode` names the Person as
+`contributor`, because Niko appeared as a guest; it never claims author or
+publisher. `sameAs` holds the same episode on other platforms.
 
 ## Portrait asset
 

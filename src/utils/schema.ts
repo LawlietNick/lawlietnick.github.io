@@ -72,7 +72,8 @@ const thing = (name: string) => {
   return { "@type": "Thing", name, ...(links.length ? { sameAs: links } : {}) };
 };
 
-const knowsAbout = siteConfig.person.knowsAbout.map(thing);
+// Topics without an external identifier stay plain strings.
+const knowsAbout = siteConfig.person.knowsAbout.map((name: string) => entities[name] ? thing(name) : name);
 
 export const absoluteUrl = (value: string) => new URL(value, SITE_URL).href;
 const CC0_URL = "https://creativecommons.org/publicdomain/zero/1.0/";
@@ -224,7 +225,7 @@ export function buildSchemaGraph(options: SchemaOptions) {
     dateModified: pageType === "about"
       ? isoDate(siteConfig.person.profileDateModified)
       : isoDate(frontmatter?.modified),
-    potentialAction: isHomepage
+    potentialAction: isHomepage || pageType === "about"
       ? undefined
       : [{ "@type": "ReadAction", target: [canonicalUrl] }],
     mainEntity: pageType === "about"
@@ -271,7 +272,6 @@ export function buildSchemaGraph(options: SchemaOptions) {
     "@id": WEBSITE_ID,
     url: SITE_URL,
     name: siteConfig.website.name,
-    alternateName: siteConfig.website.alternateName,
     description: siteConfig.website.description,
     publisher: { "@id": PERSON_ID },
     inLanguage: ["en", "fi"],
@@ -330,6 +330,8 @@ export function buildSchemaGraph(options: SchemaOptions) {
           datePublished: appearance.datePublished,
           inLanguage: appearance.inLanguage,
           sameAs: appearance.alsoOn?.map((link) => link.url),
+          // Every listed appearance is a guest spot: contributor, never author or publisher.
+          contributor: { "@id": PERSON_ID },
         }))
       : undefined,
   }));

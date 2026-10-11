@@ -14,7 +14,6 @@ export const siteConfig = {
   },
   website: {
     name: siteName,
-    alternateName: "karppinen.one",
     description: "Digital measurement, SEO and analytics consulting by Niko Karppinen.",
     atomFeedPath: "/atom.xml",
   },
@@ -42,33 +41,31 @@ export const siteConfig = {
       { name: "imdb", url: "https://www.imdb.com/name/nm7385371/", footer: false },
       { name: "Pinterest", url: "https://fi.pinterest.com/nikokarppinen/", footer: false },
     ],
-    // Expertise topics for Person.knowsAbout; sameAs ids come from `entities`.
+    // Expertise topics for Person.knowsAbout, limited to what the About pages
+    // describe. Names in `entities` get Wikidata/Wikipedia sameAs; the rest stay strings.
     knowsAbout: [
       "Search engine optimization",
-      "Web analytics",
-      "Digital marketing",
-      "Digital measurement",
-      "Measurement strategy",
       "Technical SEO",
+      "Web analytics",
+      "Digital measurement",
+      "Digital marketing",
       "Google Analytics",
       "Google Tag Manager",
       "Data Studio",
       "GDPR",
-      "Web accessibility",
-      "Prompt engineering",
       "Generative AI",
-      "Marketing automation",
     ],
   },
   // External entity ids for schema `about`/`mentions` and `knowsAbout`, keyed
   // by the exact name used in frontmatter. Each Wikidata item carries the
   // Google Knowledge Graph id (P646/P2671); `kgmid` repeats it as a direct
-  // google.com/search?kgmid= link. Left off where Wikidata lists two ids.
+  // google.com/search?kgmid= link. Left off where Wikidata lists two ids, unless
+  // both open the same Google knowledge panel (Data Studio, checked 2026-10-11).
   // Names not listed here stay plain Things without sameAs.
   entities: {
     "ChatGPT": { wikidata: "Q115564437", wikipedia: "ChatGPT" },
     "Claude": { wikidata: "Q118876059", wikipedia: "Claude_(AI)", kgmid: "/g/11kq5ghr35" },
-    "Data Studio": { wikidata: "Q60165325", wikipedia: "Data_Studio" },
+    "Data Studio": { wikidata: "Q60165325", wikipedia: "Data_Studio", kgmid: "/g/11gt__kf15" },
     "Digital marketing": { wikidata: "Q1323528", wikipedia: "Digital_marketing", kgmid: "/g/122hcnps" },
     "Dyslexia": { wikidata: "Q132971", wikipedia: "Dyslexia", kgmid: "/m/029sk" },
     "GDPR": { wikidata: "Q1172506", wikipedia: "General_Data_Protection_Regulation", kgmid: "/m/0pk_7xs" },

@@ -164,6 +164,7 @@ test("About pages are ProfilePages whose mainEntity is the shared person", () =>
     assert.deepEqual(page.mainEntity, PERSON);
     assert.equal(page.inLanguage, language);
     assert.equal(page.dateModified, `${siteConfig.person.profileDateModified}T00:00:00+03:00`);
+    assert.equal("potentialAction" in page, false);
   }
 });
 
@@ -200,9 +201,8 @@ test("The shared Person is emitted once, points to the About page, and keeps str
     url: siteConfig.person.employerUrl,
   });
   assert.deepEqual(person.sameAs, siteConfig.person.profiles.map((profile) => profile.url));
-  assert.deepEqual(person.knowsAbout.map((topic) => topic.name), siteConfig.person.knowsAbout);
-  assert.ok(person.knowsAbout.every((topic) => topic["@type"] === "Thing"));
-  assert.ok(person.knowsAbout.every((topic) => !("sameAs" in topic) || topic.sameAs.length > 0));
+  assert.deepEqual(person.knowsAbout.map((topic) => topic.name ?? topic), siteConfig.person.knowsAbout);
+  assert.ok(person.knowsAbout.every((topic) => typeof topic === "string" || (topic["@type"] === "Thing" && topic.sameAs.length > 0)));
   // Personal identity links live under Person.sameAs; topic links must not leak in here.
   assert.ok(Array.isArray(person.sameAs) && person.sameAs.length > 0);
   assert.ok(person.sameAs.every((url) => !url.includes("wikidata.org") && !url.includes("wikipedia.org")));
@@ -213,6 +213,7 @@ test("The shared Person is emitted once, points to the About page, and keeps str
     datePublished: appearance.datePublished,
     inLanguage: appearance.inLanguage,
     sameAs: appearance.alsoOn?.map((link) => link.url),
+    contributor: PERSON,
   })));
 });
 
@@ -238,7 +239,7 @@ test("The WebSite identity comes from siteConfig", () => {
   assert.equal(website["@id"], `${root}#website`);
   assert.equal(website.url, root);
   assert.equal(website.name, siteConfig.website.name);
-  assert.equal(website.alternateName, "karppinen.one");
+  assert.equal("alternateName" in website, false);
   assert.equal(website.description, siteConfig.website.description);
   assert.deepEqual(website.publisher, PERSON);
   assert.equal("potentialAction" in website, false);
