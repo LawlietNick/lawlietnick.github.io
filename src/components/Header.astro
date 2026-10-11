@@ -2,7 +2,6 @@
 import { toolkit } from "../data/toolkit.js";
 import { siteName, showServices, contactUrl } from "../data/site.js";
 import LanguageMenu from "./LanguageMenu.astro";
-import LocaleList from "./LocaleList.astro";
 
 const { fi, t, root, aboutHref, enLanguageHref, fiLanguageHref, hasLanguageAlternate = true, postWithoutTranslation = false } = Astro.props;
 
@@ -350,7 +349,7 @@ const showDesktopCta = false;
       </div>
 
       <div class="mobile-nav-overlay__actions">
-        <LocaleList {...locales} />
+        <LanguageMenu {...locales} placement="footer" idPrefix="mobile" />
         <a class="cta" href={contactUrl}>
           <span class="cta__surface">{t.contact}</span>
         </a>
@@ -760,7 +759,7 @@ const showDesktopCta = false;
   .mobile-nav-overlay__summary > span:first-child { min-width: 0; }
   .mobile-nav-overlay__chevron { flex-shrink: 0; }
 
-  /* 56rem, not 768px: the Finnish nav labels plus the locale list and CTA need
+  /* 56rem, not 768px: the Finnish nav labels plus the language menu and CTA need
      ~844px of inner width, so at 768px the desktop header overflowed */
   @media (min-width: 56rem) {
     .site-header__inner { flex-wrap: wrap; }
