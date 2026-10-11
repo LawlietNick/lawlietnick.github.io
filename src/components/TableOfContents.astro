@@ -58,15 +58,24 @@ const label = fi ? "Tällä sivulla" : "On this page";
   .toc__toggle[aria-expanded="false"] .toc__chevron { transform: rotate(-45deg); }
   /* mobile: the toggle is the only way into the TOC, so make it look tappable */
   @media (max-width: 60rem) {
-    .toc__toggle {
-      min-height: 2.75rem;
-      padding: 0.6rem 1rem;
+    /* stacked under the hero and Ask AI box; without this it sits flush against them */
+    /* one bordered panel holds both the toggle and the open list, so it's
+       clear where the TOC ends and the article begins */
+    .toc {
+      margin-top: 1.5rem;
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
       background: var(--bg);
+      transition: border-color var(--duration-fast) var(--ease-standard);
+    }
+    .toc:has(.toc__toggle:hover) { border-color: var(--muted); }
+    .toc__toggle {
+      min-height: 2.75rem;
+      padding: 0.6rem 1rem;
       color: var(--ink);
     }
-    .toc__toggle:hover { border-color: var(--muted); }
+    /* .toc prefix: beats the base .toc__list margin declared further down */
+    .toc .toc__list { margin: 0.1rem 1rem 1rem; }
     .toc__chevron { width: 0.6rem; height: 0.6rem; }
   }
   .toc__list {
