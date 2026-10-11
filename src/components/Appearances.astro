@@ -8,12 +8,12 @@ const t = fi
   ? {
       title: "Esiintymiset ja julkaisut",
       intro: "Jaan ajatuksia artikkelien, koulutusten, webinaarien ja podcastien kautta, erityisesti SEO:sta, analytiikasta, mittaamisesta ja tekoälyn käytännön hyödyntämisestä digityössä.",
-      link: "Kuuntele jakso Spotifyssa",
+      listen: "Kuuntele",
     }
   : {
       title: "Talks, podcasts, publications",
       intro: "I share ideas through articles, training, webinars and podcasts, especially around SEO, analytics, measurement and the practical use of AI in digital work.",
-      link: "Listen on Spotify",
+      listen: "Listen on",
     };
 const dateFormat = new Intl.DateTimeFormat(fi ? "fi-FI" : "en-GB", {
   day: "numeric",
@@ -41,12 +41,21 @@ const languageNames = new Intl.DisplayNames([language], { type: "language" });
             <Badge class="appearance__type">Podcast</Badge>
             <span class="appearance__language">{languageNames.of(appearance.inLanguage)}</span>
           </div>
-          <div class="appearance__body content-links">
+          <div class="appearance__body">
             <h3 lang={otherLang}>{appearance.name}</h3>
             <p>{appearance[language].description}</p>
-            <a class="appearance__link" href={appearance.url} hreflang={otherLang}>
-              {t.link}<span class="visually-hidden">: <span lang={otherLang}>{appearance.name}</span></span>
-            </a>
+            <div class="appearance__platforms">
+              <span class="appearance__listen">{t.listen}</span>
+              <ul>
+                {[{ name: appearance.platform, url: appearance.url }, ...(appearance.alsoOn ?? [])].map((link) => (
+                  <li>
+                    <a href={link.url} hreflang={otherLang}>
+                      {link.name}<span class="visually-hidden">: <span lang={otherLang}>{appearance.name}</span></span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </article>
       );
@@ -101,6 +110,53 @@ const languageNames = new Intl.DisplayNames([language], { type: "language" });
     max-width: 58ch;
     margin: 0.5rem 0 0.9rem;
     color: var(--muted);
+  }
+  .appearance__platforms {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 0.9rem;
+  }
+  .appearance__listen {
+    color: var(--muted);
+    font-size: var(--font-size-ui-xs);
+    font-weight: 560;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .appearance__platforms ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .appearance__platforms a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    color: var(--ink);
+    font-size: var(--font-size-ui-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      color var(--duration-base) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out),
+      background-color var(--duration-base) var(--ease-out);
+  }
+  .appearance__platforms a:is(:hover, :focus-visible) {
+    border-color: var(--accent);
+    color: var(--accent);
+    background-color: color-mix(in oklab, var(--accent) 8%, var(--bg));
+  }
+  .appearance__platforms a:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
   }
   @container page (min-width: 46rem) {
     .appearances {

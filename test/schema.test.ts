@@ -212,6 +212,7 @@ test("The shared Person is emitted once, points to the About page, and keeps str
     url: appearance.url,
     datePublished: appearance.datePublished,
     inLanguage: appearance.inLanguage,
+    sameAs: appearance.alsoOn?.map((link) => link.url),
   })));
 });
 

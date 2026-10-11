@@ -329,6 +329,7 @@ export function buildSchemaGraph(options: SchemaOptions) {
           url: appearance.url,
           datePublished: appearance.datePublished,
           inLanguage: appearance.inLanguage,
+          sameAs: appearance.alsoOn?.map((link) => link.url),
         }))
       : undefined,
   }));
