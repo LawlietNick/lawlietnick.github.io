@@ -53,7 +53,8 @@ if (fm) {
     headings: count(/<h[23][\s>]/gi),
     readTime: Math.max(1, Math.round(words / 200)),
     links: count(/<a[\s>]/gi),
-    codeBlocks: count(/<pre[\s>]/gi),
+    codeBlocks: (html.match(/<pre\b[^>]*>/gi) || [])
+      .filter((tag) => !/\bdata-language=["']mermaid["']/i.test(tag)).length,
     images: count(/<img[\s>]/gi),
   };
 }

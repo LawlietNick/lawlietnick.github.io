@@ -1,5 +1,27 @@
 import { expect, test, type Page } from "@playwright/test";
 
+test.describe("article code block statistics", () => {
+  test.use({ javaScriptEnabled: false });
+
+  for (const route of [
+    "/blog/content-consumption-metrics/",
+    "/fi/blog/sisallon-kulutuksen-mittaaminen/",
+    "/templates/hubspot-form-tracking-gtm/",
+    "/fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm/",
+  ]) {
+    test(`excludes Mermaid from the server-rendered count on ${route}`, async ({ page }) => {
+      await page.goto(route);
+      const diagrams = page.locator('article pre[data-language="mermaid"]');
+      expect(await diagrams.count()).toBeGreaterThan(0);
+      const codeBlocks = page.locator('article pre:not([data-language="mermaid"])');
+      const row = page.locator(".article-telemetry__row").filter({
+        has: page.locator("dt", { hasText: /^(CODE BLOCKS|KOODILOHKOT)$/ }),
+      });
+      await expect(row.locator(".article-telemetry__value")).toHaveText(String(await codeBlocks.count()));
+    });
+  }
+});
+
 // Exercise the router with real link clicks, including routes absent from menus.
 async function navigate(page: Page, href: string) {
   await page.evaluate((href) => {
