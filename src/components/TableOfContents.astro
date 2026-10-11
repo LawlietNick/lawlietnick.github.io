@@ -93,10 +93,22 @@ const label = fi ? "Tällä sivulla" : "On this page";
     text-decoration: none; color: var(--muted); line-height: 1.4;
     transition: color var(--duration-fast) var(--ease-standard);
   }
-  .toc__link[data-depth="3"] { padding-left: 1.7rem; font-size: 0.85rem; }
+  .toc__link[data-depth="3"] { position: relative; padding-left: 1.7rem; font-size: 0.85rem; }
+  /* tree branch: the list's left rail is the trunk, so the subheading only
+     needs the horizontal arm, drawn from the rail to the first line's midline */
+  .toc__link[data-depth="3"]::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(0.12rem + 0.7em);
+    width: 1.15rem;
+    border-top: 1px solid var(--line);
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
   .toc__link:hover { color: var(--ink); }
   /* color only — no weight change, so active text never rewraps */
   .toc__link.is-active { color: var(--accent); }
+  .toc__link.is-active::before { border-top-color: var(--accent); }
 </style>
 
 <script>
