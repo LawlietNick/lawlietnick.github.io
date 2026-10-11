@@ -48,7 +48,9 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
           <p class="site-footer__brand-desc">{t.blurb}</p>
           <div class="site-footer__social">
             {profiles.filter((p) => p.footer !== false).map((p) => (
-              <a href={p.url} class="site-footer__social-link" rel="me noopener">{p.name}</a>
+              <a href={p.url} class="site-footer__social-link" rel="me noopener" aria-label={p.name} title={p.name}>
+                <svg class="site-footer__social-icon" aria-hidden="true" focusable="false"><use href={`/icons/social.svg#${p.icon}`} /></svg>
+              </a>
             ))}
           </div>
         </div>
@@ -209,17 +211,22 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
     margin: 0 0 1.5rem;
     max-width: 32ch;
   }
-  .site-footer__social { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .site-footer__social { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .site-footer__social-link {
-    min-height: 32px;
-    display: inline-flex;
-    align-items: center;
-    color: var(--muted);
-    font-size: 0.9375rem;
-    text-decoration: none;
-    transition: color var(--duration-fast) var(--ease-standard);
+    width: 44px;
+    height: 44px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--ink) 7%, var(--bg));
+    color: var(--ink);
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard);
   }
-  .site-footer__social-link:hover { color: var(--ink); }
+  .site-footer__social-link:hover { background: var(--ink); color: var(--bg); }
+  .site-footer__social-link:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+  .site-footer__social-icon { width: 20px; height: 20px; fill: currentColor; }
   .site-footer__col-title {
     font-family: "Roboto Flex", system-ui, sans-serif;  /* UI label, not editorial serif */
     font-weight: 600;

@@ -33,11 +33,11 @@ export const siteConfig = {
     // Portrait photographer; the copyright stays with her (Finnish default).
     portraitCreator: { name: "Pinja Tuominen", studio: "Pinja’s Photography", url: "https://www.pinjasphotography.com/" },
     profiles: [
-      { name: "LinkedIn", url: "https://www.linkedin.com/in/karppinenniko" },
-      { name: "GitHub", url: "https://github.com/LawlietNick" },
-      { name: "YouTube", url: "https://www.youtube.com/@LawlietNick" },
-      { name: "Bluesky", url: "https://bsky.app/profile/lawlietnick.bsky.social" },
-      { name: "WSocial", url: "https://wsocial.eu/profile/lawlietnick.wsocial.eu" },
+      { name: "LinkedIn", icon: "linkedin", url: "https://www.linkedin.com/in/karppinenniko" },
+      { name: "GitHub", icon: "github", url: "https://github.com/LawlietNick" },
+      { name: "YouTube", icon: "youtube", url: "https://www.youtube.com/@LawlietNick" },
+      { name: "Bluesky", icon: "bluesky", url: "https://bsky.app/profile/lawlietnick.bsky.social" },
+      { name: "WSocial", icon: "w-social", url: "https://wsocial.eu/profile/lawlietnick.wsocial.eu" },
       { name: "about.me", url: "https://about.me/nikokarppinen/", footer: false },
       { name: "imdb", url: "https://www.imdb.com/name/nm7385371/", footer: false },
       { name: "Pinterest", url: "https://fi.pinterest.com/nikokarppinen/", footer: false },
