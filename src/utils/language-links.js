@@ -6,6 +6,8 @@ const fiToEn = {
   "/fi/palvelut/": "/services/",
   "/fi/tyokalut/": "/tools/",
   "/fi/toteutusmallit/": "/templates/",
+  "/fi/tietosuojaseloste/": "/privacy/",
+  "/fi/kayttoehdot/": "/terms/",
 };
 
 const enToFi = {
@@ -13,6 +15,8 @@ const enToFi = {
   "/services/": "/fi/palvelut/",
   "/tools/": "/fi/tyokalut/",
   "/templates/": "/fi/toteutusmallit/",
+  "/privacy/": "/fi/tietosuojaseloste/",
+  "/terms/": "/fi/kayttoehdot/",
 };
 
 // Runtime safety checks; exhaustive prefix/reciprocity validation lives in

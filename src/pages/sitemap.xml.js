@@ -10,6 +10,10 @@ const staticRoutes = [
   "/fi/",
   "/fi/minusta/",
   "/fi/blog/",
+  "/privacy/",
+  "/terms/",
+  "/fi/tietosuojaseloste/",
+  "/fi/kayttoehdot/",
   ...(showServices ? ["/services/", "/fi/palvelut/"] : []),
 ];
 
