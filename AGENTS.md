@@ -7,6 +7,7 @@ Read the file that matches the task before you start:
 - **Commands, structure, frontmatter:** [README.md](README.md)
 - **Who the site is for, voice, what it must never claim:** [PRODUCT.md](PRODUCT.md)
 - **Visual system, tokens, shared patterns:** [DESIGN.md](DESIGN.md). [design_for_claude.md](design_for_claude.md) is the same material as one self-contained file for tools that cannot read the repo; keep it in sync when you change DESIGN.md or PRODUCT.md.
+- **Hero images — creating, replacing or making variants:** Before generating any hero, read [DESIGN.md → Article hero images](DESIGN.md#article-hero-images) and inspect the existing reference images listed there. TMNT is the required common element across hero images; carry it through every variant. Apply the imagegen skill when generating or editing the image.
 - **Structured data:** [docs/structured-data.md](docs/structured-data.md)
 
 ## Conventions the code won't tell you

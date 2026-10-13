@@ -92,6 +92,7 @@ tags: ["GA4", "GTM"]
 image: /images/blog/example.jpeg
 imageAlt: "What the image shows"
 imageCredit: "Generated with OpenAI ImageGen"   # say so when an image is AI-made
+imageLicense: reserved                            # optional; article images are CC0 by default
 alternate:                      # the other language version, if any
   lang: fi
   href: /fi/blog/esimerkki/

@@ -10,7 +10,6 @@ tags: ["ChatGPT", "promptit", "tekoäly"]
 image: /images/blog/prompt-optimization-chatgpt.jpeg
 imageAlt: "Promptien suunnittelijaksi pukeutunut sarjakuvakilpikonna pitelee tablettia prompti- ja tavoitesymbolien välissä"
 imageCredit: "Luotu OpenAI ImageGenillä"
-imageLicense: cc0
 alternate:
   lang: en
   href: /blog/prompt-optimization-chatgpt/

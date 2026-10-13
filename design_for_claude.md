@@ -20,15 +20,19 @@ The core offering includes technical SEO, analytics and measurement design, GA4,
 
 ## Article hero images
 
-- Create new article hero images at **1536 × 1024 pixels (3:2)**. This is the standard for new assets; existing images may keep their dimensions.
-- Keep the subject and essential visual details within the central 75% of the width and 70% of the height. Heroes and article cards use `object-fit: cover` with different frame proportions; check the actual crops at desktop and mobile widths before finishing.
-- Use a simple editorial illustration that remains readable as a thumbnail. Keep article titles in HTML rather than inside the image.
-- Build continuity through restrained cream, lavender and yellow accents, clear shapes and a quietly playful tone. Vary the subject and scene: a character, an object metaphor, a miniature environment or an abstract composition can each carry an article's idea. Choose the visual metaphor from the specific topic.
-- Before generating, inspect the five most recent article heroes. Make the new image differ from the nearest similar hero in at least two of these dimensions: subject or character, setting, composition or camera angle, illustration technique, and dominant background color. A new screen or prop in the same scene is not sufficient variation.
-- Characters are optional. When using one, choose a character and action that fit the topic; the turtle is one option, not a default mascot for every article. Alternate character scenes with images focused on objects or environments. Likewise, alternate tactile 3D scenes with flat editorial, paper-cut or restrained line illustrations when they suit the idea.
-- Describe the chosen subject, action, setting, framing and medium explicitly in the generation prompt. When supplying a previous hero as a reference, specify which qualities to retain and which to vary. Compare the result with recent heroes at thumbnail size; revise if it repeats their scene or silhouette.
-- Save the JPEG source under `public/images/blog/` and an identically named copy under `src/assets/blog/` so the shared image component can generate responsive formats. Use a descriptive lowercase filename with hyphens.
-- Set `image`, a meaningful `imageAlt`, and `imageCredit` in article frontmatter. AI-generated images use `imageCredit: "Luotu OpenAI ImageGenillä"` for Finnish articles and the corresponding English credit for English articles.
+Read this section before generating, editing or proposing variants of a hero image. These requirements apply to article and landing-page heroes.
+
+- **TMNT is the common element.** Every new hero and every variant must include a recognizable TMNT-inspired turtle character from the site's established visual family. Match the existing green turtle's expressive eyes, shell, proportions and tactile rendering. The setting, action, clothing and composition can vary with the topic.
+- **Use the established soft 3D style.** Match the warm light, rounded cream panels, lavender and purple details and restrained yellow accents in the current heroes. A palette match alone is insufficient: the character and rendering must also belong to the same series.
+- **Read the visual references before generating.** Inspect the five most recent article heroes and use at least one existing hero as an image reference in the generation call. Start with `src/assets/blog/contact-detail-clicks-and-copy-tracking.jpeg`, `src/assets/blog/heatmaps-and-content-element-tracking.jpeg` and `src/assets/blog/page-classification-for-website-analytics.jpeg` for the current turtle and rendering style.
+- **Vary the scene within the series.** Different versions may change the turtle's pose, setting, metaphor, props, camera angle or composition. Vary at least two of these dimensions from the nearest similar hero. Keep the TMNT character family and soft 3D rendering consistent. A flat, paper-cut, abstract or character-free image is a change of visual direction and requires Niko's explicit request.
+- Create new hero images at **1536 × 1024 pixels (3:2)**. Existing assets may keep their dimensions. Keep essential subjects within the central 75% of the width and 70% of the height for cropping.
+- Keep the idea readable at thumbnail size. Put article titles in HTML, and keep text, detailed code and unnecessary interface clutter out of the image.
+- In the prompt, state the topic, character, action, setting, composition and rendering style. Say which reference qualities to preserve and which scene elements to vary.
+- Before finishing, compare the result with the reference heroes at thumbnail size and check the actual desktop and mobile crops. Revise a result that changes the series' style, loses the turtle or crops an essential subject.
+- Save the JPEG source under `public/images/blog/` and an identical copy under `src/assets/blog/` for responsive image generation. Use a descriptive lowercase filename with hyphens; preserve alternatives with distinct filenames.
+- Set `image`, meaningful `imageAlt` and `imageCredit` in article frontmatter. Finnish AI-generated images use `imageCredit: "Luotu OpenAI ImageGenillä"`; use the corresponding English credit for English articles.
+- Article images are CC0 by default, matching the Terms of Use. Set `imageLicense: reserved` only when Niko says an image is reserved, such as a photo he owns.
 
 ## Brand direction
 

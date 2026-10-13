@@ -440,7 +440,7 @@ test("every in-graph @id has one typed node; nested @id objects are bare referen
   }
 });
 
-test("image rights: all rights reserved by default, CC0 when marked, photographer holds the portrait", () => {
+test("image rights: article heroes CC0 by default, reserved when marked, photographer holds the portrait", () => {
   const post = (path, language, extra = {}) => graph({
     canonicalUrl: url(path),
     pathname: path,
@@ -452,13 +452,13 @@ test("image rights: all rights reserved by default, CC0 when marked, photographe
   const portrait = (data) => data["@graph"].find((entry) => entry["@id"] === `${root}#personimage`);
 
   for (const [path, language, terms] of [["/blog/a/", "en", url("/terms/#images")], ["/fi/blog/b/", "fi", url("/fi/kayttoehdot/#images")]]) {
-    const reserved = primary(post(path, language));
+    const reserved = primary(post(path, language, { imageLicense: "reserved" }));
     assert.equal(reserved.license, terms);
     assert.equal(reserved.acquireLicensePage, terms);
     assert.equal(reserved.copyrightNotice, `© ${authorName}`);
     assert.deepEqual(reserved.copyrightHolder, PERSON);
 
-    const free = primary(post(path, language, { imageLicense: "cc0", imageCredit: "Generated with OpenAI ImageGen" }));
+    const free = primary(post(path, language, { imageCredit: "Generated with OpenAI ImageGen" }));
     assert.equal(free.license, "https://creativecommons.org/publicdomain/zero/1.0/");
     assert.equal(free.creditText, "Generated with OpenAI ImageGen");
     assert.equal("acquireLicensePage" in free || "copyrightNotice" in free || "copyrightHolder" in free, false);

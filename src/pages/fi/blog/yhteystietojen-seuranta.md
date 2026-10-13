@@ -9,7 +9,6 @@ tags: ["tapahtumaseuranta", "yhteystietojen seuranta", "markkinoinnin mittaamine
 image: /images/blog/contact-detail-clicks-and-copy-tracking.jpeg
 imageAlt: "Vihreä kilpikonnahahmo tutkii suurennuslasilla yhteystietojen käyttöä kuvaavaa näkymää, jossa sähköposti- ja puhelinlinkkien klikkausten lisäksi paljastuvat myös yhteystietojen kopiointitapahtumat."
 imageCredit: "Luotu OpenAI ImageGenillä"
-imageLicense: cc0
 alternate:
   lang: en
   href: /blog/contact-detail-tracking/

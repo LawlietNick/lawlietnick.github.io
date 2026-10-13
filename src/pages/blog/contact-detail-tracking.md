@@ -9,7 +9,6 @@ tags: ["event tracking", "contact detail tracking", "marketing measurement"]
 image: /images/blog/contact-detail-clicks-and-copy-tracking.jpeg
 imageAlt: "A green turtle character examines a contact detail report through a magnifying glass, revealing email address and phone number copy events alongside link clicks."
 imageCredit: "Generated with OpenAI ImageGen"
-imageLicense: cc0
 alternate:
   lang: fi
   href: /fi/blog/yhteystietojen-seuranta/
