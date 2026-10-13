@@ -49,9 +49,9 @@ Kirjoitus sai alkunsa [Dana DiTomason oppaasta sisällön kulutuksen mittaamisee
 
 Välitön poistuminen ja sitoutumisaste auttavat arvioimaan käyntejä, mutta niiden tarkastelutaso on tärkeä.
 
-GA4:ssä molemmat mittarit perustuvat istuntoihin. Sitoutunut istunto täyttää vähintään yhden kolmesta ehdosta: se ylittää sitoutumisajan raja-arvon, sisältää avaintapahtuman tai sisältää vähintään kaksi sivun tai näkymän katselua. Googlen vakiomäärityksessä aikaraja on yli 10 sekuntia. Sitoutumisaste on sitoutuneiden istuntojen osuus, ja välitön poistuminen on niiden istuntojen osuus, jotka eivät olleet sitoutuneita. [Googlen määritelmät sitoutumisasteelle ja välittömälle poistumiselle](https://support.google.com/analytics/answer/12195621?hl=fi)
+GA4:ssä molemmat mittarit perustuvat istuntoihin. Aktiivinen istunto (engaged session) täyttää vähintään yhden kolmesta ehdosta: se ylittää sitoutumisajan raja-arvon, sisältää avaintapahtuman tai sisältää vähintään kaksi sivun tai näkymän katselua. Googlen vakiomäärityksessä aikaraja on yli 10 sekuntia. Sitoutumisaste on aktiivisten istuntojen osuus, ja välitön poistuminen on niiden istuntojen osuus, jotka eivät olleet aktiivisia. [Googlen määritelmät sitoutumisasteelle ja välittömälle poistumiselle](https://support.google.com/analytics/answer/12195621?hl=fi)
 
-Istunto voi siis olla sitoutunut, vaikka kävijä ei pääsisi artikkelin puoliväliin tai viimeiseen kappaleeseen eikä viettäisi sisällön parissa niin paljon aikaa, että lukeminen olisi uskottavaa. Nämä mittarit vastaavat laajempaan kysymykseen kuin siihen, kulutettiinko tietty sisältö.
+Istunto voi siis olla aktiivinen, vaikka kävijä ei pääsisi artikkelin puoliväliin tai viimeiseen kappaleeseen eikä viettäisi sisällön parissa niin paljon aikaa, että lukeminen olisi uskottavaa. Nämä mittarit vastaavat laajempaan kysymykseen kuin siihen, kulutettiinko tietty sisältö.
 
 Sitoutumisaste auttaa vastaamaan siihen, näkyikö istunnossa merkkejä sitoutumisesta. Se ei kerro, kuluttiko kävijä artikkelin.
 
