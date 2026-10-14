@@ -1,0 +1,110 @@
+---
+import { Picture } from "astro:assets";
+import annotationImage from "../assets/blog/ga4-annotations.jpeg";
+import cookiebot from "../assets/blog/cookiebot-guide.jpeg";
+
+const { fi = false } = Astro.props;
+---
+
+<section class="about-resources" aria-labelledby="about-resources-title">
+  <h2 id="about-resources-title">{fi ? "Kokeile työkalua tai tutustu oppaaseen" : "Try a tool or explore a guide"}</h2>
+  <div class="about-resources__list">
+    <a class="about-resource featured-card" href={fi ? "/fi/tyokalut/ga4-annotaatiot/" : "/tools/ga4-annotations/"} aria-labelledby="annotation-resource-title" aria-describedby="annotation-resource-description">
+      <span class="featured-label" aria-hidden="true">{fi ? "Valittu työkalu" : "Selected tool"}</span>
+      <div class="about-resource__media">
+        <Picture src={annotationImage} alt="" widths={[400, 640, 960]} sizes="(min-width: 46rem) 33rem, 100vw" loading="lazy" />
+      </div>
+      <div class="about-resource__body">
+        <h3 id="annotation-resource-title">{fi ? "GA4-annotaatiotyökalu" : "GA4 annotation builder"}</h3>
+        <p id="annotation-resource-description">{fi
+          ? "Kirjaa sivuston muutokset ja kampanjat, jotta muistat ne myöhemmin dataa tulkitessasi. Valitse pohja, täydennä teksti ja kopioi merkintä GA4:ään."
+          : "Record website changes and campaigns so you can refer to them when interpreting your data. Choose a template, fill in the details and copy the annotation into GA4."}</p>
+        <span class="cta cta--secondary about-resource__action"><span class="cta__surface">{fi ? "Avaa työkalu" : "Open the tool"}</span></span>
+      </div>
+    </a>
+    <a class="about-resource featured-card" href={fi ? "/fi/toteutusmallit/cookiebot-opas/" : "/templates/cookiebot-guide/"} aria-labelledby="cookiebot-resource-title" aria-describedby="cookiebot-resource-description">
+      <span class="featured-label" aria-hidden="true">{fi ? "Valittu opas" : "Selected guide"}</span>
+      <div class="about-resource__media">
+        <Picture src={cookiebot} alt="" widths={[400, 640, 960]} sizes="(min-width: 46rem) 33rem, 100vw" loading="lazy" />
+      </div>
+      <div class="about-resource__body">
+        <h3 id="cookiebot-resource-title">{fi ? "Cookiebot-opas" : "Cookiebot guide"}</h3>
+        <p id="cookiebot-resource-description">{fi
+          ? "Ota Cookiebot käyttöön ja määritä Googlen sekä Microsoftin suostumustilat. Opas sisältää kopioitavat koodit ja ohjeet toiminnan testaamiseen."
+          : "Set up Cookiebot and configure consent signals for Google and Microsoft. The guide includes code you can copy and instructions for testing the implementation."}</p>
+        <span class="cta cta--secondary about-resource__action"><span class="cta__surface">{fi ? "Tutustu oppaaseen" : "Read the guide"}</span></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<style>
+  .about-resources {
+    padding-block: 1rem 3rem;
+  }
+  .about-resources h2 {
+    margin: 0 0 2rem;
+    font-size: clamp(1.6rem, 4cqi, 2.2rem);
+    text-wrap: balance;
+  }
+  .about-resources__list {
+    display: grid;
+    gap: 2rem;
+  }
+  .about-resource {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .about-resource:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 4px;
+  }
+  .about-resource__media {
+    border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
+    background: var(--color-accent-panel);
+  }
+  .about-resource__media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .about-resource__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: clamp(1.25rem, 3cqi, 2rem);
+  }
+  .about-resource h3 {
+    margin: 0;
+    font-size: clamp(1.4rem, 2.8cqi, 1.8rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  .about-resource p {
+    margin: 0 0 0.5rem;
+    max-width: 55ch;
+    color: var(--muted);
+  }
+  .about-resource__action {
+    margin-top: auto;
+    padding: 0.75rem 1.1rem;
+    white-space: nowrap;
+  }
+  @container page (min-width: 46rem) {
+    .about-resources__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import SplitSection from "../../components/SplitSection.astro";
 import AboutQuote from "../../components/AboutQuote.astro";
+import AboutResources from "../../components/AboutResources.astro";
 import AboutIntro from "../../components/AboutIntro.astro";
 import Appearances from "../../components/Appearances.astro";
 import { contactUrl } from "../../data/site.js";
@@ -9,6 +10,10 @@ import { contactUrl } from "../../data/site.js";
 
 <Base title="Minusta" description="Niko Karppinen on SEO- ja analytiikkakonsultti, jonka työhön kuuluvat digitaalinen mittaaminen, seurannan toteutukset ja verkkosivustojen kehittäminen." schemaPageType="about">
   <AboutIntro fi={true} />
+
+  <Appearances fi={true} />
+
+  <AboutQuote fi={true} />
 
   <SplitSection id="approach" variant="about">
     <Fragment slot="title">
@@ -46,27 +51,6 @@ import { contactUrl } from "../../data/site.js";
         Automatisoin mielelläni rutiinityön, mutta päätökset jäävät ihmiselle.
         Rakennan työnkulkuihin kohdat, joissa joku tarkistaa tuloksen, ennen kuin
         se siirtyy eteenpäin.
-      </p>
-    </Fragment>
-  </SplitSection>
-
-  <AboutQuote fi={true} />
-
-  <SplitSection id="values" variant="about">
-    <Fragment slot="title">
-      <h2>Mistä välitän</h2>
-    </Fragment>
-    <Fragment slot="copy">
-      <p>
-        Välitän selkeydestä ja luottamuksesta. Mittaamisen pitäisi auttaa
-        päättämään, mitä tehdään seuraavaksi. Jokaisella seurattavalla luvulla
-        pitäisi olla käyttötarkoitus.
-      </p>
-      <p>
-        Haluan, että työni perusteella ihmiset ymmärtävät, mitä on havaittu,
-        mihin päätelmät perustuvat ja miten niiden pohjalta voi toimia.
-        Työkalut voivat tuoda esiin ilmiöitä, mutta ihmiset arvioivat niiden
-        merkityksen asiakkaalle, liiketoiminnalle ja brändille.
       </p>
     </Fragment>
   </SplitSection>
@@ -134,6 +118,27 @@ import { contactUrl } from "../../data/site.js";
     </Fragment>
   </SplitSection>
 
+  <SplitSection id="values" variant="about">
+    <Fragment slot="title">
+      <h2>Mistä välitän</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Välitän selkeydestä ja luottamuksesta. Mittaamisen pitäisi auttaa
+        päättämään, mitä tehdään seuraavaksi. Jokaisella seurattavalla luvulla
+        pitäisi olla käyttötarkoitus.
+      </p>
+      <p>
+        Haluan, että työni perusteella ihmiset ymmärtävät, mitä on havaittu,
+        mihin päätelmät perustuvat ja miten niiden pohjalta voi toimia.
+        Työkalut voivat tuoda esiin ilmiöitä, mutta ihmiset arvioivat niiden
+        merkityksen asiakkaalle, liiketoiminnalle ja brändille.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <AboutResources fi={true} />
+
   <SplitSection id="outside-work" variant="about">
     <Fragment slot="title">
       <h2>Vapaa-ajalla</h2>
@@ -158,8 +163,6 @@ import { contactUrl } from "../../data/site.js";
       </p>
     </Fragment>
   </SplitSection>
-
-  <Appearances fi={true} />
 
   <SplitSection id="how-i-write" variant="about">
     <Fragment slot="title">

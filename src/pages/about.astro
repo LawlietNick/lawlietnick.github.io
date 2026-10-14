@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import SplitSection from "../components/SplitSection.astro";
 import AboutQuote from "../components/AboutQuote.astro";
+import AboutResources from "../components/AboutResources.astro";
 import AboutIntro from "../components/AboutIntro.astro";
 import Appearances from "../components/Appearances.astro";
 import { contactUrl } from "../data/site.js";
@@ -9,6 +10,10 @@ import { contactUrl } from "../data/site.js";
 
 <Base title="About Niko Karppinen" description="Niko Karppinen is an SEO and analytics consultant working across digital measurement, technical implementation and practical digital systems." schemaPageType="about">
   <AboutIntro />
+
+  <Appearances />
+
+  <AboutQuote />
 
   <SplitSection id="approach" variant="about">
     <Fragment slot="title">
@@ -42,25 +47,6 @@ import { contactUrl } from "../data/site.js";
         I am happy to automate the routine work, but decisions stay with people.
         I build checkpoints into workflows where someone reviews the result
         before it moves on.
-      </p>
-    </Fragment>
-  </SplitSection>
-
-  <AboutQuote />
-
-  <SplitSection id="values" variant="about">
-    <Fragment slot="title">
-      <h2>What I care about</h2>
-    </Fragment>
-    <Fragment slot="copy">
-      <p>
-        Measurement is worth the effort when someone makes a decision with it.
-        Otherwise it is one more set of numbers to maintain.
-      </p>
-      <p>
-        Good work should give people enough context to judge what is important
-        and enough structure to act on it. Tools can surface patterns, but people
-        still decide what matters for the customer, the business, and the brand.
       </p>
     </Fragment>
   </SplitSection>
@@ -126,6 +112,25 @@ import { contactUrl } from "../data/site.js";
     </Fragment>
   </SplitSection>
 
+  <SplitSection id="values" variant="about">
+    <Fragment slot="title">
+      <h2>What I care about</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>
+        Measurement is worth the effort when someone makes a decision with it.
+        Otherwise it is one more set of numbers to maintain.
+      </p>
+      <p>
+        Good work should give people enough context to judge what is important
+        and enough structure to act on it. Tools can surface patterns, but people
+        still decide what matters for the customer, the business, and the brand.
+      </p>
+    </Fragment>
+  </SplitSection>
+
+  <AboutResources />
+
   <SplitSection id="outside-work" variant="about">
     <Fragment slot="title">
       <h2>Outside work</h2>
@@ -150,8 +155,6 @@ import { contactUrl } from "../data/site.js";
       </p>
     </Fragment>
   </SplitSection>
-
-  <Appearances />
 
   <SplitSection id="how-i-write" variant="about">
     <Fragment slot="title">
