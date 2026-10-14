@@ -38,7 +38,6 @@ const groups = postWithoutTranslation
   <button
     class="lang-menu__trigger"
     type="button"
-    aria-haspopup="true"
     aria-expanded="false"
     aria-controls={panelId}
   >
@@ -88,7 +87,7 @@ const groups = postWithoutTranslation
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    min-height: 38px;
+    min-height: 44px;
     padding: 3px 0.9rem;
     border: 1.5px solid var(--line);
     border-radius: var(--radius-pill);
@@ -174,6 +173,7 @@ const groups = postWithoutTranslation
   .lang-menu__option {
     display: flex;
     align-items: center;
+    min-height: 44px;
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
     border-radius: var(--radius-sm);
