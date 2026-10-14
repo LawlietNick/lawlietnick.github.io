@@ -2,16 +2,33 @@
 import Base from "../../layouts/Base.astro";
 ---
 
-<Base title="Tietosuojaseloste" description="Miten tämä sivusto kerää, käyttää ja säilyttää tietojasi: analytiikka, evästeet, suostumusvalinnat ja yhteydenotto henkilötietoja koskien.">
+<Base title="Tietosuojaseloste" description="Miten tämä sivusto kerää, käyttää ja säilyttää tietojasi: analytiikka, paikallinen tallennustila ja palveluntarjoajat.">
   <div class="prose">
     <h1>Tietosuojaseloste</h1>
-    <p><strong>Viimeksi päivitetty 4.10.2026.</strong></p>
+    <p><strong>Viimeksi päivitetty 14.10.2026.</strong></p>
     <p>
-      Tällä sivulla kuvataan sivuston nykyinen evästeiden ja vastaavien
+      Tällä sivulla kuvataan, miten sivusto käsittelee tietoja: analytiikka,
+      sivuston julkaisussa käytetyt palvelut sekä evästeiden ja vastaavien
       selaintallennustekniikoiden käyttö. Tässä selosteessa evästeillä
       tarkoitetaan myös paikallista tallennustilaa ja muita tekniikoita, jotka
       tallentavat tietoja selaimeesi tai laitteellesi tai lukevat niitä sieltä.
     </p>
+
+    <h2>Rekisterinpitäjä</h2>
+    <dl class="privacy-facts surface">
+      <div class="privacy-facts__row">
+        <dt>Rekisterinpitäjä</dt>
+        <dd><strong>Niko Karppinen</strong>, sivuston ylläpitäjä (yksityishenkilö)</dd>
+      </div>
+      <div class="privacy-facts__row">
+        <dt>Yhteystiedot</dt>
+        <dd><span data-contact-email data-user="privacy" data-domain="karppinen.one">privacy [at] karppinen.one</span></dd>
+      </div>
+      <div class="privacy-facts__row">
+        <dt>Valitusoikeus</dt>
+        <dd><a href="https://tietosuoja.fi">Tietosuojavaltuutetun toimisto</a></dd>
+      </div>
+    </dl>
 
     <h2>Evästeet ja vastaavat tekniikat</h2>
     <p>
@@ -20,12 +37,55 @@ import Base from "../../layouts/Base.astro";
       Käytössä ei ole mainonta- tai sosiaalisen median evästeitä, ja alla
       kuvattu analytiikka toimii ilman evästeitä.
     </p>
-    <ul>
-      <li><strong>Teemavalinta:</strong> järjestelmän mukainen, vaalea tai tumma teema.</li>
-      <li><strong>Cookiebot-bannerin tyylitystyökalu:</strong> valitsemasi värit, tasaukset ja muut esikatseluasetukset.</li>
-      <li><strong>GTM-kontin rakennustyökalu:</strong> valitsemasi tagit, konttitila, nimeämistapa ja asetusten arvot.</li>
-      <li><strong>Data layer -dokumentaatiogeneraattori:</strong> muokattavan dokumenttiluonnoksesi sisältö.</li>
-    </ul>
+    <table>
+      <caption>Selaimen paikalliseen tallennustilaan tallennettavat tiedot</caption>
+      <thead>
+        <tr>
+          <th scope="col">Toiminto</th>
+          <th scope="col">Mitä tallennetaan</th>
+          <th scope="col">Avain</th>
+          <th scope="col">Tallentaja ja omistaja</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Teemavalinta</td>
+          <td>Järjestelmän mukainen, vaalea tai tumma teema.</td>
+          <td><code>theme</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>Cookiebot-bannerin tyylitystyökalu</td>
+          <td>Valitsemasi värit, tasaukset ja muut esikatseluasetukset.</td>
+          <td><code>cookiebot-banner-styler</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>GTM-kontin rakennustyökalu</td>
+          <td>Valitsemasi tagit, konttitila, nimeämistapa ja asetusten arvot.</td>
+          <td><code>karppinen-gtm-tag-selection-v1</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>Data layer -dokumentaatiogeneraattori</td>
+          <td>Muokattavan dokumenttiluonnoksesi sisältö.</td>
+          <td><code>nk:datalayer-documenter:v1</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>GA4-annotaatiotyökalu</td>
+          <td>Valitsemasi kieli.</td>
+          <td><code>ga4-annotation-language</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>Opasten tehtävälistat</td>
+          <td>Rastittamasi kohdat kyseisellä opassivulla.</td>
+          <td><code>checklist:</code> + sivun polku</td>
+          <td>karppinen.one</td>
+        </tr>
+      </tbody>
+    </table>
     <p>
       Tiedot säilyvät selaimessasi. Sivusto ei lähetä niitä palvelimelle eikä
       jaa niitä kolmansille osapuolille. Tiedot säilyvät, kunnes palautat
@@ -33,15 +93,112 @@ import Base from "../../layouts/Base.astro";
       tallennetut sivustotiedot selaimestasi.
     </p>
 
-    <h2>Analytiikka ja kolmannen osapuolen palvelut</h2>
+    <h2>Palveluntarjoajat</h2>
     <p>
-      Sivusto käyttää kävijätilastoihin yksityisyyttä suojaavaa <a href="https://rybbit.com/privacy">Rybbit</a>-palvelua. Rybbit ei käytä
-      evästeitä. Se tallentaa katsomasi sivut, sivuston, jolta tulit, käynnin
-      keston, selaimen ja käyttöjärjestelmän, näytön koon, maan tai alueen sekä
-      kampanjaparametrit (UTM). IP-osoitettasi käytetään vain hetkellisesti maan
-      päättelemiseen, eikä sitä tallenneta. Käynnit lasketaan anonyymeillä
-      tunnisteilla, joista sinua ei voi tunnistaa. Tilastoista näkee, mitä
-      sisältöä luetaan, ja niiden avulla sivustoa kehitetään.
+      Sivun avaamisen yhteydessä alla olevat palveluntarjoajat käsittelevät
+      teknisiä tietoja, kuten IP-osoitettasi ja selaimen pyyntötietoja, jotta
+      sivu latautuu, pysyy suojattuna ja tilastot toimivat.
+    </p>
+    <table>
+      <caption>Sivuston käyttämät palveluntarjoajat</caption>
+      <thead>
+        <tr>
+          <th scope="col">Palvelu</th>
+          <th scope="col">Tehtävä</th>
+          <th scope="col">Käsiteltävät tiedot</th>
+          <th scope="col">Sijainti</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GitHub Pages (Microsoft)</td>
+          <td>Sivuston julkaisu</td>
+          <td>IP-osoite, pyyntöjen ajankohta sekä laite- ja selaintiedot. GitHub on tämän käsittelyn rekisterinpitäjä.</td>
+          <td>Yhdysvallat ja muut GitHubin toimintamaat</td>
+        </tr>
+        <tr>
+          <td>Cloudflare</td>
+          <td>Välityspalvelin, nimipalvelu ja liikennetilastot</td>
+          <td>IP-osoite ja selaimen pyyntötiedot. Tilastot kerätään palvelimella ilman evästeitä, ja ylläpitäjä näkee ne vain koottuina lukuina.</td>
+          <td>Yhdysvallat (maailmanlaajuinen verkko)</td>
+        </tr>
+        <tr>
+          <td>Rybbit</td>
+          <td>Kävijätilastot (ks. alla)</td>
+          <td>Katso seuraava osio</td>
+          <td>Saksa ja Suomi (Hetzner)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      GitHub ja Cloudflare ovat yhdysvaltalaisia yrityksiä. Siirroissa
+      käytetään EU:n vakiolausekkeita tai EU–USA Data Privacy Frameworkia.
+      GitHub on ilmoittanut sertifioituneensa kehykseen. Lisätietoa: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHubin tietosuojaseloste</a>.
+    </p>
+
+    <h2>Analytiikka (Rybbit)</h2>
+    <p>
+      Sivusto käyttää kävijätilastoihin yksityisyyttä suojaavaa <a href="https://rybbit.com/privacy">Rybbit</a>-palvelua. Rybbit ei aseta
+      evästeitä eikä tallenna mitään laitteellesi. Istuntojen tallennusta
+      (session replay) ei käytetä.
+    </p>
+    <table>
+      <caption>Rybbitin käsittelemät tiedot</caption>
+      <thead>
+        <tr>
+          <th scope="col">Tieto</th>
+          <th scope="col">Tallennetaanko</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Katsomasi sivut ja sivusto, jolta tulit</td>
+          <td>Kyllä</td>
+        </tr>
+        <tr>
+          <td>Käynnin kesto</td>
+          <td>Kyllä</td>
+        </tr>
+        <tr>
+          <td>Selain, käyttöjärjestelmä ja näytön koko</td>
+          <td>Kyllä</td>
+        </tr>
+        <tr>
+          <td>Maa ja alue</td>
+          <td>Kyllä</td>
+        </tr>
+        <tr>
+          <td>Kampanjaparametrit (UTM)</td>
+          <td>Kyllä</td>
+        </tr>
+        <tr>
+          <td>IP-osoite</td>
+          <td>Ei. Sitä käytetään vain hetkellisesti maan ja alueen päättelyyn.</td>
+        </tr>
+        <tr>
+          <td>Kävijätunniste</td>
+          <td>Kyllä, mutta se vaihtuu päivittäin, joten sillä ei voi seurata sinua päivästä toiseen.</td>
+        </tr>
+        <tr>
+          <td>Evästeet ja paikallinen tallennustila</td>
+          <td>Ei</td>
+        </tr>
+        <tr>
+          <td>Istuntojen tallennus (session replay)</td>
+          <td>Ei käytössä</td>
+        </tr>
+        <tr>
+          <td>Säilytysaika</td>
+          <td>5 vuotta, minkä jälkeen tiedot poistuvat automaattisesti</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      IP-osoitteesi tulee palvelimelle kuten kaikissa verkkopalveluissa.
+      Tilastoista näkee, mitä sisältöä luetaan, ja niiden avulla sivustoa
+      kehitetään. Liikenne kulkee Cloudflaren verkon kautta, jolloin IP-osoite
+      näkyy hetkellisesti myös Cloudflarelle. Rybbit käsittelee tietoja
+      puolestani tietojenkäsittelysopimuksen (DPA) mukaisesti. Lisätietoa: <a href="https://rybbit.com/subprocessors">Rybbitin alikäsittelijät</a>.
     </p>
     <p>
       Fontit, kuvat ja muut sivuresurssit tarjoillaan sivuston omalta
@@ -63,3 +220,52 @@ import Base from "../../layouts/Base.astro";
     <p>Tämä sivu päivitetään, jos sivuston tallennus- tai seurantakäytännöt muuttuvat.</p>
   </div>
 </Base>
+
+<script>
+  // The address is assembled in the browser so it never sits in the HTML as a ready mailto: link.
+  function showContactEmail() {
+    document.querySelectorAll<HTMLElement>("[data-contact-email]").forEach((el) => {
+      const address = `${el.dataset.user}@${el.dataset.domain}`;
+      const link = document.createElement("a");
+      link.href = `mailto:${address}`;
+      link.textContent = address;
+      el.replaceWith(link);
+    });
+  }
+  document.addEventListener("astro:page-load", showContactEmail);
+</script>
+
+<style>
+  .privacy-facts {
+    margin: 1.25rem 0 2rem;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .privacy-facts__row {
+    display: grid;
+    grid-template-columns: minmax(8.5rem, 11rem) 1fr;
+    gap: 0.25rem 1.5rem;
+    padding: 0.9rem 1.25rem;
+  }
+
+  .privacy-facts__row + .privacy-facts__row {
+    border-top: 1px solid var(--line);
+  }
+
+  .privacy-facts dt {
+    color: var(--muted);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .privacy-facts dd {
+    margin: 0;
+  }
+
+  @media (max-width: 36rem) {
+    .privacy-facts__row {
+      grid-template-columns: 1fr;
+      padding: 0.8rem 1rem;
+    }
+  }
+</style>

@@ -2,16 +2,33 @@
 import Base from "../layouts/Base.astro";
 ---
 
-<Base title="Privacy Policy" description="How this site collects, uses and stores your data: analytics, cookies, consent choices and how to contact me about your personal information.">
+<Base title="Privacy Policy" description="How this site collects, uses and stores your data: analytics, local storage and service providers.">
   <div class="prose">
     <h1>Privacy Policy</h1>
-    <p><strong>Last updated: 4 October 2026.</strong></p>
+    <p><strong>Last updated: 14 October 2026.</strong></p>
     <p>
-      This page explains the current use of cookies and similar browser-storage
-      technologies on this website. In this policy, “cookies” includes local
+      This page explains how the site handles data: analytics, the services
+      used to publish the site, and the use of cookies and similar
+      browser-storage technologies. In this policy, “cookies” includes local
       storage and other technologies that store information on, or access
       information from, your browser or device.
     </p>
+
+    <h2>Data controller</h2>
+    <dl class="privacy-facts surface">
+      <div class="privacy-facts__row">
+        <dt>Data controller</dt>
+        <dd><strong>Niko Karppinen</strong>, site owner (private individual)</dd>
+      </div>
+      <div class="privacy-facts__row">
+        <dt>Contact</dt>
+        <dd><span data-contact-email data-user="privacy" data-domain="karppinen.one">privacy [at] karppinen.one</span></dd>
+      </div>
+      <div class="privacy-facts__row">
+        <dt>Right to complain</dt>
+        <dd><a href="https://tietosuoja.fi/en">Office of the Data Protection Ombudsman (Finland)</a></dd>
+      </div>
+    </dl>
 
     <h2>Cookies and similar technologies</h2>
     <p>
@@ -20,12 +37,55 @@ import Base from "../layouts/Base.astro";
       social media cookies are used, and the analytics described below works
       without cookies.
     </p>
-    <ul>
-      <li><strong>Theme preference:</strong> your system, light or dark theme selection.</li>
-      <li><strong>Cookiebot banner styler:</strong> the colours, alignment and other preview settings you choose.</li>
-      <li><strong>GTM container builder:</strong> your selected tags, container mode, naming convention and configuration values.</li>
-      <li><strong>Data layer documentation generator:</strong> the contents of your editable document draft.</li>
-    </ul>
+    <table>
+      <caption>Information stored in your browser's local storage</caption>
+      <thead>
+        <tr>
+          <th scope="col">Function</th>
+          <th scope="col">What is stored</th>
+          <th scope="col">Key</th>
+          <th scope="col">Stored by and owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Theme preference</td>
+          <td>Your system, light or dark theme selection.</td>
+          <td><code>theme</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>Cookiebot banner styler</td>
+          <td>The colours, alignment and other preview settings you choose.</td>
+          <td><code>cookiebot-banner-styler</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>GTM container builder</td>
+          <td>Your selected tags, container mode, naming convention and configuration values.</td>
+          <td><code>karppinen-gtm-tag-selection-v1</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>Data layer documentation generator</td>
+          <td>The contents of your editable document draft.</td>
+          <td><code>nk:datalayer-documenter:v1</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>GA4 annotation tool</td>
+          <td>Your chosen language.</td>
+          <td><code>ga4-annotation-language</code></td>
+          <td>karppinen.one</td>
+        </tr>
+        <tr>
+          <td>Guide checklists</td>
+          <td>The items you tick on that guide page.</td>
+          <td><code>checklist:</code> + page path</td>
+          <td>karppinen.one</td>
+        </tr>
+      </tbody>
+    </table>
     <p>
       This information remains in your browser. The site does not upload it to
       a server or share it with third parties. It remains there until you reset
@@ -33,16 +93,113 @@ import Base from "../layouts/Base.astro";
       your browser.
     </p>
 
-    <h2>Analytics and third-party services</h2>
+    <h2>Service providers</h2>
+    <p>
+      When you open a page, the providers below process technical data such as
+      your IP address and your browser's request details so that the page
+      loads, stays protected and the statistics work.
+    </p>
+    <table>
+      <caption>Service providers used by the site</caption>
+      <thead>
+        <tr>
+          <th scope="col">Service</th>
+          <th scope="col">Role</th>
+          <th scope="col">Data processed</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GitHub Pages (Microsoft)</td>
+          <td>Site hosting</td>
+          <td>IP address, time of requests, and device and browser details. GitHub is the controller for this processing.</td>
+          <td>United States and other GitHub locations</td>
+        </tr>
+        <tr>
+          <td>Cloudflare</td>
+          <td>Proxy, DNS and traffic statistics</td>
+          <td>IP address and browser request details. Statistics are collected on the server without cookies, and the site owner only sees aggregated figures.</td>
+          <td>United States (global network)</td>
+        </tr>
+        <tr>
+          <td>Rybbit</td>
+          <td>Visitor statistics (see below)</td>
+          <td>See the next section</td>
+          <td>Germany and Finland (Hetzner)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      GitHub and Cloudflare are US companies. Transfers rely on the European
+      Commission's Standard Contractual Clauses or the EU–US Data Privacy
+      Framework. GitHub states that it is certified under the framework. More
+      information: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>.
+    </p>
+
+    <h2>Analytics (Rybbit)</h2>
     <p>
       The site uses <a href="https://rybbit.com/privacy">Rybbit</a> for
-      privacy-focused visitor statistics. Rybbit does not use cookies. It
-      records the pages you view, the referring site, session duration, browser
-      and operating system, screen size, country or region and campaign (UTM)
-      parameters. Your IP address is used only briefly to determine your country
-      and is not stored. Visits are counted with anonymous identifiers that do
-      not identify you personally. The statistics show which content is read
-      and help improve the site.
+      privacy-focused visitor statistics. Rybbit does not set cookies or store
+      anything on your device. Session replay is not used.
+    </p>
+    <table>
+      <caption>Data processed by Rybbit</caption>
+      <thead>
+        <tr>
+          <th scope="col">Data</th>
+          <th scope="col">Stored?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pages you view and the referring site</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Session duration</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Browser, operating system and screen size</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Country and region</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Campaign parameters (UTM)</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>IP address</td>
+          <td>No. It is used only briefly to determine your country and region.</td>
+        </tr>
+        <tr>
+          <td>Visitor identifier</td>
+          <td>Yes, but it changes daily, so it cannot be used to follow you from one day to the next.</td>
+        </tr>
+        <tr>
+          <td>Cookies and local storage</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Session replay</td>
+          <td>Not used</td>
+        </tr>
+        <tr>
+          <td>Retention</td>
+          <td>5 years, after which the data is deleted automatically</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Your IP address reaches the server as with any website. The statistics
+      show which content is read and help improve the site. Traffic passes
+      through Cloudflare's network, so your IP address is also briefly visible
+      to Cloudflare. Rybbit processes the data on my behalf under a data
+      processing agreement (DPA). More information: <a href="https://rybbit.com/subprocessors">Rybbit's subprocessors</a>.
     </p>
     <p>
       Fonts, images and other page assets are served from this site's own
@@ -62,3 +219,52 @@ import Base from "../layouts/Base.astro";
     <p>This page will be updated if the site's storage or tracking practices change.</p>
   </div>
 </Base>
+
+<script>
+  // The address is assembled in the browser so it never sits in the HTML as a ready mailto: link.
+  function showContactEmail() {
+    document.querySelectorAll<HTMLElement>("[data-contact-email]").forEach((el) => {
+      const address = `${el.dataset.user}@${el.dataset.domain}`;
+      const link = document.createElement("a");
+      link.href = `mailto:${address}`;
+      link.textContent = address;
+      el.replaceWith(link);
+    });
+  }
+  document.addEventListener("astro:page-load", showContactEmail);
+</script>
+
+<style>
+  .privacy-facts {
+    margin: 1.25rem 0 2rem;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .privacy-facts__row {
+    display: grid;
+    grid-template-columns: minmax(8.5rem, 11rem) 1fr;
+    gap: 0.25rem 1.5rem;
+    padding: 0.9rem 1.25rem;
+  }
+
+  .privacy-facts__row + .privacy-facts__row {
+    border-top: 1px solid var(--line);
+  }
+
+  .privacy-facts dt {
+    color: var(--muted);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .privacy-facts dd {
+    margin: 0;
+  }
+
+  @media (max-width: 36rem) {
+    .privacy-facts__row {
+      grid-template-columns: 1fr;
+      padding: 0.8rem 1rem;
+    }
+  }
+</style>
