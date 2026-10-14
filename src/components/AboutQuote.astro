@@ -1,0 +1,79 @@
+---
+const { fi = false } = Astro.props;
+const quote = fi
+  ? "Kun prosessi ja data ovat kunnossa, tekoäly voi laajentaa yhden ihmisen mahdollisuuksia. Selkeästi määritellyt työvaiheet ja mittarit mahdollistavat työn toistamisen johdonmukaisesti myös mittakaavassa, jota ei olisi käytännöllistä tehdä käsin."
+  : "When the process and data are in good shape, AI can expand what one person is able to do. Clearly defined steps and metrics make it possible to repeat the work consistently, even at a scale that would be impractical to handle manually.";
+---
+
+<blockquote class="about-quote" data-quote-scrub>
+  <p>{quote.split(" ").map((w) => (<Fragment><span class="qw">{w}</span>{" "}</Fragment>))}</p>
+</blockquote>
+
+<style>
+  /* ---- dark pull-quote ---- */
+  .about-quote {
+    margin: 1rem 0 2.5rem;
+    padding: clamp(2.25rem, 6cqi, 4rem);
+    border-radius: var(--radius-lg);
+    background: #16161a;
+    color: #fff;
+  }
+  .about-quote p {
+    margin: 0;
+    max-width: 34ch;
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(1.4rem, 3.8cqi, 2.4rem);
+    line-height: 1.35;
+  }
+  /* word-by-word fill is scroll-scrubbed in JS (opacity + subtle rise per word) */
+  .about-quote .qw {
+    display: inline-block;
+    will-change: opacity, transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-quote .qw { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  // scroll-scrubbed word fill: each word ramps faint -> solid (+ a subtle rise) as the
+  // quote travels through the viewport, tracking scroll position. No-JS/reduced-motion = full text.
+  // Re-init per client navigation; scroll/resize live on the persisted window, so drop the
+  // previous page's handler first to avoid leaking a listener per navigation.
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  let quoteScrollHandler = null;
+  const initQuoteScrub = () => {
+    if (quoteScrollHandler) {
+      removeEventListener("scroll", quoteScrollHandler);
+      removeEventListener("resize", quoteScrollHandler);
+      quoteScrollHandler = null;
+    }
+    const quote = document.querySelector("[data-quote-scrub]");
+    if (quote && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const words = [...quote.querySelectorAll(".qw")];
+    const N = words.length;
+    const BAND = 6; // how many words are mid-fill at once (softer front)
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const rect = quote.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const p = clamp((vh * 0.8 - rect.top) / (vh * 0.5), 0, 1);
+      const lead = p * (N + BAND);
+      for (let i = 0; i < N; i++) {
+        const wp = clamp((lead - i) / BAND, 0, 1);
+        words[i].style.opacity = (0.4 + 0.6 * wp).toFixed(3);
+        words[i].style.transform = `translateY(${((1 - wp) * 0.4).toFixed(2)}em)`;
+      }
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    quoteScrollHandler = onScroll;
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll, { passive: true });
+    update();
+    }
+  };
+  document.addEventListener("astro:page-load", initQuoteScrub);
+</script>

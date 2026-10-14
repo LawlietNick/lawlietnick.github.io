@@ -1,6 +1,5 @@
 ---
-// About-page intro block (reinterpreted from plake-astrojs /about):
-// two-column hero + dark pull-quote + "what I'm doing now". Bilingual, theme-aware.
+// Bilingual about intro, selected resources, and current work.
 import { Picture } from "astro:assets";
 import ButtonLink from "./ButtonLink.astro";
 import portrait from "../assets/about/portrait.jpeg";
@@ -18,7 +17,6 @@ const c = fi
       status: "Vapaana valikoituihin projekteihin", stat: "Vuodesta 2017",
       employerLabel: "Työskentelen yrityksessä",
       portraitAlt: "Niko Karppinen hymyilee kädet ristissä vaaleassa neulepuserossa vaalean seinän edessä",
-      quote: "Kun prosessi ja data ovat kunnossa, tekoäly voi laajentaa yhden ihmisen mahdollisuuksia. Selkeästi määritellyt työvaiheet ja mittarit mahdollistavat työn toistamisen johdonmukaisesti myös mittakaavassa, jota ei olisi käytännöllistä tehdä käsin.",
       nowHeading: "Mitä teen juuri nyt",
       now: [
         "Neuvon tiimejä mittaamisessa, SEO:ssa ja teknisissä toteutuksissa.",
@@ -35,7 +33,6 @@ const c = fi
       status: "Available for selected projects", stat: "Since 2017",
       employerLabel: "Working at",
       portraitAlt: "Niko Karppinen smiling with arms folded, wearing a cream knit jumper against a pale wall",
-      quote: "When the process and data are in good shape, AI can expand what one person is able to do. Clearly defined steps and metrics make it possible to repeat the work consistently, even at a scale that would be impractical to handle manually.",
       nowHeading: "What I'm doing now",
       now: [
         "Consulting on measurement, SEO, and technical implementation.",
@@ -76,9 +73,23 @@ const c = fi
   </div>
 </section>
 
-<blockquote class="about-quote" data-quote-scrub>
-  <p>{c.quote.split(" ").map((w) => (<Fragment><span class="qw">{w}</span>{" "}</Fragment>))}</p>
-</blockquote>
+<section class="about-resources" aria-labelledby="about-resources-title">
+  <h2 id="about-resources-title">{fi ? "Kokeile työkalua tai tutustu oppaaseen" : "Try a tool or explore a guide"}</h2>
+  <div class="about-resources__list">
+    <article>
+      <h3><a href={fi ? "/fi/tyokalut/ga4-annotaatiot/" : "/tools/ga4-annotations/"}>{fi ? "GA4-annotaatiotyökalu" : "GA4 annotation builder"}</a></h3>
+      <p>{fi
+        ? "Kirjaa sivuston muutokset ja kampanjat, jotta muistat ne myöhemmin dataa tulkitessasi. Valitse pohja, täydennä teksti ja kopioi merkintä GA4:ään."
+        : "Record website changes and campaigns so you can refer to them when interpreting your data. Choose a template, fill in the details and copy the annotation into GA4."}</p>
+    </article>
+    <article>
+      <h3><a href={fi ? "/fi/toteutusmallit/cookiebot-opas/" : "/templates/cookiebot-guide/"}>{fi ? "Cookiebot-opas" : "Cookiebot guide"}</a></h3>
+      <p>{fi
+        ? "Ota Cookiebot käyttöön ja määritä Googlen sekä Microsoftin suostumustilat. Opas sisältää kopioitavat koodit ja ohjeet toiminnan testaamiseen."
+        : "Set up Cookiebot and configure consent signals for Google and Microsoft. The guide includes code you can copy and instructions for testing the implementation."}</p>
+    </article>
+  </div>
+</section>
 
 <section class="about-now">
   <h2>{c.nowHeading}</h2>
@@ -252,26 +263,44 @@ const c = fi
     100% { box-shadow: 0 0 0 0 transparent; }
   }
 
-  /* ---- dark pull-quote ---- */
-  .about-quote {
-    margin: 1rem 0 2.5rem;
-    padding: clamp(2.25rem, 6cqi, 4rem);
-    border-radius: var(--radius-lg);
-    background: #16161a;
-    color: #fff;
+  .about-resources {
+    padding-block: 1rem 3rem;
   }
-  .about-quote p {
+  .about-resources h2 {
+    margin: 0 0 1.5rem;
+    font-size: clamp(1.6rem, 4cqi, 2.2rem);
+  }
+  .about-resources__list {
+    border-top: 1px solid var(--line);
+  }
+  .about-resources article {
+    display: grid;
+    gap: 0.75rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .about-resources h3 {
     margin: 0;
-    max-width: 34ch;
-    font-family: "Fraunces", Georgia, serif;
-    font-weight: 500;
-    font-size: clamp(1.4rem, 3.8cqi, 2.4rem);
-    line-height: 1.35;
+    font-size: 1.25rem;
   }
-  /* word-by-word fill is scroll-scrubbed in JS (opacity + subtle rise per word) */
-  .about-quote .qw {
-    display: inline-block;
-    will-change: opacity, transform;
+  .about-resources a {
+    color: var(--accent);
+    text-underline-offset: 0.2em;
+  }
+  .about-resources a:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+  }
+  .about-resources article p {
+    margin: 0;
+    max-width: 65ch;
+    color: var(--muted);
+  }
+  @container page (min-width: 46rem) {
+    .about-resources article {
+      grid-template-columns: 1fr 1.6fr;
+      gap: 2.5rem;
+    }
   }
 
   /* ---- what I'm doing now ---- */
@@ -289,47 +318,5 @@ const c = fi
 
   @media (prefers-reduced-motion: reduce) {
     .about-badge__dot { animation: none; }
-    .about-quote .qw { opacity: 1; transform: none; }
   }
 </style>
-
-<script>
-  // scroll-scrubbed word fill: each word ramps faint -> solid (+ a subtle rise) as the
-  // quote travels through the viewport, tracking scroll position. No-JS/reduced-motion = full text.
-  // Re-init per client navigation; scroll/resize live on the persisted window, so drop the
-  // previous page's handler first to avoid leaking a listener per navigation.
-  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-  let quoteScrollHandler = null;
-  const initQuoteScrub = () => {
-    if (quoteScrollHandler) {
-      removeEventListener("scroll", quoteScrollHandler);
-      removeEventListener("resize", quoteScrollHandler);
-      quoteScrollHandler = null;
-    }
-    const quote = document.querySelector("[data-quote-scrub]");
-    if (quote && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const words = [...quote.querySelectorAll(".qw")];
-    const N = words.length;
-    const BAND = 6; // how many words are mid-fill at once (softer front)
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      const rect = quote.getBoundingClientRect();
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      const p = clamp((vh * 0.8 - rect.top) / (vh * 0.5), 0, 1);
-      const lead = p * (N + BAND);
-      for (let i = 0; i < N; i++) {
-        const wp = clamp((lead - i) / BAND, 0, 1);
-        words[i].style.opacity = (0.4 + 0.6 * wp).toFixed(3);
-        words[i].style.transform = `translateY(${((1 - wp) * 0.4).toFixed(2)}em)`;
-      }
-    };
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-    quoteScrollHandler = onScroll;
-    addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("resize", onScroll, { passive: true });
-    update();
-    }
-  };
-  document.addEventListener("astro:page-load", initQuoteScrub);
-</script>

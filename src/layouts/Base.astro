@@ -331,7 +331,7 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
       // Check the DOM, not just fm: tools can have copyable code blocks too.
       document.addEventListener("astro:page-load", async () => {
         const root = document.body;
-        if (!root.querySelector("pre, [data-code-accordion], .contains-task-list, .prose :disabled")) return;
+        if (!root.querySelector("pre, [data-code-accordion], [data-feedback-example], .contains-task-list, .prose :disabled")) return;
         const { enhanceContent } = await import("../scripts/content-enhancements");
         if (root.isConnected) enhanceContent(root);
       });

@@ -73,6 +73,18 @@ export function enhanceContent(root: HTMLElement) {
   };
   addCopyButtons();
 
+  root.querySelectorAll<HTMLElement>("[data-feedback-example]").forEach((example) => {
+    if (example.dataset.ready) return;
+    example.dataset.ready = "true";
+    example.querySelectorAll<HTMLInputElement>('input[type="radio"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        example.querySelectorAll<HTMLDetailsElement>("details").forEach((details) => {
+          details.open = false;
+        });
+      });
+    });
+  });
+
   const renderMermaidDiagrams = async () => {
     const nodes = [...root.querySelectorAll<HTMLPreElement>('pre[data-language="mermaid"]:not([data-processed])')];
     if (!nodes.length) return;
