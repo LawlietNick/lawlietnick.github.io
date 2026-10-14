@@ -159,6 +159,8 @@ Use `ButtonLink.astro` rather than recreating CTA markup.
 
 - `.eyebrow` and `.label`: compact uppercase violet labels with tracking.
 - `.badge`: yellow pill label with a crisp border and small hard shadow. Use `Badge.astro` for repeated badges.
+- `.featured-label`: framed label overlapping the top edge of a featured article or selected resource card. Reuse the same theme-aware background, border and compact typography; the containing link stays positioned and allows the label to extend beyond its top edge.
+- `.featured-card`: shared hover treatment for article and resource cards, revealing a halftone pattern at the top right and changing the title to the accent color.
 - `.tag`: soft violet pill for categories or metadata.
 - `.byline`: compact flexible metadata row. It omits the author name, since all content is by Niko.
 

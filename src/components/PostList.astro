@@ -35,7 +35,7 @@ const latestLabel = fi ? "Uusin juttu" : "Latest issue";
     <div class="recent-posts__layout">
       <article class="featured-post">
         <a
-          class="featured-post__link"
+          class="featured-post__link featured-card"
           href={featured.url}
           aria-label={featured.title}
           data-link-area="recent-posts"
@@ -57,7 +57,7 @@ const latestLabel = fi ? "Uusin juttu" : "Latest issue";
             ) : (
               <span class="featured-post__placeholder" aria-hidden="true"></span>
             )}
-            <span class="featured-post__latest" aria-hidden="true">{latestLabel}</span>
+            <span class="featured-label" aria-hidden="true">{latestLabel}</span>
           </div>
 
           <div class="featured-post__body">
@@ -78,7 +78,7 @@ const latestLabel = fi ? "Uusin juttu" : "Latest issue";
           {supporting.map((post) => (
             <article class="supporting-post">
               <a
-                class="supporting-post__link"
+                class="supporting-post__link featured-card"
                 href={post.url}
                 aria-label={post.title}
                 data-link-area="recent-posts"
@@ -160,31 +160,6 @@ const latestLabel = fi ? "Uusin juttu" : "Latest issue";
     position: relative;
   }
 
-  .featured-post__link::before,
-  .supporting-post__link::before {
-    content: "";
-    position: absolute;
-    z-index: 2;
-    inset: 0 0 auto auto;
-    width: 8rem;
-    height: 6rem;
-    pointer-events: none;
-    opacity: 0;
-    background-image: radial-gradient(
-      circle,
-      color-mix(in srgb, var(--accent) 55%, transparent) 0 1.5px,
-      transparent 1.8px
-    );
-    background-size: 9px 9px;
-    -webkit-mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
-    mask-image: radial-gradient(ellipse at top right, #000 0%, transparent 70%);
-  }
-
-  .featured-post__link:is(:hover, :focus-visible)::before,
-  .supporting-post__link:is(:hover, :focus-visible)::before {
-    opacity: 1;
-  }
-
   .featured-post__link {
     display: flex;
     flex-direction: column;
@@ -225,23 +200,6 @@ const latestLabel = fi ? "Uusin juttu" : "Latest issue";
     min-height: 7rem;
   }
 
-  .featured-post__latest {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: clamp(1rem, 4vw, 1.5rem);
-    padding: 0.45rem 0.75rem;
-    border: 2px solid var(--ink);
-    border-radius: var(--radius-xs);
-    background: var(--bg);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size: var(--font-size-ui-xs);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: 0.06em;
-    line-height: 1;
-    text-transform: uppercase;
-    transform: translateY(-50%);
-  }
 
   .featured-post__body,
   .supporting-post__link {
@@ -284,11 +242,6 @@ const latestLabel = fi ? "Uusin juttu" : "Latest issue";
 
   .supporting-post h3 {
     font-size: clamp(1.15rem, 2.5cqi, 1.35rem);
-  }
-
-  .featured-post__link:hover h3,
-  .supporting-post__link:hover h3 {
-    color: var(--accent);
   }
 
   .recent-posts article p {

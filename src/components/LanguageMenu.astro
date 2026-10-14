@@ -19,14 +19,18 @@ const current = fi
 const other = fi
   ? { name: "English", lang: "en", href: enLanguageHref, home: "Homepage" }
   : { name: "Suomi", lang: "fi", href: fiLanguageHref, home: "Etusivu" };
+const languages = fi ? [current, other] : [other, current];
 
 const groups = postWithoutTranslation
-  ? [
-      { id: `${idPrefix}-language-current`, heading: fi ? "Nykyinen kieli" : "Current language", items: [current] },
-      { id: `${idPrefix}-language-other`, heading: fi ? "Sivua ei ole käännetty" : "This page is not translated", items: [other] },
-    ]
+  ? languages.map((item) => ({
+      id: `${idPrefix}-language-${item === current ? "current" : "other"}`,
+      heading: item === current
+        ? (fi ? "Nykyinen kieli" : "Current language")
+        : (fi ? "Sivua ei ole käännetty" : "This page is not translated"),
+      items: [item],
+    }))
   : [
-      { id: `${idPrefix}-language-heading`, heading: fi ? "Vaihda sivun kieli" : "Change the page language", items: [current, other] },
+      { id: `${idPrefix}-language-heading`, heading: fi ? "Vaihda sivun kieli" : "Change the page language", items: languages },
     ];
 ---
 
