@@ -18,6 +18,14 @@
   box-sizing: border-box;
 }
 
+@media (forced-colors: none) {
+  ::selection {
+    background-color: var(--pop);
+    color: var(--color-neutral-950);
+    text-shadow: none;
+  }
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 2.5rem; /* clear the sticky header on every anchor jump (#id links) */
