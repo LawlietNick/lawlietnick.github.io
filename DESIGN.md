@@ -63,7 +63,7 @@ Typography is part of the brand voice: practical body text with a slightly odd, 
 
 Shared patterns live in `src/styles/patterns.css`.
 
-- `.cta`: comic CTA with a clean solid face and a full-size neutral halftone shadow. The outer `.cta` is the stable hit area; `.cta__surface` lifts while the shadow separates farther down and right on hover, then compresses on press. The hitbox stays still, so the target never moves under the pointer, and the dots stay clear of the label. Secondary CTAs use a dark face with a muted neutral outline.
+- `.cta`: comic CTA with a solid offset shadow. Hover lifts it, turns it violet and runs a speed-line swipe; press squashes it into a sunken dark frame. The primary (pop yellow) adds a 1px border, a top highlight, a bottom bevel and a soft top shade when pressed. Secondary CTAs use a plain face with a muted outline. On the design-system page, `.is-hover`, `.is-active` and `.is-focus` freeze a state for comparison.
 - `.editorial-hero`: shared visual family for the homepage bento and blog post split hero. Reuse its outer frame, panel surfaces, spacing, radii and dark visual treatment while allowing page-specific composition. Posts without images use deterministic CSS artwork; posts with images use a dark lower scrim and restrained halftone overlay.
 - `.eyebrow`: small uppercase section label.
 - `.about`: two-column split section used for intro/about-style content.

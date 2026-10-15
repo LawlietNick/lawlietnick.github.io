@@ -12,6 +12,19 @@ import ServiceGroups from "../components/ServiceGroups.astro";
 import ServiceProof from "../components/ServiceProof.astro";
 import SplitSection from "../components/SplitSection.astro";
 
+const ctaVariants = [
+  { name: "Primary", label: "Start a project", variant: "primary" },
+  { name: "Secondary", label: "Secondary action", variant: "secondary" },
+];
+
+const ctaStates = [
+  { name: "Default" },
+  { name: "Hover", class: "is-hover" },
+  { name: "Pressed", class: "is-active" },
+  { name: "Focus", class: "is-focus" },
+  { name: "Disabled", disabled: true },
+];
+
 const processItems = [
   {
     title: "Make the current state visible",
@@ -289,6 +302,34 @@ const sampleServices = [
       <Badge>Podcast</Badge>
       <span class="tag">Analytics</span>
     </div>
+    <table class="ds-states">
+      <caption>Button states, frozen for comparison</caption>
+      <thead>
+        <tr>
+          <th scope="col">Variant</th>
+          {ctaStates.map((state) => <th scope="col">{state.name}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {ctaVariants.map((cta) => (
+          <tr>
+            <th scope="row">{cta.name}</th>
+            {ctaStates.map((state) => (
+              <td>
+                <ButtonLink
+                  href="#actions-title"
+                  label={cta.label}
+                  variant={cta.variant}
+                  class={[cta.class, state.class].filter(Boolean).join(" ")}
+                  tabindex="-1"
+                  aria-disabled={state.disabled ? "true" : undefined}
+                />
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </section>
 
   <SplitSection
@@ -620,6 +661,36 @@ const sampleServices = [
   /* the ladder demos the real global scale — no size overrides here */
   .ds-type :is(h1, h2, h3, h4, h5, h6) {
     margin: 0 0 0.85rem;
+  }
+
+  .ds-states {
+    display: block;
+    margin-top: 2rem;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  .ds-states caption {
+    margin-bottom: 0.75rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: left;
+  }
+
+  .ds-states th {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: var(--font-weight-bold);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .ds-states :is(th, td) {
+    padding: 0.75rem 1.25rem 0.75rem 0;
+  }
+
+  .ds-states td {
+    white-space: nowrap;
   }
 
   .ds-row {

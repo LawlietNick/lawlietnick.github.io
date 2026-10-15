@@ -147,7 +147,7 @@ Shared patterns live in `src/styles/patterns.css`. Keep their existing class nam
 
 ### CTA
 
-`.cta` is the signature comic control. Its outer element is a stable hit area. `.cta__surface` provides the solid face, while a neutral halftone shadow sits behind it. Hover lifts the surface slightly and separates the shadow; active presses the surface down and hides the shadow. Focus uses the strong focus ring. `.cta--secondary` uses a dark face and muted outline.
+`.cta` is the signature comic control with a solid offset shadow. Hover lifts it, turns it violet and runs a speed-line swipe; active squashes it into a sunken dark frame. The primary (pop yellow) adds a 1px border, a top highlight, a bottom bevel and a soft top shade when pressed. Focus uses the strong focus ring. `.cta--secondary` uses a plain face and muted outline.
 
 Use `ButtonLink.astro` rather than recreating CTA markup.
 
