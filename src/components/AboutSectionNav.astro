@@ -1,0 +1,49 @@
+---
+const { fi = false } = Astro.props;
+const label = fi ? "Tällä sivulla" : "On this page";
+const items = [
+  { id: "proof", label: fi ? "Esiintymiset" : "Appearances" },
+  { id: "approach", label: fi ? "Työskentelytapa" : "How I work" },
+  { id: "background", label: fi ? "Kokemus" : "Background" },
+  { id: "training", label: fi ? "Koulutukset" : "Training" },
+  { id: "outside-work", label: fi ? "Vapaa-ajalla" : "Outside work" },
+];
+---
+
+<nav class="about-section-nav" aria-label={label}>
+  <ul>
+    {items.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}
+  </ul>
+</nav>
+
+<style>
+  .about-section-nav {
+    margin-top: 1.25rem;
+    font-size: 1rem;
+  }
+  .about-section-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .about-section-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0.4rem;
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+  .about-section-nav a:is(:hover, :focus-visible) {
+    color: var(--accent);
+  }
+  .about-section-nav a:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+  }
+</style>

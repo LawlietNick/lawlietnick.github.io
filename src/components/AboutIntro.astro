@@ -2,6 +2,7 @@
 // Bilingual about intro and current work.
 import { Picture } from "astro:assets";
 import ButtonLink from "./ButtonLink.astro";
+import AboutSectionNav from "./AboutSectionNav.astro";
 import portrait from "../assets/about/portrait.jpeg";
 import { siteConfig, contactUrl } from "../data/site.js";
 
@@ -60,6 +61,7 @@ const c = fi
       <ButtonLink href={c.cta1Href} label={c.cta1} />
       <ButtonLink href={c.cta2Href} label={c.cta2} variant="secondary" />
     </div>
+    <AboutSectionNav fi={fi} />
   </div>
 
   <div class="about-hero__media">
@@ -87,6 +89,10 @@ const c = fi
     gap: 2.5rem;
     align-items: center;
     padding-block: 1.5rem 3rem;
+  }
+  /* Add to the root scroll padding so anchors clear the sticky header. */
+  .about-hero ~ :global(section[id]) {
+    scroll-margin-top: 3.5rem;
   }
   @container page (min-width: 46rem) {
     .about-hero { grid-template-columns: 1.35fr 1fr; gap: 4rem; }
@@ -248,7 +254,6 @@ const c = fi
   /* ---- what I'm doing now ---- */
   .about-now {
     padding-block: 2rem 3rem;
-    border-top: 1px solid var(--line);
   }
   .about-now h2 { margin: 0 0 1.5rem; font-size: clamp(1.6rem, 4cqi, 2.2rem); }
   .about-now__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
