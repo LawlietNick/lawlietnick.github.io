@@ -839,10 +839,33 @@ a:is(:hover, :focus-visible) > .content-link {
   .prose math { font-size: clamp(0.8rem, 0.6rem + 2vw, 1rem); }
 }
 
+.prose .code-block {
+  margin-block: 1rem;
+  overflow: clip;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: #24292e;
+}
+.prose .code-block > pre {
+  margin: 0;
+  border-radius: 0;
+}
+.code-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.5rem;
+  padding: 0.25rem 1.25rem;
+  border-bottom: 1px solid #444c56;
+  color: #e1e4e8;
+  background: #24292e;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-ui-xs);
+}
+.code-block__language { color: #b1bac4; }
 .copy {
-  position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
+  flex-shrink: 0;
   min-inline-size: 2.75rem;
   min-block-size: 2.75rem;
   font: inherit;
@@ -854,6 +877,18 @@ a:is(:hover, :focus-visible) > .content-link {
   border-radius: var(--radius-xs);
   padding: 0.15rem 0.6rem;
   cursor: pointer;
+}
+.copy:focus-visible {
+  outline: 2px solid var(--pop);
+  outline-offset: 2px;
+}
+@media print {
+  .code-block__header { display: none !important; }
+  .prose .code-block {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+  }
 }
 
 /* Long code stays copyable while only its opening lines are visible. Without

@@ -76,7 +76,7 @@ test("normal pages and text-only articles do not fetch content enhancements or M
   expect(scripts.filter((url) => /content-enhancements|mermaid/i.test(url))).toEqual([]);
   // Positive control: this normal tool page still needs Base's code-copy button.
   await navigate(page, "/tools/form-name-builder/");
-  await expect(page.locator("pre > .copy")).toHaveCount(1);
+  await expect(page.locator(".code-block__header > .copy")).toHaveCount(1);
   expect(scripts.some((url) => url.includes("content-enhancements"))).toBe(true);
   expect(scripts.filter((url) => /mermaid/i.test(url))).toEqual([]);
 });
@@ -85,10 +85,15 @@ test("copy, checklists and disabled-control feedback survive article round trips
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/blog/tester-post/");
-  const copy = page.locator("pre > .copy").first();
+  const copy = page.locator(".code-block__header > .copy").first();
   await expect(copy).toBeVisible();
+  expect(await copy.evaluate((button) => {
+    const block = button.closest(".code-block")!;
+    return block.querySelector(".code-block__header")!.getBoundingClientRect().bottom
+      <= block.querySelector("pre")!.getBoundingClientRect().top;
+  })).toBe(true);
   const code = await copy.evaluate((button) => {
-    const pre = button.parentElement!;
+    const pre = button.closest(".code-block")!.querySelector("pre")!;
     return (pre.querySelector("code") as HTMLElement | null)?.innerText ?? pre.innerText;
   });
   await copy.click();
@@ -102,7 +107,7 @@ test("copy, checklists and disabled-control feedback survive article round trips
   await page.evaluate(() => document.dispatchEvent(new Event("astro:page-load")));
   await box.locator("..").click();
   await expect(box).not.toBeChecked();
-  expect(await page.locator("pre").evaluateAll((blocks) => blocks.every((pre) => pre.querySelectorAll(":scope > .copy").length <= 1))).toBe(true);
+  expect(await page.locator("pre").evaluateAll((blocks) => blocks.every((pre) => (pre.closest(".code-block")?.querySelectorAll(".copy").length ?? 0) <= 1))).toBe(true);
 
   const disabled = page.locator(".prose button:disabled").first();
   await disabled.dispatchEvent("pointerdown", { isPrimary: true, button: 0 });
@@ -122,15 +127,33 @@ test("accordions and copy opt-outs survive navigation and repeated initializatio
     const accordion = page.locator("#consent-default-stored [data-code-accordion]");
     const toggle = accordion.locator("[data-code-accordion-toggle]");
     await expect(accordion).toHaveAttribute("data-ready", "true");
+    const header = accordion.locator(":scope > .code-block__header");
+    await expect(header).toContainText("HTML");
+    expect(await header.evaluate((element) =>
+      element.getBoundingClientRect().bottom <= element.nextElementSibling!.getBoundingClientRect().top,
+    )).toBe(true);
+    const source = await accordion.locator("pre > code").textContent();
+    await header.getByRole("button", { name: "Copy", exact: true }).click();
+    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(source);
     await page.evaluate(() => document.dispatchEvent(new Event("astro:page-load")));
     await toggle.click();
     await expect(toggle).toHaveAttribute("aria-expanded", "true");
-    await expect(accordion.locator(":scope > .copy")).toHaveCount(1);
+    await expect(accordion.locator(":scope > .code-block__header > .copy")).toHaveCount(1);
     expect(await page.locator("[data-no-copy] pre").evaluateAll((blocks) => blocks.every((pre) =>
-      pre.closest("[data-code-accordion], [data-copy]") || !pre.querySelector(":scope > .copy"),
+      pre.closest("[data-code-accordion], [data-copy]") || !pre.closest(".code-block")?.querySelector(".copy"),
     ))).toBe(true);
     await navigate(page, "/about/");
   }
+});
+
+test("code copy does not report success when the clipboard is unavailable", async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, "clipboard", {
+    value: { writeText: () => Promise.reject(new Error("denied")) },
+  }));
+  await page.goto("/blog/tester-post/");
+  const copy = page.locator(".code-block__header > .copy").first();
+  await copy.click();
+  await expect(copy).toHaveText("Try again");
 });
 
 test("Mermaid is fetched only for diagrams and renders on initial load and return navigation", async ({ page }) => {

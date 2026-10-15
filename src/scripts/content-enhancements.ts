@@ -5,28 +5,54 @@ export function enhanceContent(root: HTMLElement) {
   if (enhancedRoots.has(root)) return;
   enhancedRoots.add(root);
 
-  // copy-to-clipboard button on every code block.
+  // Keep code controls outside the source and any collapsed preview.
   // The Base loader calls this for each new page that contains these controls.
   const addCopyButtons = () => {
     const label = document.documentElement.lang === "fi" ? "Kopioi" : "Copy";
+    const fi = document.documentElement.lang === "fi";
+    const languageNames: Record<string, string> = {
+      javascript: "JavaScript", js: "JavaScript", typescript: "TypeScript", ts: "TypeScript",
+      html: "HTML", css: "CSS", json: "JSON", php: "PHP", sql: "SQL", toml: "TOML", xml: "XML",
+      bash: "Shell", sh: "Shell", shell: "Shell", python: "Python", yaml: "YAML",
+    };
     root.querySelectorAll("pre").forEach((pre) => {
       if (pre.dataset.language === "mermaid") return;
       // [data-copy] and code accordions opt back in — template pages mark the
       // whole article [data-no-copy] so illustrative snippets stay clean
-      if (pre.closest("[data-no-copy]") && !pre.closest("[data-code-accordion], [data-copy]")) return;
-      const copyHost = pre.closest("[data-code-accordion]") ?? pre;
-      if (copyHost.querySelector(":scope > .copy")) return;  // already added
+      const canCopy = !pre.closest("[data-no-copy]") || !!pre.closest("[data-code-accordion], [data-copy]");
+      let copyHost = pre.closest("[data-code-accordion], .code-block");
+      if (copyHost?.querySelector(":scope > .code-block__header")) return;
+      if (!copyHost) {
+        copyHost = document.createElement("div");
+        copyHost.className = "code-block";
+        pre.before(copyHost);
+        copyHost.append(pre);
+      }
+      const header = document.createElement("div");
+      header.className = "code-block__header";
+      const language = document.createElement("span");
+      language.className = "code-block__language";
+      const name = pre.dataset.language;
+      language.textContent = name && !["plaintext", "text"].includes(name) ? (languageNames[name] ?? name) : (fi ? "Teksti" : "Text");
+      header.append(language);
+      copyHost.prepend(header);
+      if (!canCopy) return;
       const b = document.createElement("button");
+      b.type = "button";
       b.className = "copy";
-      b.setAttribute("aria-live", "polite");  /* announce the ✓ feedback */
+      b.setAttribute("aria-live", "polite");
       b.textContent = label;
-      b.onclick = () => {
+      b.onclick = async () => {
         const code = pre.querySelector<HTMLElement>(":scope > code");
-        navigator.clipboard.writeText(code?.innerText ?? pre.innerText);
-        b.textContent = "✓";
+        try {
+          await navigator.clipboard.writeText(code?.textContent ?? pre.textContent ?? "");
+          b.textContent = fi ? "Kopioitu" : "Copied";
+        } catch {
+          b.textContent = fi ? "Yritä uudelleen" : "Try again";
+        }
         setTimeout(() => (b.textContent = label), 1500);
       };
-      copyHost.append(b);
+      header.append(b);
     });
 
     root.querySelectorAll<HTMLElement>("[data-code-accordion]").forEach((accordion) => {
