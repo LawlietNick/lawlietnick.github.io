@@ -108,7 +108,10 @@
 .cta.is-hover {
   color: var(--cta-hover-text);
   background-color: var(--cta-hover-bg);
-  box-shadow: 0 var(--cta-hover-shadow-y) 0 var(--cta-hover-shadow-spread) var(--cta-hover-shadow);
+  /* resting shadow colour and soft shade, so the bottom edge stays put while the face lifts */
+  box-shadow:
+    0 var(--cta-hover-shadow-y) 0 var(--cta-hover-shadow-spread) var(--cta-shadow),
+    0 calc(var(--cta-hover-shadow-y) + 5px) 12px -6px var(--cta-shadow-soft);
   transform: translateY(var(--cta-hover-lift)) scale(1);
 }
 
@@ -154,16 +157,15 @@
   /* lighter squash than the base .cta (1.035 / 0.94) */
   --cta-press-scale-x: 1.02;
   --cta-press-scale-y: 0.955;
-  /* hover lift (-2px) + 5px keeps the shadow's bottom edge where it rests */
-  --cta-hover-shadow-y: 5px;
+  /* secondary's thinner shadow and 1px lift; lift + hover y keeps the
+     shadow's bottom edge where it rests */
+  --cta-shadow-y: 2px;
+  --cta-shadow-spread: 1px;
+  --cta-hover-shadow-y: 3px;
+  --cta-hover-shadow-spread: 1px;
+  --cta-hover-lift: -1px;
   border-width: 1px;
   border-color: color-mix(in srgb, var(--color-neutral-950) 16%, var(--pop));
-  background-image: linear-gradient(
-    180deg,
-    rgb(255 255 255 / 0.3) 0%,
-    transparent 55%,
-    rgb(0 0 0 / 0.08) 100%
-  );
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.55),
     inset 0 -2px 0 rgb(0 0 0 / 0.15),
@@ -173,17 +175,23 @@
 
 .cta.cta--primary:hover,
 .cta.cta--primary.is-hover {
-  border-color: color-mix(in srgb, var(--color-neutral-950) 20%, var(--accent));
+  /* yellow rim keeps the pop colour on the violet hover face; the inset ring
+     makes it read as 2px without shifting the layout */
+  border-color: var(--pop);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.4),
+    inset 0 0 0 1px var(--pop),
+    inset 0 2px 0 rgb(255 255 255 / 0.4),
     inset 0 -2px 0 rgb(0 0 0 / 0.15),
-    0 var(--cta-hover-shadow-y) 0 var(--cta-hover-shadow-spread) var(--cta-hover-shadow),
+    /* resting shadow colour: the darker hover one vanishes on the dark theme
+       and makes the bottom edge look like it rises */
+    0 var(--cta-hover-shadow-y) 0 var(--cta-hover-shadow-spread) var(--cta-shadow),
     0 calc(var(--cta-hover-shadow-y) + 5px) 12px -6px var(--cta-shadow-soft);
 }
 
 .cta.cta--primary:active,
 .cta.cta--primary.is-active {
-  /* base sunken frame plus a soft top shade */
+  /* base sunken frame plus a soft top shade, inside the hover's yellow rim */
+  border-color: var(--pop);
   box-shadow:
     inset 0 var(--cta-active-shadow-y) 0 var(--cta-active-shadow-spread) var(--cta-hover-shadow),
     inset 0 6px 8px rgb(0 0 0 / 0.25),
@@ -274,7 +282,10 @@
   }
   .cta:hover,
   .cta.is-hover {
-    box-shadow: 0 var(--cta-hover-shadow-y) 0 var(--cta-hover-shadow-spread) var(--cta-hover-shadow);
+    /* no lift, so keep the resting shadow */
+    box-shadow:
+      0 var(--cta-shadow-y) 0 var(--cta-shadow-spread) var(--cta-shadow),
+      0 calc(var(--cta-shadow-y) + 5px) 12px -6px var(--cta-shadow-soft);
     transform: none;
   }
   .cta:active,
