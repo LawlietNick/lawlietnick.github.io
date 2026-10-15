@@ -852,6 +852,7 @@ a:is(:hover, :focus-visible) > .content-link {
 }
 .code-block__header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -878,7 +879,7 @@ a:is(:hover, :focus-visible) > .content-link {
   padding: 0.15rem 0.6rem;
   cursor: pointer;
 }
-.copy:focus-visible {
+.code-block__header .copy:focus-visible {
   outline: 2px solid var(--pop);
   outline-offset: 2px;
 }

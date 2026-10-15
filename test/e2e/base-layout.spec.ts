@@ -187,3 +187,33 @@ test("light, dark and system themes persist across article and normal pages", as
   await page.emulateMedia({ colorScheme: "light" });
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 });
+
+
+for (const { route, light } of [
+  { route: "/templates/hubspot-form-tracking-gtm/", light: "Light" },
+  { route: "/fi/toteutusmallit/hubspot-lomakkeiden-seuranta-gtm/", light: "Vaalea" },
+]) {
+  test(`code controls keep their focus and fit enlarged text on ${route}`, async ({ page }) => {
+    await page.goto(route);
+    await page.getByRole("radio", { name: light, exact: true }).check({ force: true });
+    const block = page.locator("[data-code-accordion]:has(#hubspot-worker-script)");
+    const copy = block.locator(".copy");
+    await copy.press("Space");
+    await expect(copy).toBeFocused();
+    expect(await copy.evaluate((button) => {
+      const style = getComputedStyle(button);
+      return style.outlineStyle === "solid" && style.outlineColor === style.backgroundColor;
+    })).toBe(true);
+
+    await page.setViewportSize({ width: 320, height: 844 });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; } body { font-size: 36px !important; }" });
+    expect(await block.evaluate((element) => {
+      const header = element.querySelector(".code-block__header")!.getBoundingClientRect();
+      return [...element.querySelectorAll(".code-block__header > *")].every((item) => {
+        const bounds = item.getBoundingClientRect();
+        return bounds.left >= header.left && bounds.right <= header.right
+          && bounds.top >= header.top && bounds.bottom <= header.bottom;
+      });
+    })).toBe(true);
+  });
+}
