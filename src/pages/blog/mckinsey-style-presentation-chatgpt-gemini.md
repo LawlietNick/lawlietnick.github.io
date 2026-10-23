@@ -52,9 +52,9 @@ Let's look at two slides built from the same fictional numbers. The numbers show
 
 <figure>
 
-![Reporting slide titled LCP results. Grey bars show the page types in no particular order. The product pages bar is the longest, but the chart has no threshold and no values next to the bars.](@assets/blog/mckinsey-reporting-slide-en.png)
+![Reporting slide titled LCP results. Grey bars show the page types in no particular order. The product pages bar is the longest, but the chart has no threshold and no values next to the bars.](@assets/blog/mckinsey-reporting-slide-en.jpeg)
 
-<figcaption>The reporting slide leaves interpretation to the audience. Fictional example data, slide made with AI. <a href="/images/blog/mckinsey-reporting-slide-en.png">Open the reporting slide full size</a>.</figcaption>
+<figcaption>The reporting slide leaves interpretation to the audience. Fictional example data, slide made with AI. <a href="/images/blog/mckinsey-reporting-slide-en.jpeg">Open the reporting slide full size</a>.</figcaption>
 </figure>
 
 The chart shows that the product pages bar is the longest. For an expert who knows the metric, that's enough for regular monitoring. Everyone else is left wondering: What is LCP, is a bigger number good or bad, and what should the result be compared to? Like a shopping mall map without the "You are here" dot.
@@ -65,9 +65,9 @@ The closing suggestion to monitor site speed is just as vague. It doesn't say wh
 
 <figure>
 
-![Analysis slide stating that product pages take 3.7 seconds longer than recommended to display their largest content element. The 6.2-second product pages bar is purple. A dashed line marks the 2.5-second threshold. The recommendation is to investigate why product pages are slow before choosing fixes.](@assets/blog/mckinsey-analysis-slide-en.png)
+![Analysis slide stating that product pages take 3.7 seconds longer than recommended to display their largest content element. The 6.2-second product pages bar is purple. A dashed line marks the 2.5-second threshold. The recommendation is to investigate why product pages are slow before choosing fixes.](@assets/blog/mckinsey-analysis-slide-en.jpeg)
 
-<figcaption>Same numbers, but the title states the finding, the chart shows a benchmark and the recommendation names the next step. Fictional example data, slide made with AI. <a href="/images/blog/mckinsey-analysis-slide-en.png">Open the analysis slide full size</a>.</figcaption>
+<figcaption>Same numbers, but the title states the finding, the chart shows a benchmark and the recommendation names the next step. Fictional example data, slide made with AI. <a href="/images/blog/mckinsey-analysis-slide-en.jpeg">Open the analysis slide full size</a>.</figcaption>
 </figure>
 
 You can understand the title without knowing what LCP stands for. The 2.5-second threshold gives the numbers a benchmark. Sorting the bars makes comparison easier, and the purple highlight draws attention to product pages.
