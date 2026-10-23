@@ -131,11 +131,13 @@ const {
 // a 404 has no page to switch to, so both languages lead to their homepage
 // (the EN 404 builds to /404.html, so /404/ would be a broken link)
 const is404 = currentPath === "/404/" || currentPath === "/fi/404/";
-const enLanguageHref = noindex ? (fi || is404 ? "/" : currentPath) : enPath;
-const fiLanguageHref = noindex ? (fi && !is404 ? currentPath : "/fi/") : fiPath;
-const effectiveHasLanguageAlternate = noindex ? false : hasLanguageAlternate;
-const effectivePostWithoutTranslation = noindex ? true : postWithoutTranslation;
-const hreflang = Astro.site && effectiveHasLanguageAlternate;
+// Local drafts need their translation links while remaining excluded from search.
+const hideLanguageAlternate = noindex && !(import.meta.env.DEV && fm?.draft);
+const enLanguageHref = hideLanguageAlternate ? (fi || is404 ? "/" : currentPath) : enPath;
+const fiLanguageHref = hideLanguageAlternate ? (fi && !is404 ? currentPath : "/fi/") : fiPath;
+const effectiveHasLanguageAlternate = hideLanguageAlternate ? false : hasLanguageAlternate;
+const effectivePostWithoutTranslation = hideLanguageAlternate ? true : postWithoutTranslation;
+const hreflang = Astro.site && !noindex && effectiveHasLanguageAlternate;
 
 // social share image: per-page frontmatter `image` wins, else the language default
 const ogImage = Astro.site
