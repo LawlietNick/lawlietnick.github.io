@@ -34,7 +34,7 @@ This guide is for you if you present to people who don't know your topic as well
 
 We consultants talk about topics we know inside out. That's why we forget they are new to the audience. Once you've said LCP a few hundred times, it sounds like everyday language. To the audience, it's three letters.
 
-Spelling out the abbreviation doesn't help. Largest Contentful Paint is just three words of jargon instead of three letters. Explain what the concept means and why it matters for this particular question.
+Spelling out the abbreviation doesn't help. Largest Contentful Paint is three words of jargon instead of three letters. Explain what the concept means and why it matters for this particular question.
 
 This is where the action title of a McKinsey-style presentation helps. The title states the key finding right away, and the slide shows what it is based on. Read only the titles in order and you get the whole argument. The details are there for anyone who wants them.
 
@@ -42,7 +42,7 @@ ChatGPT, Gemini or Claude can build this kind of presentation, as long as it kno
 
 ## Why does a McKinsey-style presentation work?
 
-A good consulting presentation saves the audience work on the way from numbers to a conclusion. A clean chart can show the numbers clearly and still not say what to make of them. That's the presenter's job: say what in the data answers the question and how far you can take it. The same goes for one slide and for the whole deck.
+A good consulting presentation saves the audience work on the way from numbers to a conclusion. A clean chart can show the numbers clearly and still not say what to make of them. The presenter has to say what in the data answers the question and how far you can take it.
 
 ## Same numbers, different amount of work for the reader
 
@@ -57,7 +57,7 @@ Let's look at two slides built from the same fictional numbers. The numbers show
 <figcaption>The reporting slide leaves interpretation to the audience. Fictional example data, slide made with AI. <a href="/images/blog/mckinsey-reporting-slide-en.png">Open the reporting slide full size</a>.</figcaption>
 </figure>
 
-The chart shows that the product pages bar is the longest. For an expert who knows the metric, that's enough for regular monitoring. Everyone else is left wondering: what is LCP, is a bigger number good or bad, and what should the result be compared to? Like a shopping mall map without the "You are here" dot.
+The chart shows that the product pages bar is the longest. For an expert who knows the metric, that's enough for regular monitoring. Everyone else is left wondering: What is LCP, is a bigger number good or bad, and what should the result be compared to? Like a shopping mall map without the "You are here" dot.
 
 The closing suggestion to monitor site speed is just as vague. It doesn't say where to start.
 
@@ -89,7 +89,7 @@ The reporting slide is fine for monitoring. The analysis slide is for when someo
 
 "LCP results" names the topic. It doesn't yet say what to notice in the results.
 
-An action title states a finding, and the slide shows whether it holds. That's why the title and the chart are designed together. An interesting title without evidence is clickbait.
+An action title states a finding, and the slide shows whether it holds. That's why the title and the chart are designed together.
 
 If the title claimed that product images cause the slowness, the data in this example wouldn't prove it. The chart shows the difference between page types, but not its cause. That's why the recommendation is to find the causes before choosing fixes.
 
@@ -103,7 +103,7 @@ Find out what the audience already knows, which concepts need explaining and wha
 
 While preparing, you can judge whether the audience has what it needs to follow your reasoning. Whether they actually understand it only shows in their feedback and the discussion.
 
-I made the example slides for this article in conversation with AI. The first analysis slide had LCP in the title, and the chart had no threshold. It looked clean but asked too much background knowledge from the reader. Feedback fixed it.
+I made the example slides for this article in conversation with AI. The first analysis slide had LCP in the title, and the chart had no threshold. It looked clean but asked too much background knowledge from the reader. I gave feedback, and the AI fixed it.
 
 ## Build the argument before the slides
 
@@ -126,7 +126,7 @@ In the Pyramid Principle, the main message comes first. Supporting arguments are
 
 The main message in the example could be: "Focus the first performance investigation on product pages." Two arguments support it: product pages have the weakest result in the comparison, and they exceed the good-result threshold by 3.7 seconds. The evidence is the measurements by page type and the definition of the threshold.
 
-In short: SCQR shapes the question and the answer, the Pyramid Principle orders the arguments.
+SCQR shapes the question and the answer. The Pyramid Principle orders the arguments.
 
 ### A ghost deck shows whether the argument holds
 
@@ -180,9 +180,9 @@ This is a template to fill in. Replace the bracketed details with real ones. Des
 
 ## Create your own presentation with AI
 
-AI quickly drafts findings, suggests a structure and sketches slides. You provide the context and judge the result. Watch out for fluent titles in particular: they easily promise more than the numbers can hold.
+AI quickly drafts findings, suggests a structure and sketches slides. You provide the context and judge the result. Watch out for fluent titles in particular, because they easily promise more than the numbers can hold.
 
-The audience also needs to be able to challenge the conclusion. That's why sources, benchmarks and uncertainties show in the AI's draft too.
+The audience also needs to be able to challenge the conclusion. That's why sources, benchmarks and uncertainties need to show in the AI's draft too.
 
 The prompt below works in three rounds: context, storyline and slides. At the end of each round, the AI waits for your feedback. In the third round, you approve one sample slide first, so you don't have to fix the same presentation problems across the whole deck.
 
@@ -293,7 +293,7 @@ Read the ghost deck titles in order. Check that no reasoning is missing between 
 
 Once you approve the storyline, ask for one sample slide first, in a format your tool supports. Check its title, benchmarks, highlights, source note and text readability. Give feedback and approve the style before the other slides are made.
 
-Not every service can create a presentation file. If no file is created, ask for the slide content and the chart source data separately. Then you check the layout only once the presentation has been designed.
+Not every service can create a presentation file. If no file is created, ask for the slide content and the chart source data separately. In that case, you can check the layout only once the slides are designed.
 
 Open the finished file. Check every number against its source and every slide in the format you'll present or share it in. The AI's own check doesn't replace this step.
 
@@ -307,4 +307,4 @@ Run every analysis slide through these questions before the detailed formatting 
 
 This is the author's check of the presentation's structure and reasoning. It doesn't yet show how the audience will read it.
 
-I'd recommend one more test: show the draft to one person who represents the audience and ask them to tell you in their own words what they conclude from it. If their answer differs from your main message, fix the titles and explanations. Better to hear it now than in front of the leadership team.
+I'd recommend one more test: Show the draft to one person who represents the audience and ask them to tell you in their own words what they conclude from it. If their answer differs from your main message, fix the titles and explanations.

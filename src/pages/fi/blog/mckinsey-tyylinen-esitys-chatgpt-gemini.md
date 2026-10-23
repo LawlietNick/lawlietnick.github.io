@@ -42,7 +42,7 @@ ChatGPT, Gemini tai Claude osaa rakentaa tällaisen esityksen, kunhan se tietä�
 
 ## Miksi McKinsey-tyylinen esitys toimii?
 
-Hyvä konsulttiesitys säästää yleisöltä työtä matkalla luvuista johtopäätökseen. Siisti kaavio voi näyttää luvut selkeästi ja silti jättää kertomatta, mitä niistä pitäisi ajatella. Se on esityksen tekijän työ: kerro, mikä aineistossa vastaa kysymykseen ja kuinka pitkälle siitä voi päätellä. Sama pätee yhteen diaan ja koko esitykseen.
+Hyvä konsulttiesitys säästää yleisöltä työtä matkalla luvuista johtopäätökseen. Siisti kaavio voi näyttää luvut selkeästi ja silti jättää kertomatta, mitä niistä pitäisi ajatella. Esityksen tekijän pitää kertoa, mikä aineistossa vastaa kysymykseen ja kuinka pitkälle siitä voi päätellä.
 
 ## Samat luvut, eri määrä työtä lukijalle
 
@@ -89,7 +89,7 @@ Raportoiva dia sopii seurantaan. Analysoiva dia sopii silloin, kun luvuista pit�
 
 ”LCP-tulokset” nimeää aiheen. Se ei vielä kerro, mitä tuloksissa kannattaa huomata.
 
-Väiteotsikko kertoo havainnon, ja dian sisällöstä näkee, pitääkö se paikkansa. Siksi otsikko ja kaavio suunnitellaan yhdessä. Kiinnostava otsikko ilman näyttöä on klikkiotsikko.
+Väiteotsikko kertoo havainnon, ja dian sisällöstä näkee, pitääkö se paikkansa. Siksi otsikko ja kaavio suunnitellaan yhdessä.
 
 Jos otsikko väittäisi tuotekuvien aiheuttavan hitauden, tämän esimerkin aineisto ei todistaisi sitä. Kaavio näyttää sivuryhmien välisen eron, mutta ei selitä sen syytä. Siksi suosituksena on selvittää syyt ennen korjausten valintaa.
 
@@ -103,7 +103,7 @@ Selvitä, mitä yleisö tuntee ennestään, mitkä käsitteet tarvitsevat selity
 
 Valmisteluvaiheessa voit arvioida, onko yleisöllä eväät seurata päättelyäsi. Ymmärtääkö yleisö sen oikeasti, selviää vasta palautteesta ja keskustelusta.
 
-Tein tämän artikkelin esimerkkidiat keskustellen tekoälyn kanssa. Ensimmäisen analysoivan dian otsikossa luki LCP, eikä kaaviossa näkynyt arviointirajaa. Dia oli siisti, mutta vaati lukijalta liikaa taustatietoa. Palautteella se korjaantui.
+Tein tämän artikkelin esimerkkidiat keskustellen tekoälyn kanssa. Ensimmäisen analysoivan dian otsikossa luki LCP, eikä kaaviossa näkynyt arviointirajaa. Dia oli siisti, mutta vaati lukijalta liikaa taustatietoa. Annoin palautetta, ja tekoäly korjasi sen.
 
 ## Rakenna perustelu ennen dioja
 
@@ -126,7 +126,7 @@ Pyramidiperiaatteessa pääviesti tulee ensin. Sen alle ryhmitellään sitä tuk
 
 Esimerkin pääviesti voisi olla: ”Kohdistetaan ensimmäinen suorituskykyselvitys tuotesivuihin.” Sitä tukevat kaksi perustelua: tuotesivujen tulos on vertailun heikoin ja ylittää hyvän tuloksen rajan 3,7 sekunnilla. Näyttönä ovat sivuryhmien mittaustulokset ja arviointirajan määritelmä.
 
-Lyhyesti: SCQR muotoilee kysymyksen ja vastauksen, pyramidiperiaate järjestää perustelut.
+SCQR muotoilee kysymyksen ja vastauksen. Pyramidiperiaate järjestää perustelut.
 
 ### Haamuesitys näyttää, eteneekö perustelu
 
@@ -180,9 +180,9 @@ Tämä on täytettävä lähdemerkintämalli. Hakasulkeiden tiedot pitää korva
 
 ## Luo oma esityksesi tekoälyn avulla
 
-Tekoäly muotoilee havaintoja, ehdottaa rakennetta ja luonnostelee dioja nopeasti. Sinä annat kontekstin ja arvioit tuloksen. Varo erityisesti sujuvia otsikoita: ne lupaavat helposti enemmän kuin luvut kestävät.
+Tekoäly muotoilee havaintoja, ehdottaa rakennetta ja luonnostelee dioja nopeasti. Sinä annat kontekstin ja arvioit tuloksen. Varo erityisesti sujuvia otsikoita, koska ne lupaavat helposti enemmän kuin luvut kestävät.
 
-Yleisön pitää pystyä myös kyseenalaistamaan johtopäätös. Siksi lähteet, vertailukohdat ja epävarmuudet näkyvät myös tekoälyn luonnoksessa.
+Yleisön pitää pystyä myös kyseenalaistamaan johtopäätös. Siksi lähteiden, vertailukohtien ja epävarmuuksien pitää näkyä myös tekoälyn luonnoksessa.
 
 Alla oleva prompti etenee kolmessa kierroksessa: konteksti, tarina ja diat. Jokaisen kierroksen lopussa tekoäly odottaa palautettasi. Kolmannella kierroksella hyväksytään ensin yksi mallidia, jotta samoja esitystavan ongelmia ei tarvitse korjata koko esityksestä.
 
@@ -307,4 +307,4 @@ Käy jokainen analyysidia läpi näillä kysymyksillä ennen yksityiskohtaista m
 
 Tämä on tekijän tarkistus esityksen rakenteesta ja perusteluista. Se ei vielä osoita, miten yleisö tulkitsee esityksen.
 
-Suosittelen vielä yhtä testiä: näytä luonnos yhdelle yleisöä edustavalle ihmiselle ja pyydä häntä kertomaan omin sanoin, mitä hän siitä päättelee. Jos vastaus on eri kuin pääviestisi, korjaa otsikot ja selitykset. Parempi kuulla se nyt kuin johtoryhmässä.
+Suosittelen vielä yhtä testiä: näytä luonnos yhdelle yleisöä edustavalle ihmiselle ja pyydä häntä kertomaan omin sanoin, mitä hän siitä päättelee. Jos vastaus on eri kuin pääviestisi, korjaa otsikot ja selitykset.
