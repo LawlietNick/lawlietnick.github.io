@@ -7,8 +7,8 @@ date: 2025-11-09
 updatedDate: 2026-10-06
 category: ai-prompting
 tags: ["ChatGPT", "Gemini", "promptit", "tekoäly"]
-image: /images/blog/ai-panel-with-experts.jpeg
-imageAlt: "Eläinasiantuntijapaneeli kokouspöydän ääressä: pöllö, robotti, kilpikonna, kettu ja karhu puhekuplineen"
+image: /images/blog/ai-expert-panel-roundtable.jpeg
+imageAlt: "Eläinasiantuntijapaneeli pyöreän pöydän ääressä: kilpikonna kirjaa muistiinpanoja, kun pöllö, kettu ja karhu esittävät eri näkökulmiaan"
 imageCredit: "Luotu OpenAI ImageGenillä"
 alternate:
   lang: en
