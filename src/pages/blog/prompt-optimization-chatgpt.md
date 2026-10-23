@@ -8,7 +8,7 @@ updatedDate: 2026-10-06
 category: ai-prompting
 tags: ["ChatGPT", "Gemini", "prompt engineering"]
 image: /images/blog/prompt-optimization-chatgpt.jpeg
-imageAlt: "Cartoon turtle dressed as a prompt engineer, holding a tablet between prompt and target symbols"
+imageAlt: "A turtle wearing purple glasses edits a prompt on a tablet as a tangled speech bubble becomes a structured instruction card"
 imageCredit: "Generated with OpenAI ImageGen"
 alternate:
   lang: fi

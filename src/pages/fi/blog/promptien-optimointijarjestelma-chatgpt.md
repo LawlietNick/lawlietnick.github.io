@@ -8,7 +8,7 @@ updatedDate: 2026-10-06
 category: ai-prompting
 tags: ["ChatGPT", "promptit", "tekoäly"]
 image: /images/blog/prompt-optimization-chatgpt.jpeg
-imageAlt: "Promptien suunnittelijaksi pukeutunut sarjakuvakilpikonna pitelee tablettia prompti- ja tavoitesymbolien välissä"
+imageAlt: "Violettisankaisia silmälaseja käyttävä kilpikonna muokkaa promptia tabletilla, ja sekava puhekupla muuttuu jäsennellyksi ohjekortiksi"
 imageCredit: "Luotu OpenAI ImageGenillä"
 alternate:
   lang: en
