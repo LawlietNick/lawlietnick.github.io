@@ -12,7 +12,11 @@ Read the file that matches the task before you start:
 
 ## Conventions the code won't tell you
 
-- **Every page has a twin.** English and Finnish versions share intent and structure, link to each other through `alternate` frontmatter, and get changed together. Write the Finnish side as natural Finnish, not as a translation; load the `suomi-finnish-skill` skill for any Finnish copy.
+- **Ask which language before you start.** Pages, articles, tools, copy and image references all count. Unless the request already names it, ask Niko: EN, FI or both. Change only those.
+  - **Shared files** (`Base.astro`, components, data used by both languages): before editing, say what changes on the other language's pages and wait for a yes.
+  - **Single-language pages** are fine as drafts. Before publishing one, ask Niko to confirm it ships without a counterpart.
+  - **Untouched counterpart:** when a changed page has one, end the task with a single line naming it, e.g. `FI not updated: /fi/blogi/x/`.
+  - **Both languages:** keep intent and structure equivalent and `alternate` links reciprocal. Write Finnish naturally; load the `suomi-finnish-skill` skill for Finnish copy.
 - **Facts come from Niko.** Prices, client names, metrics, testimonials and outcomes appear only when the user supplied them. When a layout wants a number you don't have, leave the slot empty and say so.
 - **Dates are Helsinki calendar days.** Frontmatter holds a plain date (`2026-10-04`); `isoDate` turns it into midnight Europe/Helsinki with that day's offset. Keep that path rather than writing ISO timestamps by hand.
 - **AI-made images say so** in `imageCredit`.
