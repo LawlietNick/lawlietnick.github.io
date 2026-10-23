@@ -7,8 +7,8 @@ date: 2025-11-03
 updatedDate: 2026-10-04
 category: ai-prompting
 tags: ["ChatGPT", "Gemini", "presentations", "Pyramid Principle"]
-image: /images/blog/mckinsey-style-presentation-chatgpt-gemini.jpeg
-imageAlt: "Turtle in a business suit presenting a pyramid-structured slide and charts on a whiteboard"
+image: /images/blog/mckinsey-presentation-pyramid-principle.jpeg
+imageAlt: "A turtle in a lavender suit places a yellow key-message card above three purple supporting cards on a presentation board"
 imageCredit: "Generated with OpenAI ImageGen"
 alternate:
   lang: fi
