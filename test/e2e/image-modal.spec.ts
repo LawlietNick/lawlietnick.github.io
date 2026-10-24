@@ -141,6 +141,24 @@ test("loading failures offer a direct image link and an escape route", async ({ 
   await expect(dialog).not.toBeVisible();
 });
 
+test("English article slides open from both images and caption links", async ({ page }) => {
+  await page.goto("/blog/mckinsey-style-presentation-chatgpt-gemini/");
+  const triggers = page.locator("figure[data-image-modal] .image-modal-trigger");
+  await expect(triggers).toHaveCount(2);
+  const dialog = page.getByRole("dialog", { name: "Image viewer", exact: true });
+  for (const [index, name] of ["reporting", "analysis"].entries()) {
+    await triggers.nth(index).click();
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("img")).toHaveAttribute("src", new RegExp(`/images/blog/mckinsey-${name}-slide-en\\.jpeg$`));
+    await expect(dialog.getByRole("button", { name: "Zoom in", exact: true })).toBeEnabled();
+    await dialog.getByRole("button", { name: "Close", exact: true }).click();
+    await page.getByRole("link", { name: `Enlarge the ${name} slide`, exact: true }).click();
+    await expect(dialog).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+  }
+});
+
 test("the global opt-in works in English and survives ClientRouter navigation", async ({ page }) => {
   const requests: string[] = [];
   page.on("request", (request) => requests.push(request.url()));
