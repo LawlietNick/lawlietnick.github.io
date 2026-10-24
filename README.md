@@ -103,6 +103,21 @@ draft: true                     # optional: served by `npm run dev`, removed fro
 - `npm run build` fails if required fields are missing or if the EN and FI versions don't link to each other.
 - `readingSignals: true` shows the visual reading-tracking demo on an article. Tracking itself runs on every article.
 
+### Optional full-window image viewer
+
+Add `data-image-modal="/images/example.jpeg"` and a short `data-image-caption` to a figure to enable enlargement for that image. Keep a caption link to the same full-resolution file as the no-JavaScript fallback:
+
+```html
+<figure data-image-modal="/images/example.jpeg" data-image-caption="Example diagram">
+
+![Description of the diagram](@assets/blog/example.jpeg)
+
+<figcaption>Diagram explanation. <a href="/images/example.jpeg">Enlarge diagram</a>.</figcaption>
+</figure>
+```
+
+The shared `ImageModal.astro` component is included by `Base.astro` in both languages. Its behavior loads only on pages with opted-in content. It supports fit, zoom, mouse/touch panning, pinch zoom, keyboard controls, focus restoration and a loading-error fallback. Arrow keys pan the focused image area, `+`/`-` zoom, `0` fits and Escape closes. Standalone links can opt in with `<a href="/images/example.jpeg" data-image-modal data-image-caption="Example diagram">Enlarge diagram</a>`.
+
 ## Configuration
 
 - **`src/data/site.js`:** site name, URL, person details and social profiles. `showServices` hides or publishes the services section.

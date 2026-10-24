@@ -1,0 +1,119 @@
+---
+const { fi = false } = Astro.props;
+const t = fi ? {
+  title: "Kuvan tarkastelu", close: "Sulje", enlarge: "Suurenna kuva",
+  zoomIn: "Suurenna", zoomOut: "Pienennä", fit: "Sovita ruutuun", zoom: "Suurennus",
+  hint: "Suurennettua kuvaa voi liikuttaa vetämällä tai nuolinäppäimillä. Kosketusnäytöllä voit suurentaa nipistämällä.",
+  loading: "Ladataan kuvaa…", error: "Kuva ei latautunut.", original: "Avaa kuvatiedosto",
+} : {
+  title: "Image viewer", close: "Close", enlarge: "Enlarge image",
+  zoomIn: "Zoom in", zoomOut: "Zoom out", fit: "Fit to screen", zoom: "Zoom",
+  hint: "Drag or use the arrow keys to move a zoomed image. On a touchscreen, pinch to zoom.",
+  loading: "Loading image…", error: "The image could not be loaded.", original: "Open image file",
+};
+---
+
+<dialog id="image-modal" class="image-modal" aria-labelledby="image-modal-title" aria-describedby="image-modal-caption" data-enlarge={t.enlarge} data-loading={t.loading} data-error={t.error}>
+  <header class="image-modal__header">
+    <h2 id="image-modal-title">{t.title}</h2>
+    <button type="button" data-image-action="close" autofocus>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+      {t.close}
+    </button>
+  </header>
+  <div class="image-modal__viewport" tabindex="0" role="region" aria-label={t.title} aria-describedby="image-modal-hint">
+    <div data-image-slot></div>
+    <div class="image-modal__feedback">
+      <p data-image-status role="status"></p>
+      <a data-image-original hidden>{t.original}</a>
+    </div>
+  </div>
+  <footer class="image-modal__footer">
+    <div class="image-modal__controls" role="group" aria-label={t.zoom}>
+      <button type="button" data-image-action="out" aria-label={t.zoomOut} title={t.zoomOut} disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" /></svg>
+      </button>
+      <output data-image-zoom aria-label={t.zoom} aria-live="off">100%</output>
+      <button type="button" data-image-action="in" aria-label={t.zoomIn} title={t.zoomIn} disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14" /></svg>
+      </button>
+      <button type="button" data-image-action="fit" disabled>{t.fit}</button>
+    </div>
+    <p id="image-modal-caption" class="image-modal__caption"></p>
+    <p id="image-modal-hint" class="image-modal__hint">{t.hint}</p>
+  </footer>
+</dialog>
+
+<script>
+  document.addEventListener("astro:page-load", async () => {
+    const root = document.body;
+    if (!root.querySelector("[data-image-modal]")) return;
+    const { enhanceImageModal } = await import("../scripts/image-modal");
+    if (root.isConnected) enhanceImageModal(root);
+  });
+</script>
+
+<style is:global>
+  html.image-modal-open { overflow: hidden; }
+  html.image-modal-open body { position: fixed; width: 100%; }
+  .image-modal-trigger { display: block; cursor: zoom-in; border-radius: var(--radius-sm); }
+  .image-modal-trigger:focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
+  .image-modal {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    overflow: hidden;
+  }
+  .image-modal[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+  .image-modal::backdrop { background: var(--bg); }
+  .image-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: max(0.75rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.75rem max(1rem, env(safe-area-inset-left));
+    border-bottom: 1px solid var(--line);
+  }
+  .image-modal__header h2 { margin: 0; font: var(--font-weight-strong) 1.125rem/1.4 var(--font-body); }
+  .image-modal button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--ink);
+    font: var(--font-weight-medium) 1rem/1.4 var(--font-body);
+    cursor: pointer;
+  }
+  .image-modal button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .image-modal button:focus-visible, .image-modal a:focus-visible, .image-modal__viewport:focus-visible { outline: var(--focus-ring); outline-offset: -3px; }
+  .image-modal button:disabled { opacity: 0.45; cursor: default; }
+  .image-modal svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+  .image-modal__viewport { position: relative; min-height: 0; overflow: hidden; touch-action: none; user-select: none; overscroll-behavior: contain; }
+  .image-modal__viewport[data-zoomed] { cursor: grab; }
+  .image-modal__viewport[data-dragging] { cursor: grabbing; }
+  .image-modal__image { position: absolute; left: 50%; top: 50%; max-width: none; max-height: none; pointer-events: none; transform-origin: center; }
+  .image-modal__feedback { position: absolute; inset: 0; display: grid; place-content: center; gap: 0.75rem; padding: 1rem; text-align: center; pointer-events: none; }
+  .image-modal__feedback p { margin: 0; }
+  .image-modal__feedback a { pointer-events: auto; color: var(--accent); text-underline-offset: 0.2em; }
+  .image-modal__footer { padding: 0.75rem max(1rem, env(safe-area-inset-right)) max(0.75rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); border-top: 1px solid var(--line); }
+  .image-modal__controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; }
+  .image-modal__controls output { min-width: 4ch; text-align: center; font-variant-numeric: tabular-nums; }
+  .image-modal__caption { margin: 0.75rem 0 0; text-align: center; font-size: var(--font-size-ui-sm); line-height: var(--line-height-ui); }
+  .image-modal__hint { margin: 0.25rem auto 0; max-width: 75ch; text-align: center; color: var(--muted); font-size: var(--font-size-ui-sm); line-height: var(--line-height-ui); }
+  @media (max-height: 480px) { .image-modal__hint { display: none; } .image-modal__caption { margin-top: 0.25rem; } .image-modal__footer { padding-block: 0.25rem; } }
+</style>

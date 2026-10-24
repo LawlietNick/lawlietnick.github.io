@@ -12,6 +12,7 @@ import RelatedArticles from "../components/RelatedArticles.astro";
 import Postscript from "../components/Postscript.astro";
 import ReadingSignals from "../components/ReadingSignals.astro";
 import AuthorBio from "../components/AuthorBio.astro";
+import ImageModal from "../components/ImageModal.astro";
 import AuthorVisibilityDemo from "../components/AuthorVisibilityDemo.astro";
 import Schema from "../components/Schema.astro";
 import { ClientRouter } from "astro:transitions";
@@ -326,6 +327,8 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
       postWithoutTranslation={effectivePostWithoutTranslation}
       {banner}
     />
+
+    <ImageModal {fi} />
 
     <script>
       import "../scripts/external-links";

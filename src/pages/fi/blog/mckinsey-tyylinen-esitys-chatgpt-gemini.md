@@ -50,11 +50,11 @@ Katsotaan kahta diaa, jotka on tehty samoista kuvitteellisista luvuista. Luvut k
 
 ### Raportoiva dia näyttää mittaustulokset
 
-<figure>
+<figure data-image-modal="/images/blog/mckinsey-raportoiva-dia-fi.jpeg" data-image-caption="Raportoiva dia">
 
 ![Raportoiva dia, jonka otsikko on ”LCP-tulokset”. Harmaat palkit esittävät sivuryhmät järjestämättöminä. Tuotesivujen palkki on pisin, mutta kaaviossa ei ole arviointirajaa eikä tarkkoja arvoja palkkien vieressä.](@assets/blog/mckinsey-raportoiva-dia-fi.jpeg)
 
-<figcaption>Raportoiva dia jättää tulkinnan yleisölle. Kuvitteellinen esimerkkiaineisto, dia tehty tekoälyn avulla. <a href="/images/blog/mckinsey-raportoiva-dia-fi.jpeg">Avaa raportoiva dia täysikokoisena</a>.</figcaption>
+<figcaption>Raportoiva dia jättää tulkinnan yleisölle. Kuvitteellinen esimerkkiaineisto, dia tehty tekoälyn avulla. <a href="/images/blog/mckinsey-raportoiva-dia-fi.jpeg">Suurenna raportoiva dia</a>.</figcaption>
 </figure>
 
 Kaaviosta näkee, että tuotesivujen palkki on pisin. Mittarin tuntevalle asiantuntijalle dia riittää säännölliseen seurantaan. Muut jäävät miettimään: mitä LCP tarkoittaa, onko iso luku hyvä vai huono ja mihin tulosta pitäisi verrata? Vähän kuin kauppakeskuksen kartta ilman ”Olet tässä” -merkkiä.
@@ -63,11 +63,11 @@ Lopun ehdotus seurata sivuston nopeutta jää sekin yleiseksi. Se ei kerro, mist
 
 ### Analysoiva dia auttaa tulkitsemaan luvut
 
-<figure>
+<figure data-image-modal="/images/blog/mckinsey-analysoiva-dia-fi.jpeg" data-image-caption="Analysoiva dia">
 
 ![Analysoiva dia kertoo tuotesivujen suurimman sisältöelementin näkyvän 3,7 sekuntia hyvän tuloksen rajaa myöhemmin. Tuotesivujen 6,2 sekunnin palkki on violetti. Katkoviiva näyttää 2,5 sekunnin arviointirajan. Suositus on selvittää hitauden syyt ennen korjausten valintaa.](@assets/blog/mckinsey-analysoiva-dia-fi.jpeg)
 
-<figcaption>Samat luvut, mutta otsikko kertoo havainnon, kaavio näyttää vertailukohdan ja suositus seuraavan tutkimusvaiheen. Kuvitteellinen esimerkkiaineisto, dia tehty tekoälyn avulla. <a href="/images/blog/mckinsey-analysoiva-dia-fi.jpeg">Avaa analysoiva dia täysikokoisena</a>.</figcaption>
+<figcaption>Samat luvut, mutta otsikko kertoo havainnon, kaavio näyttää vertailukohdan ja suositus seuraavan tutkimusvaiheen. Kuvitteellinen esimerkkiaineisto, dia tehty tekoälyn avulla. <a href="/images/blog/mckinsey-analysoiva-dia-fi.jpeg">Suurenna analysoiva dia</a>.</figcaption>
 </figure>
 
 Otsikon ymmärtää, vaikkei tuntisi LCP-lyhennettä. Kaavion 2,5 sekunnin arviointiraja antaa luvuille vertailukohdan. Palkkien järjestys helpottaa vertailua, ja violetti korostus ohjaa huomion tuotesivuihin.

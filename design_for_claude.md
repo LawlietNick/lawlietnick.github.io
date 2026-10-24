@@ -182,6 +182,7 @@ Reusable components include:
 - `SplitSection.astro`: shared two-column section wrapper.
 - `PatternList.astro`: numbered and arrow list variants.
 - `Badge.astro`: accessible repeated labels.
+- `ImageModal.astro`: shared full-window image viewer for opted-in figures or image links. Uses the native dialog, theme tokens and the body font. Keeps close and zoom controls visible, fits images without cropping, supports dragging and pinch zoom, and restores focus and the reading position. See README for the `data-image-modal` markup and fallback link.
 - `ArticleCard.astro`: article preview card.
 - `PostHero.astro`, `TableOfContents.astro`, `AskAI.astro`, `Postscript.astro`, and `RelatedArticles.astro`: article-page patterns.
 

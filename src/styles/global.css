@@ -573,7 +573,7 @@ picture { display: contents; }
 /* content links: multiline comic highlight with a delayed yellow underline.
    `.content-links` opts any block outside prose (e.g. tool pages) into the same style.
    `.content-link` applies it to a text label inside a larger link with an icon. */
-:is(.prose, .content-links) a,
+:is(.prose, .content-links) a:not(.image-modal-trigger),
 .content-link {
   --link-hover-color: light-dark(oklch(44% 0.22 286), oklch(64% 0.16 286));
   --link-hover-background: color-mix(in oklab, var(--accent) 11%, var(--bg));
@@ -609,7 +609,7 @@ picture { display: contents; }
     box-shadow 1400ms var(--link-ease) 180ms;
 }
 
-:is(.prose, .content-links) a:is(:hover, :focus-visible),
+:is(.prose, .content-links) a:not(.image-modal-trigger):is(:hover, :focus-visible),
 a:is(:hover, :focus-visible) > .content-link {
   color: var(--link-hover-color);
   background-color: var(--link-hover-background);

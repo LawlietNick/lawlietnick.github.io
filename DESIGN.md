@@ -86,6 +86,7 @@ Reusable components live in `src/components/`.
 - `SplitSection.astro`: shared two-column section wrapper.
 - `PatternList.astro`: numbered and arrow lists.
 - `Badge.astro`: accessible visual label.
+- `ImageModal.astro`: shared full-window image viewer for opted-in figures or image links. Uses the native dialog, theme tokens and the body font. Keeps close and zoom controls visible, fits images without cropping, supports dragging and pinch zoom, and restores focus and the reading position. See README for the `data-image-modal` markup and fallback link.
 - `ToolHero.astro`: shared heading and lead structure for interactive and content-based tool pages.
 - `Ga4AnnotationBuilder.astro`: category-led annotation editor using the existing tool typography, surfaces and controls; route-specific behavior is recorded in [.impeccable/surfaces/src-pages-fi-tyokalut-ga4-annotaatiot-astro.md](.impeccable/surfaces/src-pages-fi-tyokalut-ga4-annotaatiot-astro.md).
 
