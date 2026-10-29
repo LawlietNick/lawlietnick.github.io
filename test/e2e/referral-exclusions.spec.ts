@@ -13,10 +13,10 @@ test("the list is over GA4's 50 row limit until sections are merged", async ({ p
   await page.goto(path);
   await expect(page.locator("[data-limit]")).toContainText("GA4 sallii enintään 50");
 
-  await page.getByRole("button", { name: "Yhdistä kaikki osiot" }).click();
+  await page.getByRole("button", { name: "Yhdistä kaikki ryhmät" }).click();
   await expect(page.locator("[data-limit]")).toBeEmpty();
   await expect(page.locator("[data-status]")).toContainText("4 GA4-riviä");
-  await expect(page.getByRole("button", { name: "Pura kaikki osiot" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Pura kaikki ryhmät" })).toBeVisible();
 });
 
 test("a row moves to another group with the select and the merged regex follows", async ({ page }) => {
@@ -71,11 +71,14 @@ test("own domains are a section of the list until 'Omat domainit' is unchecked",
   await page.goto(path);
   const own = page.locator("tbody[data-own-rows]");
   await expect(own.locator("[data-own-head]")).toBeVisible();
-  await expect(own.locator("[data-own-empty]")).toBeVisible();
+  await expect(own.locator("[data-own-example] code")).toHaveText(/yritys/);
+  await expect(own.locator("[data-own-example] button")).toBeDisabled();
+  await expect(page.locator("[data-status]")).toContainText("64 GA4-riviä");
 
-  await page.locator("[data-own-input]").fill("yritys.fi\nyritys.com");
-  await expect(own.locator("[data-own-row] code")).toHaveText(/yritys/);
-  await expect(own.locator("[data-own-count]")).toHaveText("1 riviä");
+  await page.locator("[data-own-input]").fill("yritys.fi\nwww.yritys.fi\nblog.yritys.fi\nyritys.com");
+  await expect(own.locator("[data-own-example]")).toHaveCount(0);
+  await expect(own.locator("[data-own-row] code")).toHaveText("(?:(www|blog)\\.)?yritys\\.(fi|com)");
+  await expect(own.locator("[data-own-count]")).toHaveText("1 rivi");
   await expect(page.locator("[data-status]")).toContainText("65 GA4-riviä");
 
   await page.getByLabel("Omat domainit").uncheck();
@@ -91,8 +94,8 @@ test("the big regex is the same and still matches when every section is merged",
   const before = await big.textContent();
 
   await page.locator("[data-own-input]").fill("yritys.fi");
-  await page.getByRole("button", { name: "Yhdistä kaikki osiot" }).click();
-  await expect(page.getByRole("button", { name: "Pura kaikki osiot" })).toBeVisible();
+  await page.getByRole("button", { name: "Yhdistä kaikki ryhmät" }).click();
+  await expect(page.getByRole("button", { name: "Pura kaikki ryhmät" })).toBeVisible();
 
   await expect(big).toHaveCount(1);
   const after = await big.textContent();
@@ -102,4 +105,17 @@ test("the big regex is the same and still matches when every section is merged",
   for (const host of ["pay.checkout.fi", "www.paypal.com", "ebank.aktia.fi", "acs.revolut.com", "webpayments.danskebank.fi"]) expect(re.test(host), host).toBe(true);
   for (const host of ["xcheckout.fi", "yritys.fi", "checkout.fi.evil.com"]) expect(re.test(host), host).toBe(false);
   await expect(page.locator("[data-big-status]")).toContainText("GA4-rivejä omat domainit mukaan lukien 2 / 50");
+});
+
+test("the English page has English texts and the same behaviour", async ({ page }) => {
+  await page.goto("/tools/referral-exclusions/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Referral exclusions");
+  await expect(page.locator("[data-limit]")).toContainText("GA4 allows at most 50");
+  await expect(page.locator("[data-own-example] code")).toHaveText("(?:(www|blog)\\.)?company\\.com");
+  await expect(page.locator("tbody[data-group]").first().locator("[data-group-name]")).toHaveText("Banks and identification");
+
+  await page.getByRole("button", { name: "Merge all groups" }).click();
+  await expect(page.locator("[data-status]")).toContainText("4 GA4 rows");
+  await expect(page.getByRole("button", { name: "Unmerge all groups" })).toBeVisible();
+  await expect(page.locator("[data-big] .pr__bigcode")).toHaveCount(1);
 });

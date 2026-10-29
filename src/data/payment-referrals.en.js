@@ -1,0 +1,101 @@
+// English copy for the referral exclusions tool, same keys as payment-referrals.fi.js.
+export const en = {
+  groups: {
+    banks: "Banks and identification",
+    payments: "Payment services",
+    cards: "Card authentication (3D Secure)",
+    international: "International services",
+  },
+  matchLabels: {
+    regex: "regex (matches RegEx)",
+    contains: "contains",
+  },
+  own: {
+    title: "Your own domains",
+    hintHtml:
+      "If the same GA4 ID is used on more than one domain, add all of them. Otherwise GA4 may count a move from one domain to another as a new referral and end the session. List all domains and their subdomains (for example <code>company.com</code>, <code>www.company.com</code>, <code>blog.company.com</code>), not subpages.",
+    label: "Domains, one per line or separated by commas",
+    placeholder: "company.com\nwww.company.com\nblog.company.com\ncompany.fi",
+    mergeHintHtml:
+      "The same name with different endings and subdomains is merged into one row, for example <code>(?:(www|blog)\\.)?company\\.(com|fi)</code>. Your rows go to the top of the list.",
+    example: "company.com\nwww.company.com\nblog.company.com",
+    tag: "Own domain",
+    exampleTag: "Example, replace with your own domain above",
+    skipped: "Not recognised as a domain: {list}",
+  },
+  use: {
+    title: "What do you use?",
+    hint: "Everything is selected. Uncheck the services you don't use and their rows leave the list. Rows without a service always show.",
+    legend: "Services in use",
+    own: "Own domains",
+  },
+  list: {
+    title: "List",
+    hintHtml:
+      "In GA4, choose <em>Referral domain</em> and the row's condition. Copy the value with the button and paste it into the value field. GA4 allows at most 50 rows per data stream. You can merge a group's rows into one regex from the group header. Drag a row by its handle (<span aria-hidden=\"true\">⋮⋮</span>) to another or a new group, or move it with the row's group menu. The grouping is remembered in this browser.",
+    mergeAll: "Merge all groups",
+    unmergeAll: "Unmerge all groups",
+    colDone: "Added",
+    colMatch: "Condition",
+    colValue: "Value",
+    colCopy: "Copy",
+    handleTitle: "Drag to another group",
+    doneAria: "Mark as added: {value}",
+    groupLabel: "Group",
+    moveAria: "Move to group: {value}",
+    copy: "Copy",
+    copyAria: "Copy value {value}",
+    newGroup: "+ New group",
+    newGroupHint: "(drop a row here or click)",
+    groupNameAria: "Group name",
+    merge: "Merge into one regex",
+    removeGroup: "Remove group",
+    mergedDoneAria: "Mark as added: merged regex",
+    mergedCopyAria: "Copy merged regex",
+    emptyGroup: "No rows. Drag a row here or pick this group in a row's group menu.",
+  },
+  big: {
+    title: "One big regex",
+    hintHtml:
+      "You can also copy all visible rows of the list as one regex, whether or not groups are merged. Your own domains keep their own rows and are not included here. Rows with the contains condition become <code>.*domain.*</code>, so the result works the same whether GA4 compares the whole domain or part of it.",
+    maxLabel: "Maximum length in characters (optional)",
+    maxPlaceholder: "No limit",
+    limitHint:
+      "GA4 allows at most 50 rows per data stream, and one big regex fits in it as a single row. If you set a length limit, the regex is split along row boundaries and each part is its own GA4 row. I have not verified GA4's regex length limit, so try it in GA4.",
+  },
+  steps: {
+    title: "How to add them in GA4",
+    itemsHtml: [
+      "Open Admin → Data streams → your web stream → <em>Configure tag settings</em> → <em>Show all</em> → <em>List unwanted referrals</em>.",
+      "Choose <em>Referral domain</em> and the condition from the table. Copy the value with the row's button and paste it into the value field.",
+      "Add the next row with <em>Add condition</em> and repeat.",
+      "Save and make a test purchase. Check in DebugView that the payment service no longer shows up as a new source.",
+    ],
+    rule: "A regex matches the whole domain, so you don't need to mark its start or end. GA4 reads regexes with RE2 syntax.",
+  },
+  script: {
+    rowOne: "1 row",
+    rowMany: "{n} rows",
+    customGroup: "Custom group {n}",
+    groupFallback: "Group",
+    mergedTag: "Group {group}: {n} rows in one, {chars} characters",
+    mergeAll: "Merge all groups",
+    unmergeAll: "Unmerge all groups",
+    status: "{ga} GA4 rows (own {own}, from the list {list}, list rows before merging {before}), {added} marked as added",
+    limitWarning:
+      "Note: this would be {ga} GA4 rows, and GA4 allows at most {limit} per data stream. Merge groups into one regex (in the group header) or use the one big regex below.",
+    bigStatus:
+      "{rows} rows in {chunks} regex(es), {chars} characters in total. GA4 rows including your own domains: {ga} / {limit}{over}.",
+    bigOver: ". Over the limit: raise the length limit",
+    bigEmpty: "No rows. Select at least one service.",
+    bigLength: "{n} characters",
+    bigLengthOver: ", over the limit (a single row does not split)",
+    bigCopyAria: "Copy regex, {n} characters",
+    copy: "Copy",
+    copyAria: "Copy value {value}",
+    doneAria: "Mark as added: {value}",
+    copiedRegex: "Regex copied, {n} characters.",
+    copied: "Copied: {value}",
+    copyFailed: "Copying failed. Select the text and copy it by hand.",
+  },
+};

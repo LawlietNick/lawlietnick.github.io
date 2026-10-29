@@ -1,0 +1,29 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import ToolHero from "../../components/ToolHero.astro";
+import PaymentReferralTool from "../../components/PaymentReferralTool.astro";
+
+const title = "Referral exclusions";
+const summary = "A customer pays at a payment provider and returns to the shop, but GA4 credits the sale to the payment provider. Pick the services you use and copy their domains to GA4's list of unwanted referrals.";
+---
+
+<Base primaryCategory="analytics" title={title} description={summary} alternate={{ lang: "fi", href: "/fi/tyokalut/viittausten-poissulkeminen/" }}>
+  <Breadcrumb
+    crumbs={[
+      { label: "Home", href: "/", icon: true },
+      { label: "Tools", href: "/tools/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">
+      The customer pays on the payment provider's page and returns to the webshop. GA4 may treat the return as a new traffic source and record the purchase as a referral, so the ad or search engine that brought the customer in gets no credit. The list below tells GA4 that a payment provider is not a traffic source.
+    </p>
+  </ToolHero>
+
+  <div class="wide-band">
+    <PaymentReferralTool lang="en" />
+  </div>
+</Base>

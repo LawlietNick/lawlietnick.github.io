@@ -25,19 +25,23 @@ export const bigRegexes = (rows, { maxLength = Infinity } = {}) => {
   return chunks;
 };
 
-// "https://www.Yritys.fi/path" -> "yritys.fi"
+// "https://www.Yritys.fi/path" -> "www.yritys.fi"
 export const hostOf = (input) =>
   input
     .trim()
     .toLowerCase()
     .replace(/^[a-z][a-z0-9+.-]*:\/\//, "")
     .replace(/[/?#].*$/, "")
-    .replace(/:\d+$/, "")
-    .replace(/^www\./, "");
+    .replace(/:\d+$/, "");
 
 const validHost = (host) => /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(host);
 
-export const ownDomainRows = (text, { subdomains = true } = {}) => {
+// ponytail: the last label is the ending, or the last two for endings like co.uk; a longer list of those if one is needed
+const twoPartEnding = /^(co|com|org|net|gov|ac)\.[a-z]{2}$/;
+
+// One row per name: endings and subdomains of the same name are merged, www.yritys.fi and blog.yritys.com
+// into (?:(www|blog)\.)?yritys\.(fi|com). A subdomain listed for one ending is then allowed for all of them.
+export const ownDomainRows = (text) => {
   const names = new Map();
   const skipped = [];
 
@@ -47,16 +51,22 @@ export const ownDomainRows = (text, { subdomains = true } = {}) => {
       skipped.push(token);
       continue;
     }
-    const dot = host.indexOf(".");
-    const name = host.slice(0, dot);
-    names.set(name, (names.get(name) ?? new Set()).add(host.slice(dot + 1)));
+    const labels = host.split(".");
+    const endingLength = twoPartEnding.test(labels.slice(-2).join(".")) && labels.length > 2 ? 2 : 1;
+    const ending = labels.slice(-endingLength).join(".");
+    const name = labels[labels.length - endingLength - 1];
+    const prefix = labels.slice(0, -endingLength - 1).join(".");
+    const entry = names.get(name) ?? { endings: new Set(), prefixes: new Set() };
+    entry.endings.add(ending);
+    if (prefix) entry.prefixes.add(prefix);
+    names.set(name, entry);
   }
 
-  // ponytail: a subdomain typed on its own (shop.yritys.fi) stays an exact host; ask for main domains instead
-  const rows = [...names].map(([name, endings]) => {
+  const rows = [...names].map(([name, { endings, prefixes }]) => {
     const list = [...endings].map(escape);
     const ending = list.length > 1 ? `(${list.join("|")})` : list[0];
-    return `${subdomains ? "(?:[a-z0-9\\-]+\\.)*" : ""}${escape(name)}\\.${ending}`;
+    const prefix = prefixes.size ? `(?:(${[...prefixes].map(escape).join("|")})\\.)?` : "";
+    return `${prefix}${escape(name)}\\.${ending}`;
   });
   return { rows, skipped };
 };

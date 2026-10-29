@@ -6,18 +6,14 @@
 // Rows without a service always show.
 // One row per domain: a new subdomain or TLD of a domain that already has a regex row goes into that
 // regex, not into a new row. The test rejects rows that another row already covers.
+// Labels shown in the list are in the language files
 export const matchTypes = {
-  regex: { ga4: "matches RegEx", label: "säännöllinen lauseke (matches RegEx)" },
-  contains: { ga4: "contains", label: "sisältää (contains)" },
+  regex: { ga4: "matches RegEx" },
+  contains: { ga4: "contains" },
 };
 
-// Order here is the order of the sections in the list
-export const groups = {
-  banks: "Pankit ja tunnistautuminen",
-  payments: "Maksupalvelut",
-  cards: "Korttitunnistus (3D Secure)",
-  international: "Kansainväliset palvelut",
-};
+// Order here is the order of the sections in the list; their names are in the language files
+export const groups = ["banks", "payments", "cards", "international"];
 
 export const services = {
   shopify: "Shopify",

@@ -41,23 +41,28 @@ test("no contains row is already covered by another row", () => {
 });
 
 test("own domains: same name with several endings becomes one regex row", () => {
-  const { rows: out, skipped } = ownDomainRows("yritys.fi\nyritys.com", { subdomains: false });
+  const { rows: out, skipped } = ownDomainRows("yritys.fi\nyritys.com");
   assert.deepEqual(out, ["yritys\\.(fi|com)"]);
   assert.deepEqual(skipped, []);
 });
 
-test("own domains: urls, www, case and separators are cleaned and different names get their own rows", () => {
-  const { rows: out } = ownDomainRows("https://www.Yritys.fi/tuotteet, kauppa-yritys.fi; yritys.fi", { subdomains: false });
+test("own domains: urls, case and separators are cleaned and different names get their own rows", () => {
+  const { rows: out } = ownDomainRows("https://Yritys.fi/tuotteet, kauppa-yritys.fi; yritys.fi");
   assert.deepEqual(out, ["yritys\\.fi", "kauppa\\-yritys\\.fi"]);
 });
 
-test("own domains: subdomain prefix is on by default and the result is RE2-safe and matches the hosts", () => {
-  const { rows: out } = ownDomainRows("yritys.fi yritys.com");
-  assert.equal(out.length, 1);
+test("own domains: listed subdomains and endings become one readable, RE2-safe row that matches exactly those hosts", () => {
+  const { rows: out } = ownDomainRows("yritys.fi\nwww.yritys.fi\nblog.yritys.fi\nyritys.com");
+  assert.deepEqual(out, ["(?:(www|blog)\\.)?yritys\\.(fi|com)"]);
   assert.ok(isRe2Safe(out[0]));
   const re = new RegExp(`^(?:${out[0]})$`);
-  for (const host of ["yritys.fi", "www.yritys.com", "kauppa.yritys.fi", "a.b.yritys.fi"]) assert.match(host, re);
-  for (const host of ["xyritys.fi", "yritys.net", "yritys.fi.evil.com"]) assert.doesNotMatch(host, re);
+  for (const host of ["yritys.fi", "www.yritys.com", "blog.yritys.fi"]) assert.match(host, re);
+  for (const host of ["kauppa.yritys.fi", "xyritys.fi", "yritys.net", "yritys.fi.evil.com"]) assert.doesNotMatch(host, re);
+});
+
+test("own domains: a lone subdomain keeps its prefix optional and two-part endings stay together", () => {
+  assert.deepEqual(ownDomainRows("www.yritys.fi").rows, ["(?:(www)\\.)?yritys\\.fi"]);
+  assert.deepEqual(ownDomainRows("yritys.co.uk\nwww.yritys.co.uk").rows, ["(?:(www)\\.)?yritys\\.co\\.uk"]);
 });
 
 test("own domains: input that is not a domain is reported, not turned into a row", () => {
@@ -100,12 +105,12 @@ test("big regex: a single row longer than maxLength stays whole in its own chunk
 });
 
 test("every row belongs to a group and every group has rows", () => {
-  for (const r of rows) assert.ok(groups[r.group], `${r.value} has no valid group`);
-  for (const key of Object.keys(groups)) assert.ok(rows.some((r) => r.group === key), key);
+  for (const r of rows) assert.ok(groups.includes(r.group), `${r.value} has no valid group`);
+  for (const key of groups) assert.ok(rows.some((r) => r.group === key), key);
 });
 
 test("a whole group merged into one regex matches all its rows", () => {
-  for (const key of Object.keys(groups)) {
+  for (const key of groups) {
     const [merged, ...rest] = bigRegexes(rows.filter((r) => r.group === key));
     assert.equal(rest.length, 0, key);
     assert.ok(isRe2Safe(merged), key);
