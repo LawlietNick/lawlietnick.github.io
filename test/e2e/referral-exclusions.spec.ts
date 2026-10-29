@@ -66,3 +66,40 @@ test("merging a custom group counts as one GA4 row", async ({ page }) => {
   // 64 rows, two of them now in one merged row
   await expect(page.locator("[data-status]")).toContainText("63 GA4-riviä");
 });
+
+test("own domains are a section of the list until 'Omat domainit' is unchecked", async ({ page }) => {
+  await page.goto(path);
+  const own = page.locator("tbody[data-own-rows]");
+  await expect(own.locator("[data-own-head]")).toBeVisible();
+  await expect(own.locator("[data-own-empty]")).toBeVisible();
+
+  await page.locator("[data-own-input]").fill("yritys.fi\nyritys.com");
+  await expect(own.locator("[data-own-row] code")).toHaveText(/yritys/);
+  await expect(own.locator("[data-own-count]")).toHaveText("1 riviä");
+  await expect(page.locator("[data-status]")).toContainText("65 GA4-riviä");
+
+  await page.getByLabel("Omat domainit").uncheck();
+  await expect(own.locator("[data-own-head]")).toBeHidden();
+  await expect(own.locator("[data-own-row]")).toBeHidden();
+  await expect(page.locator("[data-status]")).toContainText("64 GA4-riviä");
+});
+
+test("the big regex is the same and still matches when every section is merged", async ({ page }) => {
+  await page.goto(path);
+  const big = page.locator("[data-big] .pr__bigcode");
+  await expect(big).toHaveCount(1);
+  const before = await big.textContent();
+
+  await page.locator("[data-own-input]").fill("yritys.fi");
+  await page.getByRole("button", { name: "Yhdistä kaikki osiot" }).click();
+  await expect(page.getByRole("button", { name: "Pura kaikki osiot" })).toBeVisible();
+
+  await expect(big).toHaveCount(1);
+  const after = await big.textContent();
+  expect(after).toBe(before);
+  // own domains stay out of it, and it matches whole hosts only
+  const re = new RegExp(after!);
+  for (const host of ["pay.checkout.fi", "www.paypal.com", "ebank.aktia.fi", "acs.revolut.com", "webpayments.danskebank.fi"]) expect(re.test(host), host).toBe(true);
+  for (const host of ["xcheckout.fi", "yritys.fi", "checkout.fi.evil.com"]) expect(re.test(host), host).toBe(false);
+  await expect(page.locator("[data-big-status]")).toContainText("GA4-rivejä omat domainit mukaan lukien 2 / 50");
+});

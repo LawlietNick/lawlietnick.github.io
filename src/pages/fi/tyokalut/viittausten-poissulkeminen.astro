@@ -5,7 +5,7 @@ import ToolHero from "../../../components/ToolHero.astro";
 import PaymentReferralTool from "../../../components/PaymentReferralTool.astro";
 
 const title = "Viittausten poissulkeminen";
-const summary = "Valitse käyttämäsi palvelut ja kopioi niiden domainit GA4:n ei-toivottujen viittausten listalle, jotta maksun jälkeinen paluu ei katkaise istuntoa.";
+const summary = "Asiakas maksaa maksupalvelussa ja palaa kauppaan, mutta GA4 kirjaa oston maksupalvelun nimiin. Valitse käyttämäsi palvelut ja kopioi niiden domainit GA4:n ei-toivottujen viittausten listalle.";
 ---
 
 <Base primaryCategory="analytics" title={title} description={summary} alternate={{ lang: "en", href: "/tools/", translated: false }}>
@@ -20,7 +20,7 @@ const summary = "Valitse käyttämäsi palvelut ja kopioi niiden domainit GA4:n 
 
   <ToolHero title={title} summary={summary}>
     <p class="tool-note">
-      Kun asiakas maksaa maksupalvelun sivulla ja palaa verkkokauppaan, GA4 voi lukea maksupalvelun uudeksi lähteeksi. Silloin osto kirjautuu viittaukselle (referral) eikä alkuperäiselle kanavalle.
+      Asiakas maksaa maksupalvelun sivulla ja palaa verkkokauppaan. GA4 voi nähdä paluun uutena tulolähteenä ja kirjata oston viittaukseksi (referral). Mainos tai hakukone, joka toi asiakkaan kauppaan, jää ilman kunniaa. Alla oleva lista kertoo GA4:lle, ettei maksupalvelu ole tulolähde.
     </p>
   </ToolHero>
 

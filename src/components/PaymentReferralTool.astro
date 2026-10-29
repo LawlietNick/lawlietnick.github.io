@@ -20,9 +20,10 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
 
   <section class="pr__panel" aria-labelledby="pr-use">
     <h2 id="pr-use">Mitä käytät?</h2>
-    <p class="pr__hint">Kaikki palvelut ovat valittuina. Poista valinta palveluilta, joita et käytä, niin listalta poistuvat niiden rivit. Rivit ilman palvelua näkyvät aina.</p>
+    <p class="pr__hint">Kaikki on valittuna. Poista valinta palveluilta, joita et käytä, niin listalta poistuvat niiden rivit. Rivit ilman palvelua näkyvät aina.</p>
     <fieldset class="pr__uses">
       <legend class="pr__sr">Käytössä olevat palvelut</legend>
+      <label class="pr__use"><input type="checkbox" data-own-use checked /> <span>Omat domainit</span></label>
       {
         Object.entries(services).map(([key, label]) => (
           <label class="pr__use"><input type="checkbox" value={key} data-service checked /> <span>{label}</span></label>
@@ -53,7 +54,19 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
             <th scope="col"><span class="pr__sr">Kopioi</span></th>
           </tr>
         </thead>
-        <tbody data-own-rows></tbody>
+        <tbody data-own-rows>
+          <tr class="pr__grouphead" data-own-head>
+            <th scope="colgroup" colspan="4">
+              <div class="pr__headrow">
+                <span class="pr__groupname">Omat domainisi</span>
+                <span class="pr__groupcount" data-own-count></span>
+              </div>
+            </th>
+          </tr>
+          <tr class="pr__emptyrow" data-own-empty>
+            <td colspan="4">Ei omia domaineja vielä. Lisää ne ylhäällä, niin ne tulevat tähän.</td>
+          </tr>
+        </tbody>
         {
           Object.entries(groups).map(([key, label]) => (
             <tbody data-group={key} data-group-label={label}>
@@ -152,6 +165,8 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
       const status = root.querySelector("[data-status]");
       const ownStatus = root.querySelector("[data-own-status]");
       const ownBody = root.querySelector("[data-own-rows]");
+      const ownUse = root.querySelector("[data-own-use]");
+      const ownCount = () => (ownUse.checked ? ownBody.querySelectorAll("[data-own-row]").length : 0);
       const table = root.querySelector(".pr__table");
       const chrome = root.querySelector("[data-chrome]");
 
@@ -265,7 +280,7 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
       };
 
       const count = () => {
-        const own = ownBody.children.length;
+        const own = ownCount();
         let list = 0;
         let before = 0;
         bodies().forEach((body) => {
@@ -289,7 +304,7 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
         const max = Number(root.querySelector("[data-big-max]").value) || Infinity;
         const listRows = bodies().flatMap((body) => shownRows(body).map(rowOf));
         const chunks = bigRegexes(listRows, { maxLength: max });
-        const gaRows = ownBody.children.length + chunks.length;
+        const gaRows = ownCount() + chunks.length;
         bigStatus.textContent = chunks.length
           ? `${listRows.length} riviä yhdistetty ${chunks.length} regexiksi, yhteensä ${chunks.reduce((sum, c) => sum + c.length, 0)} merkkiä. GA4-rivejä omat domainit mukaan lukien ${gaRows} / ${ga4RowLimit}${gaRows > ga4RowLimit ? ". Huomio: yli rajan, kasvata pituusrajaa" : ""}.`
           : "Ei rivejä. Valitse ainakin yksi palvelu.";
@@ -352,9 +367,11 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
         const { rows: own, skipped } = ownDomainRows(root.querySelector("[data-own-input]").value, {
           subdomains: root.querySelector("[data-own-sub]").checked,
         });
-        ownBody.replaceChildren(
+        ownBody.querySelectorAll("[data-own-row]").forEach((tr) => tr.remove());
+        ownBody.append(
           ...own.map((value) => {
             const tr = document.createElement("tr");
+            tr.dataset.ownRow = "";
             const doneCell = document.createElement("td");
             const box = document.createElement("input");
             box.type = "checkbox";
@@ -385,6 +402,16 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
           })
         );
         ownStatus.textContent = skipped.length ? `Ei tunnistettu domainiksi: ${skipped.join(", ")}` : "";
+        showOwn();
+      };
+      // The own section is on by default and leaves the list and the counts when "Omat domainit" is unchecked
+      const showOwn = () => {
+        const rows = [...ownBody.querySelectorAll("[data-own-row]")];
+        const use = ownUse.checked;
+        ownBody.querySelector("[data-own-head]").hidden = !use;
+        ownBody.querySelector("[data-own-empty]").hidden = !use || rows.length > 0;
+        ownBody.querySelector("[data-own-count]").textContent = `${rows.length} riviä`;
+        rows.forEach((tr) => (tr.hidden = !use));
         count();
         renderBig();
       };
@@ -395,6 +422,7 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
         if (target.matches("[data-merge]")) update();
         if (target.matches("[data-big-max]")) renderBig();
         if (target.matches("[data-own-input], [data-own-sub]")) renderOwn();
+        if (target.matches("[data-own-use]")) showOwn();
         if (target.matches("[data-move]")) moveRow(target.closest("tr"), bodyOf(target.value));
         if (target.matches("[data-group-input]")) {
           target.closest("tbody").dataset.groupLabel = target.value.trim() || "Ryhmä";
@@ -496,6 +524,7 @@ import { groups, matchTypes, rows, services } from "../data/payment-referrals.js
       items().forEach(mark);
       syncSelects();
       filter();
+      showOwn();
     });
   };
 
