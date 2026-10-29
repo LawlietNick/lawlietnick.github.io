@@ -2,8 +2,10 @@
 // Run `node scripts/generate-og.mjs` after changing the brand or site typography.
 import { chromium } from "@playwright/test";
 import sharp from "sharp";
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import { siteName } from "../src/data/site.js";
+
+import { allInteractiveTools } from "../src/data/interactive-tools.js";
 
 const W = 1200, H = 630;
 const tokens = readFileSync("src/styles/tokens.css", "utf8");
@@ -14,11 +16,21 @@ const logo = readFileSync("public/nk-logo.svg").toString("base64");
 // Render with the site's actual variable fonts instead of system-font SVG text.
 const browser = await chromium.launch();
 try {
-  for (const [lang, headline, emphasis, ending] of [
+  mkdirSync("public/og-tools", { recursive: true });
+  const cards = [
     ["en", "Cleaner measurement", "Better", "decisions"],
     ["fi", "Selkeämpää mittaamista", "Parempia", "päätöksiä"],
-  ]) {
-  const output = `public/og-default${lang === "fi" ? "-fi" : ""}.png`;
+  ];
+  for (const tool of allInteractiveTools) {
+    for (const lang of ["en", "fi"]) {
+      if (!tool[lang]) continue;
+      const words = tool[lang].title.split(" ");
+      const headline = words.length > 1 ? words.shift() : "";
+      cards.push([lang, headline, words.join(" "), "", tool[lang].slug ?? tool.slug]);
+    }
+  }
+  for (const [lang, headline, emphasis, ending, slug] of cards) {
+  const output = slug ? `public/og-tools/${lang}-${slug}.png` : `public/og-default${lang === "fi" ? "-fi" : ""}.png`;
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1, colorScheme: "light" });
   await page.setContent(`<!doctype html><html lang="${lang}"><head><style>
     ${tokens}
@@ -50,6 +62,14 @@ try {
     <img class="logo" src="data:image/svg+xml;base64,${logo}" alt="NK" width="140" height="98">
   </main></body></html>`);
   await page.evaluate(() => document.fonts.ready);
+  if (slug) {
+    await page.locator("h1").evaluate((heading) => {
+      let size = 86;
+      while (heading.scrollWidth > heading.clientWidth && size > 36) {
+        heading.style.fontSize = `${--size}px`;
+      }
+    });
+  }
   const fits = await page.locator("h1 .line").evaluateAll((lines) => lines.every((line) => line.scrollWidth <= line.clientWidth));
   if (!fits) throw new Error("OG headline overflows its safe area.");
   const screenshot = await page.screenshot({ type: "png" });

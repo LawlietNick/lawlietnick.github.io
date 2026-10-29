@@ -1,4 +1,5 @@
 ---
+import { allInteractiveTools } from "../data/interactive-tools.js";
 import { classifyPage } from "../utils/page-classification.js";
 import { isoDate } from "../utils/schema.ts";
 import Header from "../components/Header.astro";
@@ -140,9 +141,16 @@ const effectiveHasLanguageAlternate = hideLanguageAlternate ? false : hasLanguag
 const effectivePostWithoutTranslation = hideLanguageAlternate ? true : postWithoutTranslation;
 const hreflang = Astro.site && !noindex && effectiveHasLanguageAlternate;
 
-// social share image: per-page frontmatter `image` wins, else the language default
+// Tool cards use the same brand frame as the language defaults.
+const toolLanguage = fi ? "fi" : "en";
+const toolSlug = currentPath.split("/").filter(Boolean).at(-1);
+const socialTool = classification.pageType === "tool"
+  ? allInteractiveTools.find((tool) => tool[toolLanguage] && (tool[toolLanguage].slug ?? tool.slug) === toolSlug)
+  : undefined;
+const toolImage = socialTool ? `/og-tools/${toolLanguage}-${toolSlug}.png` : undefined;
+// Explicit page images retain priority.
 const ogImage = Astro.site
-  ? new URL(fm?.image ?? (fi ? "/og-default-fi.png" : "/og-default.png"), Astro.site).href
+  ? new URL(fm?.image ?? toolImage ?? (fi ? "/og-default-fi.png" : "/og-default.png"), Astro.site).href
   : undefined;
 const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
