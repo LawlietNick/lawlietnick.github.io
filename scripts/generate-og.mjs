@@ -1,4 +1,4 @@
-// Regenerates EN/FI social-share defaults → public/og-default*.png (1200×630).
+// Regenerates EN/FI default and tool social cards as JPEG in public/images/og/ (1200×630).
 // Run `node scripts/generate-og.mjs` after changing the brand or site typography.
 import { chromium } from "@playwright/test";
 import sharp from "sharp";
@@ -16,7 +16,7 @@ const logo = readFileSync("public/nk-logo.svg").toString("base64");
 // Render with the site's actual variable fonts instead of system-font SVG text.
 const browser = await chromium.launch();
 try {
-  mkdirSync("public/og-tools", { recursive: true });
+  mkdirSync("public/images/og", { recursive: true });
   const cards = [
     ["en", "Cleaner measurement", "Better", "decisions"],
     ["fi", "Selkeämpää mittaamista", "Parempia", "päätöksiä"],
@@ -30,7 +30,7 @@ try {
     }
   }
   for (const [lang, headline, emphasis, ending, slug] of cards) {
-  const output = slug ? `public/og-tools/${lang}-${slug}.png` : `public/og-default${lang === "fi" ? "-fi" : ""}.png`;
+  const output = slug ? `public/images/og/${lang}-${slug}.jpeg` : `public/images/og/og-default${lang === "fi" ? "-fi" : ""}.jpeg`;
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1, colorScheme: "light" });
   await page.setContent(`<!doctype html><html lang="${lang}"><head><style>
     ${tokens}
@@ -73,7 +73,7 @@ try {
   const fits = await page.locator("h1 .line").evaluateAll((lines) => lines.every((line) => line.scrollWidth <= line.clientWidth));
   if (!fits) throw new Error("OG headline overflows its safe area.");
   const screenshot = await page.screenshot({ type: "png" });
-  await sharp(screenshot).png({ compressionLevel: 9 }).toFile(output);
+  await sharp(screenshot).jpeg({ quality: 90, chromaSubsampling: "4:4:4" }).toFile(output);
   console.log(`Wrote ${output} (${W}×${H})`);
   await page.close();
   }

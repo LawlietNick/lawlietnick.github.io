@@ -92,12 +92,12 @@ export const allInteractiveTools = [
     icon: "≠",
     order: 9,
     en: {
-      title: "Referral exclusions",
+      title: "GA4 Referral exclusions",
       summary: "Pick the payment services you use and copy their domains to GA4's list of unwanted referrals.",
     },
     fi: {
       slug: "viittausten-poissulkeminen",
-      title: "Viittausten poissulkeminen",
+      title: "GA4 Viittausten poissulkeminen",
       summary: "Valitse palvelut ja kopioi niiden domainit GA4:n ei-toivottujen viittausten listalle.",
     },
   },

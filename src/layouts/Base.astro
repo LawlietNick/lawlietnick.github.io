@@ -147,10 +147,10 @@ const toolSlug = currentPath.split("/").filter(Boolean).at(-1);
 const socialTool = classification.pageType === "tool"
   ? allInteractiveTools.find((tool) => tool[toolLanguage] && (tool[toolLanguage].slug ?? tool.slug) === toolSlug)
   : undefined;
-const toolImage = socialTool ? `/og-tools/${toolLanguage}-${toolSlug}.png` : undefined;
+const toolImage = socialTool ? `/images/og/${toolLanguage}-${toolSlug}.jpeg` : undefined;
 // Explicit page images retain priority.
 const ogImage = Astro.site
-  ? new URL(fm?.image ?? toolImage ?? (fi ? "/og-default-fi.png" : "/og-default.png"), Astro.site).href
+  ? new URL(fm?.image ?? toolImage ?? (fi ? "/images/og/og-default-fi.jpeg" : "/images/og/og-default.jpeg"), Astro.site).href
   : undefined;
 const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
