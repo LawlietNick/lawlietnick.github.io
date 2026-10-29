@@ -16,7 +16,6 @@ export const groups = {
   banks: "Pankit ja tunnistautuminen",
   payments: "Maksupalvelut",
   cards: "Korttitunnistus (3D Secure)",
-  nordic: "Muut pohjoismaiset palvelut",
   international: "Kansainväliset palvelut",
 };
 
@@ -45,11 +44,12 @@ export const rows = [
   regex("(?:(verkkomaksu|tupas|tunnistus)\\.)?saastopankki\\.fi", ["verkkomaksu.saastopankki.fi", "tunnistus.saastopankki.fi"], "banks"),
   regex("(?:(verkkomaksu|tupas|tunnistus)\\.)?handelsbanken\\.fi", ["tunnistus.handelsbanken.fi"], "banks"),
   regex("(?:(verkkomaksu|tunnistus)\\.)?omasp\\.fi", ["verkkomaksu.omasp.fi", "tunnistus.omasp.fi"], "banks"),
-  regex("(?:(verkkopankki[12]?|business|ebanking|publicmobilepay|userapi2)\\.)?danskebank\\.(fi|com)", ["verkkopankki1.danskebank.fi", "verkkopankki.danskebank.fi", "userapi2.danskebank.com", "danskebank.com"], "banks"),
+  regex("(?:(verkkopankki[12]?|business|ebanking|publicmobilepay|userapi2|webpayments)\\.)?danskebank\\.(fi|com)", ["verkkopankki1.danskebank.fi", "verkkopankki.danskebank.fi", "userapi2.danskebank.com", "webpayments.danskebank.fi", "danskebank.com"], "banks"),
   contains("online.alandsbanken.fi", "banks"),
   contains("online.s-pankki.fi", "banks"),
   contains("tunnistautuminen.suomi.fi", "banks"),
   contains("id.signicat.com", "banks"),
+  contains("pay.siirto.fi", "banks"),
 
   // Payment services
   regex("(?:(public|products|pay)\\.)?mobilepay\\.(dk|fi)", ["public.mobilepay.dk", "pay.mobilepay.fi"], "payments", "mobilepay"),
@@ -74,6 +74,8 @@ export const rows = [
   contains("services.epassi.fi", "payments"),
   contains("checkout.smartum.fi", "payments"),
   contains("edenred.fi", "payments"),
+  contains("secure.jousto.com", "payments"),
+  contains("checkout.walleypay.com", "payments"),
 
   // Card authentication (3D Secure) processors, whole domain unless the host is a single one
   regex("(?:(acs1|acs2|dmp2)\\.)?luottokunta\\.fi", ["acs1.luottokunta.fi"], "cards"),
@@ -94,9 +96,7 @@ export const rows = [
   contains("pay.eewosecure.com", "cards"),
   contains("3dsecure.no", "cards"),
   contains("acs2.swedbank.se", "cards"),
-
-  // Other Nordic services
-  contains("secure.jousto.com", "nordic"),
+  contains("acs.revolut.com", "cards"),
 
   // International services and banks
   contains("diensten.asnbank.nl", "international"),

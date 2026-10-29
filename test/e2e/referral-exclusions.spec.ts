@@ -15,7 +15,7 @@ test("the list is over GA4's 50 row limit until sections are merged", async ({ p
 
   await page.getByRole("button", { name: "Yhdistä kaikki osiot" }).click();
   await expect(page.locator("[data-limit]")).toBeEmpty();
-  await expect(page.locator("[data-status]")).toContainText("5 GA4-riviä");
+  await expect(page.locator("[data-status]")).toContainText("4 GA4-riviä");
   await expect(page.getByRole("button", { name: "Pura kaikki osiot" })).toBeVisible();
 });
 
@@ -31,8 +31,8 @@ test("a row moves to another group with the select and the merged regex follows"
 
 test("dragging a handle onto a group moves the row", async ({ page }) => {
   await page.goto(path);
-  await row(page, "secure.jousto.com").locator("[data-handle]").dragTo(page.locator('tbody[data-group="international"] .pr__grouphead'));
-  await expect(page.locator('tbody[data-group="international"]').locator(row(page, "secure.jousto.com"))).toHaveCount(1);
+  await row(page, "3dsecure.no").locator("[data-handle]").dragTo(page.locator('tbody[data-group="international"] .pr__grouphead'));
+  await expect(page.locator('tbody[data-group="international"]').locator(row(page, "3dsecure.no"))).toHaveCount(1);
   await expect(page.locator('tbody[data-group="international"] [data-group-count]')).toHaveText("8 riviä");
 });
 
@@ -63,6 +63,6 @@ test("merging a custom group counts as one GA4 row", async ({ page }) => {
   await page.locator("tbody[data-custom] [data-merge]").check();
 
   await expect(page.locator("tbody[data-custom] [data-merged-code]")).toContainText(".*edb\\.com.*|.*acs4\\.privatbank\\.ua.*");
-  // 61 rows, two of them now in one merged row
-  await expect(page.locator("[data-status]")).toContainText("60 GA4-riviä");
+  // 64 rows, two of them now in one merged row
+  await expect(page.locator("[data-status]")).toContainText("63 GA4-riviä");
 });
