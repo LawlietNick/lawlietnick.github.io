@@ -6,6 +6,7 @@ import { en } from "../data/payment-referrals.en.js";
 // Texts come from one language file per language, with the same keys
 const { lang = "fi" } = Astro.props;
 const t = lang === "en" ? en : fi;
+const copyIcon = `<svg class="pr__i pr__i-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="pr__i pr__i-done" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
 const fill = (text, values) => text.replace(/\{(\w+)\}/g, (_, key) => values[key]);
 const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exampleTag, skipped: t.own.skipped }, example: t.own.example };
 ---
@@ -86,7 +87,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
                         <select data-move aria-label={fill(t.list.moveAria, { value: r.value })}></select>
                       </label>
                     </td>
-                    <td><button type="button" class="pr__copy" data-value={r.value} aria-label={fill(t.list.copyAria, { value: r.value })}>{t.list.copy}</button></td>
+                    <td><button type="button" class="pr__copy" data-value={r.value} aria-label={fill(t.list.copyAria, { value: r.value })} set:html={copyIcon}></button></td>
                   </tr>
                 ))}
             </tbody>
@@ -118,7 +119,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
           <code data-merged-code></code>
           <span class="pr__tag" data-merged-tag></span>
         </td>
-        <td><button type="button" class="pr__copy" data-value="" data-merged-copy aria-label={t.list.mergedCopyAria}>{t.list.copy}</button></td>
+        <td><button type="button" class="pr__copy" data-value="" data-merged-copy aria-label={t.list.mergedCopyAria} set:html={copyIcon}></button></td>
       </tr>
       <tr class="pr__emptyrow" data-empty hidden>
         <td colspan="4">{t.list.emptyGroup}</td>
@@ -295,6 +296,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
       };
 
       // One big regex from the visible list rows; own domains stay rows of their own
+      const copyIcon = `<svg class="pr__i pr__i-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="pr__i pr__i-done" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
       const bigList = root.querySelector("[data-big]");
       const bigStatus = root.querySelector("[data-big-status]");
       const renderBig = () => {
@@ -328,7 +330,10 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
             button.className = "pr__copy";
             button.dataset.value = chunk;
             button.setAttribute("aria-label", fmt(ui.bigCopyAria, { n: chunk.length }));
-            button.textContent = ui.copy;
+            button.innerHTML = copyIcon;
+            const label = document.createElement("span");
+            label.textContent = ui.copy;
+            button.append(label);
             meta.append(length, button);
             li.append(code, meta);
             return li;
@@ -393,9 +398,10 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
         button.type = "button";
         button.className = "pr__copy";
         button.disabled = example;
-        if (!example) button.dataset.value = value;
+        // an empty data-value gives the example the same icon-button look without anything to copy
+        button.dataset.value = example ? "" : value;
         button.setAttribute("aria-label", fmt(ui.copyAria, { value }));
-        button.textContent = ui.copy;
+        button.innerHTML = copyIcon;
         action.append(button);
         tr.append(doneCell, label, cell, action);
         if (!example) mark(tr);
@@ -440,6 +446,13 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
         }
       });
 
+      // The button itself says it was copied for a moment, then goes back to its own label
+      const flash = (button) => {
+        clearTimeout(button.flashTimer);
+        button.classList.add("pr__copied");
+        button.flashTimer = setTimeout(() => button.classList.remove("pr__copied"), 1800);
+      };
+
       root.addEventListener("click", async (event) => {
         const target = event.target;
         if (target.closest("[data-merge-all]")) {
@@ -467,6 +480,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
         const message = isBig ? bigStatus : status;
         try {
           await navigator.clipboard.writeText(value);
+          flash(button);
           message.textContent = isBig || value.length > 120 ? fmt(ui.copiedRegex, { n: value.length }) : fmt(ui.copied, { value });
         } catch {
           message.textContent = ui.copyFailed;
@@ -583,6 +597,18 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
   .pr__newgroup { display: block; width: 100%; margin-top: 0.75rem; padding: 0.75rem 1rem; border: 2px dashed color-mix(in srgb, var(--ink) 35%, var(--bg)); border-radius: var(--radius-md); background: transparent; color: var(--ink); font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; }
   .pr__newgroup span { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-sm); }
   .pr__newgroup.pr__dropping { border-color: var(--accent); background: var(--color-accent-soft); }
+  .pr__copied { background: var(--color-accent-soft); border-color: var(--accent); }
+  .pr__copy[data-value] { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-width: 2.25rem; min-height: 2.25rem; padding: 0.35rem; }
+  .pr__big .pr__copy[data-value] { padding: 0.35rem 0.9rem; }
+  .pr__i-done, .pr__copied .pr__i-copy { display: none; }
+  .pr__copied .pr__i-done { display: block; }
+  @media (hover: hover) {
+    .pr__copy:not(:disabled):hover { background: var(--color-accent-soft); border-color: var(--accent); }
+  }
+  .pr__copy:not(:disabled):active { transform: scale(0.95); }
+  @media (prefers-reduced-motion: no-preference) {
+    .pr__copy { transition: background-color 0.15s, border-color 0.15s, transform 0.15s; }
+  }
   .pr__copy:disabled { opacity: 0.5; cursor: not-allowed; }
   .pr__copy { padding: 0.35rem 0.9rem; border: 1px solid var(--line); border-radius: var(--radius-pill); background: transparent; color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); white-space: nowrap; cursor: pointer; }
   .pr__steps { max-width: 62ch; padding-left: 1.25rem; }
@@ -617,5 +643,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
     .pr__merged { background: var(--color-accent-soft); }
     .pr__merged td { background: transparent; }
     .pr__copy { padding: 0.5rem 1rem; }
+    .pr__copy[data-value] { min-width: 2.75rem; min-height: 2.75rem; padding: 0.5rem; }
+    .pr__big .pr__copy[data-value] { padding: 0.5rem 1rem; }
   }
 </style>

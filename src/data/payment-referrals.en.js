@@ -92,6 +92,7 @@ export const en = {
     bigLengthOver: ", over the limit (a single row does not split)",
     bigCopyAria: "Copy regex, {n} characters",
     copy: "Copy",
+    copiedButton: "✓ Copied",
     copyAria: "Copy value {value}",
     doneAria: "Mark as added: {value}",
     copiedRegex: "Regex copied, {n} characters.",

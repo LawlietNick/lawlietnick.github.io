@@ -107,6 +107,28 @@ test("the big regex is the same and still matches when every section is merged",
   await expect(page.locator("[data-big-status]")).toContainText("GA4-rivejä omat domainit mukaan lukien 2 / 50");
 });
 
+test("the copy button shows it was copied and then goes back", async ({ page }) => {
+  await page.goto(path);
+  const button = row(page, "paypal.com").getByRole("button", { name: /Kopioi arvo/ });
+  await button.click();
+  await expect(button).toHaveClass(/pr__copied/);
+  await expect(button).not.toHaveClass(/pr__copied/, { timeout: 4000 });
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("paypal.com");
+});
+
+test("the copy button highlights on hover but the disabled example does not", async ({ page }) => {
+  await page.goto(path);
+  const button = row(page, "paypal.com").getByRole("button", { name: /Kopioi arvo/ });
+  const bg = () => button.evaluate((el) => getComputedStyle(el).backgroundColor);
+  const before = await bg();
+  await button.hover();
+  await expect.poll(bg).not.toBe(before);
+  const example = page.locator("[data-own-example] button");
+  const exampleBefore = await example.evaluate((el) => getComputedStyle(el).backgroundColor);
+  await example.hover({ force: true });
+  expect(await example.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(exampleBefore);
+});
+
 test("the English page has English texts and the same behaviour", async ({ page }) => {
   await page.goto("/tools/referral-exclusions/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Referral exclusions");

@@ -94,6 +94,7 @@ export const fi = {
     bigLengthOver: ", ylittää rajan (yksi rivi ei jakaudu)",
     bigCopyAria: "Kopioi regex, {n} merkkiä",
     copy: "Kopioi",
+    copiedButton: "✓ Kopioitu",
     copyAria: "Kopioi arvo {value}",
     doneAria: "Merkitse lisätyksi: {value}",
     copiedRegex: "Regex kopioitu, {n} merkkiä.",
