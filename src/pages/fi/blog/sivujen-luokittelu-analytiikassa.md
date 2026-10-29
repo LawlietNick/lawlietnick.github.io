@@ -2,7 +2,7 @@
 layout: ../../../layouts/Base.astro
 title: "Mitä verkkosivustosi luvut kertovat? Sivujen luokittelu auttaa ymmärtämään kokonaisuutta"
 documentTitle: "Sivujen luokittelu analytiikassa | Niko Karppinen"
-description: "Mitä sivutyyppi ja pääaihe tarkoittavat? Kaupungin verkkosivuston esimerkit näyttävät, miten kaksi valintaa auttaa sisällöntuottajaa ja selkeyttää raportointia."
+description: "Mitä sivutyyppi ja pääaihe tarkoittavat? Kaupungin verkkosivuston esimerkit näyttävät, miten kaksi valintaa selkeyttää raportointia."
 date: 2026-09-24
 updatedDate: 2026-10-10
 category: analytics

@@ -6,9 +6,10 @@ import PaymentReferralTool from "../../components/PaymentReferralTool.astro";
 
 const title = "GA4 Referral exclusions";
 const summary = "A customer pays at a payment provider and returns to the shop, but GA4 credits the sale to the payment provider. Pick the services you use and copy their domains to GA4's list of unwanted referrals.";
+const description = "GA4 credits sales to your payment provider after checkout. Pick the services you use and copy their domains to GA4's list of unwanted referrals.";
 ---
 
-<Base primaryCategory="analytics" title={title} description={summary} alternate={{ lang: "fi", href: "/fi/tyokalut/viittausten-poissulkeminen/" }}>
+<Base primaryCategory="analytics" title={title} description={description} alternate={{ lang: "fi", href: "/fi/tyokalut/viittausten-poissulkeminen/" }}>
   <Breadcrumb
     crumbs={[
       { label: "Home", href: "/", icon: true },

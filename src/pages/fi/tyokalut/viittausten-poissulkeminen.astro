@@ -6,9 +6,10 @@ import PaymentReferralTool from "../../../components/PaymentReferralTool.astro";
 
 const title = "GA4 Viittausten poissulkeminen";
 const summary = "Asiakas maksaa maksupalvelussa ja palaa kauppaan, mutta GA4 kirjaa oston maksupalvelun nimiin. Valitse käyttämäsi palvelut ja kopioi niiden domainit GA4:n ei-toivottujen viittausten listalle.";
+const description = "GA4 kirjaa oston maksupalvelun nimiin, kun asiakas palaa kauppaan. Valitse käyttämäsi palvelut ja kopioi domainit ei-toivottujen viittausten listalle.";
 ---
 
-<Base primaryCategory="analytics" title={title} description={summary} alternate={{ lang: "en", href: "/tools/referral-exclusions/" }}>
+<Base primaryCategory="analytics" title={title} description={description} alternate={{ lang: "en", href: "/tools/referral-exclusions/" }}>
   <Breadcrumb
     fi
     crumbs={[
