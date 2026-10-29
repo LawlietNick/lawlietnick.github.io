@@ -88,6 +88,17 @@ export const allInteractiveTools = [
   },
   {
     category: "tools",
+    slug: "referral-exclusions",
+    icon: "?",
+    order: 9,
+    fi: {
+      slug: "viittausten-poissulkeminen",
+      title: "Viittausten poissulkeminen",
+      summary: "Valitse palvelut ja kopioi niiden domainit GA4:n ei-toivottujen viittausten listalle.",
+    },
+  },
+  {
+    category: "tools",
     slug: "form-name-builder",
     icon: "\u25a4",
     order: 6,

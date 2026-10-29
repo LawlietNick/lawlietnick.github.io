@@ -1,0 +1,30 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ToolHero from "../../../components/ToolHero.astro";
+import PaymentReferralTool from "../../../components/PaymentReferralTool.astro";
+
+const title = "Viittausten poissulkeminen";
+const summary = "Valitse käyttämäsi palvelut ja kopioi niiden domainit GA4:n ei-toivottujen viittausten listalle, jotta maksun jälkeinen paluu ei katkaise istuntoa.";
+---
+
+<Base primaryCategory="analytics" title={title} description={summary} alternate={{ lang: "en", href: "/tools/", translated: false }}>
+  <Breadcrumb
+    fi
+    crumbs={[
+      { label: "Etusivu", href: "/fi/", icon: true },
+      { label: "Työkalut", href: "/fi/tyokalut/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">
+      Kun asiakas maksaa maksupalvelun sivulla ja palaa verkkokauppaan, GA4 voi lukea maksupalvelun uudeksi lähteeksi. Silloin osto kirjautuu viittaukselle (referral) eikä alkuperäiselle kanavalle.
+    </p>
+  </ToolHero>
+
+  <div class="wide-band">
+    <PaymentReferralTool />
+  </div>
+</Base>

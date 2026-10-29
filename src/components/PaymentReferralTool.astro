@@ -1,0 +1,587 @@
+---
+import { groups, matchTypes, rows, services } from "../data/payment-referrals.js";
+---
+
+<div class="pr" data-payment-referrals>
+  <section class="pr__panel" aria-labelledby="pr-own">
+    <h2 id="pr-own">Omat domainisi</h2>
+    <p class="pr__hint">
+      Jos sama GA4-tunnus on käytössä useammalla domainilla, lisää ne kaikki. Muuten GA4 voi laskea siirtymän domainilta toiselle uudeksi viittaukseksi ja katkaista istunnon.
+      Anna pääverkkotunnukset (esimerkiksi <code>yritys.fi</code>), ei alasivuja.
+    </p>
+    <label class="pr__field">
+      <span class="pr__label">Domainit, yksi per rivi tai pilkulla erotettuna</span>
+      <textarea rows="3" data-own-input placeholder={"yritys.fi\nyritys.com"} autocomplete="off" spellcheck="false"></textarea>
+    </label>
+    <label class="pr__use"><input type="checkbox" checked data-own-sub /> <span>Sisällytä alidomainit (<code>www.</code>, <code>kauppa.</code> ja muut)</span></label>
+    <p class="pr__hint">Sama nimi eri päätteillä yhdistetään yhdeksi riviksi, esimerkiksi <code>yritys\.(fi|com)</code>. Rivit tulevat listan alkuun.</p>
+    <p class="pr__status" role="status" data-own-status></p>
+  </section>
+
+  <section class="pr__panel" aria-labelledby="pr-use">
+    <h2 id="pr-use">Mitä käytät?</h2>
+    <p class="pr__hint">Kaikki palvelut ovat valittuina. Poista valinta palveluilta, joita et käytä, niin listalta poistuvat niiden rivit. Rivit ilman palvelua näkyvät aina.</p>
+    <fieldset class="pr__uses">
+      <legend class="pr__sr">Käytössä olevat palvelut</legend>
+      {
+        Object.entries(services).map(([key, label]) => (
+          <label class="pr__use"><input type="checkbox" value={key} data-service checked /> <span>{label}</span></label>
+        ))
+      }
+    </fieldset>
+  </section>
+
+  <section class="pr__panel" aria-labelledby="pr-list">
+    <h2 id="pr-list">Lista</h2>
+    <p class="pr__hint">
+      Valitse GA4:ssä <em>Referral domain</em> ja rivin ehto. Kopioi arvo napilla ja liitä se arvokenttään. GA4 sallii enintään 50 riviä per tietovirta.
+      Osion otsikosta voit yhdistää osion rivit yhdeksi regexiksi.
+      Rivin voi raahata kahvasta (<span aria-hidden="true">⋮⋮</span>) toiseen osioon tai uuteen ryhmään, tai siirtää rivin ryhmä-valikosta. Ryhmäjako muistetaan tässä selaimessa.
+    </p>
+    <div class="pr__bar">
+      <button type="button" class="pr__copy" data-merge-all>Yhdistä kaikki osiot</button>
+      <p class="pr__status" role="status" data-status></p>
+    </div>
+    <p class="pr__warn" role="status" data-limit></p>
+    <div class="pr__tablewrap">
+      <table class="pr__table">
+        <thead>
+          <tr>
+            <th scope="col">Lisätty</th>
+            <th scope="col">Ehto</th>
+            <th scope="col">Arvo</th>
+            <th scope="col"><span class="pr__sr">Kopioi</span></th>
+          </tr>
+        </thead>
+        <tbody data-own-rows></tbody>
+        {
+          Object.entries(groups).map(([key, label]) => (
+            <tbody data-group={key} data-group-label={label}>
+              {rows
+                .filter((r) => r.group === key)
+                .map((r) => (
+                  <tr data-row-service={r.service} data-match={r.match} data-default-group={key}>
+                    <td>
+                      <span class="pr__handle" data-handle draggable="true" title="Raahaa toiseen ryhmään" aria-hidden="true">⋮⋮</span>
+                      <input type="checkbox" data-done value={r.value} aria-label={`Merkitse lisätyksi: ${r.value}`} />
+                    </td>
+                    <td>{matchTypes[r.match].label}</td>
+                    <td>
+                      <code>{r.value}</code>
+                      {r.service && <span class="pr__tag">{services[r.service]}</span>}
+                      <label class="pr__move">
+                        <span>Ryhmä</span>
+                        <select data-move aria-label={`Siirrä ryhmään: ${r.value}`}></select>
+                      </label>
+                    </td>
+                    <td><button type="button" class="pr__copy" data-value={r.value} aria-label={`Kopioi arvo ${r.value}`}>Kopioi</button></td>
+                  </tr>
+                ))}
+            </tbody>
+          ))
+        }
+      </table>
+    </div>
+    <button type="button" class="pr__newgroup" data-new-group>+ Uusi ryhmä <span>(pudota rivi tähän tai paina)</span></button>
+
+    <template data-chrome>
+      <tr class="pr__grouphead">
+        <th scope="colgroup" colspan="4">
+          <div class="pr__headrow">
+            <span class="pr__groupname" data-group-name></span>
+            <input type="text" class="pr__groupinput" data-group-input aria-label="Ryhmän nimi" autocomplete="off" hidden />
+            <span class="pr__groupcount" data-group-count></span>
+            <label class="pr__merge">
+              <input type="checkbox" data-merge />
+              <span>Yhdistä yhdeksi regexiksi</span>
+            </label>
+            <button type="button" class="pr__copy" data-remove-group hidden>Poista ryhmä</button>
+          </div>
+        </th>
+      </tr>
+      <tr class="pr__merged" data-merged hidden>
+        <td><input type="checkbox" data-done value="" aria-label="Merkitse lisätyksi: yhdistetty regex" /></td>
+        <td>{matchTypes.regex.label}</td>
+        <td>
+          <code data-merged-code></code>
+          <span class="pr__tag" data-merged-tag></span>
+        </td>
+        <td><button type="button" class="pr__copy" data-value="" data-merged-copy aria-label="Kopioi yhdistetty regex">Kopioi</button></td>
+      </tr>
+      <tr class="pr__emptyrow" data-empty hidden>
+        <td colspan="4">Ei rivejä. Raahaa rivi tähän tai valitse rivin ryhmä-valikosta tämä ryhmä.</td>
+      </tr>
+    </template>
+  </section>
+
+  <section class="pr__panel" aria-labelledby="pr-big">
+    <h2 id="pr-big">Yksi iso regex</h2>
+    <p class="pr__hint">
+      Vaihtoehto riveille: kaikki listan näkyvät rivit yhtenä regexinä, riippumatta osioiden yhdistämisestä. Omat domainisi pysyvät listassa omilla riveillään, eikä niitä tule tähän.
+      Contains-rivit muutetaan muotoon <code>.*domain.*</code>, joten tulos toimii samoin riippumatta siitä, vertaako GA4 koko domainia vai osaa siitä.
+    </p>
+    <label class="pr__field">
+      <span class="pr__label">Enimmäispituus merkkeinä (valinnainen)</span>
+      <input type="number" min="100" step="100" inputmode="numeric" data-big-max placeholder="Ei rajaa" />
+    </label>
+    <p class="pr__hint">GA4 sallii enintään 50 riviä per tietovirta, ja yksi iso regex mahtuu siihen yhtenä rivinä. Jos asetat pituusrajan, regex jaetaan useampaan osaan rivirajoilla ja jokainen osa on oma GA4-rivinsä. GA4:n regexin pituusrajaa en ole varmistanut, joten kokeile sitä GA4:ssä.</p>
+    <p class="pr__status" role="status" data-big-status></p>
+    <ol class="pr__bigs" data-big></ol>
+  </section>
+
+  <section class="pr__panel" aria-labelledby="pr-steps">
+    <h2 id="pr-steps">Näin lisäät ne GA4:ään</h2>
+    <ol class="pr__steps">
+      <li>Avaa ylläpito (Admin) → tietovirrat (Data streams) → verkkovirta → <em>Configure tag settings</em> → <em>Show all</em> → <em>Luettele ei-toivotut viittaukset</em> (<em>List unwanted referrals</em>, eli viittausten poissulkeminen).</li>
+      <li>Valitse <em>Referral domain</em> ja ehto taulukosta. Kopioi arvo rivin napilla ja liitä se arvokenttään.</li>
+      <li>Lisää seuraava rivi napilla <em>Add condition</em> ja toista.</li>
+      <li>Tallenna ja tee testiosto. Tarkista DebugView'sta, ettei maksupalvelu näy uutena lähteenä.</li>
+    </ol>
+    <p class="pr__hint">Säännöllinen lauseke täsmää koko domainiin, eikä sen alku- tai loppuosaa tarvitse merkitä erikseen. GA4 lukee lausekkeet RE2-syntaksilla.</p>
+  </section>
+</div>
+
+<script>
+  import { bigRegexes, ga4RowLimit, ownDomainRows } from "../utils/referral-exclusions.js";
+
+  const init = () => {
+    document.querySelectorAll("[data-payment-referrals]").forEach((root) => {
+      if (root.dataset.ready) return;
+      root.dataset.ready = "true";
+
+      const status = root.querySelector("[data-status]");
+      const ownStatus = root.querySelector("[data-own-status]");
+      const ownBody = root.querySelector("[data-own-rows]");
+      const table = root.querySelector(".pr__table");
+      const chrome = root.querySelector("[data-chrome]");
+
+      // Both the done marks and the group layout are remembered in this browser only
+      const read = (key, fallback) => {
+        try {
+          return JSON.parse(localStorage.getItem(key) ?? "") ?? fallback;
+        } catch {
+          return fallback;
+        }
+      };
+      const write = (key, value) => {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch {}
+      };
+      const doneKey = "referral-exclusions-done";
+      const groupsKey = "referral-exclusions-groups";
+      const done = new Set(read(doneKey, []));
+      const mark = (tr) => {
+        const box = tr.querySelector("[data-done]");
+        box.checked = done.has(box.value);
+        tr.classList.toggle("pr__done", box.checked);
+      };
+
+      const bodies = () => [...root.querySelectorAll("tbody[data-group]")];
+      const bodyOf = (id) => bodies().find((body) => body.dataset.group === id);
+      const items = () => [...root.querySelectorAll("tr[data-match]")];
+      const itemRows = (body) => [...body.querySelectorAll("tr[data-match]")];
+      const shownRows = (body) => itemRows(body).filter((tr) => !tr.hidden);
+      const valueOf = (tr) => tr.querySelector("[data-value]").dataset.value;
+      const rowOf = (tr) => ({ match: tr.dataset.match, value: valueOf(tr) });
+      const isCustom = (body) => "custom" in body.dataset;
+
+      // Every group, ready-made or the user's own, gets the same header, merged row and empty row
+      const setupChrome = (body) => {
+        body.prepend(chrome.content.cloneNode(true));
+        const name = body.querySelector("[data-group-name]");
+        name.textContent = body.dataset.groupLabel;
+        if (isCustom(body)) {
+          const input = body.querySelector("[data-group-input]");
+          input.value = body.dataset.groupLabel;
+          input.hidden = false;
+          name.hidden = true;
+          body.querySelector("[data-remove-group]").hidden = false;
+        }
+      };
+      const makeBody = (id, label) => {
+        const body = document.createElement("tbody");
+        body.dataset.group = id;
+        body.dataset.groupLabel = label;
+        body.dataset.custom = "";
+        setupChrome(body);
+        table.append(body);
+        return body;
+      };
+      const addGroup = () => {
+        const used = bodies().filter(isCustom).map((body) => Number(body.dataset.group.split("-")[1]));
+        const n = Math.max(0, ...used) + 1;
+        return makeBody(`custom-${n}`, `Oma ryhmä ${n}`);
+      };
+
+      const saveGroups = () => {
+        write(groupsKey, {
+          custom: bodies().filter(isCustom).map((body) => ({ id: body.dataset.group, name: body.dataset.groupLabel })),
+          assign: Object.fromEntries(
+            items()
+              .filter((tr) => tr.closest("tbody").dataset.group !== tr.dataset.defaultGroup)
+              .map((tr) => [valueOf(tr), tr.closest("tbody").dataset.group])
+          ),
+        });
+      };
+
+      const syncSelects = () => {
+        const list = bodies();
+        items().forEach((tr) => {
+          const current = tr.closest("tbody").dataset.group;
+          const select = tr.querySelector("[data-move]");
+          select.replaceChildren(
+            ...list.map((body) => {
+              const option = document.createElement("option");
+              option.value = body.dataset.group;
+              option.textContent = body.dataset.groupLabel;
+              return option;
+            })
+          );
+          select.value = current;
+        });
+      };
+
+      // A merged section hides its rows and shows one regex row in their place
+      const refreshGroups = () => {
+        bodies().forEach((body) => {
+          const merge = body.querySelector("[data-merge]").checked;
+          const visible = shownRows(body);
+          const merged = body.querySelector("[data-merged]");
+          itemRows(body).forEach((tr) => tr.classList.toggle("pr__collapsed", merge));
+          body.querySelector("[data-group-count]").textContent = `${visible.length} riviä`;
+          body.querySelector("[data-empty]").hidden = itemRows(body).length > 0;
+          merged.hidden = !(merge && visible.length);
+          if (merged.hidden) return;
+          const value = bigRegexes(visible.map(rowOf))[0];
+          merged.querySelector("[data-merged-code]").textContent = value;
+          merged.querySelector("[data-merged-tag]").textContent = `Osio ${body.dataset.groupLabel}: ${visible.length} riviä yhdessä, ${value.length} merkkiä`;
+          merged.querySelector("[data-merged-copy]").dataset.value = value;
+          merged.querySelector("[data-done]").value = value;
+          mark(merged);
+        });
+        const all = bodies().every((body) => body.querySelector("[data-merge]").checked);
+        root.querySelector("[data-merge-all]").textContent = all ? "Pura kaikki osiot" : "Yhdistä kaikki osiot";
+      };
+
+      const count = () => {
+        const own = ownBody.children.length;
+        let list = 0;
+        let before = 0;
+        bodies().forEach((body) => {
+          const visible = shownRows(body).length;
+          before += visible;
+          list += body.querySelector("[data-merge]").checked ? Math.min(visible, 1) : visible;
+        });
+        const gaRows = own + list;
+        const added = root.querySelectorAll("tbody tr:not([hidden]):not(.pr__collapsed) [data-done]:checked").length;
+        status.textContent = `${gaRows} GA4-riviä (${own} omaa, ${list} listasta, ${before} listan riviä ennen yhdistämistä), ${added} merkitty lisätyksi`;
+        root.querySelector("[data-limit]").textContent =
+          gaRows > ga4RowLimit
+            ? `Huomio: GA4-rivejä tulisi ${gaRows}, ja GA4 sallii enintään ${ga4RowLimit} per tietovirta. Yhdistä osioita yhdeksi regexiksi (osion otsikossa) tai käytä yhtä isoa regexiä alempana.`
+            : "";
+      };
+
+      // One big regex from the visible list rows; own domains stay rows of their own
+      const bigList = root.querySelector("[data-big]");
+      const bigStatus = root.querySelector("[data-big-status]");
+      const renderBig = () => {
+        const max = Number(root.querySelector("[data-big-max]").value) || Infinity;
+        const listRows = bodies().flatMap((body) => shownRows(body).map(rowOf));
+        const chunks = bigRegexes(listRows, { maxLength: max });
+        const gaRows = ownBody.children.length + chunks.length;
+        bigStatus.textContent = chunks.length
+          ? `${listRows.length} riviä yhdistetty ${chunks.length} regexiksi, yhteensä ${chunks.reduce((sum, c) => sum + c.length, 0)} merkkiä. GA4-rivejä omat domainit mukaan lukien ${gaRows} / ${ga4RowLimit}${gaRows > ga4RowLimit ? ". Huomio: yli rajan, kasvata pituusrajaa" : ""}.`
+          : "Ei rivejä. Valitse ainakin yksi palvelu.";
+        bigList.replaceChildren(
+          ...chunks.map((chunk) => {
+            const li = document.createElement("li");
+            li.className = "pr__big";
+            const code = document.createElement("code");
+            code.className = "pr__bigcode";
+            code.textContent = chunk;
+            const meta = document.createElement("div");
+            meta.className = "pr__bigmeta";
+            const length = document.createElement("span");
+            length.textContent = `${chunk.length} merkkiä${chunk.length > max ? ", ylittää rajan (yksi rivi ei jakaudu)" : ""}`;
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "pr__copy";
+            button.dataset.value = chunk;
+            button.setAttribute("aria-label", `Kopioi regex, ${chunk.length} merkkiä`);
+            button.textContent = "Kopioi";
+            meta.append(length, button);
+            li.append(code, meta);
+            return li;
+          })
+        );
+      };
+
+      const update = () => {
+        refreshGroups();
+        count();
+        renderBig();
+      };
+      const filter = () => {
+        const on = new Set([...root.querySelectorAll("[data-service]:checked")].map((i) => i.value));
+        root.querySelectorAll("[data-row-service]").forEach((tr) => {
+          tr.hidden = !on.has(tr.dataset.rowService);
+        });
+        update();
+      };
+      // Any change of the group layout: selects, saved layout and counts follow
+      const layoutChanged = () => {
+        syncSelects();
+        saveGroups();
+        update();
+      };
+      const moveRow = (tr, body) => {
+        if (!body || tr.closest("tbody") === body) return;
+        body.append(tr);
+        layoutChanged();
+      };
+      const removeGroup = (body) => {
+        itemRows(body).forEach((tr) => (bodyOf(tr.dataset.defaultGroup) ?? bodies()[0]).append(tr));
+        body.remove();
+        layoutChanged();
+      };
+
+      // Own domains: the label cell copies the wording of the merged rows
+      const matchLabel = chrome.content.querySelector("[data-merged] td:nth-child(2)")?.textContent ?? "";
+      const renderOwn = () => {
+        const { rows: own, skipped } = ownDomainRows(root.querySelector("[data-own-input]").value, {
+          subdomains: root.querySelector("[data-own-sub]").checked,
+        });
+        ownBody.replaceChildren(
+          ...own.map((value) => {
+            const tr = document.createElement("tr");
+            const doneCell = document.createElement("td");
+            const box = document.createElement("input");
+            box.type = "checkbox";
+            box.value = value;
+            box.dataset.done = "";
+            box.setAttribute("aria-label", `Merkitse lisätyksi: ${value}`);
+            doneCell.append(box);
+            const label = document.createElement("td");
+            label.textContent = matchLabel;
+            const cell = document.createElement("td");
+            const code = document.createElement("code");
+            code.textContent = value;
+            const tag = document.createElement("span");
+            tag.className = "pr__tag";
+            tag.textContent = "Oma sivusto";
+            cell.append(code, tag);
+            const action = document.createElement("td");
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "pr__copy";
+            button.dataset.value = value;
+            button.setAttribute("aria-label", `Kopioi arvo ${value}`);
+            button.textContent = "Kopioi";
+            action.append(button);
+            tr.append(doneCell, label, cell, action);
+            mark(tr);
+            return tr;
+          })
+        );
+        ownStatus.textContent = skipped.length ? `Ei tunnistettu domainiksi: ${skipped.join(", ")}` : "";
+        count();
+        renderBig();
+      };
+
+      root.addEventListener("input", (event) => {
+        const target = event.target;
+        if (target.matches("[data-service]")) filter();
+        if (target.matches("[data-merge]")) update();
+        if (target.matches("[data-big-max]")) renderBig();
+        if (target.matches("[data-own-input], [data-own-sub]")) renderOwn();
+        if (target.matches("[data-move]")) moveRow(target.closest("tr"), bodyOf(target.value));
+        if (target.matches("[data-group-input]")) {
+          target.closest("tbody").dataset.groupLabel = target.value.trim() || "Ryhmä";
+          layoutChanged();
+        }
+        if (target.matches("[data-done]")) {
+          done[target.checked ? "add" : "delete"](target.value);
+          write(doneKey, [...done]);
+          mark(target.closest("tr"));
+          count();
+        }
+      });
+
+      root.addEventListener("click", async (event) => {
+        const target = event.target;
+        if (target.closest("[data-merge-all]")) {
+          const boxes = bodies().map((body) => body.querySelector("[data-merge]"));
+          const next = !boxes.every((box) => box.checked);
+          boxes.forEach((box) => (box.checked = next));
+          update();
+          return;
+        }
+        if (target.closest("[data-new-group]")) {
+          const body = addGroup();
+          layoutChanged();
+          body.querySelector("[data-group-input]").focus();
+          return;
+        }
+        const remove = target.closest("[data-remove-group]");
+        if (remove) {
+          removeGroup(remove.closest("tbody"));
+          return;
+        }
+        const button = target.closest("[data-value]");
+        if (!button) return;
+        const value = button.dataset.value;
+        const isBig = Boolean(button.closest("[data-big]"));
+        const message = isBig ? bigStatus : status;
+        try {
+          await navigator.clipboard.writeText(value);
+          message.textContent = isBig || value.length > 120 ? `Regex kopioitu, ${value.length} merkkiä.` : `Kopioitu: ${value}`;
+        } catch {
+          message.textContent = "Kopiointi ei onnistunut. Valitse teksti ja kopioi käsin.";
+        }
+      });
+
+      // Drag and drop (mouse): the handle drags its row onto a group or onto "new group".
+      // Keyboard and touch use the group select in every row.
+      let dragged = null;
+      const dropTarget = (event) => {
+        const el = event.target instanceof Element ? event.target : event.target.parentElement;
+        return el?.closest("tbody[data-group], [data-new-group]") ?? null;
+      };
+      const clearDrop = () => root.querySelectorAll(".pr__dropping").forEach((el) => el.classList.remove("pr__dropping"));
+      root.addEventListener("dragstart", (event) => {
+        const handle = event.target instanceof Element ? event.target.closest("[data-handle]") : null;
+        if (!handle) return;
+        dragged = handle.closest("tr");
+        event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("text/plain", valueOf(dragged));
+        event.dataTransfer.setDragImage(dragged, 16, 16);
+        dragged.classList.add("pr__dragging");
+      });
+      root.addEventListener("dragover", (event) => {
+        const target = dropTarget(event);
+        if (!dragged || !target) return;
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+        clearDrop();
+        target.classList.add("pr__dropping");
+      });
+      root.addEventListener("dragleave", (event) => {
+        if (!root.contains(event.relatedTarget)) clearDrop();
+      });
+      root.addEventListener("drop", (event) => {
+        const target = dropTarget(event);
+        if (!dragged || !target) return;
+        event.preventDefault();
+        const row = dragged;
+        clearDrop();
+        moveRow(row, target.matches("[data-new-group]") ? addGroup() : target);
+      });
+      root.addEventListener("dragend", () => {
+        dragged?.classList.remove("pr__dragging");
+        dragged = null;
+        clearDrop();
+      });
+
+      // Start-up: ready-made groups get their chrome, the saved layout is applied, then everything is drawn
+      bodies().forEach(setupChrome);
+      const saved = read(groupsKey, { custom: [], assign: {} });
+      (saved.custom ?? []).forEach(({ id, name }) => {
+        if (/^custom-\d+$/.test(id) && !bodyOf(id)) makeBody(id, String(name || "Ryhmä"));
+      });
+      items().forEach((tr) => {
+        const body = bodyOf(saved.assign?.[valueOf(tr)]);
+        if (body) body.append(tr);
+      });
+      items().forEach(mark);
+      syncSelects();
+      filter();
+    });
+  };
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>
+
+<style is:global>
+  .pr { margin-block: 1.5rem var(--section-y-large); display: grid; gap: 1.5rem; font-size: var(--font-size-ui); line-height: var(--line-height-ui); }
+  .pr :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .pr__panel { min-width: 0; padding: clamp(1rem, 2.5vw, 1.75rem); border-radius: var(--radius-lg); background: var(--color-accent-panel); }
+  .pr__panel h2 { margin-top: 0; }
+  .pr__hint { max-width: 62ch; margin: 0.25rem 0 1rem; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .pr code { font-family: var(--font-mono); overflow-wrap: anywhere; }
+  .pr [hidden], .pr .pr__collapsed { display: none !important; }
+  .pr input[type="checkbox"] { accent-color: var(--accent); margin: 0; }
+  .pr__uses { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+  .pr__field { display: grid; gap: 0.35rem; max-width: 36rem; margin-bottom: 0.5rem; }
+  .pr__label { font-weight: var(--font-weight-strong); }
+  .pr textarea { width: 100%; padding: 0.55rem 0.8rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); resize: vertical; }
+  .pr__use input { width: 1.15rem; height: 1.15rem; flex: none; cursor: pointer; }
+  .pr__use { display: flex; gap: 0.5rem; align-items: center; padding: 0.4rem 0; cursor: pointer; }
+  .pr__tag { display: block; margin-top: 0.2rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .pr__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .pr__status { margin: 0 0 0.5rem; min-height: 1.5em; color: var(--muted); font-size: var(--font-size-ui-sm); overflow-wrap: anywhere; }
+  .pr__bar { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; align-items: center; margin-bottom: 0.5rem; }
+  .pr__bar .pr__status { margin: 0; }
+  .pr__warn { margin: 0 0 0.5rem; max-width: 62ch; color: var(--color-danger); font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-strong); }
+  .pr__warn:empty { display: none; }
+  .pr__tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  .pr__table { width: 100%; border-collapse: collapse; font-size: var(--font-size-ui-sm); }
+  .pr__table th { padding: 0.5rem 0.75rem; background: var(--bg); border-bottom: 1px solid var(--line); color: var(--muted); font-weight: var(--font-weight-medium); text-align: left; }
+  .pr__table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+  .pr__table td:first-child, .pr__table th:first-child { width: 1%; white-space: nowrap; }
+  .pr__table .pr__grouphead th { width: auto; white-space: normal; padding: 0.75rem; background: var(--color-accent-soft); color: var(--ink); border-top: 1px solid var(--line); }
+  .pr__headrow { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; align-items: center; }
+  .pr__groupname { font-weight: var(--font-weight-strong); }
+  .pr__groupcount { color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .pr__merge { display: inline-flex; gap: 0.5rem; align-items: center; margin-left: auto; cursor: pointer; font-weight: var(--font-weight-medium); }
+  .pr__merge input { width: 1.15rem; height: 1.15rem; flex: none; cursor: pointer; }
+  .pr__merged td { background: var(--color-accent-soft); }
+  .pr__emptyrow td { padding: 1rem 0.75rem; color: var(--muted); text-align: center; }
+  .pr__done td:not(:first-child), .pr__done code { color: var(--muted); }
+  .pr__table input[type="checkbox"] { width: 1.15rem; height: 1.15rem; cursor: pointer; }
+  .pr__table td:last-child { width: 1%; white-space: nowrap; }
+  .pr__handle { display: inline-block; margin-right: 0.35rem; padding: 0.15rem 0.1rem; color: var(--muted); letter-spacing: -0.25em; cursor: grab; user-select: none; vertical-align: middle; }
+  .pr__dragging { opacity: 0.45; }
+  .pr__table tbody.pr__dropping td, .pr__table tbody.pr__dropping th { background: var(--color-accent-soft); }
+  .pr__table tbody.pr__dropping .pr__grouphead th { box-shadow: inset 0 0 0 2px var(--accent); }
+  .pr__move { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.4rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .pr__move select { max-width: 16rem; padding: 0.2rem 0.5rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); }
+  .pr__newgroup { display: block; width: 100%; margin-top: 0.75rem; padding: 0.75rem 1rem; border: 2px dashed color-mix(in srgb, var(--ink) 35%, var(--bg)); border-radius: var(--radius-md); background: transparent; color: var(--ink); font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; }
+  .pr__newgroup span { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-sm); }
+  .pr__newgroup.pr__dropping { border-color: var(--accent); background: var(--color-accent-soft); }
+  .pr__copy { padding: 0.35rem 0.9rem; border: 1px solid var(--line); border-radius: var(--radius-pill); background: transparent; color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); white-space: nowrap; cursor: pointer; }
+  .pr__steps { max-width: 62ch; padding-left: 1.25rem; }
+  .pr input[type="number"], .pr input[type="text"] { width: 100%; padding: 0.55rem 0.8rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); }
+  .pr .pr__groupinput { width: min(100%, 16rem); padding: 0.3rem 0.6rem; font-weight: var(--font-weight-strong); }
+  .pr__bigs { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.75rem; }
+  .pr__big { padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  .pr__bigcode { display: block; font-size: var(--font-size-ui-sm); line-height: 1.65; overflow-wrap: anywhere; }
+  .pr__bigmeta { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; justify-content: space-between; color: var(--muted); font-size: var(--font-size-ui-xs); }
+
+  /* Touch screens cannot drag a handle reliably: the group select does the same job */
+  @media (hover: none) {
+    .pr__handle { display: none; }
+  }
+
+  /* Narrow screens: each row becomes a small card, checkbox and copy button on the first line,
+     condition and value stacked below. The table keeps its semantics for assistive technology. */
+  @media (max-width: 47.99rem) {
+    .pr__table, .pr__table tbody { display: block; }
+    .pr__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .pr__table tr { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 0.75rem; align-items: center; padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--line); }
+    .pr__table .pr__grouphead, .pr__table .pr__emptyrow { padding: 0; }
+    .pr__table .pr__grouphead th, .pr__table .pr__emptyrow td { grid-column: 1 / -1; border-bottom: 0; }
+    .pr__merge { margin-left: 0; }
+    .pr__table td { display: block; width: auto; padding: 0; border: 0; }
+    .pr__table td:first-child { grid-column: 1; grid-row: 1; display: flex; gap: 0.5rem; align-items: center; width: auto; }
+    .pr__table td:first-child::after { content: "Lisätty"; color: var(--muted); font-size: var(--font-size-ui-xs); }
+    .pr__table td:last-child { grid-column: 2; grid-row: 1; width: auto; }
+    .pr__table td:nth-child(2) { grid-column: 1 / -1; grid-row: 2; color: var(--muted); font-size: var(--font-size-ui-xs); }
+    .pr__table td:nth-child(3) { grid-column: 1 / -1; grid-row: 3; }
+    .pr__table .pr__emptyrow td:first-child::after { content: none; }
+    .pr__merged { background: var(--color-accent-soft); }
+    .pr__merged td { background: transparent; }
+    .pr__copy { padding: 0.5rem 1rem; }
+  }
+</style>
