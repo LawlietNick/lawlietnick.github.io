@@ -131,7 +131,7 @@ test("the copy button highlights on hover but the disabled example does not", as
 
 test("the English page has English texts and the same behaviour", async ({ page }) => {
   await page.goto("/tools/referral-exclusions/");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Referral exclusions");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Google Analytics Referral Exclusions");
   await expect(page.locator("[data-limit]")).toContainText("GA4 allows at most 50");
   await expect(page.locator("[data-own-example] code")).toHaveText("(?:(www|blog)\\.)?company\\.com");
   await expect(page.locator("tbody[data-group]").first().locator("[data-group-name]")).toHaveText("Banks and identification");

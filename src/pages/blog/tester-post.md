@@ -638,16 +638,4 @@ Example code block
 
 <button type="button">This is an intentionally long button label for testing wrapping and spacing</button>
 
-### Broken image
-
-<figure>
-  <img
-    src="/images/this-file-does-not-exist.webp"
-  alt="Example of a broken image with useful alternative text"
-  width="800"
-  height="600"
-  >
-  <figcaption>Broken image</figcaption>
-</figure>
-
 [Back to top](#top)

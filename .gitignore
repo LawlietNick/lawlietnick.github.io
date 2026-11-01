@@ -33,3 +33,5 @@ playwright-report/
 
 # raw audit dumps stay local; summaries (.md) and screenshots are tracked
 docs/reports/*.json
+
+.hallmark/

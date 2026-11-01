@@ -46,7 +46,7 @@ export const en = {
     copy: "Copy",
     copyAria: "Copy value {value}",
     newGroup: "+ New group",
-    newGroupHint: "(drop a row here or click)",
+    newGroupHint: "(drop a row here)",
     groupNameAria: "Group name",
     merge: "Merge into one regex",
     removeGroup: "Remove group",

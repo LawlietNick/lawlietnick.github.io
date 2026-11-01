@@ -72,7 +72,7 @@
   min-height: 2.75rem;
   width: 100%;
   padding: 0.6rem 0.7rem;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
   border-radius: var(--radius-sm);
   background: var(--bg);
   color: var(--ink);

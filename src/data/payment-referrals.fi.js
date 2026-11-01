@@ -47,7 +47,7 @@ export const fi = {
     copy: "Kopioi",
     copyAria: "Kopioi arvo {value}",
     newGroup: "+ Uusi ryhmä",
-    newGroupHint: "(pudota rivi tähän tai paina)",
+    newGroupHint: "(pudota rivi tähän)",
     groupNameAria: "Ryhmän nimi",
     merge: "Yhdistä yhdeksi regexiksi",
     removeGroup: "Poista ryhmä",

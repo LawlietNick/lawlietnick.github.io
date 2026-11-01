@@ -989,6 +989,11 @@ a:is(:hover, :focus-visible) > .content-link {
   vertical-align: top;
 }
 
+@media (max-width: 420px) {
+  .prose :is(th, td) { padding-inline: 0.6rem; }
+  .prose th { font-size: 0.7rem; }
+}
+
 .prose td,
 .prose tbody th {
   border-bottom: 1px solid var(--line);

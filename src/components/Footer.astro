@@ -250,7 +250,8 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-standard);
   }
-  .site-footer__link:hover { color: var(--ink); }
+  .site-footer__link:hover,
+  .site-footer__link:focus-visible { color: var(--ink); text-decoration: underline; }
   .site-footer__contact-text {
     font-size: 0.875rem;
     line-height: 1.6;
@@ -283,8 +284,9 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
     color: var(--muted);
     text-decoration: none;
   }
-  .site-footer__legal-link:hover { color: var(--ink); }
+  .site-footer__legal-link:hover { color: var(--ink); text-decoration: underline; }
   .site-footer__legal-link:focus-visible {
+    text-decoration: underline;
     outline: 2px solid currentColor;
     outline-offset: 3px;
     border-radius: var(--radius-xs);

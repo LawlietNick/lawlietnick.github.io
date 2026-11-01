@@ -593,7 +593,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
   .pr__table tbody.pr__dropping td, .pr__table tbody.pr__dropping th { background: var(--color-accent-soft); }
   .pr__table tbody.pr__dropping .pr__grouphead th { box-shadow: inset 0 0 0 2px var(--accent); }
   .pr__move { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.4rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
-  .pr__move select { max-width: 16rem; padding: 0.2rem 0.5rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); }
+  .pr__move select { max-width: 16rem; padding: 0.2rem 0.5rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); }
   .pr__newgroup { display: block; width: 100%; margin-top: 0.75rem; padding: 0.75rem 1rem; border: 2px dashed color-mix(in srgb, var(--ink) 35%, var(--bg)); border-radius: var(--radius-md); background: transparent; color: var(--ink); font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; }
   .pr__newgroup span { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-sm); }
   .pr__newgroup.pr__dropping { border-color: var(--accent); background: var(--color-accent-soft); }
