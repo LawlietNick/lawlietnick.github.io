@@ -38,7 +38,7 @@ Lyhenteen kirjoittaminen auki ei auta. Largest Contentful Paint on sekin vain ko
 
 Tähän auttaa McKinsey-tyylisen esityksen väiteotsikko. Otsikko kertoo tärkeimmän havainnon heti, ja dian sisältö näyttää, mihin se perustuu. Kun luet pelkät otsikot peräkkäin, saat koko perustelun. Yksityiskohtiin voi syventyä, jos haluaa.
 
-ChatGPT, Gemini tai Claude osaa rakentaa tällaisen esityksen, kunhan se tietää muutakin kuin luvut: kenelle puhut, miksi ja mitä haluat yleisön ymmärtävän. Oppaan prompti kysyy nämä, ennen kuin yksikään dia syntyy. Luonnoksen arviointi jää sinulle. Tekoäly on hyvä renki mutta huono isäntä.
+ChatGPT, Gemini tai Claude osaa rakentaa tällaisen esityksen, kunhan se tietää muutakin kuin luvut: kenelle puhut, miksi ja mitä haluat yleisön ymmärtävän. Oppaan prompti kysyy nämä, ennen kuin yksikään dia syntyy. Tekoäly on hyvä renki mutta huono isäntä.
 
 ## Miksi McKinsey-tyylinen esitys toimii?
 
@@ -54,7 +54,7 @@ Katsotaan kahta diaa, jotka on tehty samoista kuvitteellisista luvuista. Luvut k
 
 ![Raportoiva dia, jonka otsikko on ”LCP-tulokset”. Harmaat palkit esittävät sivuryhmät järjestämättöminä. Tuotesivujen palkki on pisin, mutta kaaviossa ei ole arviointirajaa eikä tarkkoja arvoja palkkien vieressä.](@assets/blog/mckinsey-raportoiva-dia-fi.jpeg)
 
-<figcaption>Raportoiva dia jättää tulkinnan yleisölle. Kuvitteellinen esimerkkiaineisto, dia tehty tekoälyn avulla. <a href="/images/blog/mckinsey-raportoiva-dia-fi.jpeg">Suurenna raportoiva dia</a>.</figcaption>
+<figcaption>Raportoiva dia jättää tulkinnan yleisölle. Kuvitteellinen esimerkkiaineisto. <a href="/images/blog/mckinsey-raportoiva-dia-fi.jpeg">Suurenna raportoiva dia</a>.</figcaption>
 </figure>
 
 Kaaviosta näkee, että tuotesivujen palkki on pisin. Mittarin tuntevalle asiantuntijalle dia riittää säännölliseen seurantaan. Muut jäävät miettimään: mitä LCP tarkoittaa, onko iso luku hyvä vai huono ja mihin tulosta pitäisi verrata? Vähän kuin kauppakeskuksen kartta ilman ”Olet tässä” -merkkiä.
@@ -65,12 +65,12 @@ Lopun ehdotus seurata sivuston nopeutta jää sekin yleiseksi. Se ei kerro, mist
 
 <figure data-image-modal="/images/blog/mckinsey-analysoiva-dia-fi.jpeg" data-image-caption="Analysoiva dia">
 
-![Analysoiva dia kertoo tuotesivujen suurimman sisältöelementin näkyvän 3,7 sekuntia hyvän tuloksen rajaa myöhemmin. Tuotesivujen 6,2 sekunnin palkki on violetti. Katkoviiva näyttää 2,5 sekunnin arviointirajan. Suositus on selvittää hitauden syyt ennen korjausten valintaa.](@assets/blog/mckinsey-analysoiva-dia-fi.jpeg)
+![Analysoiva dia, jonka otsikko on ”Tuotesivut ovat 3,7 sekuntia liian hitaita: selvitetään syy ennen korjauksia”. Kaaviossa tuotesivujen 6,2 sekunnin palkki on violetti, ja merkintä +3,7 s näyttää eron 2,5 sekunnin arviointirajaan. Suositus on dian alareunassa.](@assets/blog/mckinsey-analysoiva-dia-fi.jpeg)
 
-<figcaption>Samat luvut, mutta otsikko kertoo havainnon, kaavio näyttää vertailukohdan ja suositus seuraavan tutkimusvaiheen. Kuvitteellinen esimerkkiaineisto, dia tehty tekoälyn avulla. <a href="/images/blog/mckinsey-analysoiva-dia-fi.jpeg">Suurenna analysoiva dia</a>.</figcaption>
+<figcaption>Samat luvut, mutta otsikko kertoo havainnon ja suosituksen. Kaavio näyttää vertailukohdan ja eron siihen. Kuvitteellinen esimerkkiaineisto. <a href="/images/blog/mckinsey-analysoiva-dia-fi.jpeg">Suurenna analysoiva dia</a>.</figcaption>
 </figure>
 
-Otsikon ymmärtää, vaikkei tuntisi LCP-lyhennettä. Kaavion 2,5 sekunnin arviointiraja antaa luvuille vertailukohdan. Palkkien järjestys helpottaa vertailua, ja violetti korostus ohjaa huomion tuotesivuihin.
+Otsikon ymmärtää, vaikkei tuntisi LCP-lyhennettä, ja suosituksen näkee jo otsikosta. Kaavio tulee perusteluksi, mikä on McKinsey-tyylin ydin: ensin vastaus, sitten näyttö. Kaavion 2,5 sekunnin arviointiraja antaa luvuille vertailukohdan. Palkkien järjestys helpottaa vertailua, ja violetti korostus ohjaa huomion tuotesivuihin. Merkintä +3,7 s näyttää eron rajaan, joten lukijan ei tarvitse laskea sitä itse.
 
 Molempien diojen esimerkkiluvut ovat samat:
 
@@ -89,11 +89,27 @@ Raportoiva dia sopii seurantaan. Analysoiva dia sopii silloin, kun luvuista pit�
 
 ”LCP-tulokset” nimeää aiheen. Se ei vielä kerro, mitä tuloksissa kannattaa huomata.
 
-Väiteotsikko kertoo havainnon, ja dian sisällöstä näkee, pitääkö se paikkansa. Siksi otsikko ja kaavio suunnitellaan yhdessä.
-
 Jos otsikko väittäisi tuotekuvien aiheuttavan hitauden, tämän esimerkin aineisto ei todistaisi sitä. Kaavio näyttää sivuryhmien välisen eron, mutta ei selitä sen syytä. Siksi suosituksena on selvittää syyt ennen korjausten valintaa.
 
 Kaikki diat eivät tarvitse omaa suositusta. Yksi dia voi tunnistaa ongelman, seuraava selvittää sen syitä ja kolmas vertailla ratkaisuja. Esityksen otsikoista pitäisi pystyä seuraamaan, miten perustelu etenee.
+
+## Kaaviotyyppi ratkaisee, mitä lukija näkee
+
+Sama aineisto kertoo eri tarinan eri kaaviolla, koska kaaviotyyppi ohjaa katsetta. Valitse tyyppi sen mukaan, mitä otsikko väittää:
+
+| Otsikon viesti | Sopiva kaavio | Miksi |
+|---|---|---|
+| Osuudet ryhmien välillä | 100 % pinottu pylväs | Pylväät ovat yhtä korkeita, joten osuuksia voi verrata suoraan. |
+| Ryhmien järjestys | Vaakapylväs, lajiteltu | Katse seuraa järjestystä. Pitkät nimet mahtuvat. |
+| Kehitys ajan yli | Viiva | Katse seuraa koko kehitystä. |
+| Yksittäinen jakso erottuu | Pylväs | Katse pysähtyy yksittäisiin jaksoihin. |
+| Kokonaismäärä ja sen osat | Pinottu pylväs | Pylvään korkeus korostuu, ei osien keskinäinen vertailu. |
+
+Analyst Academyn videossa [Stop Sharing Data – Start Telling Stories](https://www.youtube.com/watch?v=okziFtWFoJM) näytetään tästä McKinseyn oikea dia. Sen pinottu pylväskaavio korosti pylväiden korkeutta eli kokonaismääriä, vaikka dian viesti koski osuuksia. Kun kaavio vaihdettiin 100 % pinotuksi pylväskaavioksi, viesti tuli esiin suoraan.
+
+Tämän artikkelin analysoivassa diassa sama periaate on jo käytössä: lajiteltu vaakapylväskaavio vastaa kysymykseen, mikä sivuryhmä on hitain. Jos viesti olisi ”nopeus on huonontunut kuukausi kuukaudelta”, oikea valinta olisi viiva.
+
+Jos yhdessä diassa on kaksi viestiä, tee kaksi diaa. Yksi dia, yksi viesti ja yksi suuri kaavio on luettavampi kuin kaksi pientä rinnakkain.
 
 ## Mitä yleisö jo tietää?
 
@@ -126,7 +142,9 @@ Pyramidiperiaatteessa pääviesti tulee ensin. Sen alle ryhmitellään sitä tuk
 
 Esimerkin pääviesti voisi olla: ”Kohdistetaan ensimmäinen suorituskykyselvitys tuotesivuihin.” Sitä tukee kaksi perustelua: tuotesivujen tulos on vertailun heikoin ja ylittää hyvän tuloksen rajan 3,7 sekunnilla. Näyttönä ovat sivuryhmien mittaustulokset ja arviointirajan määritelmä.
 
-SCQR muotoilee kysymyksen ja vastauksen. Pyramidiperiaate järjestää perustelut.
+Perustelut kannattaa ryhmitellä MECE-periaatteella (mutually exclusive, collectively exhaustive). Ryhmät eivät silloin mene päällekkäin, eikä mikään olennainen jää puuttumaan. Yleisö ei joudu pohtimaan, tarkoittavatko kaksi perustelua samaa asiaa tai puuttuuko jotain.
+
+SCQR muotoilee kysymyksen ja vastauksen. Pyramidiperiaate järjestää perustelut. Näiden välillä on päällekkäisyyttä tarkoituksella: SCQR:n ratkaisu on samalla pyramidin pääviesti, ja pyramidi rakentaa sen perustelut.
 
 ### Haamuesitys näyttää, eteneekö perustelu
 
@@ -145,17 +163,19 @@ Saman kuvitteellisen aineiston pohjalta neljän dian otsikkoketju voisi olla tä
 
 Viimeinen dia ei olisi näillä tiedoilla valmis päätettäväksi. Joko puuttuvat tiedot hankitaan, tai kokouksessa sovitaan ensin vain selvityksen rajauksesta. Haamuesitys auttaa huomaamaan tämän ennen valmiiden diojen tekemistä.
 
-## Hyvä dia kertoo myös, mistä johtopäätökset ovat peräisin
+### Lopetus toistaa pääviestin
 
-Lähdemerkintä auttaa arvioimaan lukua. Sen pitäisi kertoa aineiston alkuperä, ajanjakso, rajaukset ja olennainen käsittely. Erota mittaustiedon lähde arviointikriteerin lähteestä.
+McKinseyllä ei ole tiettävästi virallista mallia esityksen lopetukselle. Yleinen käytäntö on kolmiosainen: kerro, että lopetat, toista pääviesti ja halutessasi kertaa pääkohdat. Lyhyessä esityksessä kaksi ensimmäistä riittävät yhdellä virkkeellä. Esimerkissä se voisi olla: ”Lopuksi: selvitetään tuotesivujen hitauden syyt ennen korjausten valintaa.”
 
-Tämän artikkelin esimerkissä luvut ovat kuvitteellisia. Google on LCP:n määritelmän ja arviointirajan lähde. Todellisessa esityksessä merkitään myös mittausjakso ja esimerkiksi se, onko kyse mobiilikäynneistä, yksittäisistä sivuista vai sivuryhmistä.
+## Mistä luvut ovat peräisin?
 
-Jos olet laskenut tai ryhmitellyt tuloksia itse, kerro menetelmä. Tarkemman kuvauksen voi siirtää liitteeseen, kunhan dia sisältää tulkinnan kannalta olennaiset rajaukset. Pitkä lähdemerkintä ei yksin tee aineistosta luotettavaa.
+Lähdemerkintä kertoo, voiko lukuun luottaa. Kirjoita siihen, mistä aineisto on, miltä ajalta, mitä on rajattu ja mitä sille on tehty. Erota mitatun luvun lähde arviointirajan lähteestä. Esimerkissä raja tulee Googlelta ja luvut ovat keksittyjä.
 
-### Erota havainto, laskelma, mahdollinen selitys ja suositus
+Jos olet itse laskenut tai ryhmitellyt tuloksia, kerro miten. Tarkemman kuvauksen voi laittaa liitteeseen. Pitkä lähdemerkintä ei silti tee aineistosta luotettavaa.
 
-Näillä on eri tehtävät esityksen perustelussa:
+### Mikä on havainto ja mikä arvaus?
+
+Esityksessä näillä on eri tehtävät:
 
 | Väitelaji | Esimerkki | Mitä pitää tarkistaa? |
 |---|---|---|
@@ -164,19 +184,19 @@ Näillä on eri tehtävät esityksen perustelussa:
 | Mahdollinen selitys | Raskaat tuotekuvat saattavat hidastaa sisältöelementin näkymistä. | Tämä on tutkittava oletus. Nykyinen vertailu ei osoita syytä. |
 | Suositus | Selvitetään tuotesivujen hitauden syyt ensin. | Miksi tämä eteneminen on perusteltu ja millä oletuksilla? |
 
-Mieti myös muita selityksiä. Jos tuotesivuja selataan muita useammin heikolla mobiiliyhteydellä, ero voi johtua käyttäjistä, ei sivupohjasta. Selvitä, millä tiedolla nämä selitykset voi erottaa toisistaan. Otsikko ei saa väittää enempää kuin aineisto tukee.
+Mieti myös, mikä muu voisi selittää eron. Jos tuotesivuja selataan useammin heikolla mobiiliyhteydellä, syy voi olla käyttäjissä eikä sivupohjassa. Otsikko ei saa väittää enempää kuin aineisto tukee.
 
-### Tarkista, mitä aineisto todella kuvaa
+### Mitä luku oikeasti kuvaa?
 
-Vertaa lähdettä, ajanjaksoa, havaintojen määrää, analyysiyksikköä ja laskentamenetelmää siihen, mitä otsikko väittää. Koko verkkotunnuksen tulos ei sellaisenaan kuvaa tuotesivuja, eikä lyhyen mittausjakson tulos osoita koko vuoden kehitystä.
+Tarkista, että lähde, ajanjakso, otos ja laskutapa vastaavat sitä, mitä otsikko väittää. Koko verkkotunnuksen tulos ei kerro tuotesivuista. Lyhyt mittausjakso ei kerro koko vuodesta.
 
-Myöskään yksittäisten sivujen p75-arvojen keskiarvo ei yleensä vastaa sivuryhmän todellista 75. persentiiliä. Ryhmän tuloksen laskemiseen tarvitaan soveltuva aineisto ja määritelty laskentamenetelmä. Jos menetelmä ei ole tiedossa, merkitse se avoimeksi kysymykseksi.
+Sivujen p75-arvojen keskiarvo ei myöskään yleensä ole sivuryhmän p75. Jos laskutapa ei ole tiedossa, kirjaa se avoimeksi kysymykseksi.
 
-Oman kävijämittauksen eli RUM-mittauksen lähdemerkinnän voisi rakentaa esimerkiksi näin:
+Oman kävijämittauksen eli RUM-mittauksen lähdemerkintä voisi olla tällainen:
 
 > Lähde: oma RUM-mittaus, [mittausjakso]. Mobiili, LCP p75. Sivuryhmät muodostettu URL-polun perusteella. Otos: [sivulatausten määrä].
 
-Tämä on täytettävä lähdemerkintämalli. Hakasulkeissa olevat tiedot pitää korvata todellisilla tiedoilla. Myös ryhmittely ja mittaustapa on kuvattava oman aineiston mukaisesti.
+Korvaa hakasulkeet omilla tiedoillasi.
 
 ## Luo oma esityksesi tekoälyn avulla
 
@@ -210,6 +230,7 @@ Lue aineistoni. Kysy sen jälkeen vain se, mikä on epäselvää, yksi kysymys k
 - millä kielellä ja missä tilanteessa esitys pidetään, kauanko se kestää ja mitä sen on pakko sisältää.
 Älä päättele lähtötasoa vain tehtävänimikkeistä. Selvitä, mitkä käsitteet tarvitsevat selityksen. Erota tiedetty konteksti oletuksista. Jos olennainen asia jää avoimeksi, kysy siitä ennen etenemistä.
 Tarkista, että lähde, ajanjakso, analyysiyksikkö, aineiston kattavuus ja laskentamenetelmä sopivat aiottuun väitteeseen. Älä laske sivuryhmän persentiiliä yksittäisten sivujen persentiilien keskiarvona. Jos menetelmä ei ole tiedossa, merkitse se avoimeksi kysymykseksi.
+Kysy jokaisesta vertailtavasta luvusta, mihin se pitäisi suhteuttaa. Esimerkiksi kokonaismäärät eivät ole vertailukelpoisia, jos ryhmien koot poikkeavat toisistaan. Kysy tällöin, pitäisikö luku suhteuttaa käyttäjien, sivujen tai käyntien määrään.
 Tiivistä ymmärryksesi ja pyydä minua vahvistamaan se.
 
 KIERROS 2: TARINA JA HAAMUESITYS
@@ -282,8 +303,8 @@ KOKO TEHTÄVÄN SÄÄNNÖT
 Saman kuvitteellisen suorituskykyesimerkin pohjalta voisit antaa nämä vastaukset:
 
 - **Haluttu päätös:** hyväksytään tuotesivujen suorituskyvyn tarkempi selvitys ennen korjausten valintaa.
-- **Yleisö:** Markkinoinnin ja teknologian vastuuhenkilöt. Varmistetaan erikseen, tuntevatko he LCP-mittarin ja sen arviointirajat.
-- **Keskeiset havainnot:** Tuotesivujen LCP p75 on mobiilissa 6,2 sekuntia, etusivun 2,4 sekuntia. Hyvän tuloksen raja on 2,5 sekuntia. Hitauden syy ei käy ilmi tästä vertailusta.
+- **Yleisö:** markkinoinnin ja teknologian vastuuhenkilöt. Varmistetaan erikseen, tuntevatko he LCP-mittarin ja sen arviointirajat.
+- **Keskeiset havainnot:** tuotesivujen LCP p75 on mobiilissa 6,2 sekuntia, etusivun 2,4 sekuntia. Hyvän tuloksen raja on 2,5 sekuntia. Hitauden syy ei käy ilmi tästä vertailusta.
 - **Suositus:** selvitetään ensin, mikä hidastaa tuotesivujen suurimman näkyvän sisältöelementin renderöitymistä.
 - **Muoto:** suomi, 15 minuutin esitys ja sen jälkeen keskustelu.
 
@@ -295,6 +316,8 @@ Kun hyväksyt tarinan, pyydä ensin yksi mallidia käyttämäsi työkalun tukema
 
 Kaikki palvelut eivät osaa tehdä esitystiedostoa. Jos tiedostoa ei synny, pyydä diojen sisältö ja kaavioiden lähtödata erikseen. Silloin ulkoasun tarkistat vasta taitetusta esityksestä.
 
+Osa työkaluista tuottaa diat pelkkinä kuvina. Kuvadiaa ei voi muokata, ja kuvan tekstit ja luvut voivat olla virheellisiä. Tarkista tällaisesta diasta jokainen luku ja teksti. Virheen korjaaminen vaatii uuden kuvan.
+
 Avaa valmis tiedosto. Tarkista jokainen luku lähteestä ja jokainen dia siinä muodossa, jossa aiot esittää tai jakaa sen. Tekoälyn oma tarkistus ei korvaa tätä vaihetta.
 
 ## Kolmen kysymyksen diatesti
@@ -303,8 +326,12 @@ Käy jokainen analyysidia läpi näillä kysymyksillä ennen yksityiskohtaista m
 
 1. **Mitä tästä pitäisi ymmärtää?** Kirjoita pääviesti yhdellä virkkeellä. Tarkista, ilmaiseeko otsikko sen ja mitä ennakkotietoja sen sanavalinnat edellyttävät.
 2. **Miksi väite on perusteltu?** Osoita väitettä tukeva aineisto, vertailukohta ja rajaukset. Jos et pysty, hanki lisää näyttöä tai rajaa väitettä.
-3. **Miten tämä vie esitystä eteenpäin?** Nimeä yhteys seuraavaan perusteluun, päätökseen tai tavoiteltuun ymmärrykseen. Kaikki diat eivät tarvitse omaa toimenpide-ehdotusta.
+3. **Miten tämä vie esitystä eteenpäin?** Nimeä yhteys seuraavaan perusteluun, päätökseen tai tavoiteltuun ymmärrykseen.
 
 Tämä on tekijän tarkistus esityksen rakenteesta ja perusteluista. Se ei vielä osoita, miten yleisö tulkitsee esityksen.
 
 Suosittelen vielä yhtä testiä: näytä luonnos yhdelle yleisöä edustavalle ihmiselle ja pyydä häntä kertomaan omin sanoin, mitä hän siitä päättelee. Jos vastaus eroaa pääviestistäsi, korjaa otsikot ja selitykset.
+
+Suositukseni: tee haamuesitys aina ennen ensimmäistä diaa. Jos otsikot eivät yksinään kerro tarinaa, diat eivät sitä kerro myöskään.
+
+Käytätkö itse väiteotsikoita vai nimeätkö diat aiheen mukaan?

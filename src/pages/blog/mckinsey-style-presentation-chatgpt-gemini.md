@@ -38,7 +38,7 @@ Spelling out the abbreviation doesn't help. Largest Contentful Paint is three wo
 
 This is where the action title of a McKinsey-style presentation helps. The title states the key finding right away, and the slide shows what it is based on. Read only the titles in order and you get the whole argument. The details are there for anyone who wants them.
 
-ChatGPT, Gemini or Claude can build this kind of presentation, as long as it knows more than the numbers: who you're talking to, why, and what you want them to understand. The prompt in this guide asks for these before a single slide is made. Judging the draft is still your job. AI is a good servant but a bad master.
+ChatGPT, Gemini or Claude can build this kind of presentation, as long as it knows more than the numbers: who you're talking to, why, and what you want them to understand. The prompt in this guide asks for these before a single slide is made. AI is a good servant but a bad master.
 
 ## Why does a McKinsey-style presentation work?
 
@@ -65,12 +65,12 @@ The closing suggestion to monitor site speed is just as vague. It doesn't say wh
 
 <figure data-image-modal="/images/blog/mckinsey-analysis-slide-en.jpeg" data-image-caption="Analysis slide">
 
-![Analysis slide stating that product pages take 3.7 seconds longer than recommended to display their largest content element. The 6.2-second product pages bar is purple. A dashed line marks the 2.5-second threshold. The recommendation is to investigate why product pages are slow before choosing fixes.](@assets/blog/mckinsey-analysis-slide-en.jpeg)
+![Analysis slide titled "Product pages are 3.7 seconds too slow: investigate the cause before fixing". In the chart, the 6.2-second product pages bar is purple, and a +3.7 s marker shows the gap to the 2.5-second threshold. The recommendation is at the bottom of the slide.](@assets/blog/mckinsey-analysis-slide-en.jpeg)
 
-<figcaption>Same numbers, but the title states the finding, the chart shows a benchmark and the recommendation names the next step. Fictional example data. <a href="/images/blog/mckinsey-analysis-slide-en.jpeg">Enlarge the analysis slide</a>.</figcaption>
+<figcaption>Same numbers, but the title states the finding and the recommendation. The chart shows a benchmark and the gap to it. Fictional example data. <a href="/images/blog/mckinsey-analysis-slide-en.jpeg">Enlarge the analysis slide</a>.</figcaption>
 </figure>
 
-You can understand the title without knowing what LCP stands for. The 2.5-second threshold gives the numbers a benchmark. Sorting the bars makes comparison easier, and the purple highlight draws attention to product pages.
+You can understand the title without knowing what LCP stands for, and it already contains the recommendation. The chart is the evidence: answer first, evidence second. The 2.5-second threshold gives the numbers a benchmark. Sorting the bars makes comparison easier, and the purple highlight draws attention to product pages. The +3.7 s marker shows the gap to the threshold, so the reader doesn't have to calculate it.
 
 Both slides use the same example numbers:
 
@@ -89,11 +89,27 @@ The reporting slide is fine for monitoring. The analysis slide is for when someo
 
 "LCP results" names the topic. It doesn't yet say what to notice in the results.
 
-An action title states a finding, and the slide shows whether it holds. That's why the title and the chart are designed together.
-
 If the title claimed that product images cause the slowness, the data in this example wouldn't prove it. The chart shows the difference between page types, but not its cause. That's why the recommendation is to find the causes before choosing fixes.
 
 Not every slide needs its own recommendation. One slide can identify the problem, the next can look at its causes and a third can compare solutions. You should be able to follow the argument from the titles alone.
+
+## The chart type decides what the reader sees
+
+The same data tells a different story in a different chart, because the chart type steers the eye. Choose the type based on what the title claims:
+
+| Title's message | Suitable chart | Why |
+|---|---|---|
+| Shares between groups | 100% stacked bar | The bars are the same height, so shares can be compared directly. |
+| Ranking of groups | Horizontal bar, sorted | The eye follows the order. Long labels fit. |
+| Change over time | Line | The eye follows the whole development. |
+| A single period stands out | Column | The eye stops at individual periods. |
+| Total and its parts | Stacked bar | The bar height stands out, not the comparison of parts. |
+
+The Analyst Academy video [Stop Sharing Data – Start Telling Stories](https://www.youtube.com/watch?v=okziFtWFoJM) shows a real McKinsey slide as an example. Its stacked column chart emphasized the height of the columns, that is, the totals, even though the slide's message was about shares. When the chart was changed to a 100% stacked column chart, the message came through directly.
+
+The analysis slide in this article already follows it. A sorted horizontal bar chart answers which page type is slowest. If the message were "speed has worsened month after month", a line would be the right choice.
+
+If a slide has two messages, make two slides. One slide, one message and one large chart is easier to read than two small ones side by side.
 
 ## What does your audience already know?
 
@@ -126,7 +142,9 @@ In the Pyramid Principle, the main message comes first. Supporting arguments are
 
 The main message in the example could be: "Focus the first performance investigation on product pages." Two arguments support it: product pages have the weakest result in the comparison, and they exceed the good-result threshold by 3.7 seconds. The evidence is the measurements by page type and the definition of the threshold.
 
-SCQR shapes the question and the answer. The Pyramid Principle orders the arguments.
+Group the arguments MECE (mutually exclusive, collectively exhaustive). The groups don't overlap, and nothing essential is missing. The audience doesn't have to wonder whether two arguments mean the same thing or whether something is left out.
+
+SCQR shapes the question and the answer. The Pyramid Principle orders the arguments. The two overlap on purpose: the resolution in SCQR is also the main message of the pyramid, and the pyramid builds its supporting arguments.
 
 ### A ghost deck shows whether the argument holds
 
@@ -145,17 +163,19 @@ From the same fictional data, a four-slide title chain could look like this:
 
 With this information, the last slide wouldn't be ready for a decision. You'd need to get the missing details or change the meeting's goal to agreeing on the scope of the investigation. The ghost deck helps you notice this before building finished slides.
 
-## A good slide also shows where its conclusions come from
+### The closing repeats the main message
 
-A source note helps the audience judge a number. It should state where the data comes from, the period, the limits and any significant processing. Keep the source of the measurement separate from the source of the benchmark.
+McKinsey has no known official model for ending a presentation. A common practice has three parts: say you're wrapping up, repeat the main message and, if you like, recap the main points. In a short presentation, the first two fit in one sentence. In the example, it could be: "In closing: let's investigate why product pages are slow before choosing fixes."
 
-In this article's example, the numbers are fictional. Google is the source of the LCP definition and threshold. In a real presentation, you'd also note the measurement period and whether the data covers mobile visits, individual pages or page types.
+## Where do the numbers come from?
 
-If you calculated or grouped the results yourself, describe the method. A fuller description can go in the appendix, as long as the slide shows the limits that matter for interpretation. A long source note alone doesn't make the data reliable.
+A source note tells the audience whether they can trust a number. State where the data comes from, the period, the limits and what was done to it. Keep the source of the measurement separate from the source of the benchmark. In the example, the threshold comes from Google and the numbers are made up.
 
-### Separate observation, calculation, possible explanation and recommendation
+If you calculated or grouped the results yourself, describe how. A fuller description can go in the appendix. A long source note alone doesn't make the data reliable.
 
-Each plays a different role in the argument:
+### What is an observation and what is a guess?
+
+In a presentation these play different roles:
 
 | Claim type | Example | What to check? |
 |---|---|---|
@@ -164,19 +184,19 @@ Each plays a different role in the argument:
 | Possible explanation | Heavy product images may slow down how quickly the content element appears. | This is an assumption to investigate. The current comparison doesn't show the cause. |
 | Recommendation | Investigate the causes of slow product pages first. | Why is this the right next step, and on what assumptions? |
 
-Consider other explanations too. If product pages are browsed more often on weak mobile connections, the difference may come from the users, not the page template. Find out what data would tell these apart. The title must not claim more than the data supports.
+Think about what else could explain the difference. If product pages are browsed more often on weak mobile connections, the cause may be the users, not the page template. The title must not claim more than the data supports.
 
-### Check what the data actually describes
+### What does the number actually describe?
 
-Compare the source, period, number of observations, unit of analysis and calculation method with what the title claims. A result for the whole domain doesn't describe product pages as such, and a short measurement period doesn't show a full year's trend.
+Check that the source, period, sample and calculation method match what the title claims. A result for the whole domain says nothing about product pages. A short measurement period says nothing about a full year.
 
-Nor does the average of individual pages' p75 values usually equal the real 75th percentile of a page type. A group result needs suitable data and a defined calculation method. If the method isn't known, mark it as an open question.
+The average of individual pages' p75 values is also usually not the p75 of a page type. If you don't know the method, mark it as an open question.
 
 A source note for your own real user monitoring (RUM) data could look like this:
 
 > Source: own RUM data, [measurement period]. Mobile, LCP p75. Page types grouped by URL path. Sample: [number of page loads].
 
-This is a template to fill in. Replace the bracketed details with real ones. Describe the grouping and the measurement method to match your own data.
+Replace the brackets with your own details.
 
 ## Create your own presentation with AI
 
@@ -210,6 +230,7 @@ Read my material. Then ask only about what is unclear, one question at a time an
 - the language, setting, length and any required content.
 Do not infer the audience's starting point from job titles alone. Find out which concepts need explaining. Separate known context from assumptions. If something essential remains open, ask about it before moving on.
 Check that the source, period, unit of analysis, data coverage and calculation method fit the intended claim. Do not calculate a page type's percentile by averaging the percentiles of individual pages. If the method is not known, mark it as an open question.
+For each figure being compared, ask what it should be relative to. For example, totals are not comparable if the groups differ in size. In that case, ask whether the figure should be scaled to the number of users, pages or visits.
 Summarise your understanding and ask me to confirm it.
 
 ROUND 2: STORYLINE AND GHOST DECK
@@ -295,6 +316,8 @@ Once you approve the storyline, ask for one sample slide first, in a format your
 
 Not every service can create a presentation file. If no file is created, ask for the slide content and the chart source data separately. In that case, you can check the layout only once the slides are designed.
 
+Some tools produce slides as plain images. An image slide can't be edited, and the text and numbers in the image may be wrong. Check every number and word on such a slide. Fixing a mistake requires a new image.
+
 Open the finished file. Check every number against its source and every slide in the format you'll present or share it in. The AI's own check doesn't replace this step.
 
 ## The three-question slide test
@@ -303,8 +326,12 @@ Run every analysis slide through these questions before the detailed formatting 
 
 1. **What should the audience take from this?** Write the main message in one sentence. Check whether the title expresses it and what prior knowledge its wording requires.
 2. **Why is the claim justified?** Point to the data, benchmark and limits that support it. If you can't, get more evidence or narrow the claim.
-3. **How does this move the presentation forward?** Name the link to the next argument, decision or intended understanding. Not every slide needs its own action proposal.
+3. **How does this move the presentation forward?** Name the link to the next argument, decision or intended understanding.
 
 This is the author's check of the presentation's structure and reasoning. It doesn't yet show how the audience will read it.
 
 I'd recommend one more test: Show the draft to one person who represents the audience and ask them to tell you in their own words what they conclude from it. If their answer differs from your main message, fix the titles and explanations.
+
+My recommendation: build the ghost deck before the first slide, every time. If the titles don't tell the story on their own, the slides won't either.
+
+Do you use action titles yourself, or do you name slides by topic?
