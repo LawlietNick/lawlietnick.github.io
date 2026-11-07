@@ -36,3 +36,4 @@ playwright-report/
 docs/reports/*.json
 
 .hallmark/
+src/pages/fi/blog/hakunakyvyys-ja-klikit-ai-vastausten-aikana.md
