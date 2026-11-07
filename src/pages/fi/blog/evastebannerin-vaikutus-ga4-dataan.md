@@ -2,7 +2,7 @@
 layout: ../../../layouts/Base.astro
 title: "Miksi GA4:n kävijämäärä laskee evästebannerin jälkeen?"
 description: "Miksi GA4:n kävijä- ja istuntomäärät muuttuvat evästebannerin jälkeen, miksi hyväksyntäasteesta ei voi laskea puuttuvaa liikennettä ja mitä tästä voi päätellä?"
-date: 2026-10-23
+date: 2026-11-07
 category: privacy
 image: /images/blog/cookie-consent-and-analytics-visibility.jpeg
 imageAlt: "Violettisilmälasinen kilpikonna kurkistaa läpikuultavan analytiikkapaneelin taakse. Etualalla on evästesuostumuksen valintapaneeli ja taustalla haaleita tapahtumamerkkejä."

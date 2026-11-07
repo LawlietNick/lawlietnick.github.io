@@ -1,7 +1,7 @@
 ---
 title: Why does the GA4 user count drop after a cookie banner?
 description: Why GA4 user and session counts change after a cookie banner, why the acceptance rate cannot be used to calculate the missing traffic, and what you can conclude.
-date: '2026-10-23'
+date: '2026-11-07'
 tags:
   - GA4
   - Consent Mode
