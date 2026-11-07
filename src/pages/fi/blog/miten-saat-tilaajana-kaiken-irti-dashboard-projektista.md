@@ -31,7 +31,7 @@ citations:
 <dt>Kenelle</dt>
 <dd>Sinulle, joka tilaat markkinoinnin dashboardin etkä rakenna sitä itse.</dd>
 <dt>Pääväite</dt>
-<dd><strong>Dashboardin hyöty ratkeaa sinun päätöksissäsi, ei kaavioissa.</strong> Kuusi päätöstä riittää: tavoite, päätökset, onnistumisen määritelmä, vertailut, tietolähteet ja hyväksyntä.</dd>
+<dd><strong>Dashboardin onnistuminen alkaa tilaajan päätöksistä.</strong> Ne määrittävät, mitä mitataan ja mihin raporttia käytetään. Kuusi päätöstä: tavoite, päätökset, onnistumisen määritelmä, vertailut, tietolähteet ja hyväksyntä.</dd>
 <dt>Mitä saat</dt>
 <dd>Päätöspolun, vastuutaulukon (kuka päättää mitä) ja tarkistuslistan, joka kertoo, mistä aloitat.</dd>
 <dt>Ei sinulle</dt>
@@ -163,14 +163,16 @@ Kaikki eivät tarvitse samaa mallia, mutta kannattaa silti tehdä, koska se väh
 
 Esimerkki on keksitty:
 
-- **Mittarin nimi:** Onnistuneet yhteydenotot
-- **Liiketoiminnallinen merkitys:** Lomakkeen lähettäneet kävijät, jotka ovat täyttäneet pakolliset tiedot
-- **Laskentakaava:** Onnistuneiden lähetysten määrä valitulla ajanjaksolla
+- **Mittarin nimi:** Onnistuneet lomakelähetykset
+- **Liiketoiminnallinen merkitys:** Lomakelähetykset, jotka palvelu on vahvistanut onnistuneiksi
+- **Laskentakaava:** Onnistuneiksi vahvistettujen lähetysten määrä valitulla ajanjaksolla
 - **Tietolähde:** GA4
 - **Rajaukset:** Testilähetykset on poistettu
 - **Tiedon ajantasaisuus:** Päivittyy päivittäin
 - **Tunnetut mittausrajoitteet:** Kävijät, jotka eivät ole antaneet suostumusta, voivat puuttua datasta
 - **Vastuuhenkilö:** Markkinointipäällikkö
+
+Liidin laadulle tehdään tarvittaessa oma mittari.
 
 ## 4. Mihin tuloksia verrataan ja milloin reagoidaan?
 
@@ -260,213 +262,122 @@ Luottamus ei synny kerralla, koska sivusto, lomakkeet ja kampanjat muuttuvat ja 
 
 ### Miksi mittarimääritelmät kiinnostavat myös tekoälyä?
 
-Sama termi voi tarkoittaa eri yrityksissä eri asiaa. Ihminen korjaa väärinkäsityksen keskustelussa, mutta tekoäly ei voi arvata, mitä ”konversio” tai ”asiakas” teillä tarkoittaa, jos sitä ei ole kirjattu.
+Sama termi voi tarkoittaa eri yrityksissä eri asiaa. Ihminen korjaa väärinkäsityksen keskustelussa, mutta tekoäly ei voi arvata, mitä ”konversio” tai ”asiakas” teillä tarkoittaa, jos sitä ei ole kirjattu termistönäkymään. Ennakkojulkaistussa [vertailussa](https://arxiv.org/abs/2604.25149) kolmelle kielimallille esitettiin sata kysymystä Contoso Retail -esimerkkiaineistosta. Kun malli sai vain tietokannan rakenteen, oikeita vastauksia oli 45,5–50,5 prosenttia. Kun se sai lisäksi lyhyen dokumentin määritelmistä, osuus nousi 67,7–68,7 prosenttiin. Tulos on yhdestä aineistosta ja yhdestä testitavasta, eikä sitä voi yleistää kaikkiin tekoälyihin. Silti määritelmienkin kanssa kolmasosa vastauksista meni väärin.
 
-Aiheesta on tuore tutkimus. Ennakkojulkaistussa [vertailussa](https://arxiv.org/abs/2604.25149) kolmelle kielimallille esitettiin sata kysymystä Contoso Retail -esimerkkiaineistosta. Kun malli sai vain tietokannan rakenteen, oikeita vastauksia oli 45,5–50,5 prosenttia. Kun se sai lisäksi lyhyen dokumentin määritelmistä, osuus nousi 67,7–68,7 prosenttiin. Tulos on yhdestä aineistosta ja yhdestä testitavasta, ja kysymykset oli tehty testaamaan epäselviä määritelmiä. Sitä ei voi yleistää kaikkiin tekoälyihin. Silti määritelmienkin kanssa kolmasosa vastauksista meni väärin.
-
-Käytännössä tämä tarkoittaa tätä:
-
-- Tekoäly tarvitsee selkeät mittarimääritelmät.
-- Tekoälyn tekemä kysely voi toimia teknisesti ja olla silti liiketoiminnallisesti väärä.
-- Määritelmän tarkistaminen ei takaa, että luku on oikein. Tärkeät luvut kannattaa tarvittaessa täsmäyttää alkuperäiseen tietoon tai tarkistettuun laskentaan.
-- Syy-seurausselitykset ovat hypoteeseja, kunnes ne on tutkittu. Jos tekoäly kertoo, miksi luku laski, selitys voi olla uskottava ja silti väärä.
-
-Tekoäly on hyvä renki mutta huono isäntä.
+Määritelmät auttavat, mutta eivät riitä. Tekoälyn tekemä kysely voi toimia teknisesti ja olla silti liiketoiminnallisesti väärä, joten tärkeät luvut kannattaa täsmäyttää alkuperäiseen tietoon tai tarkistettuun laskentaan. Syyselitykset ovat hypoteeseja, kunnes ne on tutkittu: jos tekoäly kertoo, miksi luku laski, selitys voi olla uskottava ja silti väärä. Tekoäly on hyvä renki mutta huono isäntä.
 
 ## Mitä tilaajan tarvitsee osata?
 
 Sinun ei tarvitse tietää, miten dashboard rakennetaan. Sinun pitää tietää, mitä sillä halutaan saada aikaan.
 
+Näin tilaajan päätös muuttaa raporttia:
+
+| Ilman tilaajan päätöstä | Kun päätös on tehty |
+|---|---|
+| Raportissa näytetään kaikki lomakelähetykset. | Raportissa erotetaan onnistuneet lähetykset ja hyvät liidit. |
+| Myyntiä verrataan aina edelliseen kuukauteen. | Myyntiä verrataan myös viime vuoden vastaavaan jaksoon ja tavoitteeseen. |
+| Raportti lähtee sähköpostiin kuukausittain. | Tulokset käydään läpi sovitussa palaverissa, jossa päätetään toimenpiteistä. |
+
 Hyvä projekti on yhteistyötä. Toimittaja tuo analytiikan, datan ja visualisoinnin osaamisen. Sinä tuot bisneksen tavoitteet, päätöstarpeet ja tiedon siitä, mikä teille on arvokasta. Kun nämä yhdistyvät, raportti päätyy todennäköisemmin käyttöön eikä jää avoimeksi välilehdeksi, jota kukaan ei lue.
 
 ## Tarkistuslista ennen dashboard-projektia
 
-Vastaa kysymyksiin yksi kerrallaan: kyllä, ei tai en tiedä. Lopuksi näet yhteenvedon: mikä on kunnossa, mitä pitää selvittää ja mistä kannattaa aloittaa. Vastauksia ei lähetetä minnekään eikä tallenneta.
+Vastaa kaikkiin kysymyksiin: kyllä, ei tai en tiedä. Yhteenveto kertoo, mikä on kunnossa, mitä pitää selvittää ja mistä kannattaa aloittaa. Vastauksia ei lähetetä minnekään eikä tallenneta.
 
 <form class="checklist" data-checklist aria-label="Tarkistuslista ennen dashboard-projektia" novalidate>
-<fieldset data-step data-stage="1" data-title="Liiketoiminnan tavoite">
-<legend>Kysymys 1/14: Liiketoiminnan tavoite</legend>
+<fieldset data-stage data-n="1" data-title="Liiketoiminnan tavoite">
+<legend>Vaihe 1: Liiketoiminnan tavoite</legend>
 <fieldset data-q data-tier="1" data-tip="Kirjoita yhteen lauseeseen, mitä menettäisitte, jos sivusto kaatuisi huomenna. Se on liiketoiminnan tavoite. Jos lause ei synny, aloita tästä toimittajan kanssa."><legend>Tiedämme, mitä menettäisimme, jos verkkosivumme kaatuisi.</legend>
 <label class="form-choice"><input type="radio" name="q1" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q1" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q1" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-next>Seuraava</button>
-</div>
-</fieldset>
-<fieldset data-step data-stage="1" data-title="Liiketoiminnan tavoite">
-<legend>Kysymys 2/14: Liiketoiminnan tavoite</legend>
 <fieldset data-q data-tier="2" data-tip="Listaa, missä kauppa tai yhteydenotto oikeasti syntyy. Jos se syntyy muualla kuin sivustolla, sovi toimittajan kanssa, miten tieto tuodaan raportille."><legend>Tiedämme, mitkä tulokset syntyvät sivustolla ja mitkä muualla, esimerkiksi CRM:ssä.</legend>
 <label class="form-choice"><input type="radio" name="q2" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q2" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q2" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
 </fieldset>
-<fieldset data-step data-stage="2" data-title="Päätökset, joita dashboard tukee">
-<legend>Kysymys 3/14: Päätökset, joita dashboard tukee</legend>
+<fieldset data-stage data-n="2" data-title="Päätökset, joita dashboard tukee">
+<legend>Vaihe 2: Päätökset, joita dashboard tukee</legend>
 <fieldset data-q data-tier="1" data-tip="Kirjoita ylös kolme päätöstä, joita raportin pitäisi helpottaa, ja kuka ne tekee. Niistä johdetaan kysymykset ja mittarit."><legend>Tiedämme, mitä päätöksiä dashboardilla tehdään ja kuka ne tekee.</legend>
 <label class="form-choice"><input type="radio" name="q3" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q3" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q3" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
-</fieldset>
-<fieldset data-step data-stage="2" data-title="Päätökset, joita dashboard tukee">
-<legend>Kysymys 4/14: Päätökset, joita dashboard tukee</legend>
 <fieldset data-q data-tier="2" data-tip="Nimeä käyttäjät. Johto tarvitsee yleensä muutaman luvun, markkinointi kanava- ja kampanjatason tiedon."><legend>Tiedämme, ketkä raporttia käyttävät ja kuinka tarkkaa tietoa he tarvitsevat.</legend>
 <label class="form-choice"><input type="radio" name="q4" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q4" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q4" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
 </fieldset>
-<fieldset data-step data-stage="3" data-title="Mittareiden määritelmät">
-<legend>Kysymys 5/14: Mittareiden määritelmät</legend>
+<fieldset data-stage data-n="3" data-title="Mittareiden määritelmät">
+<legend>Vaihe 3: Mittareiden määritelmät</legend>
 <fieldset data-q data-tier="1" data-tip="Päätä, mikä lasketaan onnistumiseksi. Onnistunut yhteydenotto on eri asia kuin lähetä-painikkeen painallus."><legend>Olemme sopineet, mikä tapahtuma on meille arvokas.</legend>
 <label class="form-choice"><input type="radio" name="q5" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q5" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q5" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
-</fieldset>
-<fieldset data-step data-stage="3" data-title="Mittareiden määritelmät">
-<legend>Kysymys 6/14: Mittareiden määritelmät</legend>
 <fieldset data-q data-tier="2" data-tip="Pyydä toimittajaa tarkistamaan mittaus ja kirjaamaan määritelmät termistönäkymään. Hyväksy ne ennen kuin niiden varaan tehdään päätöksiä."><legend>Mittaus on tarkistettu ja mittareiden määritelmät on kirjattu.</legend>
 <label class="form-choice"><input type="radio" name="q6" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q6" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q6" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
 </fieldset>
-<fieldset data-step data-stage="4" data-title="Vertailut ja reagointirajat">
-<legend>Kysymys 7/14: Vertailut ja reagointirajat</legend>
+<fieldset data-stage data-n="4" data-title="Vertailut ja reagointirajat">
+<legend>Vaihe 4: Vertailut ja reagointirajat</legend>
 <fieldset data-q data-tier="2" data-tip="Valitse vertailukohta: edellinen kuukausi, viime vuoden sama jakso vai tavoite. Kerro toimittajalle, jos myynti vaihtelee kausittain."><legend>Tiedämme, mihin tuloksia verrataan.</legend>
 <label class="form-choice"><input type="radio" name="q7" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q7" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q7" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
-</fieldset>
-<fieldset data-step data-stage="4" data-title="Vertailut ja reagointirajat">
-<legend>Kysymys 8/14: Vertailut ja reagointirajat</legend>
 <fieldset data-q data-tier="3" data-tip="Sovi raja, jonka ylittyessä joku tekee jotain. Toimittaja ehdottaa rajaa datasta, sinä sanot, onko se bisnekselle iso."><legend>Olemme sopineet, milloin poikkeamaan reagoidaan.</legend>
 <label class="form-choice"><input type="radio" name="q8" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q8" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q8" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
 </fieldset>
-<fieldset data-step data-stage="5" data-title="Tietolähteet ja vastuut">
-<legend>Kysymys 9/14: Tietolähteet ja vastuut</legend>
+<fieldset data-stage data-n="5" data-title="Tietolähteet ja vastuut">
+<legend>Vaihe 5: Tietolähteet ja vastuut</legend>
 <fieldset data-q data-tier="2" data-tip="Tee lista tietolähteistä ja siitä, kuka kutakin omistaa. Toimittaja selvittää tiedon laadun ja yhteydet."><legend>Tiedämme, mistä tiedot tulevat ja kuka niistä vastaa.</legend>
 <label class="form-choice"><input type="radio" name="q9" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q9" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q9" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
-</fieldset>
-<fieldset data-step data-stage="5" data-title="Tietolähteet ja vastuut">
-<legend>Kysymys 10/14: Tietolähteet ja vastuut</legend>
 <fieldset data-q data-tier="2" data-tip="Anna toimittajalle lukuoikeudet lähteisiin. Jos et voi itse, sovi, kuka voi."><legend>Käyttöoikeudet lähteisiin on järjestetty tai sovittu.</legend>
 <label class="form-choice"><input type="radio" name="q10" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q10" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q10" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
-</fieldset>
-<fieldset data-step data-stage="5" data-title="Tietolähteet ja vastuut">
-<legend>Kysymys 11/14: Tietolähteet ja vastuut</legend>
 <fieldset data-q data-tier="3" data-tip="Sovi, kuka hoitaa UTMit. Ne ovat yleensä markkinoinnin vastuulla, usein mainostoimiston."><legend>UTM-merkintöjen vastuu on sovittu.</legend>
 <label class="form-choice"><input type="radio" name="q11" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q11" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q11" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
 </fieldset>
-<fieldset data-step data-stage="6" data-title="Hyväksyntä ja käyttö">
-<legend>Kysymys 12/14: Hyväksyntä ja käyttö</legend>
+<fieldset data-stage data-n="6" data-title="Hyväksyntä ja käyttö">
+<legend>Vaihe 6: Hyväksyntä ja käyttö</legend>
 <fieldset data-q data-tier="2" data-tip="Nimeä henkilö, joka kuittaa dashboardin. Sovi, että luvut verrataan alkuperäiseen lähteeseen ennen kuittausta."><legend>Tiedämme, kuka hyväksyy dashboardin ja miten luvut tarkistetaan.</legend>
 <label class="form-choice"><input type="radio" name="q12" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q12" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q12" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
-</fieldset>
-<fieldset data-step data-stage="6" data-title="Hyväksyntä ja käyttö">
-<legend>Kysymys 13/14: Hyväksyntä ja käyttö</legend>
 <fieldset data-q data-tier="2" data-tip="Sovi, kuka huomaa poikkeaman, kuka selvittää sen ja kuka päättää jatkosta. Ilman tätä raportti jää vain katsottavaksi."><legend>Tiedämme, kuka raporttia käyttää ja mitä tapahtuu, kun se näyttää jotain outoa.</legend>
 <label class="form-choice"><input type="radio" name="q13" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q13" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q13" value="unknown"> En tiedä</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-next>Seuraava</button>
-</div>
-</fieldset>
-<fieldset data-step data-stage="6" data-title="Hyväksyntä ja käyttö">
-<legend>Kysymys 14/14: Hyväksyntä ja käyttö</legend>
 <fieldset data-q data-tier="3" data-tip="Vertaa tekoälyn antama luku termistönäkymän määritelmään. Pidä sen antamat syyt arvauksina, kunnes olet tarkistanut ne datasta."><legend>Jos käytämme tekoälyä raportoinnissa, tärkeät luvut tarkistetaan määritelmistä.</legend>
 <label class="form-choice"><input type="radio" name="q14" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q14" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q14" value="unknown"> En tiedä</label>
+<label class="form-choice"><input type="radio" name="q14" value="na"> Emme käytä tekoälyä raportoinnissa</label>
 </fieldset>
-<p role="alert" data-error hidden style="display:none">Valitse vastaus ennen kuin jatkat.</p>
-<div class="form-actions" data-actions hidden style="display:none">
-<button type="button" data-prev>Edellinen</button>
-<button type="button" data-finish>Näytä yhteenveto</button>
-</div>
 </fieldset>
+<p role="alert" data-error hidden style="display:none" tabindex="-1"></p>
+<div class="form-actions"><button type="button" data-submit>Näytä yhteenveto</button></div>
 <fieldset data-result hidden tabindex="-1" style="display:none"></fieldset>
-<p data-live role="status" aria-live="polite" style="display:none;position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"></p>
+<p data-live role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"></p>
 </form>
 <script>
 (function () {
@@ -481,19 +392,15 @@ Vastaa kysymyksiin yksi kerrallaan: kyllä, ei tai en tiedä. Lopuksi näet yhte
     var form = document.querySelector("[data-checklist]");
     if (!form || form.dataset.ready) return;
     form.dataset.ready = "true";
-    var steps = [].slice.call(form.querySelectorAll("[data-step]"));
+    var qs = [].slice.call(form.querySelectorAll("[data-q]"));
+    var error = form.querySelector("[data-error]");
     var result = form.querySelector("[data-result]");
     var live = form.querySelector("[data-live]");
-    function showStep(n, focus) {
-      steps.forEach(function (s, k) { show(s, k === n); });
-      live.textContent = "Kysymys " + (n + 1) + "/" + steps.length;
-      if (focus) { var lg = steps[n].querySelector("legend"); lg.tabIndex = -1; lg.focus(); }
-    }
-    function answered(step) { return !!step.querySelector("input:checked"); }
+    function unanswered() { return qs.filter(function (q) { return !q.querySelector("input:checked"); }); }
     function items() {
-      return steps.map(function (s, i) {
-        var q = s.querySelector("[data-q]");
-        return { order: i, stage: +s.dataset.stage, stageTitle: s.dataset.title, tier: +q.dataset.tier, text: q.querySelector("legend").textContent, tip: q.dataset.tip, v: q.querySelector("input:checked").value };
+      return qs.map(function (q, i) {
+        var stage = q.closest("[data-stage]");
+        return { order: i, stage: +stage.dataset.n, stageTitle: stage.dataset.title, tier: +q.dataset.tier, text: q.querySelector("legend").textContent, tip: q.dataset.tip, v: q.querySelector("input:checked").value };
       });
     }
     function card(parent, it, withWhy) {
@@ -521,7 +428,7 @@ Vastaa kysymyksiin yksi kerrallaan: kyllä, ei tai en tiedä. Lopuksi näet yhte
     }
     function line(it) { return "- " + (it.v === "no" ? "Ei vielä kunnossa" : "Selvitettävä") + " (" + TIER[it.tier].name + ", vaihe " + it.stage + "): " + it.text + "\n  Suositus: " + it.tip; }
     function render() {
-      var all = items();
+      var all = items().filter(function (i) { return i.v !== "na"; });
       var ok = all.filter(function (i) { return i.v === "yes"; });
       var open = all.filter(function (i) { return i.v !== "yes"; }).sort(function (a, b) { return a.tier - b.tier || a.order - b.order; });
       var text = "Yhteenveto\n\nValmistelun tilanne\n" + ok.length + "/" + all.length + " kysymystä on kunnossa, " + open.length + " vaatii selvittämistä.";
@@ -579,40 +486,38 @@ Vastaa kysymyksiin yksi kerrallaan: kyllä, ei tai en tiedä. Lopuksi näet yhte
       again.addEventListener("click", function () {
         form.reset();
         show(result, false);
-        showStep(0, true);
-        form.scrollIntoView({ block: "start" });
+        show(error, false);
+        qs.forEach(function (q) { q.removeAttribute("aria-invalid"); });
+        live.textContent = "Lomake tyhjennetty.";
+        qs[0].scrollIntoView({ block: "center" });
+        qs[0].tabIndex = -1;
+        qs[0].focus();
       });
     }
-    form.querySelectorAll("[data-actions]").forEach(function (a) { show(a, true); });
-    steps.forEach(function (step, k) {
-      var err = step.querySelector("[data-error]");
-      step.addEventListener("change", function () { show(err, false); step.querySelector("[data-q]").removeAttribute("aria-invalid"); });
-      var next = step.querySelector("[data-next]");
-      var prev = step.querySelector("[data-prev]");
-      var fin = step.querySelector("[data-finish]");
-      function missing() {
-        step.querySelector("[data-q]").setAttribute("aria-invalid", "true");
-        show(err, true);
-        var q = step.querySelector("[data-q]");
-        q.tabIndex = -1;
-        q.focus();
+    form.querySelector("[data-submit]").addEventListener("click", function () {
+      var missing = unanswered();
+      qs.forEach(function (q) { if (missing.indexOf(q) > -1) q.setAttribute("aria-invalid", "true"); else q.removeAttribute("aria-invalid"); });
+      if (missing.length) {
+        error.textContent = "Vastaa vielä " + missing.length + (missing.length === 1 ? " kysymykseen" : " kysymykseen") + ". Vastaamattomat kysymykset on merkitty.";
+        show(error, true);
+        show(result, false);
+        missing[0].tabIndex = -1;
+        missing[0].scrollIntoView({ block: "center" });
+        missing[0].focus();
+        return;
       }
-      if (prev) prev.addEventListener("click", function () { showStep(k - 1, true); });
-      if (next) next.addEventListener("click", function () {
-        if (!answered(step)) { missing(); return; }
-        showStep(k + 1, true);
-      });
-      if (fin) fin.addEventListener("click", function () {
-        if (!answered(step)) { missing(); return; }
-        steps.forEach(function (s) { show(s, false); });
-        render();
-        show(result, true);
-        live.textContent = "Yhteenveto on valmis.";
-        result.focus();
-        result.scrollIntoView({ block: "start" });
-      });
+      show(error, false);
+      render();
+      show(result, true);
+      live.textContent = "Yhteenveto on valmis.";
+      result.scrollIntoView({ block: "start" });
+      result.focus();
     });
-    showStep(0, false);
+    form.addEventListener("change", function (e) {
+      var q = e.target.closest && e.target.closest("[data-q]");
+      if (q) q.removeAttribute("aria-invalid");
+      if (!unanswered().length) show(error, false);
+    });
   }
   document.addEventListener("astro:page-load", init);
   if (document.readyState !== "loading") init(); else document.addEventListener("DOMContentLoaded", init);
