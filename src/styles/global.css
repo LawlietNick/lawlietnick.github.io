@@ -581,6 +581,23 @@ figure:has(.m:focus) .m.d:not(:focus) :is(.tip, .hl) { display: none; }
   mask: var(--external-link-icon) center / contain no-repeat;
 }
 
+/* hover/focus: the arrow keeps pointing up-right, slides out through the corner of
+   its own box and re-enters from the opposite corner, slowly and on repeat */
+@keyframes external-link-arrow {
+  0%, 15% { -webkit-mask-position: center; mask-position: center; }
+  50% { -webkit-mask-position: calc(50% + 1em) calc(50% - 1em); mask-position: calc(50% + 1em) calc(50% - 1em); }
+  50.01% { -webkit-mask-position: calc(50% - 1em) calc(50% + 1em); mask-position: calc(50% - 1em) calc(50% + 1em); }
+  85%, 100% { -webkit-mask-position: center; mask-position: center; }
+}
+
+a:is(:hover, :focus-visible) > .external-link-icon {
+  animation: external-link-arrow 2.4s var(--ease-snap) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a:is(:hover, :focus-visible) > .external-link-icon { animation: none; }
+}
+
 @media print {
   .external-link-icon { display: none; }
 }
