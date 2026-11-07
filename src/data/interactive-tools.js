@@ -101,6 +101,7 @@ export const allInteractiveTools = [
     icon: "UTM",
     order: 8,
     date: "2026-11-01",
+    draft: true,
     fi: {
       slug: "metan-utm-rimpsu",
       title: "Metan UTM-rimpsu",
