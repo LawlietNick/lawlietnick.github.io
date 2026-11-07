@@ -130,6 +130,21 @@ const c = fi
     text-decoration: none;
   }
   .author-bio__links svg { flex-shrink: 0; }
+
+  /* same loop as the external-link arrow, but sideways: slides out right through the
+     svg's clipped box and re-enters from the left */
+  @keyframes author-bio-arrow {
+    0%, 15% { transform: translateX(0); }
+    50% { transform: translateX(24px); }
+    50.01% { transform: translateX(-24px); }
+    85%, 100% { transform: translateX(0); }
+  }
+  .author-bio__links a:is(:hover, :focus-visible) svg path {
+    animation: author-bio-arrow 2.4s var(--ease-snap) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .author-bio__links a:is(:hover, :focus-visible) svg path { animation: none; }
+  }
   .author-bio__links :global(.external-link-icon) { margin-inline-start: 0; }
 
   @media (max-width: 40rem) {
