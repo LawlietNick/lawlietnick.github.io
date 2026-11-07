@@ -98,7 +98,7 @@ export const allInteractiveTools = [
   {
     category: "tools",
     slug: "meta-utm-builder",
-    icon: "?",
+    icon: "UTM",
     order: 8,
     date: "2026-11-01",
     fi: {

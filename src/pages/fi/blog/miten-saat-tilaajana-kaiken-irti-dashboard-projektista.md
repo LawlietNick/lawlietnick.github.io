@@ -45,7 +45,7 @@ Mitä menettäisitte, jos verkkosivunne olisi puoli vuotta pois käytöstä?
 
 Kysymys ei kuulosta raportoinnilta, mutta se on silti paras tapa aloittaa dashboard-projekti, koska vastaus kertoo, mitä sivustolta oikeasti odotetaan. Myyntiä, yhteydenottoja, asiakaspalvelua, tietoa vai tunnettuutta?
 
-Verkkosivun pitäisi olla yksi organisaation parhaista myyjistä, ei käyntikortti. Kun tavoite on selkeä, on myös raportoinnin suunta on selvä. Mikäli verkkosivuston tarkoitus on hukassa, aloita siitä. Sen määrittely kantaa pitkälle.
+Verkkosivun pitäisi olla yksi organisaation parhaista myyjistä, ei käyntikortti. Selkeä tavoite näyttää raportoinnille suunnan. Mikäli verkkosivuston tarkoitus on hukassa, aloita siitä. Sen määrittely kantaa pitkälle.
 
 Kaikkien päätösten ei tarvitse olla valmiita ennen kuin tilaat dashboardin. Projektin ensimmäinen vaihe voi olla juuri oikeiden kysymysten ja päätösten määrittely yhdessä toimittajan kanssa. Hyvä toimittaja auttaa siinä.
 
