@@ -9,6 +9,7 @@ Read the file that matches the task before you start:
 - **Visual system, tokens, shared patterns:** [DESIGN.md](DESIGN.md). [design_for_claude.md](design_for_claude.md) is the same material as one self-contained file for tools that cannot read the repo; keep it in sync when you change DESIGN.md or PRODUCT.md.
 - **Hero images — creating, replacing or making variants:** Before generating any hero, read [DESIGN.md → Article hero images](DESIGN.md#article-hero-images) and inspect the existing reference images listed there. TMNT is the required common element across hero images; carry it through every variant. Apply the imagegen skill when generating or editing the image.
 - **Structured data:** [docs/structured-data.md](docs/structured-data.md)
+- **Writing or auditing articles:** use the `evidence-based-seo-content` skill (`.claude/skills/evidence-based-seo-content/SKILL.md`).
 
 ## Conventions the code won't tell you
 
@@ -17,8 +18,7 @@ Read the file that matches the task before you start:
   - **Single-language pages** are fine as drafts. Before publishing one, ask Niko to confirm it ships without a counterpart.
   - **Untouched counterpart:** when a changed page has one, end the task with a single line naming it, e.g. `FI not updated: /fi/blogi/x/`.
   - **Both languages:** keep intent and structure equivalent and `alternate` links reciprocal. Write Finnish naturally; load the `suomi-finnish-skill` skill for Finnish copy.
-- **OG image files:** Always save generated OG images as JPEG (`.jpeg`) in `public/images/og/` (public URL `/images/og/`), including default and tool cards. When replacing an OG image, update its references, verify the new image resolves, and remove the superseded files.
-- **Before pushing a new tool, ask about its OG image.** Before any push that introduces a new tool, ask Niko once: “Tehdäänkö tälle työkalulle myös OG-kuva valmiiksi ennen pushia?” An explicit request for an OG image counts as yes; an earlier answer for this tool remains valid. Wait for an answer before pushing. If approved, use the established tool OG model in `scripts/generate-og.mjs`: the default OG frame, NK logo, halftone dots and purple title emphasis, with the tool’s localized name. Generate images for the agreed language versions and verify their `og:image` links resolve to the generated files before pushing. If declined, proceed without an OG image and report it as deferred.
+- **OG images:** save generated cards as JPEG in `public/images/og/`, and ask Niko about a new tool's OG image before pushing it. Full rules: [docs/og-images.md](docs/og-images.md).
 - **Facts come from Niko.** Prices, client names, metrics, testimonials and outcomes appear only when the user supplied them. When a layout wants a number you don't have, leave the slot empty and say so.
 - **Dates are Helsinki calendar days.** Frontmatter holds a plain date (`2026-10-04`); `isoDate` turns it into midnight Europe/Helsinki with that day's offset. Keep that path rather than writing ISO timestamps by hand.
 - **AI-made images say so** in `imageCredit`.
@@ -33,11 +33,4 @@ Read the file that matches the task before you start:
 
 ## graphify
 
-A local knowledge graph lives in `.graphify/` (gitignored, so it may be missing). When `.graphify/graph.json` exists, start codebase questions with it, because it returns a scoped subgraph that is much smaller than grep output:
-
-1. `graphify summary --graph .graphify/graph.json` for first-hop orientation.
-2. `graphify query "<question>"`, `graphify path "<A>" "<B>"` or `graphify explain "<concept>"` for focused questions.
-3. `graphify review-delta --graph .graphify/graph.json` for the impact of changed files.
-4. `.graphify/GRAPH_REPORT.md` only for broad architecture review, or when the commands above come back thin.
-
-If `.graphify/needs_update` exists or `.graphify/branch.json` has `stale=true`, tell the user the graph is stale before relying on it and suggest `/graphify . --update`. After modifying code files, run `npx graphify hook-rebuild` to keep the graph current.
+A local knowledge graph lives in `.graphify/` (gitignored, may be missing). When `.graphify/graph.json` exists, start codebase questions with it. Commands and stale-graph rules: [docs/graphify.md](docs/graphify.md).

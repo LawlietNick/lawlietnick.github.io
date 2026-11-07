@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import Hero from "../components/Hero.astro";
 import PostList from "../components/PostList.astro";
+import LatestToolkit from "../components/LatestToolkit.astro";
 import SplitSection from "../components/SplitSection.astro";
 import { selectRecentPosts } from "../utils/recent-posts.ts";
 
@@ -43,6 +44,8 @@ const posts = selectRecentPosts(Object.values(import.meta.glob("./blog/*.md", { 
       </p>
     </Fragment>
   </SplitSection>
+
+  <LatestToolkit />
 
   <PostList {posts} title="Recent Posts" allHref="/blog/" allLabel="All thoughts" />
 </Base>

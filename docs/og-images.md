@@ -1,0 +1,4 @@
+# OG images
+
+- **OG image files:** Always save generated OG images as JPEG (`.jpeg`) in `public/images/og/` (public URL `/images/og/`), including default and tool cards. When replacing an OG image, update its references, verify the new image resolves, and remove the superseded files.
+- **Before pushing a new tool, ask about its OG image.** Before any push that introduces a new tool, ask Niko once: “Tehdäänkö tälle työkalulle myös OG-kuva valmiiksi ennen pushia?” An explicit request for an OG image counts as yes; an earlier answer for this tool remains valid. Wait for an answer before pushing. If approved, use the established tool OG model in `scripts/generate-og.mjs`: the default OG frame, NK logo, halftone dots and purple title emphasis, with the tool’s localized name. Generate images for the agreed language versions and verify their `og:image` links resolve to the generated files before pushing. If declined, proceed without an OG image and report it as deferred.

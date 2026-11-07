@@ -6,6 +6,8 @@ import { readdir, readFile, rm } from "node:fs/promises";
 import { siteConfig, showServices } from "./src/data/site.js";
 import { allInteractiveTools } from "./src/data/interactive-tools.js";
 import { toolkit } from "./src/data/toolkit.js";
+import { satteri } from "@astrojs/markdown-satteri";
+import markdownCharts from "./src/utils/markdown-charts.js";
 
 // Astro hashes the scripts it bundles, but not `is:inline` scripts or raw <script>
 // blocks inside markdown. Hash those from source so the CSP <meta> allows them;
@@ -25,6 +27,7 @@ for (const file of (await readdir(srcDir, { recursive: true })).filter((f) => /\
 export default defineConfig({
   site: siteConfig.url,
   markdown: {
+    processor: satteri({ mdastPlugins: [markdownCharts] }),
     shikiConfig: {
       // Keep the existing code palette; make explanatory comments readable.
       theme: {

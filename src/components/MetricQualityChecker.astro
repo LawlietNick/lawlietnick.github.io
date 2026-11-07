@@ -1,144 +1,189 @@
 ---
+import { metricQualityTiers } from "../data/metric-quality-questions.js";
 import { showServices } from "../data/site.js";
-
 const { fi = false } = Astro.props;
+const copy = fi ? {
+  metricLabel: "Arvioitava mittari",
+  metricPlaceholder: "Esim. asiakashankinnan kustannus",
+  metricHelp: "Valinnainen. Nimi näkyy tuloksessa, kopioidussa yhteenvedossa ja jaetussa linkissä. Nimi ei vaikuta pisteisiin.",
+  instructions: "Vastaa jokaiseen kysymykseen kyllä tai ei.",
+  score: "Laatuarvio",
+  yes: "kyllä",
+  yesAnswer: "Kyllä",
+  noAnswer: "Ei",
 
-const copy = fi
-  ? {
-      metricLabel: "Arvioitava mittari",
-      metricPlaceholder: "Esim. asiakashankinnan kustannus",
-      metricHelp: "Valinnainen. Nimi näkyy tuloksessa, kopioidussa yhteenvedossa ja jaetussa linkissä. Nimi ei vaikuta pisteisiin.",
-      instructions: "Vastaa jokaiseen kysymykseen kyllä tai ei.",
-      score: "Tulos",
-      yes: "kyllä",
-      yesAnswer: "Kyllä",
-      noAnswer: "Ei",
-      reset: "Tyhjennä vastaukset",
-      caveat: "Pistemäärä jäsentää keskustelua. Lopullinen arvio vaatii aina liiketoimintakontekstin.",
-      ranges: ["0–3 kyllä", "4–5 kyllä", "6–7 kyllä", "8–10 kyllä"],
-      answeredLabel: "vastattu",
-      pending: "Vastaa kaikkiin kymmeneen kysymykseen, niin näet arvion.",
-      areaTitle: "Osa-alueittain",
-      gapsTitle: "Korjattavaa",
-      noGaps: "Ei puutteita – kaikki tarkistukset läpäisty.",
-      cappedNote: "Luokitus on rajattu diagnostiseksi: mittari ei kytkeydy liiketoiminnan keskeisiin tuloksiin.",
-      copySummary: "Kopioi yhteenveto",
-      copyLink: "Kopioi linkki",
-      copied: "Kopioitu ✓",
-      unnamed: "(nimeämätön mittari)",
-      sumHeading: "Mittarin laatutarkistus",
-      sumRec: "Suositus",
-      sumTool: "Arvioitu työkalulla",
-    }
-  : {
-      metricLabel: "Metric to assess",
-      metricPlaceholder: "For example, customer acquisition cost",
-      metricHelp: "Optional. Used to label your result, copied summary, and shared link. It does not affect the score.",
-      instructions: "Answer every question with Yes or No.",
-      score: "Score",
-      yes: "yes",
-      yesAnswer: "Yes",
-      noAnswer: "No",
-      reset: "Clear answers",
-      caveat: "The score structures the discussion. Final judgment still depends on business context.",
-      ranges: ["0–3 yes", "4–5 yes", "6–7 yes", "8–10 yes"],
-      answeredLabel: "answered",
-      pending: "Answer all ten questions to see the verdict.",
-      areaTitle: "By area",
-      gapsTitle: "Gaps to close",
-      noGaps: "No gaps — every check passed.",
-      cappedNote: "Capped: without a link to business outcomes, a metric is diagnostic at best.",
-      copySummary: "Copy summary",
-      copyLink: "Copy link",
-      copied: "Copied ✓",
-      unnamed: "(unnamed metric)",
-      sumHeading: "Metric quality check",
-      sumRec: "Recommendation",
-      sumTool: "Assessed with",
-    };
+  reset: "Tyhjennä vastaukset",
+  viewAssessment: "Katso laatuarvio",
+  requiresJs: "Mittarin laatutarkistus tarvitsee JavaScriptin laskeakseen arvion. Voit lukea esimerkit ilman JavaScriptiä.",
+  exampleLink: "Siirry esimerkkeihin",
+  caveat: "Pisteet jäsentävät keskustelua. Asteikkoa ei ole validoitu tutkimuksella. Lopullinen arvio vaatii liiketoimintakontekstin.",
+  ranges: [
+    "0–3 kyllä",
+    "4–5 kyllä",
+    "6–7 kyllä",
+    "8–10 kyllä"
+  ],
+  answeredLabel: "vastattu",
+  pending: "Vastaa kaikkiin kymmeneen kysymykseen, niin näet arvion.",
+  areaTitle: "Osa-alueittain",
+  gapsTitle: "Korjattavaa",
 
-const tiers = fi
-  ? [
-      {
-        key: "A",
-        tier: "Taso A",
-        title: "Yhteys liiketoimintaan",
-        questions: [
-          { q: "Kytkeytyykö mittari liiketoiminnan keskeisiin tuloksiin?", hint: "Liikevaihto, tulos, asiakaspito tai asiakasarvo", gap: "Ei kytkeydy liiketoiminnan keskeisiin tuloksiin" },
-          { q: "Ohjaako mittari toimintaa tai liittyykö se selvästi tulokseen vaikuttaviin tekijöihin?", hint: "Suora toimenpide tai selkeä ajuripuu", gap: "Ei ohjaa toimintaa eikä liity selvästi tulokseen vaikuttaviin tekijöihin" },
-        ],
-      },
-      {
-        key: "B",
-        tier: "Taso B",
-        title: "Päätökset ja vaikutus",
-        questions: [
-          { q: "Vaikuttaako mittarin arvon muuttuminen päätöksiin?", gap: "Arvon muuttuminen ei vaikuta päätöksentekoon" },
-          { q: "Mittaako se tehokkuutta, ei vain määrää?", hint: "Ei kertyvä kokonaismäärä, joka voi vain kasvaa", gap: "Mittaa määrää, ei tehokkuutta" },
-          { q: "Onko mittarin rinnalla laatu- tai vastamittari?", hint: "Esim. liikevaihto ja kate tai liidit ja niiden konversio kaupoiksi", gap: "Rinnalla ei ole laatu- tai vastamittaria" },
-        ],
-      },
-      {
-        key: "C",
-        tier: "Taso C",
-        title: "Mittarin luotettavuus",
-        questions: [
-          { q: "Onko määritelmä selkeä ja johdonmukainen?", hint: "Kaikki tulkitsevat sen samalla tavalla", gap: "Määritelmä ei ole selkeä tai johdonmukainen" },
-          { q: "Onko mittari käyttökelpoinen eri segmenteissä?", hint: "Ei vain yhdessä asiakasryhmässä tai kanavassa", gap: "Ei ole käyttökelpoinen eri segmenteissä" },
-          { q: "Säilyykö mittari käyttökelpoisena ajan myötä?", hint: "Ei vain yhtenä ajankohtana", gap: "Ei säily käyttökelpoisena ajan myötä" },
-          { q: "Voiko mittarin arvoja vertailla?", hint: "Aiemmat jaksot, kohortit tai verrokit", gap: "Ei ole vertailtavissa" },
-          { q: "Onko mittaria vaikea paisuttaa?", hint: "Arvoa ei voi nostaa nopeasti esimerkiksi ostamalla mainosnäyttöjä", gap: "Arvoa on helppo paisuttaa" },
-        ],
-      },
-    ]
-  : [
-      {
-        key: "A",
-        tier: "Tier A",
-        title: "Business relevance",
-        questions: [
-          { q: "Does it link to core outcomes?", hint: "Revenue, profit, retention or customer value", gap: "Not linked to core outcomes" },
-          { q: "Is it actionable or tied to drivers?", hint: "Direct action or a clear driver tree", gap: "Not actionable or tied to drivers" },
-        ],
-      },
-      {
-        key: "B",
-        tier: "Tier B",
-        title: "Decisions and impact",
-        questions: [
-          { q: "Would it change decisions if it moved?", gap: "Would not change any decision" },
-          { q: "Does it measure efficiency, not just volume?", hint: "Not an all-time total that can only go up", gap: "Measures volume, not efficiency" },
-          { q: "Is it paired with a quality or counter metric?", hint: "Revenue with margin, leads with lead-to-deal conversion", gap: "Stands alone without a quality or counter metric" },
-        ],
-      },
-      {
-        key: "C",
-        tier: "Tier C",
-        title: "Reliability checks",
-        questions: [
-          { q: "Is its definition clear and consistent?", hint: "Everyone reads it the same way", gap: "Definition isn't clear or consistent" },
-          { q: "Does it hold across segments?", hint: "Not just in one slice", gap: "Doesn't hold across segments" },
-          { q: "Does it stay valid over time?", hint: "Not only in a snapshot", gap: "Doesn't stay valid over time" },
-          { q: "Can it be benchmarked or compared?", hint: "Past periods, cohorts or peers", gap: "Can't be benchmarked or compared" },
-          { q: "Is it hard to inflate?", hint: "It can't be quickly bought up, as with ad impressions", gap: "Easy to inflate" },
-        ],
-      },
-    ];
+  cappedNote: "Luokitus on enintään ”Vaatii täsmennystä”, kun välttämättömiä tarkistuksia puuttuu. Tarkista seuraavat kohdat:",
+  copySummary: "Kopioi yhteenveto",
+  copyLink: "Kopioi linkki",
+  copied: "Kopioitu ✓",
+  copyError: "Kopiointi epäonnistui. Yritä uudelleen tai salli leikepöydän käyttö.",
+  shareHelp: "Yhteenveto muodostuu vastauksistasi. Kopioi se talteen tai jaa arvio linkillä. Linkki sisältää nimen, vastaukset ja käyttötarkoituksen.",
+  unnamed: "(nimeämätön mittari)",
+  sumHeading: "Mittarin laatutarkistus",
+  sumRec: "Suositus",
+  sumTool: "Arvioitu työkalulla",
+  roleLabel: "Mahdollinen rooli",
+  roleQuestion: "Mihin käytät mittaria tässä arvioinnissa?",
 
-const results = fi
-  ? [
-      { band: "vanity", label: "Koreilumittari", description: "Poista mittari tai muotoile se uudelleen niin, että yhteys päätöksiin tai tuloksiin selkeytyy." },
-      { band: "diagnostic", label: "Diagnostinen mittari", description: "Mittari voi auttaa selittämään muutosta, mutta liiketoimintaa ei kannata johtaa pelkästään sen perusteella." },
-      { band: "supporting", label: "Päätöksentekoa tukeva mittari", description: "Mittari sopii ajureiden seurantaan ja päätösten tueksi. Yhdistä se liiketoiminnan ydintulokseen." },
-      { band: "critical", label: "Liiketoimintakriittinen mittari", description: "Mittari on riittävän vahva tiiviiseen seurantaan, koska se yhdistää päätökset kestäviin tuloksiin." },
-    ]
-  : [
-      { band: "vanity", label: "Vanity or decorative metric", description: "Remove it, or reframe it so the connection to decisions or outcomes becomes clear." },
-      { band: "diagnostic", label: "Diagnostic metric", description: "It can help explain what changed, but the business should not be managed to it on its own." },
-      { band: "supporting", label: "Supporting metric", description: "Use it to monitor drivers and support decisions. Pair it with a core business outcome." },
-      { band: "critical", label: "Business-critical metric", description: "It is strong enough to manage closely because it connects decisions to durable outcomes." },
-    ];
+  roleHelp: "Valitse lähinnä omaa käyttöäsi oleva kuvaus. Työkalu ehdottaa sen perusteella roolia. Tämä lisäkysymys ei vaikuta pisteisiin, ja voit jättää sen avoimeksi.",
+  roleNone: "Rooli vielä epäselvä",
+  nextTitle: "Seuraava toimi",
+  allGoodNext: "Sovi mittarin seuraava tarkistusajankohta.",
+} : {
+  metricLabel: "Metric to assess",
+  metricPlaceholder: "For example, customer acquisition cost",
+  metricHelp: "Optional. Used to label your result, copied summary, and shared link. It does not affect the score.",
+  instructions: "Answer every question with Yes or No.",
+  score: "Quality assessment",
+  yes: "yes",
+  yesAnswer: "Yes",
+  noAnswer: "No",
 
+  reset: "Clear answers",
+  viewAssessment: "View assessment",
+  requiresJs: "The metric quality checker needs JavaScript to calculate an assessment. You can read the examples without JavaScript.",
+  exampleLink: "Go to examples",
+  caveat: "The score structures the discussion. This scale has not been validated by research. Final judgment depends on business context.",
+  ranges: [
+    "0–3 yes",
+    "4–5 yes",
+    "6–7 yes",
+    "8–10 yes"
+  ],
+  answeredLabel: "answered",
+  pending: "Answer all ten questions to see the assessment.",
+  areaTitle: "By area",
+  gapsTitle: "Gaps to close",
+
+  cappedNote: "The assessment cannot exceed “Needs clarification” while essential checks are unresolved. Review these items:",
+  copySummary: "Copy summary",
+  copyLink: "Copy link",
+  copied: "Copied ✓",
+  copyError: "Copy failed. Try again or allow clipboard access.",
+  shareHelp: "Your answers generate the summary. Copy it to save it or share the assessment by link. The link includes the name, answers and purpose.",
+  unnamed: "(unnamed metric)",
+  sumHeading: "Metric quality check",
+  sumRec: "Recommendation",
+  sumTool: "Assessed with",
+  roleLabel: "Suggested role",
+  roleQuestion: "What do you use this metric for in this assessment?",
+
+  roleHelp: "Choose the description closest to how you use the metric. The tool will suggest a role. This extra question does not affect the score and can be left open.",
+  roleNone: "Role still unclear",
+  nextTitle: "Next action",
+  allGoodNext: "Agree on the next review date for this metric.",
+};
+const tiers = metricQualityTiers[fi ? "fi" : "en"];
+const results = fi ? [
+  {
+    band: "unproven",
+    label: "Käyttökelpoisuus osoittamatta",
+    description: "Tarkenna mittarin käyttötarkoitus ja sen arviointiin tarvittavat tiedot."
+  },
+  {
+    band: "clarify",
+    label: "Vaatii täsmennystä",
+    description: "Korjaa puutteet ennen kuin luotat mittariin päätöksenteossa."
+  },
+  {
+    band: "qualified",
+    label: "Käyttökelpoinen varauksin",
+    description: "Mittari voi tukea päätöksiä. Huomioi listatut puutteet sen tulkinnassa."
+  },
+  {
+    band: "sound",
+    label: "Hyvä pohja päätöksenteolle",
+    description: "Mittarilla on hyvä pohja päätösten tukemiseen. Sen merkitys riippuu tavoitteesta ja käyttötavasta."
+  }
+] : [
+  {
+    band: "unproven",
+    label: "Usefulness not established",
+    description: "Clarify the intended use and the information needed to assess the metric."
+  },
+  {
+    band: "clarify",
+    label: "Needs clarification",
+    description: "Close the gaps before relying on the metric for decisions."
+  },
+  {
+    band: "qualified",
+    label: "Useful with reservations",
+    description: "The metric can support decisions. Account for the listed gaps when interpreting it."
+  },
+  {
+    band: "sound",
+    label: "Sound basis for decisions",
+    description: "The metric has a sound basis for supporting decisions. Its importance depends on the goal and how it is used."
+  }
+];
+const roles = fi ? [
+  {
+    "value": "outcome",
+    "label": "Tulosmittari",
+    "purpose": "Seuraan, toteutuuko liiketoiminnan tavoite.",
+    "explanation": "Seuraat tavoitteen toteutumista. Tässä käytössä mittari toimii tulosmittarina."
+  },
+  {
+    "value": "leading",
+    "label": "Ennakoiva mittari",
+    "purpose": "Seuraan aiempaa vaihetta, jonka oletan kertovan tulevasta tuloksesta.",
+    "explanation": "Seuraat tulosta edeltävää vaihetta. Mittari voi toimia ennakoivana mittarina, kun yhteys myöhempään tulokseen on varmistettu."
+  },
+  {
+    "value": "diagnostic",
+    "label": "Diagnostinen mittari",
+    "purpose": "Selvitän, mistä tuloksen muutos johtuu.",
+    "explanation": "Käytät mittaria muutoksen syiden selvittämiseen. Tässä käytössä se toimii diagnostisena mittarina."
+  },
+  {
+    "value": "guardrail",
+    "label": "Laatu- tai vastamittari",
+    "purpose": "Tarkistan, ettei toisen mittarin paraneminen heikennä laatua tai aiheuta haittaa.",
+    "explanation": "Seuraat toisen mittarin parantamisen sivuvaikutuksia. Tässä käytössä mittari toimii laatu- tai vastamittarina."
+  }
+] : [
+  {
+    "value": "outcome",
+    "label": "Outcome metric",
+    "purpose": "I track whether a business goal is being achieved.",
+    "explanation": "You track progress toward a goal. In this use, the metric acts as an outcome metric."
+  },
+  {
+    "value": "leading",
+    "label": "Leading indicator",
+    "purpose": "I track an earlier stage that I expect to indicate a future outcome.",
+    "explanation": "You track an earlier stage. The metric can act as a leading indicator once its relationship to the later outcome has been checked."
+  },
+  {
+    "value": "diagnostic",
+    "label": "Diagnostic metric",
+    "purpose": "I investigate why an outcome changed.",
+    "explanation": "You use the metric to investigate reasons for a change. In this use, it acts as a diagnostic metric."
+  },
+  {
+    "value": "guardrail",
+    "label": "Quality or counter metric",
+    "purpose": "I check that improving another metric does not harm quality or cause other problems.",
+    "explanation": "You monitor the side effects of improving another metric. In this use, it acts as a quality or counter metric."
+  }
+];
 const cta = fi
   ? {
       eyebrow: "Seuraava askel",
@@ -155,25 +200,26 @@ const cta = fi
 
 const toolUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
 
-const questionMeta = tiers.flatMap((t) => t.questions.map((q) => ({ tier: t.key, gap: q.gap })));
+const questionMeta = tiers.flatMap((t) => t.questions.map((q) => ({ id: q.id, gap: q.gap, tier: t.key })));
 const tierMeta = tiers.map((t) => ({ key: t.key, title: t.title, total: t.questions.length }));
-const config = { results, questions: questionMeta, tiers: tierMeta, copy, cta, toolUrl };
+const config = { results, questions: questionMeta, tiers: tierMeta, roles, copy, cta, toolUrl };
 const configJson = JSON.stringify(config).replace(/</g, "\\u003c");
-
 let questionNumber = 0;
 ---
-
 <section class="metric-checker" data-metric-checker>
   <script type="application/json" data-metric-config set:html={configJson} />
+  <noscript>
+    <p class="metric-checker__noscript content-links">{copy.requiresJs} <a href="#metric-examples-title">{copy.exampleLink}</a></p>
+  </noscript>
   <div class="metric-checker__layout">
-    <aside class="metric-checker__score" data-band="neutral" data-state="empty">
+    <aside id="metric-quality-assessment" class="metric-checker__score" data-band="neutral" data-state="empty" tabindex="0" aria-label={copy.score}>
       <div class="metric-checker__score-head">
         <div>
           <p class="label">{copy.score}</p>
           <p class="metric-checker__metricname" data-metric-name hidden></p>
-          <p class="metric-checker__progress" data-progress></p>
+          <p class="metric-checker__progress" data-progress aria-live="polite" aria-atomic="true"></p>
         </div>
-        <output class="metric-checker__number" aria-live="polite">
+        <output class="metric-checker__number" aria-live="off">
           <strong data-score>0</strong><span>/10 {copy.yes}</span>
         </output>
       </div>
@@ -183,17 +229,22 @@ let questionNumber = 0;
         <div class="metric-checker__verdict" data-verdict hidden>
           <h2 data-result-label></h2>
           <p data-result-description></p>
+          <p data-result-role></p>
           <p class="metric-checker__capped" data-capped hidden></p>
         </div>
       </div>
 
-      <ul class="metric-checker__tierscores" data-tierscores hidden></ul>
+      <div data-area hidden><p class="label">{copy.areaTitle}</p><ul class="metric-checker__tierscores" data-tierscores></ul></div>
 
       <div class="metric-checker__gaps" data-gaps hidden>
         <p class="label">{copy.gapsTitle}</p>
         <ul data-gaps-list></ul>
       </div>
 
+      <div class="metric-checker__next" data-next hidden>
+        <p class="label">{copy.nextTitle}</p>
+        <p data-next-text></p>
+      </div>
       <a class="metric-checker__cta" data-cta hidden href={cta.href}>
         <span class="metric-checker__cta-eyebrow">{cta.eyebrow}</span>
         <span class="metric-checker__cta-text" data-cta-text></span>
@@ -202,7 +253,9 @@ let questionNumber = 0;
 
       <div class="metric-checker__actions" data-actions hidden>
         <button type="button" data-copy-summary>{copy.copySummary}</button>
-        <button type="button" data-copy-link>{copy.copyLink}</button>
+        <button type="button" data-copy-link aria-describedby="metric-share-help">{copy.copyLink}</button>
+        <p id="metric-share-help">{copy.shareHelp}</p>
+        <p data-copy-status role="status"></p>
       </div>
 
       <div class="metric-checker__scale" aria-hidden="true">
@@ -234,7 +287,7 @@ let questionNumber = 0;
                 <strong>{tier.title}</strong>
               </legend>
               <div class="metric-checker__questions">
-                {tier.questions.map(({ q, hint }) => {
+                {tier.questions.map(({ id: questionId, q, hint }) => {
                   questionNumber += 1;
                   const id = `metric-question-${questionNumber}`;
                   return (
@@ -245,11 +298,11 @@ let questionNumber = 0;
                       </div>
                       <div class="metric-checker__toggle" role="radiogroup" aria-labelledby={id}>
                         <label>
-                          <input data-answer type="radio" name={`answer-${questionNumber}`} value="no" />
+                          <input data-answer type="radio" name={questionId} value="no" />
                           <span>{copy.noAnswer}</span>
                         </label>
                         <label>
-                          <input data-answer type="radio" name={`answer-${questionNumber}`} value="yes" />
+                          <input data-answer type="radio" name={questionId} value="yes" />
                           <span>{copy.yesAnswer}</span>
                         </label>
                       </div>
@@ -257,187 +310,178 @@ let questionNumber = 0;
                   );
                 })}
               </div>
+              {tier.key === "A" && (
+                <fieldset class="metric-checker__purpose" aria-describedby="metric-purpose-help">
+                  <legend>{copy.roleQuestion}</legend>
+                  <p id="metric-purpose-help">{copy.roleHelp}</p>
+                  {roles.map(({ value, purpose }) => (
+                    <label>
+                      <input type="radio" name="metric-purpose" value={value} />
+                      <span>{purpose}</span>
+                    </label>
+                  ))}
+                  <p data-role-feedback role="status" hidden></p>
+                </fieldset>
+              )}
             </fieldset>
           ))
         }
       </div>
 
+      <a class="metric-checker__jump content-link" href="#metric-quality-assessment" data-jump-to-score hidden>{copy.viewAssessment}</a>
       <button type="reset">{copy.reset}</button>
     </form>
   </div>
 </section>
 
 <script>
-  import { metricBandIndex, gatedBandIndex } from "../utils/metric-quality.js";
+  import { assessMetric } from "../utils/metric-quality.js";
 
-  document.querySelectorAll("[data-metric-checker]").forEach((checker) => {
-    const cfg = JSON.parse(checker.querySelector("[data-metric-config]").textContent);
-    const { results, questions, tiers, copy, cta, toolUrl } = cfg;
-    const form = checker.querySelector("form");
-    const metricInput = checker.querySelector("#metric-name");
-    const panel = checker.querySelector(".metric-checker__score");
-    const el = (sel) => checker.querySelector(sel);
-    const scoreEl = el("[data-score]");
-    const progressEl = el("[data-progress]");
-    const pendingEl = el("[data-pending]");
-    const verdictEl = el("[data-verdict]");
-    const nameEl = el("[data-metric-name]");
-    const labelEl = el("[data-result-label]");
-    const descEl = el("[data-result-description]");
-    const cappedEl = el("[data-capped]");
-    const tierScoresEl = el("[data-tierscores]");
-    const gapsEl = el("[data-gaps]");
-    const gapsListEl = el("[data-gaps-list]");
-    const ctaEl = el("[data-cta]");
-    const ctaTextEl = el("[data-cta-text]");
-    const ctaLabelEl = el("[data-cta-label]");
-    const actionsEl = el("[data-actions]");
-    const segments = checker.querySelectorAll("[data-segment]");
-
-    const readAnswers = () =>
-      questions.map((_, i) => {
-        const input = form.querySelector(`input[name="answer-${i + 1}"]:checked`);
-        return input ? input.value : null;
-      });
-
-    const assess = () => {
-      const answers = readAnswers();
-      const answered = answers.filter((a) => a !== null).length;
-      const yes = answers.filter((a) => a === "yes").length;
-      const complete = answered === questions.length;
-      const tierYes = {};
-      tiers.forEach((t) => (tierYes[t.key] = 0));
-      answers.forEach((a, i) => { if (a === "yes") tierYes[questions[i].tier] += 1; });
-      const relevanceYes = tierYes.A ?? 0;
-      const bandIndex = complete ? gatedBandIndex(yes, relevanceYes) : metricBandIndex(yes);
-      const band = results[bandIndex];
-      const capped = complete && relevanceYes === 0 && metricBandIndex(yes) > 1;
-      const gaps = answers.map((a, i) => (a === "no" ? questions[i].gap : null)).filter(Boolean);
-      const name = metricInput.value.trim();
-
-      return { answers, answered, yes, complete, tierYes, bandIndex, band, capped, gaps, name };
-    };
-
-    const render = () => {
-      const s = assess();
-      scoreEl.textContent = s.yes;
-
-      panel.dataset.state = s.complete ? "complete" : s.answered ? "progress" : "empty";
-      panel.dataset.band = s.complete ? s.band.band : "neutral";
-      segments.forEach((seg, i) => seg.classList.toggle("is-filled", i < s.yes));
-
-      progressEl.textContent = s.complete ? "" : `${s.answered} / ${questions.length} ${copy.answeredLabel}`;
-      nameEl.hidden = !s.name;
-      nameEl.textContent = s.name;
-
-      pendingEl.hidden = s.complete;
-      verdictEl.hidden = !s.complete;
-      tierScoresEl.hidden = !s.complete;
-      gapsEl.hidden = !s.complete;
-      actionsEl.hidden = !s.complete;
-      ctaEl.hidden = !(s.complete && s.bandIndex <= 1);
-
-      if (!s.complete) return;
-
-      labelEl.textContent = s.band.label;
-      descEl.textContent = s.band.description;
-      cappedEl.hidden = !s.capped;
-      cappedEl.textContent = s.capped ? copy.cappedNote : "";
-
-      tierScoresEl.innerHTML = "";
-      tiers.forEach((t) => {
-        const li = document.createElement("li");
-        li.className = "mqc-row";
-        const name = document.createElement("span");
-        name.textContent = t.title;
-        const val = document.createElement("strong");
-        val.textContent = `${s.tierYes[t.key]}/${t.total}`;
-        li.append(name, val);
-        tierScoresEl.append(li);
-      });
-
-      gapsListEl.innerHTML = "";
-      if (s.gaps.length) {
-        s.gaps.forEach((gap) => {
-          const li = document.createElement("li");
-          li.className = "mqc-gap";
-          li.textContent = gap;
-          gapsListEl.append(li);
+  const initializeMetricCheckers = () => {
+    document.querySelectorAll("[data-metric-checker]").forEach((checker) => {
+      if (checker.hasAttribute("data-initialized")) return;
+      checker.setAttribute("data-initialized", "");
+      const cfg = JSON.parse(checker.querySelector("[data-metric-config]").textContent);
+      const { results, questions, tiers, roles, copy, cta, toolUrl } = cfg;
+      const el = (selector) => checker.querySelector(selector);
+      const setText = (selector, value) => {
+        const element = el(selector);
+        const text = String(value);
+        if (element.textContent !== text) element.textContent = text;
+      };
+      const form = checker.querySelector("form");
+      const metricInput = el("#metric-name");
+      const roleValue = () => form.querySelector('input[name="metric-purpose"]:checked')?.value ?? "";
+      const panel = el(".metric-checker__score");
+      const questionById = Object.fromEntries(questions.map((q) => [q.id, q]));
+      const readAnswers = () => Object.fromEntries(questions.map(({ id }) => [
+        id, form.querySelector(`input[name="${id}"]:checked`)?.value ?? null,
+      ]));
+      const action = (id) => questionById[id].gap;
+      const assess = () => {
+        const assessment = assessMetric(readAnswers());
+        return { ...assessment, band: assessment.complete ? results[assessment.bandIndex] : null,
+          name: metricInput.value.trim(),
+          role: roles.find(({ value }) => value === roleValue())?.label ?? copy.roleNone,
+          roleExplanation: roles.find(({ value }) => value === roleValue())?.explanation ?? "",
+          next: assessment.nextId ? action(assessment.nextId) : copy.allGoodNext };
+      };
+      const renderList = (selector, ids) => {
+        const list = el(selector);
+        list.replaceChildren();
+        ids.forEach((id) => {
+          const item = document.createElement("li");
+          item.className = "mqc-gap";
+          item.textContent = `${id.slice(1)}. ${action(id)}`;
+          list.append(item);
         });
-      } else {
-        const li = document.createElement("li");
-        li.className = "mqc-gap is-ok";
-        li.textContent = copy.noGaps;
-        gapsListEl.append(li);
-      }
+      };
+      const render = () => {
+        const s = assess();
+        setText("[data-score]", s.yes);
+        panel.dataset.state = s.complete ? "complete" : s.answered ? "progress" : "empty";
+        panel.dataset.band = s.complete ? s.band.band : "neutral";
+        checker.querySelectorAll("[data-segment]").forEach((segment, i) => segment.classList.toggle("is-filled", i < s.yes));
+        setText("[data-progress]", s.complete ? "" : `${s.answered} / ${questions.length} ${copy.answeredLabel}`);
+        el("[data-metric-name]").hidden = !s.name;
+        setText("[data-metric-name]", s.name);
+        el("[data-pending]").hidden = s.complete;
+        ["[data-verdict]", "[data-area]", "[data-actions]", "[data-next]", "[data-jump-to-score]"].forEach((selector) => { el(selector).hidden = !s.complete; });
+        el("[data-gaps]").hidden = !s.complete || !s.gaps.length;
+        el("[data-cta]").hidden = !s.complete || s.bandIndex > 1;
+        const roleFeedback = el("[data-role-feedback]");
+        roleFeedback.hidden = !form.querySelector('input[name="metric-purpose"]:checked');
+        setText("[data-role-feedback]", `${copy.roleLabel}: ${s.role}${s.roleExplanation ? `. ${s.roleExplanation}` : ""}`);
+        if (!s.complete) return;
 
-      ctaTextEl.textContent = cta.text;
-      ctaLabelEl.textContent = cta.label;
-    };
-
-    const buildSummary = () => {
-      const s = assess();
-      const lines = [
-        `${copy.sumHeading}: ${s.name || copy.unnamed}`,
-        `${copy.score}: ${s.yes}/${questions.length} — ${s.band.label}`,
-        tiers.map((t) => `${t.title} ${s.tierYes[t.key]}/${t.total}`).join(" · "),
-      ];
-      if (s.gaps.length) { lines.push(`${copy.gapsTitle}:`); s.gaps.forEach((g) => lines.push(`- ${g}`)); }
-      lines.push(`${copy.sumRec}: ${s.band.description}`);
-      if (s.capped) lines.push(copy.cappedNote);
-      lines.push(`${copy.sumTool}: ${toolUrl}`);
-      return lines.join("\n");
-    };
-
-    const buildLink = () => {
-      const answers = readAnswers();
-      const code = answers.map((a) => (a === "yes" ? "y" : a === "no" ? "n" : "-")).join("");
-      const url = new URL(location.href);
-      url.search = "";
-      if (metricInput.value.trim()) url.searchParams.set("m", metricInput.value.trim());
-      url.searchParams.set("a", code);
-      return url.href;
-    };
-
-    const flash = (btn, done) => {
-      const original = btn.textContent;
-      btn.textContent = copy.copied;
-      setTimeout(() => (btn.textContent = original), 1500);
-      done && done();
-    };
-
-    // restore from a shared link
-    const params = new URLSearchParams(location.search);
-    if (params.get("m")) metricInput.value = params.get("m");
-    const code = params.get("a");
-    if (code) {
-      [...code].slice(0, questions.length).forEach((ch, i) => {
-        const value = ch === "y" ? "yes" : ch === "n" ? "no" : null;
-        if (value) {
-          const input = form.querySelector(`input[name="answer-${i + 1}"][value="${value}"]`);
-          if (input) input.checked = true;
+        setText("[data-result-label]", s.band.label);
+        setText("[data-result-description]", s.band.description);
+        setText("[data-result-role]", `${copy.roleLabel}: ${s.role}${s.roleExplanation ? `. ${s.roleExplanation}` : ""}`);
+        el("[data-capped]").hidden = !s.unresolvedEssential.length;
+        setText("[data-capped]", s.unresolvedEssential.length
+          ? `${copy.cappedNote} ${s.unresolvedEssential.map((id) => `${id.slice(1)}. ${action(id)}`).join(" ")}` : "");
+        const tierScores = el("[data-tierscores]");
+        tierScores.replaceChildren();
+        tiers.forEach((tier) => {
+          const row = document.createElement("li");
+          row.className = "mqc-row";
+          const label = document.createElement("span");
+          label.textContent = tier.title;
+          const score = document.createElement("strong");
+          score.textContent = `${s.tierYes[tier.key]}/${tier.total}`;
+          row.append(label, score);
+          tierScores.append(row);
+        });
+        renderList("[data-gaps-list]", s.gaps);
+        el("[data-next-text]").textContent = s.next;
+        el("[data-cta-text]").textContent = cta.text;
+        el("[data-cta-label]").textContent = cta.label;
+      };
+      const buildSummary = () => {
+        const s = assess();
+        const lines = [
+          `${copy.sumHeading}: ${s.name || copy.unnamed}`,
+          `${copy.score}: ${s.yes}/${questions.length} — ${s.band.label}`,
+          `${copy.roleLabel}: ${s.role}${s.roleExplanation ? `. ${s.roleExplanation}` : ""}`,
+          tiers.map((tier) => `${tier.title} ${s.tierYes[tier.key]}/${tier.total}`).join(" · "),
+          `${copy.sumRec}: ${s.band.description}`,
+        ];
+        if (s.unresolvedEssential.length) {
+          lines.push(copy.cappedNote);
+          s.unresolvedEssential.forEach((id) => lines.push(`- ${id.slice(1)}. ${action(id)}`));
         }
+        if (s.gaps.length) {
+          lines.push(`${copy.gapsTitle}:`);
+          s.gaps.forEach((id) => lines.push(`- ${id.slice(1)}. ${action(id)}`));
+        }
+        lines.push(`${copy.nextTitle}: ${s.next}`);
+        lines.push(copy.caveat, `${copy.sumTool}: ${toolUrl}`);
+        return lines.join("\n");
+      };
+      const buildLink = () => {
+        const answers = readAnswers();
+        const code = questions.map(({ id }) => ({ yes: "y", no: "n" })[answers[id]] ?? "-").join("");
+        const url = new URL(location.href);
+        url.search = "";
+        url.hash = "";
+        if (metricInput.value.trim()) url.searchParams.set("m", metricInput.value.trim());
+        url.searchParams.set("a", code);
+        if (roleValue()) url.searchParams.set("r", roleValue());
+        return url.href;
+      };
+      const params = new URLSearchParams(location.search);
+      metricInput.value = params.get("m") ?? "";
+      const sharedRole = roles.find(({ value }) => value === params.get("r"));
+      if (sharedRole) form.querySelector(`input[name="metric-purpose"][value="${sharedRole.value}"]`).checked = true;
+      [...(params.get("a") ?? "")].slice(0, questions.length).forEach((character, i) => {
+        const value = { y: "yes", n: "no" }[character];
+        if (value) form.querySelector(`input[name="${questions[i].id}"][value="${value}"]`).checked = true;
       });
-    }
-
-    form.addEventListener("input", render);
-    form.addEventListener("reset", () => {
-      requestAnimationFrame(() => {
-        history.replaceState(null, "", location.pathname);
-        render();
+      form.addEventListener("submit", (event) => event.preventDefault());
+      form.addEventListener("input", render);
+      form.addEventListener("reset", () => {
+        requestAnimationFrame(() => {
+          history.replaceState(null, "", location.pathname);
+          el("[data-copy-status]").textContent = "";
+          render();
+        });
       });
+      const copyText = async (text, link = false) => {
+        try {
+          await navigator.clipboard.writeText(text);
+          if (link) history.replaceState(null, "", text);
+          el("[data-copy-status]").textContent = copy.copied;
+        } catch {
+          el("[data-copy-status]").textContent = copy.copyError;
+        }
+      };
+      el("[data-copy-summary]").addEventListener("click", () => copyText(buildSummary()));
+      el("[data-copy-link]").addEventListener("click", () => copyText(buildLink(), true));
+      render();
     });
-    el("[data-copy-summary]").addEventListener("click", (e) =>
-      flash(e.currentTarget, () => navigator.clipboard.writeText(buildSummary())),
-    );
-    el("[data-copy-link]").addEventListener("click", (e) => {
-      const link = buildLink();
-      history.replaceState(null, "", link);
-      flash(e.currentTarget, () => navigator.clipboard.writeText(link));
-    });
-
-    render();
-  });
+  };
+  initializeMetricCheckers();
+  document.addEventListener("astro:page-load", initializeMetricCheckers);
 </script>
 
 <style>
@@ -446,10 +490,10 @@ let questionNumber = 0;
 
   .metric-checker {
     --score-neutral: light-dark(oklch(66% 0.03 286), oklch(58% 0.03 286));
-    --score-vanity: light-dark(oklch(62% 0.2 25), oklch(72% 0.16 25));
-    --score-diagnostic: light-dark(oklch(78% 0.16 87), oklch(82% 0.14 87));
-    --score-supporting: light-dark(oklch(70% 0.1 182), oklch(76% 0.1 182));
-    --score-critical: light-dark(oklch(55% 0.14 164), oklch(71% 0.12 164));
+    --score-unproven: light-dark(oklch(62% 0.2 25), oklch(72% 0.16 25));
+    --score-clarify: light-dark(oklch(78% 0.16 87), oklch(82% 0.14 87));
+    --score-qualified: light-dark(oklch(70% 0.1 182), oklch(76% 0.1 182));
+    --score-sound: light-dark(oklch(55% 0.14 164), oklch(71% 0.12 164));
     margin-block: 1rem var(--section-y-large);
     padding-block: 1rem;
     font-size: var(--font-size-ui);
@@ -468,13 +512,21 @@ let questionNumber = 0;
     border: 2px solid var(--ink);
     border-radius: var(--radius-md);
     background: var(--bg);
+    scroll-margin-block-start: 3rem;
     transition: background-color var(--duration-base) var(--ease-out), border-color var(--duration-base) var(--ease-out);
   }
 
-  .metric-checker__score[data-band="vanity"] { --score-color: var(--score-vanity); }
-  .metric-checker__score[data-band="diagnostic"] { --score-color: var(--score-diagnostic); }
-  .metric-checker__score[data-band="supporting"] { --score-color: var(--score-supporting); }
-  .metric-checker__score[data-band="critical"] { --score-color: var(--score-critical); }
+  .metric-checker__noscript {
+    padding: 1rem;
+    background: var(--color-accent-panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .metric-checker__score[data-band="unproven"] { --score-color: var(--score-unproven); }
+  .metric-checker__score[data-band="clarify"] { --score-color: var(--score-clarify); }
+  .metric-checker__score[data-band="qualified"] { --score-color: var(--score-qualified); }
+  .metric-checker__score[data-band="sound"] { --score-color: var(--score-sound); }
 
   .metric-checker__score-head {
     display: flex;
@@ -673,10 +725,10 @@ let questionNumber = 0;
 
   .metric-checker__segments span:first-child { border-radius: var(--radius-pill) 0 0 var(--radius-pill); }
   .metric-checker__segments span:last-child { border-radius: 0 var(--radius-pill) var(--radius-pill) 0; }
-  .metric-checker__segments span:nth-child(-n + 3).is-filled { background: var(--score-vanity); border-color: var(--score-vanity); }
-  .metric-checker__segments span:nth-child(n + 4):nth-child(-n + 5).is-filled { background: var(--score-diagnostic); border-color: var(--score-diagnostic); }
-  .metric-checker__segments span:nth-child(n + 6):nth-child(-n + 7).is-filled { background: var(--score-supporting); border-color: var(--score-supporting); }
-  .metric-checker__segments span:nth-child(n + 8).is-filled { background: var(--score-critical); border-color: var(--score-critical); }
+  .metric-checker__segments span:nth-child(-n + 3).is-filled { background: var(--score-unproven); border-color: var(--score-unproven); }
+  .metric-checker__segments span:nth-child(n + 4):nth-child(-n + 5).is-filled { background: var(--score-clarify); border-color: var(--score-clarify); }
+  .metric-checker__segments span:nth-child(n + 6):nth-child(-n + 7).is-filled { background: var(--score-qualified); border-color: var(--score-qualified); }
+  .metric-checker__segments span:nth-child(n + 8).is-filled { background: var(--score-sound); border-color: var(--score-sound); }
   /* during progress the verdict isn't final, so keep the fill neutral */
   .metric-checker__score:not([data-state="complete"]) .metric-checker__segments span.is-filled {
     background: var(--score-neutral);
@@ -777,7 +829,7 @@ let questionNumber = 0;
 
   .metric-checker__question {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: 1fr;
     gap: 1rem;
     align-items: center;
     min-height: 5rem;
@@ -815,8 +867,8 @@ let questionNumber = 0;
 
   .metric-checker__toggle {
     display: grid;
-    grid-template-columns: repeat(2, minmax(3.75rem, 1fr));
-    min-width: 9rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-width: 0;
     padding: 0.2rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
@@ -886,20 +938,37 @@ let questionNumber = 0;
     cursor: pointer;
   }
 
-  .metric-checker :is(input, button):focus-visible {
+  .metric-checker__jump {
+    display: block;
+    width: fit-content;
+    margin-top: 1.5rem;
+    padding-block: 0.65rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    color: var(--accent);
+  }
+
+  .metric-checker :is(input, button, a, .metric-checker__score):focus-visible {
     outline: var(--focus-ring-strong);
     outline-offset: 3px;
   }
 
   @container page (min-width: 50rem) {
+    .metric-checker__jump { display: none; }
     .metric-checker__layout {
       grid-template-columns: minmax(17rem, 0.72fr) minmax(0, 1.28fr);
       gap: clamp(2.5rem, 6cqi, 5rem);
     }
 
     .metric-checker__score {
+      /* The site header is 4.5rem tall, plus its 1px bottom border. */
+      --score-top: calc(5.5rem + 1px);
       position: sticky;
-      top: 6rem;
+      top: var(--score-top);
+      align-self: start;
+      max-height: calc(100dvh - var(--score-top) - 1rem);
+      overflow-y: auto;
+      scrollbar-gutter: stable;
     }
   }
 
@@ -913,6 +982,22 @@ let questionNumber = 0;
     }
   }
 
+  .metric-checker .metric-checker__purpose { margin-top: 2rem; }
+  .metric-checker__purpose legend { font-size: 1rem; font-weight: var(--font-weight-bold); }
+  .metric-checker__purpose > p { color: var(--muted); }
+  .metric-checker__purpose label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 0.75rem;
+    cursor: pointer;
+  }
+  .metric-checker__purpose input { flex: 0 0 auto; accent-color: var(--accent); }
+  .metric-checker__purpose [data-role-feedback] { color: var(--ink); }
+  .metric-checker__next { margin-bottom: 1.25rem; }
+  .metric-checker__actions p { flex-basis: 100%; margin: 0; font-size: 0.875rem; }
+  .metric-checker__metricname, .metric-checker__capped, .metric-checker__next p { overflow-wrap: anywhere; }
+  .metric-checker__toggle span { min-height: 2.75rem; }
   @media (prefers-reduced-motion: reduce) {
     .metric-checker__toggle span,
     .metric-checker__score { transition: none; }

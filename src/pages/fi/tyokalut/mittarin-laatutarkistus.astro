@@ -2,10 +2,11 @@
 import Base from "../../../layouts/Base.astro";
 import Breadcrumb from "../../../components/Breadcrumb.astro";
 import ToolHero from "../../../components/ToolHero.astro";
+import MetricQualityExamples from "../../../components/MetricQualityExamples.astro";
 import MetricQualityChecker from "../../../components/MetricQualityChecker.astro";
 
 const title = "Mittarin laatutarkistus";
-const summary = "Arvioi mittarin laatu kymmenellä kysymyksellä. Näet, onko mittari koreilumittari, diagnostinen, päätöksiä tukeva vai liiketoimintakriittinen.";
+const summary = "Arvioi mittarin käyttökelpoisuus kymmenellä kysymyksellä. Saat vastauksistasi laatuarvion, ehdotuksen mittarin roolista ja seuraavat korjaustoimet.";
 ---
 
 <Base primaryCategory="analytics" title={title} description={summary} alternate={{ lang: "en", href: "/tools/metric-quality-checker/" }}>
@@ -20,9 +21,11 @@ const summary = "Arvioi mittarin laatu kymmenellä kysymyksellä. Näet, onko mi
 
   <ToolHero title={title} summary={summary}>
     <p class="tool-note">Hyvä mittari parantaa päätöksiä. Pelkkä helppo laskettavuus ei tee mittarista hyvää.</p>
+    <p class="content-links"><a href="#metric-examples-title">Katso esimerkit mittareista ja SMART-tavoitteista</a></p>
   </ToolHero>
 
   <div class="wide-band">
     <MetricQualityChecker fi />
   </div>
+  <MetricQualityExamples fi />
 </Base>

@@ -503,6 +503,21 @@ picture { display: contents; }
   max-width: min(100rem, calc(50vw + 50% - var(--container-gutter) / 2));
 }
 
+/* interactive chart columns (build-time charts, see src/utils/charts.js): tooltip on hover/focus, last one open by default */
+.m { outline: none; }
+.m .tip, .m .hl { display: none; }
+.m.d .tip, .m.d .hl { display: block; }
+figure:has(.m:hover) .m.d:not(:hover) :is(.tip, .hl),
+figure:has(.m:focus) .m.d:not(:focus) :is(.tip, .hl) { display: none; }
+.m:hover .tip, .m:focus .tip, .m:hover .hl, .m:focus .hl { display: block; }
+
+/* wide charts ship two layouts: the regular one on small screens, a low and wide one from 760px */
+.chart-w { display: none; }
+@media (min-width: 760px) {
+  .chart-n { display: none; }
+  .chart-w { display: block; }
+}
+
 /* broken images: pseudo-elements render on an <img> only when it fails to
    load, so this styles just the failure state — hatched surface with the
    alt text centered. Loaded images are untouched. */

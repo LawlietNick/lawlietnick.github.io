@@ -2,10 +2,11 @@
 import Base from "../../layouts/Base.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
 import ToolHero from "../../components/ToolHero.astro";
+import MetricQualityExamples from "../../components/MetricQualityExamples.astro";
 import MetricQualityChecker from "../../components/MetricQualityChecker.astro";
 
 const title = "Metric quality checker";
-const summary = "Run any metric through ten practical questions to see whether it is decorative, diagnostic, supporting or business-critical.";
+const summary = "Assess a metric with ten questions. Your answers generate a quality assessment, a suggested role and actions to address gaps.";
 ---
 
 <Base primaryCategory="analytics" title={title} description={summary} alternate={{ lang: "fi", href: "/fi/tyokalut/mittarin-laatutarkistus/" }}>
@@ -19,9 +20,11 @@ const summary = "Run any metric through ten practical questions to see whether i
 
   <ToolHero title={title} summary={summary}>
     <p class="tool-note">A good metric earns attention by improving decisions, not merely by being easy to count.</p>
+    <p class="content-links"><a href="#metric-examples-title">See examples of metrics and SMART goals</a></p>
   </ToolHero>
 
   <div class="wide-band">
     <MetricQualityChecker />
   </div>
+  <MetricQualityExamples />
 </Base>

@@ -27,13 +27,13 @@ Shikin teema mukautettiin [Astron tukemalla custom theme -asetuksella](https://d
 - Axe-core 4.13.0: **39 sivua × 2 teemaa**, korjatun tuotantobuildin perusnäkymät. Ei vahvistettuja rikkomuksia aiemmin dokumentoidun, identtisiä kielinavigaatioita koskevan väärän hälytyksen poistamisen jälkeen. Myös interaktiiviset näppäimistö- ja virhetilat tarkistettiin molemmissa teemoissa; niihin ei jäänyt vahvistettua axe-löydöstä.
 - Selainkatselu: tietosuojasivun näkyvä otsikko ja data layer -otsikon 320 px mobiilinäkymä. `git diff --check` läpäisi.
 
-Automaattinen tarkistus sisälsi WCAG A/AA -sääntöjä ja rakenteen best practice -sääntöjä. Aiempi [auditointiraportti](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-2026-10-04.md) sisältää tarkistetut URL:t, löydösten perustelut ja WCAG-lähteet. Julkista sivustoa ei muutettu eikä väitetä korjatuksi ennen julkaisua.
+Automaattinen tarkistus sisälsi WCAG A/AA -sääntöjä ja rakenteen best practice -sääntöjä. Aiempi [auditointiraportti](accessibility-2026-10-04.md) sisältää tarkistetut URL:t, löydösten perustelut ja WCAG-lähteet. Julkista sivustoa ei muutettu eikä väitetä korjatuksi ennen julkaisua.
 
 ## Selainkuvat
 
-![Korjattu mobiiliotsikko, 320 px](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-fixed-mobile.jpg)
+![Korjattu mobiiliotsikko, 320 px](accessibility-fixed-mobile.jpg)
 
-![Tietosuojasivun näkyvä pääotsikko](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-fixed-privacy.jpg)
+![Tietosuojasivun näkyvä pääotsikko](accessibility-fixed-privacy.jpg)
 
 ## Jäljelle jäävät tarkistuksen rajat
 
@@ -43,4 +43,4 @@ Impeccable-detektorin ainoa uusi käsiteltävä havainto oli footerin olemassa o
 
 ## Tarkistusaineisto
 
-[Vaalea teema, 37 sivua](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-fixed-light-2026-10-04.json) · [Tumma teema, 37 sivua](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-fixed-dark-2026-10-04.json) · [Interaktiiviset tilat ja fokusmittaukset](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-fixed-states-2026-10-04.json) · [Lisäsivut, vaalea](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-fixed-extra-light-2026-10-04.json) · [Lisäsivut, tumma](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-fixed-extra-dark-2026-10-04.json).
+[Vaalea teema, 37 sivua](accessibility-fixed-light-2026-10-04.json) · [Tumma teema, 37 sivua](accessibility-fixed-dark-2026-10-04.json) · [Interaktiiviset tilat ja fokusmittaukset](accessibility-fixed-states-2026-10-04.json) · [Lisäsivut, vaalea](accessibility-fixed-extra-light-2026-10-04.json) · [Lisäsivut, tumma](accessibility-fixed-extra-dark-2026-10-04.json).

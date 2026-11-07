@@ -1,0 +1,318 @@
+---
+import { metricQualityExamples } from "../data/metric-quality-examples.js";
+import { metricQualityTiers } from "../data/metric-quality-questions.js";
+
+const { fi = false } = Astro.props;
+const lang = fi ? "fi" : "en";
+const tiers = metricQualityTiers[lang];
+const copy = fi ? {
+  title: "Esimerkkejä hyvistä mittareista ja SMART-tavoitteista",
+  intro: "SMART auttaa muotoilemaan tavoitteen. Mittarin laatutarkistus auttaa arvioimaan, voiko mittaria käyttää päätöksissä. Näissä neljässä mallissa näet molemmat perusteluineen.",
+  notice: "Kaikki tilanteet, luvut ja resurssit ovat kuvitteellisia opetusesimerkkejä. Ne eivät kuvaa asiakkaita tai toteutuneita tuloksia eivätkä ole yleisiä tavoitetasoja. Kyllä-vastaukset edellyttävät mallissa kuvattuja määrittelyjä ja tarkistuksia; omassa tilanteessasi ne on tehtävä erikseen.",
+  instruction: "Avaa esimerkki ja vertaa perusteluja omaan mittariisi. Esimerkkien avaaminen ei muuta testerin vastauksia.",
+  metric: "Arvioitava mittari",
+  smart: "Tavoite SMART-mallin mukaan",
+  smartTerms: ["Täsmällinen", "Mitattava", "Saavutettava", "Merkityksellinen", "Aikaan sidottu"],
+  questions: "Vastaukset laatutarkistuksen kysymyksiin",
+  use: "Mittarin käyttö",
+  useTerms: { role: "Rooli", owner: "Vastuu", cadence: "Tarkistusrytmi", decision: "Päätös" },
+  pitfall: "Sudenkuoppa ja sen havaitseminen",
+} : {
+  title: "Examples of useful metrics and SMART goals",
+  intro: "SMART helps you define a goal. The metric quality checker helps you assess whether a metric can support decisions. These four examples explain both.",
+  notice: "All scenarios, numbers and resources are fictional teaching examples. They describe no clients or actual results and are not general benchmarks. The Yes answers depend on the definitions and checks described in each scenario; you need to carry out those checks in your own situation.",
+  instruction: "Open an example and compare its reasoning with your own metric. Opening examples does not change your checker answers.",
+  metric: "Metric to assess",
+  smart: "The goal through SMART",
+  smartTerms: ["Specific", "Measurable", "Achievable", "Relevant", "Time-bound"],
+  questions: "Answers to the quality check questions",
+  use: "Using the metric",
+  useTerms: { role: "Role", owner: "Ownership", cadence: "Review cadence", decision: "Decision" },
+  pitfall: "Pitfall and how to detect it",
+};
+---
+
+<section class="metric-examples" aria-labelledby="metric-examples-title">
+  <header class="metric-examples__intro">
+    <h2 id="metric-examples-title">{copy.title}</h2>
+    <p>{copy.intro}</p>
+    <p class="metric-examples__notice">{copy.notice}</p>
+    <p>{copy.instruction}</p>
+  </header>
+
+  {metricQualityExamples[lang].map((example, index) => (
+    <details id={`example-${example.id}`} open={index === 0}>
+      <summary>
+        <span class="metric-examples__title">{example.title}</span>
+        <span class="metric-examples__goal">{example.goal}</span>
+      </summary>
+      <div class="metric-examples__body">
+        <p>{example.context}</p>
+        <p><strong>{copy.metric}:</strong> {example.metric}</p>
+
+        <h3>{copy.smart}</h3>
+        <dl class="metric-examples__smart">
+          {example.smart.map((explanation, smartIndex) => (
+            <div data-smart={"SMART"[smartIndex]}>
+              <dt>
+                <span class="metric-examples__smart-letter">{"SMART"[smartIndex]}</span>
+                <span>{copy.smartTerms[smartIndex]}</span>
+              </dt>
+              <dd>{explanation}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <h3>{copy.questions}</h3>
+        {tiers.map((tier, tierIndex) => {
+          const offset = tiers.slice(0, tierIndex).reduce((total, group) => total + group.questions.length, 0);
+          return (
+            <div class="metric-examples__tier">
+              <h4>{tier.title}</h4>
+              <ol start={offset + 1}>
+                {tier.questions.map((question, questionIndex) => (
+                  <li>
+                    <p class="metric-examples__question">{question.q}</p>
+                    <p>{example.answers[offset + questionIndex]}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          );
+        })}
+
+        <h3>{copy.use}</h3>
+        <dl class="metric-examples__use">
+          {Object.entries(copy.useTerms).map(([key, label]) => (
+            <div>
+              <dt>{label}</dt>
+              <dd>{example.use[key]}</dd>
+            </div>
+          ))}
+        </dl>
+        <div class="metric-examples__pitfall">
+          <h3>{copy.pitfall}</h3>
+          <p>{example.pitfall}</p>
+        </div>
+      </div>
+    </details>
+  ))}
+</section>
+
+<style>
+  .metric-examples {
+    margin-block: var(--section-y-large);
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+
+  .metric-examples__intro {
+    max-width: 72ch;
+    margin-bottom: var(--split-gap);
+  }
+
+  .metric-examples h2 {
+    max-width: 24ch;
+    text-wrap: balance;
+    scroll-margin-block-start: 3rem;
+  }
+
+  .metric-examples__notice {
+    padding: 1rem;
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+  }
+
+  .metric-examples details {
+    margin-block: 1rem;
+    border: 1px solid transparent;
+    border-block-start-color: var(--line);
+  }
+
+  .metric-examples details:last-child {
+    border-block-end: 1px solid var(--line);
+  }
+
+  .metric-examples details[open] {
+    border-color: var(--line);
+    border-radius: var(--radius-md);
+    background: var(--color-accent-panel);
+  }
+
+  .metric-examples details[open] > summary {
+    border-block-end-color: var(--line);
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+  }
+
+  .metric-examples summary {
+    position: relative;
+    min-height: 2.75rem;
+    padding: 1.5rem 1rem 1.5rem 2rem;
+    border-block-end: 1px solid transparent;
+    cursor: pointer;
+  }
+
+  .metric-examples summary::marker {
+    color: var(--accent);
+  }
+
+  .metric-examples summary:hover,
+  .metric-examples details[open] > summary {
+    background: var(--color-accent-panel);
+  }
+
+  .metric-examples summary:focus-visible {
+    outline: var(--focus-ring-strong);
+    outline-offset: -4px;
+  }
+
+  .metric-examples__title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .metric-examples__goal {
+    display: block;
+    max-width: 72ch;
+    margin-top: 0.5rem;
+  }
+
+  .metric-examples__body {
+    max-width: 75ch;
+    padding: 0.5rem 1rem 2rem 2rem;
+  }
+
+  .metric-examples h3 {
+    margin-block: 2rem 0.75rem;
+    font-size: 1.25rem;
+    text-wrap: balance;
+  }
+
+  .metric-examples h4 {
+    margin-block: 1.5rem 0.75rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: var(--font-weight-bold);
+  }
+
+  .metric-examples dl {
+    margin: 0;
+  }
+
+  .metric-examples dl > div {
+    padding-block: 0.75rem;
+    border-block-start: 1px solid var(--line);
+  }
+
+  .metric-examples dt,
+  .metric-examples__question {
+    font-weight: var(--font-weight-strong);
+  }
+
+  .metric-examples dd {
+    margin: 0.25rem 0 0;
+  }
+
+  .metric-examples__smart > div {
+    padding-block: 1.25rem;
+  }
+
+  .metric-examples__smart dt {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.125rem;
+  }
+
+  .metric-examples__smart-letter {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 2.25rem;
+    block-size: 2.25rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-xs);
+    color: var(--accent);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+  }
+
+  [data-smart="M"] .metric-examples__smart-letter {
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  [data-smart="A"] .metric-examples__smart-letter {
+    border-color: var(--ink);
+    border-radius: var(--radius-pill);
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  [data-smart="R"] .metric-examples__smart-letter {
+    border-color: var(--pop);
+    border-radius: var(--radius-sm);
+    background: var(--pop);
+    color: var(--color-neutral-950);
+  }
+
+  [data-smart="T"] .metric-examples__smart-letter {
+    border-style: dashed;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-panel);
+  }
+
+  .metric-examples__smart dd {
+    margin-block-start: 0.75rem;
+    margin-inline-start: 3.25rem;
+  }
+
+  .metric-examples ol {
+    padding-inline-start: 1.5rem;
+  }
+
+  .metric-examples li {
+    padding-inline-start: 0.5rem;
+    margin-block: 1.25rem;
+  }
+
+  .metric-examples li::marker {
+    color: var(--accent);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .metric-examples li p {
+    margin-block: 0.35rem;
+  }
+
+  .metric-examples__pitfall {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+  }
+
+  .metric-examples__pitfall h3 {
+    margin-top: 0;
+  }
+
+  .metric-examples__pitfall p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 32rem) {
+    .metric-examples summary {
+      padding-inline: 1.25rem 0.5rem;
+    }
+
+    .metric-examples__body {
+      padding-inline: 1rem;
+    }
+
+    .metric-examples__smart dd {
+      margin-inline-start: 0;
+    }
+  }
+</style>

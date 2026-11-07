@@ -11,6 +11,14 @@ import ServiceCard from "../components/ServiceCard.astro";
 import ServiceGroups from "../components/ServiceGroups.astro";
 import ServiceProof from "../components/ServiceProof.astro";
 import SplitSection from "../components/SplitSection.astro";
+import WorkflowSteps from "../components/WorkflowSteps.astro";
+
+const measurementSteps = [
+  { label: "Question", title: "Start with a decision", description: "Choose what the team needs to decide. For this example: which articles help readers move on to a useful tool?", outcome: "One question the measurement needs to answer.", image: "/images/blog/content-consumption-metrics.jpeg", imageAlt: "Illustrated teacher explaining stages of reading an article" },
+  { label: "Plan", title: "Define the reader actions", description: "Choose the actions worth recording: starting an article, reaching its end and opening a linked tool. Agree on event names before implementation.", outcome: "An event specification with names, parameters and firing conditions.", image: "/images/blog/content-element-tracking-en.jpeg", imageAlt: "Illustration from the content element tracking guide" },
+  { label: "Implement", title: "Connect the events in GTM", description: "Send the agreed events through the dataLayer. Configure GTM triggers and GA4 tags, including the consent conditions for each tag.", outcome: "A GTM workspace ready for testing.", image: "/images/blog/hubspot-form-submission-tracking-gtm.jpeg", imageAlt: "Illustration from the GTM form submission tracking guide" },
+  { label: "Verify", title: "Check the whole journey", description: "Read an article and open its linked tool. Check event names, parameters and duplicates in GTM Preview and GA4 DebugView before publishing.", outcome: "A test record and a documented setup the team can maintain.", image: "/images/blog/ga4-annotations.jpeg", imageAlt: "Illustration from the GA4 annotation guide" },
+];
 
 const ctaVariants = [
   { name: "Primary", label: "Start a project", variant: "primary" },
@@ -133,6 +141,14 @@ const sampleServices = [
       </p>
       <ButtonLink href="/services/" label="Example CTA" />
     </div>
+  </section>
+
+  <section class="ds-section" id="workflow-example" aria-labelledby="workflow-title">
+    <div class="ds-section__heading">
+      <h2 id="workflow-title">From a question to working measurement</h2>
+      <p>Example workflow: measuring how readers move from an article to a tool. Select a stage to see the work and its output.</p>
+    </div>
+    <WorkflowSteps id="measurement-workflow" label="Measurement workflow" steps={measurementSteps} imageCredit="Existing site illustrations, generated with AI" />
   </section>
 
   <section class="ds-section" aria-labelledby="tokens-title">

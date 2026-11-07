@@ -3,6 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Hero from "../../components/Hero.astro";
 import ButtonLink from "../../components/ButtonLink.astro";
 import PostList from "../../components/PostList.astro";
+import LatestToolkit from "../../components/LatestToolkit.astro";
 import SplitSection from "../../components/SplitSection.astro";
 import { selectRecentPosts } from "../../utils/recent-posts.ts";
 import { showServices } from "../../data/site.js";
@@ -51,6 +52,8 @@ const posts = selectRecentPosts(Object.values(import.meta.glob("./blog/*.md", { 
       )}
     </Fragment>
   </SplitSection>
+
+  <LatestToolkit fi={true} />
 
   <PostList {posts} fi={true} title="Uusimmat kirjoitukset" allHref="/fi/blog/" allLabel="Kaikki kirjoitukset" />
 </Base>

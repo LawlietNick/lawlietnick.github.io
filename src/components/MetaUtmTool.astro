@@ -1,0 +1,476 @@
+---
+import { directory, formats, kinds, metaDocsUrl, platforms, tactics, terms } from "../data/meta-utm.js";
+import { fi } from "../data/meta-utm.fi.js";
+import { tableRows } from "../utils/meta-utm.js";
+
+// Texts come from one language file; a second language is another file with the same keys.
+const t = fi;
+const bare = (macro) => macro.replace(/[{}]/g, "");
+const items = directory.map((entry) => ({
+  ...entry,
+  ...t.entries[entry.id],
+  platformLabel: entry.platform ? t.platforms[entry.platform] : "",
+  categoryLabel: t.categories[entry.category],
+  variable: bare(entry.macro ?? entry.value),
+  shown: entry.example ?? entry.value,
+  isExample: Boolean(entry.example),
+}));
+const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, items: tableRows(items, platforms) };
+---
+
+<div class="mu" data-meta-utm>
+  <script type="application/json" data-mu-config set:html={JSON.stringify(config).replace(/</g, "\\u003c")} />
+
+  <section class="mu__panel mu__build" aria-labelledby="mu-build">
+    <h2 id="mu-build" class="mu__head">{t.ui.buildTitle}</h2>
+
+    <fieldset class="mu__choices">
+      <legend>{t.ui.trackingLegend}</legend>
+
+      <label class="mu__field">
+        <span class="mu__label">{t.ui.tacticLabel} <code>utm_marketing_tactic</code></span>
+        <select data-tactic>{tactics.map((v) => <option value={v}>{t.tactics[v]}</option>)}</select>
+      </label>
+
+      <label class="mu__field">
+        <span class="mu__label">{t.ui.formatLabel} <code>utm_creative_format</code></span>
+        <select data-format>{formats.map((v) => <option value={v}>{t.formats[v]}</option>)}</select>
+      </label>
+
+      <div class="mu__field" role="radiogroup" aria-labelledby="mu-term-label">
+        <span class="mu__label" id="mu-term-label">{t.ui.termLegend} <code>utm_term</code></span>
+        <div class="mu__radios">
+          {
+            Object.keys(terms).map((key, i) => (
+              <label class="mu__radio">
+                <input type="radio" name="mu-term" value={key} data-term checked={i === 0} />
+                <span>{t.terms[key].label}</span>
+              </label>
+            ))
+          }
+        </div>
+        <p class="mu__hint" data-term-effect aria-live="polite"></p>
+      </div>
+    </fieldset>
+
+    <div class="mu__result">
+      <p class="mu__label" id="mu-output-label">{t.ui.outputTitle}</p>
+      <output class="mu__out" data-out tabindex="0" aria-labelledby="mu-output-label"></output>
+      <div class="mu__act">
+        <button type="button" class="cta" data-copy><span class="cta__surface">{t.ui.copy}</span></button>
+        <p class="mu__status" role="status" data-copy-status></p>
+      </div>
+      <details class="mu__parts">
+        <summary>{t.ui.partsSummary}</summary>
+        <ul class="mu__partlist" data-parts></ul>
+      </details>
+    </div>
+
+    <details class="mu__advanced">
+      <summary>{t.ui.advancedSummary}</summary>
+      <p class="mu__hint">{t.ui.advancedHint}</p>
+      <label class="mu__field">
+        <span class="mu__label">{t.ui.mediumLabel} <code>utm_medium</code></span>
+        <input type="text" data-medium value="paidsocial" autocomplete="off" spellcheck="false" />
+      </label>
+      <label class="mu__field">
+        <span class="mu__label">{t.ui.platformLabel} <code>utm_source_platform</code></span>
+        <input type="text" data-platform value="Meta Ads" autocomplete="off" spellcheck="false" />
+      </label>
+    </details>
+  </section>
+
+  <section class="mu__panel" aria-labelledby="mu-preview">
+    <h2 id="mu-preview">{t.ui.previewTitle}</h2>
+    <p class="mu__hint">{t.ui.previewNote}</p>
+    <div class="mu__urlcard"><code class="mu__url" data-url aria-label={t.ui.urlLabel}></code></div>
+    <ul class="mu__legend">
+      <li><span class="mu__swatch mu__swatch--base"></span>{t.ui.legendBase}</li>
+      <li><span class="mu__swatch mu__swatch--sep"></span>{t.ui.legendSep}</li>
+      <li><span class="mu__swatch mu__swatch--key"></span>{t.ui.legendKey}</li>
+    </ul>
+    <dl class="mu__kinds">
+      {kinds.map((k) => (
+        <div>
+          <dt><span class={`mu__tag mu__tag--${k}`}>{t.kinds[k].label}</span></dt>
+          <dd>{t.kinds[k].hint}</dd>
+        </div>
+      ))}
+    </dl>
+    <ul class="mu__rows" data-preview></ul>
+
+    <h3 class="mu__sub">{t.ui.reportExampleTitle}</h3>
+    <ul class="mu__report" data-term-report></ul>
+    <p class="mu__hint">{t.ui.reportExampleNote}</p>
+  </section>
+
+  <section class="mu__panel" aria-labelledby="mu-dir">
+    <h2 id="mu-dir">{t.ui.directoryTitle}</h2>
+    <p class="mu__intro">{t.ui.directoryIntro}</p>
+    <div data-dir-controls>
+      <label class="mu__field mu__search">
+        <span class="mu__label">{t.ui.searchLabel}</span>
+        <input type="search" data-search placeholder={t.ui.searchPlaceholder} autocomplete="off" spellcheck="false" />
+      </label>
+    </div>
+    <p class="mu__status" role="status" data-count></p>
+    <div class="mu__tablewrap">
+      <table class="mu__table" role="table" aria-label={t.ui.directoryTitle}>
+        <colgroup><col class="mu__col-var" /><col class="mu__col-value" /><col class="mu__col-note" /></colgroup>
+        <thead role="rowgroup">
+          <tr role="row">
+            <th role="columnheader" scope="col">{t.ui.colVariable}</th>
+            <th role="columnheader" scope="col">{t.ui.colValue}</th>
+            <th role="columnheader" scope="col">{t.ui.colNote}</th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup" data-dir></tbody>
+      </table>
+    </div>
+    <p class="mu__empty" data-empty hidden>{t.ui.resultNone}</p>
+  </section>
+
+  <section class="mu__panel" aria-labelledby="mu-tech">
+    <h2 id="mu-tech">{t.ui.techTitle}</h2>
+    <h3 class="mu__sub">{t.ui.faqTitle}</h3>
+    <div class="mu__faq">
+      {
+        t.faq.map((item) => (
+          <details>
+            <summary>{item.q}</summary>
+            {item.a.map((p) => <p>{p}</p>)}
+          </details>
+        ))
+      }
+    </div>
+    <h3 class="mu__sub">{t.ui.encodingTitle}</h3>
+    {t.encoding.map((p) => <p class="mu__note">{p}</p>)}
+    <p class="mu__source">
+      {t.ui.sourceLine}: <a href={metaDocsUrl} rel="noopener">facebook.com/business/help/2360940870872492</a>, {t.ui.checkedOn}.
+    </p>
+  </section>
+</div>
+
+<script>
+  import { filterDirectory, metaUtm, metaUtmParts, previewRows, termReportRows } from "../utils/meta-utm.js";
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  };
+
+  const initMetaUtmTools = () => {
+    document.querySelectorAll("[data-meta-utm]").forEach((root) => {
+      // astro:page-load also fires on first load, and the router may restore a
+      // page that is already set up: never bind the same elements twice.
+      if (root.dataset.ready) return;
+      root.dataset.ready = "true";
+
+      const { ui, kinds, params, terms, items } = JSON.parse(root.querySelector("[data-mu-config]").textContent);
+      const q = (selector) => root.querySelector(selector);
+      const tag = (kind) => el("span", `mu__tag mu__tag--${kind}`, kinds[kind].label);
+
+      const options = () => ({
+        tactic: q("[data-tactic]").value,
+        format: q("[data-format]").value,
+        term: q("[data-term]:checked").value,
+        medium: q("[data-medium]").value,
+        platform: q("[data-platform]").value,
+      });
+
+      const out = q("[data-out]");
+      const copyStatus = q("[data-copy-status]");
+
+      function renderBuilder() {
+        const o = options();
+        out.textContent = metaUtm(o);
+        copyStatus.textContent = "";
+
+        q("[data-parts]").replaceChildren(
+          ...metaUtmParts(o).map(({ key, value }) => {
+            const li = el("li");
+            li.append(el("code", "", key), el("span", "mu__arrow", " → "), el("code", "", value));
+            return li;
+          })
+        );
+
+        const urlParts = [el("span", "mu__u-base", ui.urlBase)];
+        metaUtmParts(o).forEach(({ key, value, kind }, i) => {
+          urlParts.push(el("span", "mu__u-sep", i === 0 ? "?" : "&"), el("span", "mu__u-key", key), el("span", "mu__u-sep", "="), el("span", `mu__u-val mu__u-val--${kind}`, value));
+        });
+        q("[data-url]").replaceChildren(...urlParts);
+
+        q("[data-preview]").replaceChildren(
+          ...previewRows(o).map((row) => {
+            const li = el("li", `mu__row mu__row--${row.kind}`);
+            const head = el("div", "mu__rowhead");
+            head.append(el("code", "mu__key", row.key), tag(row.kind));
+            const value = el("div", "mu__rowvalue");
+            if (row.shown == null) value.append(el("span", "mu__muted", ui.noExample));
+            else value.append(el("code", "", row.shown), el("span", "mu__muted", ` ${row.isExample ? ui.exampleTag : ui.yourChoiceTag}`));
+            const body = el("div", "mu__rowbody");
+            body.append(el("p", "mu__meaning", `${params[row.key].label}. ${params[row.key].meaning}`), value);
+            li.append(head, body);
+            return li;
+          })
+        );
+
+        const term = terms[o.term];
+        q("[data-term-effect]").textContent = term.effect;
+        q("[data-term-report]").replaceChildren(
+          ...termReportRows(o.term).map(([source, termValue]) => {
+            const li = el("li");
+            li.append(el("code", "", source), el("span", "mu__arrow", " / "), termValue ? el("code", "", termValue) : el("span", "mu__muted", ui.noTerm));
+            return li;
+          })
+        );
+      }
+
+      function renderDirectory() {
+        const found = filterDirectory(items, { query: q("[data-search]").value });
+        q("[data-count]").textContent = found.length === 1 ? ui.resultOne : ui.resultCount.replace("{n}", found.length);
+        q("[data-empty]").hidden = found.length > 0;
+        q("[data-dir]").replaceChildren(
+          ...found.map((item) => {
+            const tr = el("tr", "mu__entry");
+            tr.setAttribute("role", "row");
+            const cell = (label) => {
+              const td = el("td");
+              td.setAttribute("role", "cell");
+              td.dataset.label = label;
+              return td;
+            };
+
+            const variableCell = cell(ui.colVariable);
+            variableCell.append(el("code", "mu__code", item.variable));
+
+            const valueCell = cell(ui.colValue);
+            valueCell.append(el("code", "mu__code", item.shown));
+            if (item.isExample) valueCell.append(el("span", "mu__name", ui.exampleTag));
+
+            const noteCell = cell(ui.colNote);
+            noteCell.append(el("p", "mu__desc", item.description));
+            if (item.name !== item.platformLabel && item.platformLabel) noteCell.append(el("p", "mu__meta", `${item.name} · ${item.platformLabel}`));
+            else if (item.isExample) noteCell.append(el("p", "mu__meta", item.name));
+
+            tr.append(variableCell, valueCell, noteCell);
+            return tr;
+          })
+        );
+      }
+
+      async function copyText(text, statusEl, doneText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          statusEl.textContent = doneText;
+        } catch {
+          statusEl.textContent = ui.copyError;
+        }
+      }
+
+      root.addEventListener("input", (event) => {
+        if (event.target.closest("[data-dir-controls]")) renderDirectory();
+        else renderBuilder();
+      });
+      q("[data-copy]").addEventListener("click", () => copyText(out.textContent, copyStatus, ui.copied));
+
+      renderBuilder();
+      renderDirectory();
+    });
+  };
+
+  initMetaUtmTools();
+  document.addEventListener("astro:page-load", initMetaUtmTools);
+</script>
+
+<style is:global>
+  /* the tool renders most of its rows with JavaScript, so scoped styles would miss them; every selector starts with .mu */
+  /* elements toggled with [hidden] also set display in CSS, so hidden must win */
+  .mu [hidden] { display: none !important; }
+
+  .mu {
+    --mu-field-line: color-mix(in srgb, var(--ink) 50%, var(--bg));
+    --mu-fixed: light-dark(oklch(40% 0.12 160), oklch(78% 0.13 160));
+    --mu-key: light-dark(oklch(40% 0.14 250), oklch(78% 0.1 250));
+    --mu-dynamic: light-dark(oklch(44% 0.22 286), oklch(76% 0.14 286));
+    --mu-frozen: light-dark(oklch(45% 0.12 60), oklch(80% 0.12 85));
+    max-width: 72rem;
+    margin-block: 1.5rem var(--section-y-large);
+    display: grid;
+    gap: 1.5rem;
+    font-size: var(--font-size-ui);
+    line-height: var(--line-height-ui);
+  }
+  .mu :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+  .mu__panel {
+    min-width: 0;
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+    border-radius: var(--radius-lg);
+    background: var(--color-accent-panel);
+  }
+  .mu__panel h2 { margin-top: 0; }
+  .mu__build > h2 { font-size: 1.4rem; }
+  .mu__intro { max-width: 60ch; margin: 0 0 1.5rem; color: var(--muted); }
+  .mu__hint { margin: 0.25rem 0 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__muted { color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__source { margin: 1.75rem 0 0; color: var(--muted); font-size: var(--font-size-ui-sm); overflow-wrap: anywhere; }
+  .mu code { font-family: var(--font-mono); overflow-wrap: anywhere; }
+
+  /* Builder: choices left, finished string right on wide screens; one column in DOM order on small ones */
+  .mu__build { display: grid; gap: 1rem 2.5rem; align-content: start; }
+  .mu__build > h2 { margin-bottom: 0; }
+  .mu__choices { margin: 0; padding: 0; border: 0; display: grid; gap: 0.9rem; min-width: 0; }
+  .mu__choices legend { padding: 0; margin-bottom: 0.6rem; font-weight: var(--font-weight-strong); }
+  .mu__field { display: grid; gap: 0.35rem; min-width: 0; }
+  .mu__label { color: var(--ink); font-weight: var(--font-weight-strong); }
+  .mu__label code { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-xs); }
+  .mu select, .mu input[type="text"], .mu input[type="search"] {
+    width: 100%;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--mu-field-line);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    font-weight: var(--font-weight-body);
+  }
+  .mu__radios { display: flex; flex-wrap: wrap; gap: 0.15rem 1.25rem; }
+  .mu__radio { display: flex; gap: 0.5rem; align-items: center; padding: 0.4rem 0; cursor: pointer; }
+  .mu__radio input { accent-color: var(--accent); margin: 0; }
+
+  .mu__result { min-width: 0; align-self: start; }
+  .mu__result .mu__label { margin: 0 0 0.5rem; }
+  .mu__advanced { display: grid; gap: 0.75rem; min-width: 0; padding-top: 0.75rem; border-top: 1px solid var(--line); }
+  .mu__advanced summary, .mu__parts summary, .mu__faq summary { cursor: pointer; font-weight: var(--font-weight-strong); }
+
+  @media (min-width: 60rem) {
+    .mu__build { grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); grid-template-areas: "head head" "choices result" "adv result"; grid-template-rows: auto auto 1fr; }
+    .mu__choices, .mu__advanced { align-self: start; }
+    .mu__build > h2 { grid-area: head; }
+    .mu__choices { grid-area: choices; }
+    .mu__result { grid-area: result; }
+    .mu__advanced { grid-area: adv; }
+  }
+
+  .mu__sub { margin: 1.5rem 0 0.6rem; font-size: 1.05rem; }
+  .mu__note { max-width: 62ch; margin: 0 0 0.5rem; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__report { margin: 0 0 0.75rem; padding: 0; list-style: none; display: grid; gap: 0.35rem; }
+  .mu__report li { padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--ink) 5%, var(--bg)); }
+  .mu__arrow { color: var(--muted); }
+
+  /* Kind tags: colour is never the only signal, the label always says it */
+  .mu__tag {
+    display: inline-block;
+    padding: 0.1rem 0.6rem;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-ui-xs);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+  }
+  .mu__tag--fixed { color: var(--mu-fixed); }
+  .mu__tag--dynamic { color: var(--mu-dynamic); }
+  .mu__tag--frozen { color: var(--mu-frozen); }
+  .mu__kinds { margin: 1rem 0 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1rem; }
+  .mu__kinds dt { margin-bottom: 0.4rem; }
+  .mu__kinds dd { margin: 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
+
+  /* URL card and legend: structure parts in neutral tones, values coloured by who fills them */
+  .mu__urlcard { margin: 1rem 0 0.75rem; padding: 1rem 1.1rem; border-radius: var(--radius-md); background: var(--bg); border: 1px solid var(--line); }
+  .mu__url { display: block; font-size: var(--font-size-ui-sm); line-height: 1.8; overflow-wrap: anywhere; }
+  .mu__u-base { color: var(--muted); }
+  .mu__u-sep { color: var(--muted); }
+  .mu__u-key { color: var(--mu-key); }
+  .mu__u-val { font-weight: var(--font-weight-strong); }
+  .mu__u-val--fixed { color: var(--mu-fixed); }
+  .mu__u-val--dynamic { color: var(--mu-dynamic); }
+  .mu__u-val--frozen { color: var(--mu-frozen); }
+  .mu__legend { margin: 0 0 1.25rem; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .mu__legend li { display: flex; align-items: center; gap: 0.4rem; }
+  .mu__swatch { width: 0.8rem; height: 0.8rem; border-radius: 3px; background: var(--ink); }
+  .mu__swatch--base { background: var(--muted); }
+  .mu__swatch--sep { background: color-mix(in srgb, var(--muted) 45%, var(--bg)); }
+  .mu__swatch--key { background: var(--mu-key); }
+  .mu__swatch--fixed { background: var(--mu-fixed); }
+  .mu__swatch--dynamic { background: var(--mu-dynamic); }
+  .mu__swatch--frozen { background: var(--mu-frozen); }
+
+  /* Preview rows: key and tag on the left, meaning and example on the right on wide screens */
+  .mu__rows, .mu__partlist { margin: 0; padding: 0; list-style: none; }
+  .mu__rows { display: grid; gap: 0.6rem; }
+  .mu__row { display: grid; gap: 0.4rem 1.5rem; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  @media (min-width: 40rem) { .mu__row { grid-template-columns: minmax(11rem, 15rem) 1fr; align-items: start; } }
+  .mu__rowhead { display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem; align-items: center; align-content: start; }
+  .mu__key { font-weight: var(--font-weight-strong); }
+  .mu__rowbody { display: grid; gap: 0.35rem; min-width: 0; }
+  .mu__meaning { margin: 0; color: var(--muted); font-size: var(--font-size-ui-sm); max-width: 62ch; }
+
+  /* Output */
+  .mu__out {
+    display: block;
+    max-height: 9.5rem;
+    overflow-y: auto;
+    margin: 0 0 1rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--mu-field-line);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--ink) 4%, var(--bg));
+    font-family: var(--font-mono);
+    font-size: var(--font-size-ui-sm);
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+  .mu__act { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; }
+  .mu__status { margin: 0; min-height: 1.5em; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__parts { margin-top: 1rem; }
+  .mu__partlist { margin: 0.75rem 0; display: grid; gap: 0.4rem; }
+  .mu__partlist li { overflow-wrap: anywhere; }
+
+  /* Directory */
+  .mu__vars { margin: 0 0 1rem; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+  .mu__vars legend { padding: 0; margin-bottom: 0.4rem; font-weight: var(--font-weight-strong); }
+  .mu__var { display: flex; gap: 0.5rem; align-items: center; padding: 0.4rem 0; cursor: pointer; }
+  .mu__var input { accent-color: var(--accent); margin: 0; }
+  .mu__search { max-width: 36rem; }
+  .mu__varkey { margin: 0.75rem 0 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__others { margin: 0 0 0.5rem; display: grid; gap: 0.75rem; }
+  .mu__others dt { margin-bottom: 0.2rem; }
+  .mu__others dd { margin: 0; max-width: 62ch; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__tablewrap { margin-top: 0.5rem; }
+  .mu__table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: var(--font-size-ui-sm); }
+  .mu__col-var { width: 24%; }
+  .mu__col-value { width: 28%; }
+  .mu__col-note { width: 48%; }
+  .mu__table th { padding: 0.5rem 1rem 0.5rem 0; border-bottom: 1px solid var(--mu-field-line); color: var(--muted); font-weight: var(--font-weight-medium); text-align: left; }
+  .mu__table td { padding: 0.8rem 1rem 0.8rem 0; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+  .mu__code { padding: 0.1rem 0.4rem; border-radius: var(--radius-xs); background: color-mix(in srgb, var(--ink) 6%, var(--bg)); }
+  .mu__name { display: block; margin-top: 0.4rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .mu__desc { margin: 0 0 0.5rem; max-width: 60ch; }
+  .mu__meta { margin: 0; display: flex; flex-wrap: wrap; gap: 0.3rem 0.75rem; align-items: center; color: var(--muted); font-size: var(--font-size-ui-xs); }
+
+  /* Narrow screens: every row becomes a stack, each cell labelled by its column. The ARIA roles
+     on the table keep it a table for assistive technology when display is changed. */
+  @media (max-width: 47.99rem) {
+    .mu__table, .mu__table thead, .mu__table tbody, .mu__table tr, .mu__table td { display: block; }
+    .mu__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .mu__table tr { padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
+    .mu__table td { padding: 0.25rem 0; border: 0; }
+    .mu__table td::before { content: attr(data-label); display: block; margin-bottom: 0.15rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  }
+  .mu__empty { margin: 1rem 0 0; }
+
+  .mu__faq { display: grid; gap: 0.5rem; }
+  .mu__faq details { padding: 0.75rem 0; border-top: 1px solid var(--line); }
+  .mu__faq p { max-width: 62ch; margin: 0.6rem 0 0; }
+
+  @media (max-width: 39.99rem) {
+    .mu__act .cta { width: 100%; }
+  }
+
+  @media (pointer: coarse) {
+    .mu select, .mu input[type="text"], .mu input[type="search"] { min-height: 44px; }
+  }
+</style>

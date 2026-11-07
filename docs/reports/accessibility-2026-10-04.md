@@ -16,7 +16,7 @@ Interaktiiviset lisätestit kattoivat ohituslinkin, työpöytävalikon, mobiiliv
 
 ### 1. Fokuskehys erottuu liian heikosti
 
-**Sijainti:** [tokens.css](/Users/niko/Documents/claude/nk-2026-astrojs/src/styles/tokens.css:76), [Header.astro](/Users/niko/Documents/claude/nk-2026-astrojs/src/components/Header.astro:595). Sama tavallinen fokusmuuttuja on käytössä muun muassa artikkelikorteissa, lisälukemisessa, kielivalikoissa ja footerissa.
+**Sijainti:** [tokens.css](../../src/styles/tokens.css:76), [Header.astro](../../src/components/Header.astro:595). Sama tavallinen fokusmuuttuja on käytössä muun muassa artikkelikorteissa, lisälukemisessa, kielivalikoissa ja footerissa.
 
 Julkisen etusivun valikkopainikkeen näppäimistöfokuksen 3 px kehys käyttää korostusväriä 40 %:n peittävyydellä. Kehyksen ja sivun taustan laskettu kontrasti oli vaaleassa teemassa **1,89:1**, tummassa **2,11:1**. `:focus-visible` oli aktiivinen. Kehys voi jäädä huomaamatta etenkin heikolla näöllä; fokuksen toimiva siirtyminen ei ratkaise näkyvyyttä.
 
@@ -26,7 +26,7 @@ Julkisen etusivun valikkopainikkeen näppäimistöfokuksen 3 px kehys käyttää
 
 **Sivut:** `/templates/cookiebot-guide/` ja `/fi/toteutusmallit/cookiebot-opas/`.
 
-**Sijainti:** [englanninkielinen opas](/Users/niko/Documents/claude/nk-2026-astrojs/src/pages/templates/cookiebot-guide.md:1734), [suomenkielinen opas](/Users/niko/Documents/claude/nk-2026-astrojs/src/pages/fi/toteutusmallit/cookiebot-opas.md:1712); Shikin koodiesimerkkien väritys.
+**Sijainti:** [englanninkielinen opas](../../src/pages/templates/cookiebot-guide.md:1734), [suomenkielinen opas](../../src/pages/fi/toteutusmallit/cookiebot-opas.md:1712); Shikin koodiesimerkkien väritys.
 
 Kummankin oppaan JavaScript-esimerkistä tunnistettiin 14 heikon kontrastin tekstisolmua. Kommenttiväri `#6a737d` taustalla `#24292e` antaa **3,04:1** kontrastin. Teksti on 13,6 px normaalipainoista, joten tavoite on vähintään 4,5:1. Sama tulos sekä julkisella sivulla että tuotantobuildissä, molemmissa teemoissa.
 
@@ -36,25 +36,25 @@ Kummankin oppaan JavaScript-esimerkistä tunnistettiin 14 heikon kontrastin teks
 
 **Sivu:** `/fi/tyokalut/datalayer-dokumentaatiogeneraattori/`.
 
-**Sijainti:** [ToolHero.astro](/Users/niko/Documents/claude/nk-2026-astrojs/src/components/ToolHero.astro:5), [global.css](/Users/niko/Documents/claude/nk-2026-astrojs/src/styles/global.css:35).
+**Sijainti:** [ToolHero.astro](../../src/components/ToolHero.astro:5), [global.css](../../src/styles/global.css:35).
 
 320 CSS-pikselin levyisessä näkymässä pitkä sana `dokumentaatiogeneraattori` ei mahdu otsikon sarakkeeseen. Otsikon oikea reuna ulottuu noin 340 pikseliin; sivun vaakasuuntainen leikkaus piilottaa osan sanasta. Selainkuva vahvistaa havainnon.
 
 **Korjaus:** salli hero-sarakkeen kutistuminen (`min-inline-size: 0`) ja pitkän otsikkosanan rivittyminen (`overflow-wrap: anywhere` tai vastaava rajattu sääntö). Älä ratkaise tätä pienentämällä kaikkia otsikoita. Tarkista 320 px reflow ja suurennus korjauksen jälkeen. [WCAG 1.4.10: Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html).
 
-![Otsikon oikea reuna leikkautuu 320 px näkymässä](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-mobile-clipping.jpg)
+![Otsikon oikea reuna leikkautuu 320 px näkymässä](accessibility-mobile-clipping.jpg)
 
 ## Muut korjattavat havainnot (P2)
 
 ### 4. Tietosuojasivujen pääotsikko on piilotettu
 
-Sivuilla `/privacy/` ja `/fi/privacy/` on HTML:ssä h1, mutta [global.css](/Users/niko/Documents/claude/nk-2026-astrojs/src/styles/global.css:749) piilottaa `.prose > h1:first-child` -otsikon `display: none` -säännöllä. Sivuilla ei ole korvaavaa näkyvää pääotsikkoa. Selaimessa sisältö alkaa päivityspäivästä; myös saavutettavuuspuu menettää h1:n.
+Sivuilla `/privacy/` ja `/fi/privacy/` on HTML:ssä h1, mutta [global.css](../../src/styles/global.css:749) piilottaa `.prose > h1:first-child` -otsikon `display: none` -säännöllä. Sivuilla ei ole korvaavaa näkyvää pääotsikkoa. Selaimessa sisältö alkaa päivityspäivästä; myös saavutettavuuspuu menettää h1:n.
 
 **Korjaus:** rajaa otsikon piilotus vain niihin artikkelipohjiin, joissa sama pääotsikko on jo hero-osassa, tai anna tietosuojasivuille näkyvä hero-otsikko. H1:n puuttuminen yksinään ei todista WCAG-rikkomusta, mutta tässä se heikentää sivun tunnistamista ja otsikkonavigointia.
 
 ### 5. Työkaluihin syntyy sisäkkäisiä main-alueita
 
-[Base.astro](/Users/niko/Documents/claude/nk-2026-astrojs/src/layouts/Base.astro:256) sisältää pääsisällön `main`-elementin. Sen sisällä GTM-työkalu renderöi uuden [main-elementin](/Users/niko/Documents/claude/nk-2026-astrojs/src/components/gtm-builder/GtmContainerBuilder.tsx:227) ja data layer -työkalu oman [main-elementtinsä](/Users/niko/Documents/claude/nk-2026-astrojs/src/components/datalayer-documenter/DataLayerDocumenter.tsx:223).
+[Base.astro](../../src/layouts/Base.astro:256) sisältää pääsisällön `main`-elementin. Sen sisällä GTM-työkalu renderöi uuden [main-elementin](../../src/components/gtm-builder/GtmContainerBuilder.tsx:227) ja data layer -työkalu oman [main-elementtinsä](../../src/components/datalayer-documenter/DataLayerDocumenter.tsx:223).
 
 Havainto koskee GTM-työkalun kumpaakin kieliversiota ja suomenkielistä data layer -työkalua. Ruudunlukijan pääsisältöalueiden luettelo muuttuu epäselväksi.
 
@@ -68,13 +68,13 @@ Axe havaitsi otsikkotason hyppyjä 11:llä julkaistulla sivulla sekä virhesivul
 
 ### 7. GTM-kentän näkyvä virhe ei ole kentän saavutettava kuvaus
 
-[Sijainti: GtmContainerBuilder.tsx](/Users/niko/Documents/claude/nk-2026-astrojs/src/components/gtm-builder/GtmContainerBuilder.tsx:87). Virheellisellä mittaustunnuksella `wrong` näkyy virhe “Käytä muotoa G-ABC123.”. Kentän `aria-describedby` viittaa silti vain piilotettuun ohjetekstiin, ja näkyvällä virheellä ei ole id:tä. Natiivi `required`/`pattern`-validointi toimii; `aria-invalid`-attribuutin puuttumista yksinään ei lasketa virheeksi.
+[Sijainti: GtmContainerBuilder.tsx](../../src/components/gtm-builder/GtmContainerBuilder.tsx:87). Virheellisellä mittaustunnuksella `wrong` näkyy virhe “Käytä muotoa G-ABC123.”. Kentän `aria-describedby` viittaa silti vain piilotettuun ohjetekstiin, ja näkyvällä virheellä ei ole id:tä. Natiivi `required`/`pattern`-validointi toimii; `aria-invalid`-attribuutin puuttumista yksinään ei lasketa virheeksi.
 
 **Korjaus:** anna virhetekstille id ja liitä se kentän kuvaukseen virhetilassa. Säilytä natiivi validointi ja varmista ilmoitus oikealla ruudunlukijalla. Sama komponentti palvelee molempia kieliä.
 
 ### 8. Annotaatioiden ylipitkässä kuvauksessa ehdotuslista ei ole näppäimistöllä vieritettävä
 
-[Sijainti: Ga4AnnotationBuilder.astro](/Users/niko/Documents/claude/nk-2026-astrojs/src/components/Ga4AnnotationBuilder.astro:454). Kun kuvaus sisältää 170 merkkiä ja ehdotukset avataan, kaikki ehdotuspainikkeet voivat olla disabled-tilassa. Listalla on `overflow-y: auto`, mutta listaa tai sen sisältöä ei silloin voi fokusoida. Axe raportoi `scrollable-region-focusable`-havainnon molemmissa teemoissa. Ehdotukset ovat tässä tilassa poissa käytöstä, joten vakavuus on tavallista toiminnallista näppäimistöestettä pienempi.
+[Sijainti: Ga4AnnotationBuilder.astro](../../src/components/Ga4AnnotationBuilder.astro:454). Kun kuvaus sisältää 170 merkkiä ja ehdotukset avataan, kaikki ehdotuspainikkeet voivat olla disabled-tilassa. Listalla on `overflow-y: auto`, mutta listaa tai sen sisältöä ei silloin voi fokusoida. Axe raportoi `scrollable-region-focusable`-havainnon molemmissa teemoissa. Ehdotukset ovat tässä tilassa poissa käytöstä, joten vakavuus on tavallista toiminnallista näppäimistöestettä pienempi.
 
 **Korjaus:** mahdollista listan fokusointi vieritystä varten tai korvaa kokonaan käyttökelvoton ehdotuslista selkeällä ilmoituksella merkkirajan ylityksestä. Testaa myös normaali tila, jossa ehdotuspainikkeet ovat käytettävissä. Englanninkielinen työkalu käyttää samaa komponenttia; dynaaminen tila testattiin suomeksi.
 
@@ -144,9 +144,9 @@ Taulukko kuvaa julkisen sivuston vaalean teeman automaattiset, väärien hälyty
 
 ## Tallennettu aineisto
 
-- [Julkinen sivusto, vaalea teema](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-live-light-2026-10-04.json) ja [tumma teema](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-live-dark-2026-10-04.json).
-- [Tuotantobuild, vaalea teema](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-light-2026-10-04.json) ja [tumma teema](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-dark-2026-10-04.json).
-- [Interaktiiviset tilat ja fokusmittaukset](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-states-2026-10-04.json).
-- [HTML-inventaario](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-pages-2026-10-04.json) sekä [lisäsivut, vaalea](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-extra-live-light-2026-10-04.json) ja [tumma](/Users/niko/Documents/claude/nk-2026-astrojs/docs/reports/accessibility-extra-live-dark-2026-10-04.json).
+- [Julkinen sivusto, vaalea teema](accessibility-live-light-2026-10-04.json) ja [tumma teema](accessibility-live-dark-2026-10-04.json).
+- [Tuotantobuild, vaalea teema](accessibility-light-2026-10-04.json) ja [tumma teema](accessibility-dark-2026-10-04.json).
+- [Interaktiiviset tilat ja fokusmittaukset](accessibility-states-2026-10-04.json).
+- [HTML-inventaario](accessibility-pages-2026-10-04.json) sekä [lisäsivut, vaalea](accessibility-extra-live-light-2026-10-04.json) ja [tumma](accessibility-extra-live-dark-2026-10-04.json).
 
 **Seuraava työ:** toteuta P1-korjaukset rajatuilla tyylimuutoksilla ja aja samat kontrasti-, fokus- ja 320 px reflow-tarkistukset uudelleen. Sen jälkeen korjaa otsikko- ja main-rakenne sekä lomakkeiden virhekuvaukset.

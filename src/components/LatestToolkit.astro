@@ -1,0 +1,144 @@
+---
+// Home page band: the three newest tools or implementation templates in one language.
+import ServiceCard from "./ServiceCard.astro";
+import { interactiveTools } from "../data/interactive-tools.js";
+import { selectLatestToolkit } from "../utils/latest-toolkit.ts";
+
+const { fi = false } = Astro.props;
+
+const enTemplates = import.meta.glob("../pages/templates/*.md", { eager: true });
+const fiTemplates = import.meta.glob("../pages/fi/toteutusmallit/*.md", { eager: true });
+
+const c = fi
+  ? {
+      title: "Uusimmat työkalut ja toteutusmallit",
+      toolsHref: "/fi/tyokalut/", toolsLabel: "Kaikki työkalut",
+      templatesHref: "/fi/toteutusmallit/", templatesLabel: "Kaikki toteutusmallit",
+    }
+  : {
+      title: "Latest tools and templates",
+      toolsHref: "/tools/", toolsLabel: "All tools",
+      templatesHref: "/templates/", templatesLabel: "All templates",
+    };
+
+const templateBase = fi ? "/fi/toteutusmallit" : "/templates";
+const templates = Object.entries(fi ? fiTemplates : enTemplates)
+  .filter(([, mod]) => !mod.frontmatter.draft)
+  .map(([path, mod]) => ({
+    title: mod.frontmatter.title,
+    summary: mod.frontmatter.summary ?? mod.frontmatter.description,
+    icon: mod.frontmatter.icon,
+    date: mod.frontmatter.date,
+    order: mod.frontmatter.order ?? 0,
+    href: `${templateBase}/${path.split("/").pop().replace(/\.md$/, "")}/`,
+  }));
+
+const lang = fi ? "fi" : "en";
+const tools = interactiveTools
+  .filter((t) => t[lang] && t.date)
+  .map((t) => ({
+    title: t[lang].title,
+    summary: t[lang].summary,
+    icon: t.icon,
+    date: t.date,
+    order: t.order ?? 0,
+    href: fi ? `/fi/tyokalut/${t.fi.slug ?? t.slug}/` : `/tools/${t.slug}/`,
+  }));
+
+const items = selectLatestToolkit([...templates, ...tools]);
+---
+
+{items.length > 0 && (
+  <section class="latest-toolkit" data-link-area="latest-toolkit">
+    <header class="latest-toolkit__header">
+      <h2>{c.title}</h2>
+      <span class="latest-toolkit__rule" aria-hidden="true"></span>
+      <span class="latest-toolkit__links">
+        <a href={c.toolsHref}>{c.toolsLabel}<span aria-hidden="true"> →</span></a>
+        <a href={c.templatesHref}>{c.templatesLabel}<span aria-hidden="true"> →</span></a>
+      </span>
+    </header>
+    <div class="latest-toolkit__grid">
+      {items.map((entry) => (
+        <ServiceCard href={entry.href} icon={entry.icon ?? "✦"} title={entry.title} summary={entry.summary} />
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .latest-toolkit {
+    container: latest-toolkit / inline-size;
+    margin-bottom: var(--section-y);
+  }
+
+  .latest-toolkit__header {
+    display: grid;
+    grid-template-columns: auto minmax(2rem, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    margin-block: 3rem 1.5rem;
+  }
+
+  .latest-toolkit__header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+  }
+
+  .latest-toolkit__rule {
+    height: 1px;
+    background: var(--line);
+  }
+
+  .latest-toolkit__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    justify-content: flex-end;
+  }
+
+  .latest-toolkit__links a {
+    color: var(--accent);
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+  }
+
+  .latest-toolkit__links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .latest-toolkit__links a:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .latest-toolkit__grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @container latest-toolkit (min-width: 46rem) {
+    .latest-toolkit__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .latest-toolkit__header {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .latest-toolkit__rule {
+      display: none;
+    }
+
+    .latest-toolkit__links {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+</style>

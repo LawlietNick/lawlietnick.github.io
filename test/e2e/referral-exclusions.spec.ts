@@ -63,8 +63,8 @@ test("merging a custom group counts as one GA4 row", async ({ page }) => {
   await page.locator("tbody[data-custom] [data-merge]").check();
 
   await expect(page.locator("tbody[data-custom] [data-merged-code]")).toContainText(".*edb\\.com.*|.*acs4\\.privatbank\\.ua.*");
-  // 64 rows, two of them now in one merged row
-  await expect(page.locator("[data-status]")).toContainText("63 GA4-riviä");
+  // 65 rows, two of them now in one merged row
+  await expect(page.locator("[data-status]")).toContainText("64 GA4-riviä");
 });
 
 test("own domains are a section of the list until 'Omat domainit' is unchecked", async ({ page }) => {
@@ -73,18 +73,18 @@ test("own domains are a section of the list until 'Omat domainit' is unchecked",
   await expect(own.locator("[data-own-head]")).toBeVisible();
   await expect(own.locator("[data-own-example] code")).toHaveText(/yritys/);
   await expect(own.locator("[data-own-example] button")).toBeDisabled();
-  await expect(page.locator("[data-status]")).toContainText("64 GA4-riviä");
+  await expect(page.locator("[data-status]")).toContainText("65 GA4-riviä");
 
   await page.locator("[data-own-input]").fill("yritys.fi\nwww.yritys.fi\nblog.yritys.fi\nyritys.com");
   await expect(own.locator("[data-own-example]")).toHaveCount(0);
   await expect(own.locator("[data-own-row] code")).toHaveText("(?:(www|blog)\\.)?yritys\\.(fi|com)");
   await expect(own.locator("[data-own-count]")).toHaveText("1 rivi");
-  await expect(page.locator("[data-status]")).toContainText("65 GA4-riviä");
+  await expect(page.locator("[data-status]")).toContainText("66 GA4-riviä");
 
   await page.getByLabel("Omat domainit").uncheck();
   await expect(own.locator("[data-own-head]")).toBeHidden();
   await expect(own.locator("[data-own-row]")).toBeHidden();
-  await expect(page.locator("[data-status]")).toContainText("64 GA4-riviä");
+  await expect(page.locator("[data-status]")).toContainText("65 GA4-riviä");
 });
 
 test("the big regex is the same and still matches when every section is merged", async ({ page }) => {

@@ -49,6 +49,7 @@ export const rows = [
 
   // Payment services
   regex("(?:(public|products|pay)\\.)?mobilepay\\.(dk|fi)", ["public.mobilepay.dk", "pay.mobilepay.fi"], "payments", "mobilepay"),
+  regex("(api|pay)\\.vipps\\.no", ["api.vipps.no", "pay.vipps.no"], "payments", "mobilepay"),
   regex("(?:(pay|api)\\.)?checkout\\.fi", ["pay.checkout.fi"], "payments", "checkout"),
   regex("(services|pay|payment).paytrail.com", ["services.paytrail.com"], "payments", "paytrail"),
   regex("(?:(pay|checkout|cards\\-eu|checkout\\-eu|checkout\\-client)\\.)?klarna\\.com", ["cards-eu.klarna.com"], "payments", "klarna"),

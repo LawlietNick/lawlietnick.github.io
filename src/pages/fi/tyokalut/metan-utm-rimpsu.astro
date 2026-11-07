@@ -1,0 +1,32 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ToolHero from "../../../components/ToolHero.astro";
+import MetaUtmTool from "../../../components/MetaUtmTool.astro";
+
+const title = "Metan UTM-rimpsu";
+const summary = "Rakenna yksi kopioitava UTM-rimpsu Meta-mainoksille. Lähde, kampanja, mainos ja ID:t täyttyvät Metasta dynaamisesti, kampanjan tyypin ja formaatin valitset itse.";
+const description = "Rakenna yksi kopioitava UTM-rimpsu Meta-mainoksille. Lähde, kampanja, mainos ja ID:t täyttyvät dynaamisesti, tyypin ja formaatin valitset itse.";
+---
+
+<Base primaryCategory="analytics" title={title} description={description} alternate={{ lang: "en", href: "/tools/", translated: false }}>
+  <Breadcrumb
+    fi
+    crumbs={[
+      { label: "Etusivu", href: "/fi/", icon: true },
+      { label: "Työkalut", href: "/fi/tyokalut/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note">
+      Lähde tulee Metalta arvoina <code>fb</code>, <code>ig</code>, <code>msg</code>, <code>an</code> tai <code>th</code>, ja medium on oletuksena <code>paidsocial</code>.
+      GA4 erottelee isot ja pienet kirjaimet, joten kirjoita arvot samalla tavalla jokaisessa kampanjassa.
+    </p>
+  </ToolHero>
+
+  <div class="wide-band">
+    <MetaUtmTool />
+  </div>
+</Base>
