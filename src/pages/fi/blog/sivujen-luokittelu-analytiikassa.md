@@ -1,6 +1,6 @@
 ---
 layout: ../../../layouts/Base.astro
-title: "Mitä verkkosivustosi luvut kertovat? Sivujen luokittelu auttaa ymmärtämään kokonaisuutta"
+title: "Mitä verkkosivustosi luvut kertovat? Sivujen luokittelu auttaa hahmottamaan kokonaiskuvan"
 documentTitle: "Sivujen luokittelu analytiikassa | Niko Karppinen"
 description: "Mitä sivutyyppi ja pääaihe tarkoittavat? Kaupungin verkkosivuston esimerkit näyttävät, miten kaksi valintaa selkeyttää raportointia."
 date: 2026-09-24
@@ -10,6 +10,9 @@ image: /images/blog/page-classification-for-website-analytics.jpeg
 imageAlt: "Kilpikonna järjestää verkkosivuja kuvaavia kortteja riveihin ja sarakkeisiin luokittelutaulukossa."
 imageCredit: "Luotu OpenAI ImageGenillä"
 tags: ["analytiikka", "sisällön luokittelu", "sivutyyppi", "sisällönhallinta"]
+alternate:
+  lang: en
+  href: /blog/page-classification-for-website-analytics/
 relatedHeading: "Lisää luettavaa"
 about:
   - "Verkkosivuston analytiikka"
@@ -27,7 +30,7 @@ Kaupungin verkkosivuston analytiikkaraportissa voivat olla rinnakkain päivähoi
 
 Jos kaikki sivut päätyvät samaan keskiarvoon, raportti kertoo vähän siitä, miten sivuston eri sisältöjä käytetään. Yksittäisten sivuosoitteiden lista voi puolestaan olla tuhansien rivien mittainen.
 
-Kokonaisuutta voidaan selkeyttää antamalla jokaiselle sivulle kaksi perustietoa: **millainen sivu se on ja mihin pääaiheeseen se kuuluu.** Ne tuovat dataan sen, mitä osoite ei kerro. Raportissa voidaan silloin tarkastella ymmärrettäviä ryhmiä ja verrata yksittäistä sivua muihin samankaltaisiin sivuihin.
+Kokonaiskuvaa voidaan selkeyttää antamalla jokaiselle sivulle kaksi perustietoa: **millainen sivu se on ja mihin pääaiheeseen se kuuluu.** Ne tuovat dataan sen, mitä osoite ei kerro. Raportissa voidaan silloin tarkastella ymmärrettäviä ryhmiä ja verrata yksittäistä sivua muihin samankaltaisiin sivuihin.
 
 ## Sivutyyppi kertoo, millainen sivu on. Pääaihe kertoo, mistä se kertoo.
 
@@ -118,9 +121,15 @@ Kuvitellaan, että kaupungin sivuston kuukausittaiset sivukatselut laskevat 15 p
 
 Luvut ovat kuvitteellisia.
 
-Lähes koko lasku tulee ohjesivuilta. Palveluja, uutisia ja tapahtumia katsotaan lähes yhtä paljon kuin ennenkin. **Lasku ei koskenut koko sivustoa vaan yhtä sivutyyppiä.**
+Lähes koko lasku tulee ohjesivuilta. Palveluja, uutisia ja tapahtumia katsotaan lähes yhtä paljon kuin ennenkin. **Lasku johtui yhdestä sivutyypistä.**
 
-Silloin edessä ei ole koko sivuston kriisi vaan rajattu joukko sivuja, jotka voidaan käydä läpi. Pääaiheen avulla joukkoa voidaan rajata vielä tarkemmin: koskeeko lasku kaikkia ohjeita vai esimerkiksi pelkästään ympäristöaiheisia?
+Silloin käytävänä on rajattu joukko sivuja. Pääaiheen avulla joukkoa voidaan rajata vielä tarkemmin: koskeeko lasku kaikkia ohjeita vai esimerkiksi pelkästään ympäristöaiheisia?
+
+Sama luokittelu auttaa myös silloin, kun sisältöä suunnitellaan aihekokonaisuuksina. Aihekokonaisuus (engl. topic cluster) tarkoittaa yhtä laajaa pääsivua ja sen tukisivuja, jotka vastaavat kapeampiin kysymyksiin. Kaupungin varhaiskasvatuksessa se voisi olla yleiskatsaus sekä päivähoitopaikan, esiopetuksen ja koulukuljetuksen hakusivut.
+
+Suunnitelma ei vielä kerro, toimiiko kokonaisuus. Sen näkee, kun jokaisella sivulla on pääaihe. Kaikki varhaiskasvatuksen ja koulutuksen sivut muodostavat raportissa yhden ryhmän. Sivutyyppi erottaa ryhmästä yleiskatsauksen ja tukisivut.
+
+Tästä on hyötyä, kun tekoälyvastaukset vähentävät klikkejä. Koko sivuston käyrä ei kerro, mikä aihe menettää katseluja. Pääaiheen mukaan ryhmitellystä raportista näkee, laskeeko yksi kokonaisuus vai koko sivusto.
 
 ## Vertailuryhmä auttaa löytämään kysymyksen, ei vielä vastausta
 
