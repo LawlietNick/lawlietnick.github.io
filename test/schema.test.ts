@@ -296,7 +296,7 @@ test("The About ProfilePage reuses one public portrait ImageObject", () => {
 
 test("BreadcrumbList uses Google's name + URL item form in EN and FI", () => {
   const cases = [
-    ["/blog/content-consumption-metrics/", "en", [[root, "Home"], [url("/blog/"), "Thoughts"]]],
+    ["/blog/content-consumption-metrics/", "en", [[root, "Home"], [url("/blog/"), "Articles"]]],
     ["/fi/blog/esimerkki/", "fi", [[url("/fi/"), "Etusivu"], [url("/fi/blog/"), "Kirjoitukset"]]],
   ];
   for (const [path, language, linked] of cases) {
@@ -323,7 +323,7 @@ test("article breadcrumbs include the visible hierarchy and omit the final item 
   const items = breadcrumbs("/blog/example/", url("/blog/example/"), "Example", "en");
   assert.deepEqual(items, [
     { name: "Home", url: root },
-    { name: "Thoughts", url: url("/blog/") },
+    { name: "Articles", url: url("/blog/") },
     { name: "Example" },
   ]);
 });
@@ -341,7 +341,7 @@ test("posts belong to a language-specific Blog; WebPage stays part of the WebSit
   const blogFi = node(fi, "Blog");
   assert.deepEqual(
     { id: blogEn["@id"], name: blogEn.name, lang: blogEn.inLanguage },
-    { id: url("/blog/#blog"), name: "Thoughts", lang: "en" },
+    { id: url("/blog/#blog"), name: "Articles", lang: "en" },
   );
   assert.deepEqual(
     { id: blogFi["@id"], name: blogFi.name, lang: blogFi.inLanguage },

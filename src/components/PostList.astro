@@ -11,7 +11,7 @@ const readTime = (minutes) => fi ? `${minutes} min` : `${minutes} min read`;
 const category = (post) => categoryLabel(post.category, fi) ?? (fi ? "Analytiikka" : "Analytics");
 const imageAlt = (post) =>
   post.imageAlt ?? (fi ? `Kuva artikkelille ${post.title}` : `Image for ${post.title}`);
-const latestLabel = fi ? "Uusin juttu" : "Latest issue";
+const latestLabel = fi ? "Uusin juttu" : "Latest article";
 ---
 
 <section class="recent-posts" id="writing" data-link-area="recent-posts">

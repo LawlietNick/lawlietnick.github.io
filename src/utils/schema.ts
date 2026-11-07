@@ -203,7 +203,7 @@ export function buildSchemaGraph(options: SchemaOptions) {
   const serviceId = fragmentId(canonicalUrl, "service");
   const pageId = pageType === "about" ? fragmentId(canonicalUrl, "profilepage") : canonicalUrl;
   // Blog membership only applies to actual posts under /blog/ — template
-  // guides also carry `frontmatter` but aren't part of the Thoughts blog.
+  // guides also carry `frontmatter` but aren't part of the Articles blog.
   const isBlogPost = Boolean(frontmatter) && pathname.includes("/blog/");
   const blog = isBlogPost ? resolveBlog(frontmatter?.blog, language) : undefined;
 

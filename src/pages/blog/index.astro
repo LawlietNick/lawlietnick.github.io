@@ -13,10 +13,10 @@ const posts = Object.values(import.meta.glob("./*.md", { eager: true }))
   .sort((a, b) => new Date(b.date) - new Date(a.date));
 ---
 
-<Base title="Thoughts" description="Notes on analytics, measurement, SEO, and the practical use of AI in digital work." schemaPageType="blog-index" schemaItems={posts}>
+<Base title="Articles" documentTitle="Practical articles on analytics, measurement and SEO" description="Notes on analytics, measurement, SEO, and the practical use of AI in digital work." schemaPageType="blog-index" schemaItems={posts}>
   <BlogListing
     posts={posts}
-    heroTitle="Thoughts"
+    heroTitle="Articles"
     intro="Notes on analytics, measurement, SEO, and the practical use of AI in digital work."
   />
 </Base>

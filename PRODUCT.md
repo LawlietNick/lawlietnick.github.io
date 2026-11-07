@@ -54,7 +54,7 @@ Projects may be focused audits, implementation support, analytics and SEO planni
 - **Home:** concise positioning, selected proof, recent thinking, and clear routes into services and contact.
 - **Services / Palvelut:** the primary commercial page, explaining service areas, useful situations, working method, project formats, and contact.
 - **About / Minusta:** background, values, approach, public appearances, podcasts, and publications.
-- **Thoughts / Kirjoitukset:** practical articles that demonstrate expertise and independent thinking.
+- **Articles / Kirjoitukset:** practical articles that demonstrate expertise and independent thinking.
 - **Tools / Työkalut:** curated frameworks, systems, and tools worth knowing.
 - **Implementation Templates / Toteutusmallit:** reusable GTM containers, schema examples, tracking setups, dataLayer examples, and technical specifications.
 - **Workflow library / Työnkulkukirjasto:** repeatable operating patterns and examples for digital work.

@@ -408,8 +408,10 @@ const sampleServices = [
         The service hub uses its own card, distinct from the flat work cards: a
         comic panel on the signature halftone-dot offset shadow (same motif as
         the CTA). It lifts, the border and icon go accent, and the dotted shadow
-        pops out on hover and focus. The proof strip carries verified credibility
-        only.
+        pops out on hover and focus. The home page band uses the quiet variant
+        (<code>quiet</code>): a hairline border, the post-card radius and a display
+        title, with the dotted shadow only on hover and focus. The proof strip
+        carries verified credibility only.
       </p>
     </div>
 
@@ -419,6 +421,14 @@ const sampleServices = [
       {
         sampleServices.map((s) => (
           <ServiceCard href={s.href} icon={s.icon} title={s.title} summary={s.summary} />
+        ))
+      }
+    </div>
+
+    <div class="ds-service-grid">
+      {
+        sampleServices.slice(0, 3).map((s) => (
+          <ServiceCard quiet href={s.href} icon={s.icon} title={s.title} summary={s.summary} />
         ))
       }
     </div>
@@ -556,7 +566,7 @@ const sampleServices = [
 
       <article class="ds-pattern">
         <p class="eyebrow">Writing list</p>
-        <PostList posts={samplePosts} title="Recent Posts" />
+        <PostList posts={samplePosts} title="Recent articles" />
       </article>
 
       <article class="ds-pattern">

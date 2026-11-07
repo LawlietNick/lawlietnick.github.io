@@ -3,10 +3,12 @@
 // Distinct from the flat front-page work cards: a comic panel sitting on the
 // site's signature halftone-dot offset shadow (same motif as the CTA button),
 // which pops and blurs on hover/focus. All colours are theme tokens.
-const { href, icon, title, summary } = Astro.props;
+// `quiet`: low-key variant for pages where the card sits beside content cards (home band).
+// Same icon, hover and dot motif; the dotted shadow only appears on hover and focus.
+const { href, icon, title, summary, quiet = false } = Astro.props;
 ---
 
-<a href={href} class="service-card">
+<a href={href} class:list={["service-card", { "service-card--quiet": quiet }]}>
   <span class="service-card__icon" aria-hidden="true">{icon}</span>
   <span class="service-card__title">{title}</span>
   <span class="service-card__summary">{summary}</span>
@@ -97,6 +99,23 @@ const { href, icon, title, summary } = Astro.props;
     translate: 0 0;
     opacity: 0;
     filter: blur(0);
+  }
+
+  /* quiet variant: hairline border, post-card radius, dots only on hover/focus */
+  .service-card--quiet::before {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+  .service-card--quiet::after {
+    border-radius: var(--radius-lg);
+    opacity: 0;
+  }
+  .service-card--quiet .service-card__title {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-strong);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: clamp(1.15rem, 2.5cqi, 1.35rem);
   }
 
   .service-card__icon {

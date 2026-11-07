@@ -45,13 +45,11 @@ Mitä menettäisitte, jos verkkosivunne olisi puoli vuotta pois käytöstä?
 
 Kysymys ei kuulosta raportoinnilta, mutta se on silti paras tapa aloittaa dashboard-projekti, koska vastaus kertoo, mitä sivustolta oikeasti odotetaan. Myyntiä, yhteydenottoja, asiakaspalvelua, tietoa vai tunnettuutta?
 
-Verkkosivun pitäisi olla yksi organisaation parhaista myyjistä, ei käyntikortti. Selkeä tavoite näyttää raportoinnille suunnan. Mikäli verkkosivuston tarkoitus on hukassa, aloita siitä. Sen määrittely kantaa pitkälle.
+Verkkosivun pitäisi olla yksi organisaation parhaista myyjistä, ei käyntikortti. Selkeä tarkoitus näyttää raportoinnille suunnan. Mikäli verkkosivuston tarkoitus on hukassa, aloita siitä. Sen määrittely kantaa pitkälle.
 
 Kaikkien päätösten ei tarvitse olla valmiita ennen kuin tilaat dashboardin. Projektin ensimmäinen vaihe voi olla juuri oikeiden kysymysten ja päätösten määrittely yhdessä toimittajan kanssa. Hyvä toimittaja auttaa siinä.
 
 Tämä teksti on sinulle, joka tilaat markkinoinnin raportoinnin mutta et rakenna sitä itse. Oletko yrittäjä, markkinointipäällikkö vai johtaja, sillä ei ole väliä. Kerronpa kuusi päätöstä, jotka kuuluvat sinulle, ja mitä tapahtuu, jos ne jäävät tekemättä.
-
-<!-- TÄYDENNÄ (Niko): lyhyt oma kokemus tai esimerkki avaukseen, jos haluat. En ole keksinyt sitä. -->
 
 ## Dashboard-projekti alkaa päätöksistä, ei kaavioista
 
@@ -79,13 +77,23 @@ Sinun ei tarvitse osata rakentaa dashboardia, sillä SQL-kyselyt ja tapahtumaseu
 
 Päätökset muodostavat ketjun. Jos ensimmäinen on epäselvä, seuraavat perustuvat arvailuun, ja silloin mittari valitaan usein sen mukaan, mikä on helppo laskea eikä sen mukaan, mitä pitäisi tietää.
 
+Vaiheiden läpikäynti ei todellakaan ole vapaaehtoista. Tavoitteet pitää sanoittaa ja määritellä ennen kuin mitään aletaan rakentaa.
+
+Hyvä dashboard on kuin lennonjohdon näkymä. Siinä ei ole mitään ylimääräistä, mittarit löytyvät ja jokainen ymmärtää, mitä ne tarkoittavat. Markkinoinnin näkymät ovat usein aika erilaisia, koska ei välttämättä tiedetä, mitä niillä yritetään ohjata ja mitä niillä yritetään kertoa.
+
+Siksi tilaajan ja tekijän pitää ajatella asioista ja mittareista samalla tavalla ja ymmärtää ne samoin. Muuten lopputulos ei miellytä ketään. Olen kohdannut tämän itse muutaman kerran, ja tekijälle jää siitä huono fiilis pitkäksi aikaa. Näitä vaiheita ei kannata ohittaa. Laskuttaa pitää silti, joten tilaajakaan ei ole tyytyväinen.
+
+Tilaajan vastuulla on ymmärtää oman liiketoimintansa lähtökohdat ja sanoittaa ne. Jos et yrittäjänä tai yrityksen markkinointipäättäjänä pysty sanoittamaan niitä, ei niitä voi kukaan muukaan sanoittaa.
+
 ## 1. Mitä liiketoiminnassa halutaan saavuttaa?
 
 Ensimmäinen päätös on tavoite. Sivustolla voi olla monta tehtävää: myynti, yhteydenotot, asiakaspalvelu, tiedon jakaminen tai tunnettuuden kasvattaminen. Kaikkea ei tarvitse mitata yhtä tarkasti, ja sinun tehtäväsi on sanoa, mitkä niistä ovat tärkeimpiä.
 
 Kaikki tulokset eivät myöskään synny verkkosivulla. B2B-yrityksessä sivusto tuo yhteydenoton, mutta kauppa syntyy vasta CRM-järjestelmässä. Silloin pitää miettiä, miten sivuston tapahtuma ja myöhempi tulos yhdistetään.
 
-Jos tavoite jää auki, dashboardiin kertyy lukuja, jotka näyttävät hyödyllisiltä mutta eivät vastaa mihinkään. Tavoitteeton dashboard on kuin navigaattori ilman määränpäätä: karttaa kyllä näkyy, mutta perille ei pääse. Jos tavoitetta ei mitata digitaalisissa kanavissa lainkaan, dashboard ei voi antaa oikeita vastauksia eikä historiasta saa tietoa, onko sivusto tuottanut tulosta. Silloin mittauksen rakentaminen on ensimmäinen tehtävä.
+Hyvä tapa aloittaa on katsoa, mitä joudut itse raportoimaan ylöspäin. Jos olet markkinointipäällikkö, mitä johto kysyy sinulta ja millä luvuilla vastaat? Siitä on helppo lähteä, kun mietitään, miten dashboardin tavoite ja verkkosivuston tarkoitus saadaan kuvattua. Kyse ei ole vain raporteista vaan siitä, mitä niillä halutaan kertoa.
+
+Jos tavoite jää auki, dashboardiin kertyy lukuja, jotka näyttävät hyödyllisiltä mutta eivät vastaa mihinkään. Tarkoitukseton dashboard on kuin navigaattori ilman määränpäätä: karttaa kyllä näkyy, mutta perille ei pääse. Jos liiketoiminnan tavoitetta ei mitata digitaalisissa kanavissa lainkaan, dashboard ei voi antaa oikeita vastauksia eikä historiasta saa tietoa, onko sivusto tuottanut tulosta. Silloin mittauksen rakentaminen on ensimmäinen tehtävä.
 
 ## 2. Mitä päätöksiä dashboardilla tehdään?
 
@@ -111,10 +119,10 @@ Mieti tässä vaiheessa myös käyttäjät, sillä johto, markkinointipäällikk
 
 Sana ”konversio” kuulostaa helpolta, kunnes sitä pitää laskea. Otetaan lomakkeen lähetys. Se voi tarkoittaa ainakin neljää asiaa:
 
-- Lähetä-painikkeen painaminen
-- Lomakkeen lähetysyritys
-- Teknisesti onnistunut lähetys
-- Liiketoiminnallisesti hyvä liidi
+- lähetä-painikkeen painaminen
+- lomakkeen lähetysyritys
+- teknisesti onnistunut lähetys
+- liiketoiminnallisesti hyvä liidi
 
 Luvut voivat olla eri suuruisia, ja vain viimeinen kertoo, mitä liiketoiminta oikeasti haluaa.
 
@@ -142,14 +150,14 @@ Toimittaja tarkistaa laskennan ja ehdottaa määritelmiä, ja sinä vahvistat, m
 
 Jokaiselle dashboardille tehdään oma termistönäkymä, johon kirjataan, mitä luvut tarkoittavat ja miten ne on laskettu. Toimittaja kirjoittaa sen ja sinä hyväksyt sen. Kentät voivat olla esimerkiksi nämä:
 
-- Mittarin nimi
-- Liiketoiminnallinen merkitys
-- Laskentakaava
-- Tietolähde
-- Rajaukset
-- Tiedon ajantasaisuus
-- Tunnetut mittausrajoitteet
-- Vastuuhenkilö
+- mittarin nimi
+- liiketoiminnallinen merkitys
+- laskentakaava
+- tietolähde
+- rajaukset
+- tiedon ajantasaisuus
+- tunnetut mittausrajoitteet
+- vastuuhenkilö
 
 Kaikki eivät tarvitse samaa mallia, mutta kannattaa silti tehdä, koska se vähentää tulkintaeroja ja helpottaa ylläpitoa. Kun joku kysyy, miksi luku on eri kuin toisessa raportissa, vastaus löytyy sieltä.
 
@@ -192,13 +200,13 @@ Tietolähteet, käyttöoikeudet ja omistajuus kuuluvat yhteen. Lähteitä voivat
 - verkkokaupan tilausjärjestelmä
 - BigQuery
 
-Data Studio on ensisijaisesti raportointi- ja visualisointityökalu eikä automaattisesti tietolähde, sillä se tuo tiedot yhteen ja näyttää ne. Google palautti tuotteen nimeksi [Data Studion vuonna 2026](https://cloud.google.com/blog/products/data-analytics/looker-studio-is-data-studio), joten käytän sitä.
+Data Studio on ensisijaisesti raportointi- ja visualisointityökalu eikä automaattisesti tietolähde, sillä se tuo tiedot yhteen ja näyttää ne. Google palautti tuotteen nimeksi [Data Studio vuonna 2026](https://cloud.google.com/blog/products/data-analytics/looker-studio-is-data-studio), joten käytän sitä.
 
 Sinä autat järjestämään käyttöoikeudet ja löytämään tietojen omistajat, ja integraatiot kuuluvat toimittajalle.
 
-Tähän vaiheeseen kuuluvat myös UTM-merkinnät. UTM tulee sanoista Urchin Tracking Module. Ne ovat linkin lopussa olevia tunnisteita, joilla analytiikka saa tietää, mistä kampanjasta kävijä tuli. Niiden avulla raportti voi näyttää, mikä kampanja tai kanava toi kävijät ja tulokset.
+Tähän vaiheeseen kuuluvat myös UTM-merkinnät. UTM tulee sanoista Urchin Tracking Module. UTM-merkinnät ovat linkin lopussa olevia tunnisteita, joilla analytiikka saa tietää, mistä kampanjasta kävijä tuli. Niiden avulla raportti voi näyttää, mikä kampanja tai kanava toi kävijät ja tulokset.
 
-UTMit ovat yleensä markkinoinnin vastuulla, ja usein niitä hoitaa mainostoimisto. Yhdenmukaisuus on tärkeää, koska raportti ryhmittelee liikenteen tunnisteiden perusteella. Jos sama kanava kirjoitetaan eri tavoin, esimerkiksi ”facebook” ja ”fb”, se voi näkyä raportissa kahtena lähteenä. Jos tunnisteet puuttuvat, [Googlen ohjeen mukaan](https://support.google.com/analytics/answer/15258820) lähdetieto voi hävitä, ja liikenne voi näkyä suorana-liikenteenä.
+UTMit ovat yleensä markkinoinnin vastuulla, ja usein niitä hoitaa mainostoimisto. Yhdenmukaisuus on tärkeää, koska raportti ryhmittelee liikenteen tunnisteiden perusteella. Jos sama kanava kirjoitetaan eri tavoin, esimerkiksi ”facebook” ja ”fb”, se voi näkyä raportissa kahtena lähteenä. Jos tunnisteet puuttuvat, [Googlen ohjeen mukaan](https://support.google.com/analytics/answer/15258820) lähdetieto voi hävitä, ja liikenne voi näkyä suorana liikenteenä.
 
 Seuraus on, että kampanjan tulokset voivat jäädä näkymättä siellä, missä niitä odotetaan, eikä dashboard voi korjata puuttuvia tunnisteita jälkikäteen.
 
@@ -206,12 +214,12 @@ Seuraus on, että kampanjan tulokset voivat jäädä näkymättä siellä, miss�
 
 Työ ei lopu siihen, että dashboard näyttää hyvältä, sillä sinun pitää varmistaa, että se vastaa sovittuihin kysymyksiin. Työ etenee yleensä näin:
 
-1. Palaveri, jossa haetaan yhteinen ymmärrys kysymyksistä, joihin halutaan vastaus.
-2. Tarkennukset tekstimuodossa, jotta kaikilla on sama ymmärrys mittareista.
-3. Muutaman näkymän luonti dashboardiin.
-4. Tilaajan kuittaus näkymistä.
-5. Loput sivut ja ohjeistuksen kokoaminen, termistö mukaan lukien.
-6. Koulutus.
+1. palaveri, jossa haetaan yhteinen ymmärrys kysymyksistä, joihin halutaan vastaus
+2. tarkennukset tekstimuodossa, jotta kaikilla on sama ymmärrys mittareista
+3. muutaman näkymän luonti dashboardiin
+4. tilaajan kuittaus näkymistä
+5. loput sivut ja ohjeistuksen kokoaminen, termistö mukaan lukien
+6. koulutus
 
 Hyväksymisvaiheessa kannattaa käydä läpi nämä:
 
@@ -278,7 +286,7 @@ Vastaa kysymyksiin yksi kerrallaan: kyllä, ei tai en tiedä. Lopuksi näet yhte
 <form class="checklist" data-checklist aria-label="Tarkistuslista ennen dashboard-projektia" novalidate>
 <fieldset data-step data-stage="1" data-title="Liiketoiminnan tavoite">
 <legend>Kysymys 1/14: Liiketoiminnan tavoite</legend>
-<fieldset data-q data-tier="1" data-tip="Kirjoita yhteen lauseeseen, mitä menettäisitte, jos sivusto kaatuisi huomenna. Se on dashboardin tavoite. Jos lause ei synny, aloita tästä toimittajan kanssa."><legend>Tiedämme, mitä menettäisimme, jos verkkosivumme kaatuisi.</legend>
+<fieldset data-q data-tier="1" data-tip="Kirjoita yhteen lauseeseen, mitä menettäisitte, jos sivusto kaatuisi huomenna. Se on liiketoiminnan tavoite. Jos lause ei synny, aloita tästä toimittajan kanssa."><legend>Tiedämme, mitä menettäisimme, jos verkkosivumme kaatuisi.</legend>
 <label class="form-choice"><input type="radio" name="q1" value="yes"> Kyllä</label>
 <label class="form-choice"><input type="radio" name="q1" value="no"> Ei</label>
 <label class="form-choice"><input type="radio" name="q1" value="unknown"> En tiedä</label>

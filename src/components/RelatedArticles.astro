@@ -1,8 +1,8 @@
 ---
 import ArticleCard from "./ArticleCard.astro";
 
-const { posts = [], fi = false, heading = fi ? "Aiheeseen liittyvät kirjoitukset" : "Related thoughts" } = Astro.props;
-const archiveLabel = fi ? "Näytä kaikki kirjoitukset" : "View all thoughts";
+const { posts = [], fi = false, heading = fi ? "Aiheeseen liittyvät kirjoitukset" : "Related articles" } = Astro.props;
+const archiveLabel = fi ? "Näytä kaikki kirjoitukset" : "View all articles";
 const archiveHref = fi ? "/fi/blog/" : "/blog/";
 ---
 

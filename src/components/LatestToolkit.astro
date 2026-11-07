@@ -60,7 +60,7 @@ const items = selectLatestToolkit([...templates, ...tools]);
     </header>
     <div class="latest-toolkit__grid">
       {items.map((entry) => (
-        <ServiceCard href={entry.href} icon={entry.icon ?? "✦"} title={entry.title} summary={entry.summary} />
+        <ServiceCard quiet href={entry.href} icon={entry.icon ?? "✦"} title={entry.title} summary={entry.summary} />
       ))}
     </div>
   </section>

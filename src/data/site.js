@@ -92,7 +92,7 @@ export const siteConfig = {
   // `name` is the one label for nav, breadcrumbs and the Blog schema node.
   blogs: {
     thoughts: {
-      en: { name: "Thoughts", path: "/blog/" },
+      en: { name: "Articles", path: "/blog/" },
       fi: { name: "Kirjoitukset", path: "/fi/blog/" },
     },
   },
