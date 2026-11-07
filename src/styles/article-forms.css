@@ -305,6 +305,12 @@
    button group steps up to the primary pop CTA — a button standing alone
    stays regular. Injected code-copy buttons keep their own chip style. */
 .prose button:not(.copy) {
+  /* same hover lift and press-down as .cta--secondary, without the CTA-only
+     swipe and burst effects */
+  --btn-shadow: light-dark(
+    color-mix(in srgb, var(--color-neutral-950) 72%, transparent),
+    color-mix(in srgb, var(--accent) 34%, var(--bg))
+  );
   min-height: 2.75rem;
   padding: 0.65rem 1.35rem;
   font: inherit;
@@ -314,8 +320,10 @@
   background: var(--color-neutral-900);
   border: 2px solid var(--color-neutral-500);
   border-radius: var(--radius-md);
+  box-shadow: 0 2px 0 1px var(--btn-shadow);
   cursor: pointer;
-  transition: translate var(--duration-fast) var(--ease-out);
+  transform: translateY(0);
+  transition: transform 140ms ease, box-shadow 140ms ease;
 }
 
 .prose form button[type="submit"]:not(:only-child) {
@@ -325,7 +333,14 @@
 }
 
 .prose button:not(.copy):hover:not(:disabled) {
-  translate: -2px -2px; /* same lift as the .cta hover */
+  box-shadow: 0 3px 0 1px var(--btn-shadow);
+  transform: translateY(-1px);
+}
+
+.prose button:not(.copy):active:not(:disabled) {
+  box-shadow: inset 0 2px 0 1px var(--btn-shadow), 0 0 0 1px var(--btn-shadow);
+  transform: translateY(1px) scaleX(1.015) scaleY(0.97);
+  transition: transform 55ms ease-out, box-shadow 55ms ease-out;
 }
 
 .prose .form-actions {
@@ -336,7 +351,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .prose button:not(.copy):hover:not(:disabled) {
-    translate: 0 0;
+  .prose button:not(.copy):is(:hover, :active):not(:disabled) {
+    transform: none;
   }
 }

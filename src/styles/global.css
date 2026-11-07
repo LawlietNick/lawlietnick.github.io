@@ -948,8 +948,10 @@ a:is(:hover, :focus-visible) > .content-link {
   cursor: pointer;
 }
 
-.prose .code-accordion button.code-accordion__toggle:hover:not(:disabled) {
-  translate: 0 0;
+.prose .code-accordion button.code-accordion__toggle,
+.prose .code-accordion button.code-accordion__toggle:is(:hover, :active):not(:disabled) {
+  box-shadow: none;
+  transform: none;
 }
 
 .prose .code-accordion__content > pre {
