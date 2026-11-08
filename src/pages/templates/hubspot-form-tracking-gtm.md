@@ -8,6 +8,7 @@ category: templates
 primaryCategory: analytics
 order: 3
 icon: "◆"
+art: formevent
 summary: "Copy-ready GTM template, backend lookup service and dataLayer specification for HubSpot form success events that carry the real form name."
 tags: ["HubSpot", "Google Tag Manager", "form tracking", "Cloudflare Workers"]
 image: /images/blog/hubspot-form-submission-tracking-gtm.jpeg

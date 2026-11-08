@@ -8,6 +8,7 @@ category: templates
 primaryCategory: analytics
 order: 3
 icon: "◆"
+art: formevent
 summary: "Kopioitava GTM-malli, taustapalvelu nimen hakuun ja dataLayer-määritys HubSpot-lomakkeiden onnistumistapahtumille, jotka sisältävät oikean lomakkeen nimen."
 tags: ["HubSpot", "Google Tag Manager", "lomakkeiden seuranta", "Cloudflare Workers"]
 image: /images/blog/hubspot-form-submission-tracking-gtm.jpeg

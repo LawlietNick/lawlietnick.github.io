@@ -1,0 +1,295 @@
+---
+// Listing for the Tools and Implementation Templates pages. No card shadows.
+// Entries with a hero image (templates) render like the blog listing: a large
+// featured entry, then image cards. Entries without one (tools) render as a
+// large typographic index where the hovered row stays sharp and the rest dim.
+import BlogImage from "./BlogImage.astro";
+import ToolArt from "./ToolArt.astro";
+
+// compact: smaller rows for use inside a page section (home page band).
+const { items = [], compact = false } = Astro.props;
+// Entries with a drawn vignette (see ToolArt) render as a bento grid; it wins over images.
+const withArt = items.length >= 2 && items.every((entry) => entry.art);
+const withImages = !compact && !withArt && items.length > 0 && items.every((entry) => entry.image);
+const [featured, ...rest] = items;
+const Heading = compact ? "h3" : "h2";
+---
+
+{withArt ? (
+  <div class:list={["tk-bento-wrap", { "tk-bento-wrap--compact": compact }]}>
+    <ul class:list={["tk-bento", { "tk-bento--few": items.length < 4, "tk-bento--compact": compact }]} role="list">
+      {items.map((entry) => (
+        <li>
+          <a class="tk-tile featured-card" href={entry.href}>
+            <div class="tk-tile__art"><ToolArt name={entry.art} /></div>
+            <div class="tk-tile__body">
+              <Heading>{entry.title}</Heading>
+              {compact && <span class="tk-arrow" aria-hidden="true">→</span>}
+              <p>{entry.summary}</p>
+              {!compact && entry.cta && <span class="tk-cta">{entry.cta}<span aria-hidden="true"> →</span></span>}
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+) : withImages ? (
+  <div class="tk-gallery">
+    <a class="tk-featured" href={featured.href}>
+      <div class="tk-media">
+        <BlogImage src={featured.image} alt={featured.imageAlt ?? ""} width="960" height="600" widths={[480, 720, 960]} sizes="(min-width: 46rem) 55vw, 100vw" loading="eager" />
+      </div>
+      <div class="tk-featured__body">
+        <h2>{featured.title}</h2>
+        <p>{featured.summary}</p>
+        <span class="tk-arrow" aria-hidden="true">→</span>
+      </div>
+    </a>
+    {rest.length === 1 && (
+      <a class="tk-featured tk-featured--flip" href={rest[0].href}>
+        <div class="tk-media">
+          <BlogImage src={rest[0].image} alt={rest[0].imageAlt ?? ""} width="960" height="600" widths={[480, 720, 960]} sizes="(min-width: 46rem) 55vw, 100vw" loading="lazy" />
+        </div>
+        <div class="tk-featured__body">
+          <h2>{rest[0].title}</h2>
+          <p>{rest[0].summary}</p>
+          <span class="tk-arrow" aria-hidden="true">→</span>
+        </div>
+      </a>
+    )}
+    {rest.length > 1 && (
+      <div class="tk-grid">
+        {rest.map((entry) => (
+          <a class="tk-card" href={entry.href}>
+            <div class="tk-media tk-media--card">
+              <BlogImage src={entry.image} alt={entry.imageAlt ?? ""} width="640" height="400" widths={[320, 480, 640]} sizes="(min-width: 46rem) 25rem, 100vw" loading="lazy" />
+            </div>
+            <div class="tk-card__body">
+              <h3>{entry.title}</h3>
+              <p>{entry.summary}</p>
+              <span class="tk-arrow" aria-hidden="true">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+) : (
+  <ul class:list={["tk-index", { "tk-index--compact": compact }]} role="list">
+    {items.map((entry) => (
+      <li>
+        <a class="tk-row" href={entry.href}>
+          <span class="tk-row__icon" aria-hidden="true">{entry.icon ?? "✦"}</span>
+          <span class="tk-row__title">{entry.title}</span>
+          <span class="tk-row__summary">{entry.summary}</span>
+          <span class="tk-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .tk-arrow {
+    color: var(--accent);
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: translate var(--duration-base) var(--ease-snap);
+  }
+  a:is(:hover, :focus-visible) .tk-arrow { translate: 5px 0; }
+  a:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }
+
+  /* ---------- image gallery (templates) ---------- */
+  .tk-gallery { container: tkg / inline-size; display: grid; gap: 1.5rem; margin: 1.5rem 0 var(--section-y); }
+
+  .tk-featured, .tk-card {
+    display: grid;
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    transition: border-color var(--duration-base) var(--ease-standard);
+  }
+  .tk-featured { border-radius: var(--radius-lg); }
+  .tk-card { border-radius: var(--radius-md); grid-template-rows: auto 1fr; }
+  .tk-featured:is(:hover, :focus-visible), .tk-card:is(:hover, :focus-visible) {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  }
+
+  .tk-media { overflow: hidden; min-height: 15rem; }
+  .tk-media--card { min-height: 0; aspect-ratio: 16 / 10; }
+  .tk-media :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transition: scale 600ms var(--ease-out);
+  }
+  a:is(:hover, :focus-visible) .tk-media :global(img) { scale: 1.035; }
+
+  .tk-featured__body { display: flex; flex-direction: column; gap: 0.8rem; padding: 2rem; }
+  .tk-featured__body h2 { margin: 0; font-size: clamp(1.5rem, 3.2cqi, 2.1rem); }
+  .tk-featured__body p { margin: 0; color: var(--muted); }
+  .tk-featured__body .tk-arrow { margin-top: auto; }
+
+  .tk-card__body { display: flex; flex-direction: column; gap: 0.55rem; padding: 1.25rem; }
+  .tk-card__body h3 { margin: 0; font-size: 1.15rem; }
+  .tk-card__body p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+  .tk-card__body .tk-arrow { margin-top: auto; padding-top: 0.35rem; }
+
+  .tk-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+  @container tkg (min-width: 34rem) { .tk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @container tkg (min-width: 44rem) {
+    .tk-featured { grid-template-columns: 1.2fr 1fr; }
+    .tk-featured .tk-media { min-height: 100%; }
+    .tk-featured--flip { grid-template-columns: 1fr 1.2fr; }
+    .tk-featured--flip .tk-media { order: 2; }
+  }
+
+  /* ---------- bento (tools with a drawn vignette) ---------- */
+  .tk-bento-wrap { container: tkb / inline-size; margin: 1.5rem 0 var(--section-y); }
+  .tk-bento { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; grid-template-columns: 1fr; }
+  .tk-bento > li { display: grid; min-width: 0; }
+
+  .tk-tile {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--duration-base) var(--ease-standard);
+  }
+  /* halftone (from .featured-card) sits behind the vignette and text, on the tile surface only */
+  .tk-tile { isolation: isolate; }
+  .tk-tile.featured-card::before { z-index: 0; }
+  .tk-tile > * { position: relative; z-index: 1; }
+  .tk-tile:is(:hover, :focus-visible) { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+  .tk-cta { margin-top: 0.6rem; color: var(--accent); font-size: 0.95rem; font-weight: var(--font-weight-medium); }
+  .tk-cta > span { display: inline-block; margin-left: 0.3em; transition: translate var(--duration-base) var(--ease-snap); }
+  .tk-tile:is(:hover, :focus-visible) .tk-cta > span { translate: 4px 0; }
+  .tk-tile:is(:hover, :focus-visible) :is(h2, h3) { color: var(--accent); }
+
+  .tk-tile__art { flex: 1; display: grid; place-items: center; min-height: 11.5rem; padding: 2rem 1.25rem 1rem; }
+  .tk-tile__body {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.25rem 1.5rem 1.4rem;
+  }
+  .tk-tile__body :is(h2, h3) { margin: 0; font-size: clamp(1.15rem, 4.2cqi, 1.5rem); line-height: 1.15; overflow-wrap: anywhere; hyphens: auto; }
+  .tk-tile__body p { margin: 0; color: var(--muted); font-size: 0.92rem; max-width: 52ch; }
+
+  /* compact (home page band): three equal tiles in one row, smaller vignettes */
+  .tk-bento-wrap--compact { margin: 0; }
+  .tk-bento.tk-bento--compact { grid-template-columns: 1fr; gap: 1rem; }
+  .tk-bento--compact .tk-tile { --art-size: 12px; }
+  .tk-bento--compact .tk-tile__art { min-height: 8.5rem; padding: 1.5rem 1rem 0.5rem; }
+  .tk-bento--compact .tk-tile__body { grid-template-columns: minmax(0, 1fr) auto; column-gap: 1rem; align-items: start; padding: 0.25rem 1.25rem 1.2rem; }
+  .tk-bento--compact .tk-tile__body p { grid-column: 1 / -1; }
+  .tk-bento--compact .tk-tile__body :is(h2, h3) { font-size: 1.2rem; margin: 0; line-height: 1.2; }
+  .tk-bento--compact .tk-tile__body p {
+    display: -webkit-box; overflow: hidden; font-size: 0.88rem;
+    -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  }
+
+  @container tkb (min-width: 34rem) { .tk-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @container tkb (min-width: 52rem) {
+    .tk-bento { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1.25rem; }
+    .tk-bento > li { grid-column: span 2; }
+    .tk-bento > li:nth-child(1) { grid-row: span 2; }
+    .tk-bento > li:nth-child(1) .tk-tile { --art-size: 19px; }
+    .tk-bento > li:nth-child(4) { grid-column: span 4; }
+    .tk-bento > li:nth-child(n + 5) { grid-column: span 3; }
+    .tk-bento > li:nth-child(n + 5):last-child:nth-child(odd) { grid-column: span 6; }
+    /* two or three entries: equal columns, no tall tile */
+    .tk-bento--few { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tk-bento--few > li, .tk-bento--few > li:nth-child(n) { grid-column: auto; grid-row: auto; }
+    .tk-bento--few > li:nth-child(1) .tk-tile { --art-size: 17px; }
+    .tk-bento--few > li:nth-child(3):last-child { grid-column: 1 / -1; }
+  }
+
+  @container tkb (min-width: 44rem) {
+    .tk-bento.tk-bento--compact { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+    .tk-bento.tk-bento--compact > li:nth-child(n) { grid-column: auto; grid-row: auto; }
+    .tk-bento.tk-bento--compact > li:nth-child(n) .tk-tile { --art-size: 12px; }
+  }
+
+  /* ---------- typographic index (tools) ---------- */
+  .tk-index {
+    container: tki / inline-size;
+    list-style: none;
+    margin: 1.5rem 0 var(--section-y);
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .tk-index li {
+    border-bottom: 1px solid var(--line);
+    transition: opacity var(--duration-base) var(--ease-standard);
+  }
+  /* focus the hovered row, quiet the others */
+  .tk-index:has(.tk-row:is(:hover, :focus-visible)) li:not(:has(.tk-row:is(:hover, :focus-visible))) { opacity: 0.55; }
+
+  .tk-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon title arrow"
+      ".    summary summary";
+    align-items: center;
+    gap: 0.4rem 1rem;
+    padding: 1.5rem 0.5rem;
+    color: inherit;
+    text-decoration: none;
+  }
+  .tk-row:focus-visible { outline-offset: -3px; border-radius: var(--radius-md); }
+
+  .tk-row__icon {
+    grid-area: icon;
+    width: 2.6rem; height: 2.6rem;
+    display: grid; place-content: center;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    background: light-dark(
+      color-mix(in srgb, var(--accent) 12%, var(--bg)),
+      color-mix(in srgb, var(--accent) 22%, var(--bg))
+    );
+    color: light-dark(var(--accent), color-mix(in srgb, var(--accent) 55%, var(--ink)));
+    transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
+  }
+  .tk-row:is(:hover, :focus-visible) .tk-row__icon { background: var(--accent); color: var(--bg); }
+
+  .tk-row__title {
+    grid-area: title;
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-strong);
+    font-size: clamp(1.12rem, 5cqi, 2.15rem);
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    transition: color var(--duration-base) var(--ease-standard), translate var(--duration-base) var(--ease-snap);
+  }
+  .tk-row:is(:hover, :focus-visible) .tk-row__title { color: var(--accent); translate: 6px 0; }
+
+  .tk-row__summary { grid-area: summary; color: var(--muted); font-size: 0.95rem; max-width: 60ch; }
+  .tk-row .tk-arrow { grid-area: arrow; }
+
+  .tk-index--compact { margin: 0; }
+  .tk-index--compact .tk-row { padding-block: 1.1rem; }
+  .tk-index--compact .tk-row__title { font-size: clamp(1.15rem, 3cqi, 1.45rem); }
+
+  @container tki (min-width: 48rem) {
+    .tk-row {
+      grid-template-columns: auto minmax(0, 1.25fr) minmax(0, 1fr) auto;
+      grid-template-areas: "icon title summary arrow";
+      gap: 1.75rem;
+      padding: 2rem 1rem;
+    }
+    .tk-index--compact .tk-row { padding-block: 1.25rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tk-arrow, .tk-media :global(img), .tk-row__title, .tk-row__icon, .tk-index li, .tk-tile, .tk-cta > span { transition: none; }
+    a:is(:hover, :focus-visible) .tk-arrow, a:is(:hover, :focus-visible) .tk-media :global(img),
+    .tk-row:is(:hover, :focus-visible) .tk-row__title { translate: none; scale: none; }
+  }
+</style>

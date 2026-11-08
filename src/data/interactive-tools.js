@@ -10,6 +10,7 @@ export const allInteractiveTools = [
     category: "tools",
     slug: "ga4-annotations",
     icon: "GA4",
+    art: "annotation",
     order: 7,
     date: "2026-09-26",
     en: {
@@ -43,6 +44,7 @@ export const allInteractiveTools = [
     category: "tools",
     slug: "metric-quality-checker",
     icon: "✓",
+    art: "quality",
     order: 2,
     date: "2026-09-26",
     en: {
@@ -59,6 +61,7 @@ export const allInteractiveTools = [
     category: "tools",
     slug: "gtm-container-builder",
     icon: "{}",
+    art: "container",
     order: 3,
     date: "2026-09-26",
     en: {
@@ -87,6 +90,7 @@ export const allInteractiveTools = [
     category: "tools",
     slug: "datalayer-documentation-generator",
     icon: "¶",
+    art: "datalayer",
     order: 5,
     date: "2026-09-26",
     fi: {
@@ -112,6 +116,7 @@ export const allInteractiveTools = [
     category: "tools",
     slug: "referral-exclusions",
     icon: "≠",
+    art: "exclusions",
     order: 9,
     date: "2026-10-29",
     en: {
@@ -128,6 +133,7 @@ export const allInteractiveTools = [
     category: "tools",
     slug: "form-name-builder",
     icon: "\u25a4",
+    art: "form",
     order: 6,
     date: "2026-09-26",
     en: {

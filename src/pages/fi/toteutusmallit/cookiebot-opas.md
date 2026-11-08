@@ -8,6 +8,7 @@ category: templates
 primaryCategory: privacy
 order: 1
 icon: "🍪"
+art: consent
 summary: "Cookiebotin käyttöönotto ja Googlen sekä Microsoftin suostumustilojen hallinta: asetukset, kopioitavat koodit ja testausohjeet."
 tags: ["Cookiebot", "Consent Mode", "GDPR", "evästeet", "Google Tag Manager"]
 image: /images/blog/cookiebot-guide.jpeg

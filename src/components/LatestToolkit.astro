@@ -1,6 +1,6 @@
 ---
 // Home page band: the three newest tools or implementation templates in one language.
-import ServiceCard from "./ServiceCard.astro";
+import ToolkitList from "./ToolkitList.astro";
 import { interactiveTools } from "../data/interactive-tools.js";
 import { selectLatestToolkit } from "../utils/latest-toolkit.ts";
 
@@ -28,6 +28,7 @@ const templates = Object.entries(fi ? fiTemplates : enTemplates)
     title: mod.frontmatter.title,
     summary: mod.frontmatter.summary ?? mod.frontmatter.description,
     icon: mod.frontmatter.icon,
+    art: mod.frontmatter.art,
     date: mod.frontmatter.date,
     order: mod.frontmatter.order ?? 0,
     href: `${templateBase}/${path.split("/").pop().replace(/\.md$/, "")}/`,
@@ -40,6 +41,7 @@ const tools = interactiveTools
     title: t[lang].title,
     summary: t[lang].summary,
     icon: t.icon,
+    art: t.art,
     date: t.date,
     order: t.order ?? 0,
     href: fi ? `/fi/tyokalut/${t.fi.slug ?? t.slug}/` : `/tools/${t.slug}/`,
@@ -58,11 +60,7 @@ const items = selectLatestToolkit([...templates, ...tools]);
         <a href={c.templatesHref}>{c.templatesLabel}<span aria-hidden="true"> →</span></a>
       </span>
     </header>
-    <div class="latest-toolkit__grid">
-      {items.map((entry) => (
-        <ServiceCard quiet href={entry.href} icon={entry.icon ?? "✦"} title={entry.title} summary={entry.summary} />
-      ))}
-    </div>
+    <ToolkitList compact items={items.map((e) => ({ ...e, icon: e.icon ?? "✦" }))} />
   </section>
 )}
 
@@ -115,18 +113,6 @@ const items = selectLatestToolkit([...templates, ...tools]);
   .latest-toolkit__links a:focus-visible {
     outline: var(--focus-ring);
     outline-offset: 3px;
-  }
-
-  .latest-toolkit__grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: 1fr;
-  }
-
-  @container latest-toolkit (min-width: 46rem) {
-    .latest-toolkit__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
   }
 
   @media (max-width: 34rem) {

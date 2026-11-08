@@ -1,6 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
-import ServiceCard from "../components/ServiceCard.astro";
+import ToolkitList from "../components/ToolkitList.astro";
 import { toolkit } from "../data/toolkit.js";
 import { interactiveTools } from "../data/interactive-tools.js";
 
@@ -22,46 +22,28 @@ const mdItems = Object.entries(itemGlobs[item.slug] ?? {}).filter(([, mod]) => !
 }));
 const interactive = interactiveTools
   .filter((t) => t.category === item.slug && t.en)
-  .map((t) => ({ ...t.en, icon: t.icon, order: t.order ?? 0, href: `/${item.slug}/${t.slug}/` }));
+  .map((t) => ({ ...t.en, icon: t.icon, art: t.art, order: t.order ?? 0, href: `/${item.slug}/${t.slug}/` }));
 const items = [...mdItems, ...interactive].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 const empty = items.length === 0;
 ---
 
 <Base title={c.label} documentTitle={c.documentTitle} description={c.desc} schemaPageType="toolkit" noindex={empty}>
-  <section class="about toolkit-hero wide-band">
-    <div>
-      <h1>{c.label}</h1>
-    </div>
-    <div>
-      <p>{c.desc}</p>
-      {empty && <p class="toolkit-empty">This collection is being put together. Check back soon.</p>}
-    </div>
-  </section>
+  <header class="toolkit-hero wide-band">
+    <h1>{c.label}</h1>
+    <p class="toolkit-intro">{c.desc}</p>
+    {empty && <p class="toolkit-empty">This collection is being put together. Check back soon.</p>}
+  </header>
 
   {
-    !empty && (
-      <div class="toolkit-grid">
-        {items.map((entry) => (
-          <ServiceCard href={entry.href} icon={entry.icon ?? "✦"} title={entry.title} summary={entry.summary} />
-        ))}
-      </div>
-    )
+    !empty && <ToolkitList items={items.map((e) => ({ ...e, icon: e.icon ?? "✦", cta: item.slug === "tools" ? "Open tool" : "Open template" }))} />
   }
 </Base>
 
 <style>
+  .toolkit-hero { padding-block: 1rem 0.5rem; }
+  .toolkit-hero h1 { margin: 0; }
+  .toolkit-intro { margin: 0.75rem 0 0; max-width: 52ch; color: var(--muted); font-size: 1.05rem; }
   .toolkit-empty {
     color: var(--muted);
-  }
-  .toolkit-grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: 1fr;
-    margin-block: 1.5rem 3rem;
-  }
-  @container page (min-width: 46rem) {
-    .toolkit-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 </style>

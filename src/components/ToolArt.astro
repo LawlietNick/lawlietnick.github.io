@@ -1,0 +1,266 @@
+---
+// Icon language for the tools: every tool is a small drawn "vignette" of what it
+// produces, built from the same few parts: paper (a --bg surface with a hairline),
+// bars (text stand-ins), chips (pills), and one accent. No text content, no shadows.
+// Sized in em so a tile can scale a vignette by setting --art-size.
+const { name } = Astro.props;
+---
+
+<div class={`art art--${name}`} aria-hidden="true">
+  {name === "annotation" && (
+    <div class="an">
+      <span class="an__track"></span>
+      <span class="an__tick an__tick--a"></span>
+      <span class="an__tick an__tick--b"></span>
+      <span class="an__tick an__tick--c"></span>
+      <span class="an__stem"></span>
+      <span class="an__dot"></span>
+      <div class="an__note">
+        <span class="an__pin"></span>
+        <span class="chip"></span>
+        <span class="bar" style="width: 85%"></span>
+        <span class="bar" style="width: 55%"></span>
+      </div>
+    </div>
+  )}
+
+  {name === "quality" && (
+    <div class="q">
+      <span class="q__badge"></span>
+      <div class="q__pips">
+        {Array.from({ length: 10 }, (_, i) => <span class:list={["q__pip", { "is-on": i < 7 }]}></span>)}
+      </div>
+      <span class="bar q__bar"></span>
+    </div>
+  )}
+
+  {name === "container" && (
+    <div class="c">
+      <span class="c__drop"></span>
+      <div class="c__box">
+        <span class="c__tag"></span>
+        <span class="c__trigger"></span>
+        <span class="c__var">{"{ }"}</span>
+      </div>
+    </div>
+  )}
+
+  {name === "datalayer" && (
+    <div class="dl">
+      <div class="dl__sheet">
+        <span class="bar" style="width: 35%"></span>
+        <span class="bar" style="width: 62%; margin-left: 1.1em"></span>
+        <span class="bar bar--accent dl__key" style="margin-left: 1.1em"></span>
+        <span class="bar" style="width: 48%; margin-left: 1.1em"></span>
+        <span class="bar" style="width: 22%"></span>
+      </div>
+      <span class="dl__pill">dataLayer</span>
+    </div>
+  )}
+
+  {name === "exclusions" && (
+    <div class="ex">
+      <div class="ex__row"><span class="ex__dot"></span><span class="bar" style="width: 55%"></span><span class="ex__switch is-on"></span></div>
+      <div class="ex__row ex__row--off"><span class="ex__dot"></span><span class="bar" style="width: 70%"></span><span class="ex__neq">≠</span></div>
+      <div class="ex__row"><span class="ex__dot"></span><span class="bar" style="width: 42%"></span><span class="ex__switch is-on"></span></div>
+    </div>
+  )}
+
+  {name === "consent" && (
+    <div class="cs">
+      <div class="cs__banner">
+        <span class="bar" style="width: 45%"></span>
+        <span class="bar" style="width: 85%"></span>
+        <div class="cs__rows">
+          <span class="ex__switch is-on"></span>
+          <span class="ex__switch is-on"></span>
+          <span class="ex__switch"></span>
+        </div>
+        <div class="cs__btns">
+          <span class="cs__btn"></span>
+          <span class="cs__btn cs__btn--main"></span>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {name === "formevent" && (
+    <div class="fe">
+      <div class="fe__form">
+        <span class="bar" style="width: 50%"></span>
+        <span class="fe__field"></span>
+        <span class="fe__field"></span>
+        <span class="fe__send"></span>
+      </div>
+      <span class="fe__arrow"></span>
+      <span class="fe__event">{"{ }"}</span>
+    </div>
+  )}
+
+  {name === "form" && (
+    <div class="fm">
+      <span class="bar" style="width: 30%"></span>
+      <div class="fm__input">
+        <span class="chip fm__chip"></span>
+        <span class="fm__sep">_</span>
+        <span class="chip fm__chip fm__chip--b"></span>
+        <span class="fm__caret"></span>
+      </div>
+      <div class="fm__opts">
+        <span class="fm__opt is-on"></span>
+        <span class="fm__opt"></span>
+        <span class="fm__opt"></span>
+      </div>
+    </div>
+  )}
+</div>
+
+<style>
+  /* ---------- shared parts ---------- */
+  .art {
+    --soft: color-mix(in srgb, var(--accent) 16%, var(--bg));
+    --soft-strong: color-mix(in srgb, var(--accent) 30%, var(--bg));
+    --paper: var(--bg);
+    font-size: var(--art-size, 15px);
+    display: grid;
+    place-items: center;
+    width: 100%;
+  }
+  .bar {
+    display: block;
+    height: 0.55em;
+    border-radius: 99px;
+    background: var(--line);
+  }
+  .bar--accent { background: var(--accent); }
+  .chip {
+    display: block;
+    height: 1.15em;
+    width: 3.6em;
+    border-radius: 99px;
+    background: var(--soft-strong);
+  }
+  .art :is(.an__note, .q__pips, .c__box, .dl__sheet, .ex__row, .fm__input) {
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+  .art [class$="__dot"], .art [class$="__pin"] { background: var(--accent); }
+
+  /* ---------- annotation (GA4 annotations): a note pinned to a timeline ---------- */
+  .an { position: relative; width: 15em; height: 9.2em; }
+  .an__track { position: absolute; left: 0; right: 0; top: 8em; height: 2px; background: var(--line); }
+  .an__tick { position: absolute; top: calc(8em - 0.3em); width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--paper); border: 2px solid var(--line); }
+  .an__tick--a { left: 0.8em; }
+  .an__tick--b { left: 11em; }
+  .an__tick--c { left: 13.6em; }
+  .an__dot { position: absolute; left: 7.05em; top: calc(8em - 0.5em); width: 1.1em; height: 1.1em; border-radius: 50%; border: 0.2em solid var(--paper); box-sizing: content-box; translate: -0.2em -0.2em; }
+  .an__stem { position: absolute; left: 7.55em; top: 5.7em; width: 2px; height: 2.3em; background: var(--accent); }
+  .an__note {
+    position: absolute; left: 3em; top: 0; width: 9em; height: 5.7em;
+    border-radius: 0.8em; padding: 0.9em;
+    display: flex; flex-direction: column; gap: 0.55em;
+    rotate: -3deg; transition: rotate var(--duration-base) var(--ease-snap), translate var(--duration-base) var(--ease-snap);
+  }
+  .an__pin { position: absolute; top: -0.45em; right: 1.3em; width: 0.9em; height: 0.9em; border-radius: 50%; }
+  :global(.tk-tile:is(:hover, :focus-visible)) .an__note { rotate: -0.5deg; translate: 0 -0.25em; }
+
+  /* ---------- quality (metric quality checker): ten checks, most passed ---------- */
+  .q { display: flex; flex-direction: column; align-items: center; gap: 1em; }
+  .q__badge { position: relative; width: 3.4em; height: 3.4em; border-radius: 50%; background: var(--accent); }
+  .q__badge::after {
+    content: ""; position: absolute; left: 50%; top: 46%; width: 0.7em; height: 1.4em;
+    border: solid var(--bg); border-width: 0 0.28em 0.28em 0; border-radius: 1px;
+    translate: -50% -50%; rotate: 42deg;
+  }
+  .q__pips { display: grid; grid-template-columns: repeat(10, 1em); gap: 0.3em; padding: 0.6em; border-radius: 0.8em; }
+  .q__pip { height: 2em; border-radius: 0.3em; background: var(--line); transition: background-color var(--duration-base) var(--ease-standard) 80ms; }
+  .q__pip.is-on { background: var(--accent); }
+  .q__bar { width: 6em; }
+  :global(.tk-tile:is(:hover, :focus-visible)) .q__pip:nth-child(8) { background: var(--accent); }
+
+  /* ---------- container (GTM container builder): an open container, three blocks inside, one more being dropped in ---------- */
+  .c { position: relative; width: 16em; display: flex; flex-direction: column; align-items: flex-end; gap: 0.9em; }
+  .c__drop {
+    width: 3.6em; height: 3.6em; margin-right: 1.6em; border-radius: 0.8em;
+    border: 2px dashed var(--accent); background: var(--soft);
+    transition: translate var(--duration-base) var(--ease-snap);
+  }
+  .c__box {
+    align-self: stretch; display: flex; align-items: flex-end; justify-content: space-between; gap: 0.8em;
+    height: 6.2em; padding: 0 1em 1em; box-sizing: border-box;
+    border: 3px solid var(--line); border-top: 0; border-radius: 0 0 1em 1em; background: var(--paper);
+  }
+  .c__box > * { flex: none; }
+  .c__tag { width: 3.6em; height: 3.6em; border-radius: 0.8em; background: var(--accent); }
+  .c__trigger { box-sizing: border-box; width: 3.6em; height: 3.6em; border-radius: 50%; border: 0.4em solid var(--accent); }
+  .c__var {
+    display: grid; place-items: center; width: 4.4em; height: 3.6em; border-radius: 0.8em;
+    background: var(--soft); color: var(--accent); font: 600 1.15em/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  :global(.tk-tile:is(:hover, :focus-visible)) .c__drop { translate: 0 0.7em; }
+
+  /* ---------- datalayer (dataLayer documentation): a code sheet with one highlighted line ---------- */
+  .dl { position: relative; padding-bottom: 1.1em; }
+  .dl__sheet { position: relative; width: 9.5em; padding: 1.2em 1em 2em; border-radius: 0.7em; display: flex; flex-direction: column; gap: 0.7em; overflow: hidden; }
+  .dl__sheet::before {
+    content: ""; position: absolute; top: 0; right: 0; width: 1.6em; height: 1.6em;
+    background: linear-gradient(225deg, var(--color-surface) 50%, var(--line) 50%);
+  }
+  .dl__key { width: 45%; transition: width var(--duration-base) var(--ease-snap); }
+  .dl__pill {
+    position: absolute; left: 50%; bottom: 0; translate: -50% 0; padding: 0.35em 0.9em; border-radius: 99px;
+    background: var(--accent); color: var(--bg); font: 600 0.9em/1.2 ui-monospace, "SFMono-Regular", Menlo, monospace; white-space: nowrap;
+  }
+  :global(.tk-tile:is(:hover, :focus-visible)) .dl__key { width: 75%; }
+
+  /* ---------- exclusions (referral exclusions): a list where one source is struck out ---------- */
+  .ex { display: flex; flex-direction: column; gap: 0.7em; width: 14em; }
+  .ex__row { display: flex; align-items: center; gap: 0.8em; height: 2.7em; padding: 0 0.9em; border-radius: 99px; transition: translate var(--duration-base) var(--ease-snap); }
+  .ex__dot { flex: none; width: 1.1em; height: 1.1em; border-radius: 50%; background: var(--line) !important; }
+  .ex__row .bar { flex: none; }
+  .ex__switch { margin-left: auto; width: 1.9em; height: 1.1em; border-radius: 99px; background: var(--line); position: relative; }
+  .ex__switch.is-on { background: var(--soft-strong); }
+  .ex__switch::after { content: ""; position: absolute; top: 0.15em; right: 0.15em; width: 0.8em; height: 0.8em; border-radius: 50%; background: var(--paper); }
+  .ex__row--off { translate: 1em 0; border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
+  .ex__row--off .ex__dot { background: var(--accent) !important; }
+  .ex__row--off .bar { position: relative; opacity: 0.6; }
+  .ex__row--off .bar::after { content: ""; position: absolute; left: -6%; right: -6%; top: 50%; height: 2px; background: var(--accent); translate: 0 -50%; }
+  .ex__neq { margin-left: auto; display: grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--accent); color: var(--bg); font: 700 0.95em/1 var(--font-display, sans-serif); }
+  :global(.tk-tile:is(:hover, :focus-visible)) .ex__row--off { translate: 0.3em 0; }
+
+  /* ---------- form (form name builder): a field filled from a short taxonomy ---------- */
+  .fm { display: flex; flex-direction: column; gap: 0.8em; width: 14em; }
+  .fm__input { display: flex; align-items: center; gap: 0.35em; height: 3.2em; padding: 0 0.9em; border-radius: 0.8em; border-color: var(--accent) !important; box-shadow: 0 0 0 0.25em var(--soft); }
+  .fm__chip { width: 4.4em; }
+  .fm__chip--b { width: 3em; transition: width var(--duration-base) var(--ease-snap); }
+  .fm__sep { color: var(--muted); font: 600 1em/1 ui-monospace, "SFMono-Regular", Menlo, monospace; align-self: flex-end; margin-bottom: 0.95em; }
+  .fm__caret { width: 2px; height: 1.5em; margin-left: 0.2em; background: var(--accent); }
+  .fm__opts { display: flex; gap: 0.5em; }
+  .fm__opt { flex: 1; height: 1.6em; border-radius: 99px; border: 1px solid var(--line); background: var(--paper); transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard); }
+  .fm__opt.is-on { background: var(--accent); border-color: var(--accent); }
+  :global(.tk-tile:is(:hover, :focus-visible)) .fm__chip--b { width: 4.6em; }
+  :global(.tk-tile:is(:hover, :focus-visible)) .fm__opt:nth-child(2) { border-color: var(--accent); }
+
+  /* ---------- consent (Cookiebot guide): a banner with category switches and two buttons ---------- */
+  .cs__banner { width: 14em; padding: 1.2em; border-radius: 1em; display: flex; flex-direction: column; gap: 0.7em; background: var(--paper); border: 1px solid var(--line); }
+  .cs__rows { display: flex; gap: 0.6em; margin: 0.3em 0; }
+  .cs__btns { display: flex; gap: 0.6em; }
+  .cs__btn { flex: 1; height: 2em; border-radius: 99px; border: 1.5px solid var(--line); transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard); }
+  .cs__btn--main { background: var(--accent); border-color: var(--accent); }
+  .cs :is(.ex__switch) { margin-left: 0; }
+  :global(.tk-tile:is(:hover, :focus-visible)) .cs__btn:not(.cs__btn--main) { border-color: var(--accent); }
+
+  /* ---------- formevent (HubSpot form tracking): a form submission becomes a dataLayer event ---------- */
+  .fe { display: flex; align-items: center; gap: 1em; }
+  .fe__form { width: 8em; padding: 1em; border-radius: 0.9em; display: flex; flex-direction: column; gap: 0.6em; background: var(--paper); border: 1px solid var(--line); }
+  .fe__field { height: 1.5em; border-radius: 0.4em; border: 1px solid var(--line); }
+  .fe__send { height: 1.5em; width: 55%; border-radius: 99px; background: var(--accent); }
+  .fe__arrow { position: relative; width: 2.6em; height: 2px; background: var(--accent); transition: width var(--duration-base) var(--ease-snap); }
+  .fe__arrow::after { content: ""; position: absolute; right: 0; top: 50%; width: 0.6em; height: 0.6em; border: solid var(--accent); border-width: 2px 2px 0 0; translate: 0 -50%; rotate: 45deg; }
+  .fe__event { display: grid; place-items: center; width: 4.6em; height: 4.6em; border-radius: 50%; background: var(--soft); color: var(--accent); font: 600 1.3em/1 ui-monospace, "SFMono-Regular", Menlo, monospace; }
+  :global(.tk-tile:is(:hover, :focus-visible)) .fe__arrow { width: 3.2em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .art *, .art *::before, .art *::after { transition: none !important; }
+  }
+</style>
