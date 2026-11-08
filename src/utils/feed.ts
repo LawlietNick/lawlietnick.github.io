@@ -100,7 +100,6 @@ export async function feedResponse(context: APIContext, lang: FeedLang): Promise
     `    <name>${escapeXml(authorName)}</name>`,
     `    <uri>${escapeXml(abs("/"))}</uri>`,
     "  </author>",
-    '  <generator uri="https://astro.build/">Astro</generator>',
     `  <rights>© 2026 ${escapeXml(authorName)}. ${escapeXml(config.rights)}</rights>`,
     `  <icon>${escapeXml(abs("/nk-logo.svg"))}</icon>`,
     ...entries,
