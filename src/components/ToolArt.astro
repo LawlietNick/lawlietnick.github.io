@@ -173,10 +173,14 @@ const { name } = Astro.props;
     translate: -50% -50%; rotate: 42deg;
   }
   .q__pips { display: grid; grid-template-columns: repeat(10, 1em); gap: 0.3em; padding: 0.6em; border-radius: 0.8em; }
-  .q__pip { height: 2em; border-radius: 0.3em; background: var(--line); transition: background-color var(--duration-base) var(--ease-standard) 80ms; }
+  .q__pip { position: relative; height: 2em; border-radius: 0.3em; background: var(--line); transition: background-color var(--duration-base) var(--ease-standard) 80ms; }
   .q__pip.is-on { background: var(--accent); }
+  /* the idle loop fades an accent layer in and out, so hover can fill the pip itself and fade back cleanly */
+  .q__pip::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--accent); opacity: 0; }
   .q__bar { width: 6em; }
-  :global(.tk-tile:is(:hover, :focus-visible)) .q__pip:nth-child(8) { background: var(--accent); }
+  :global(.tk-tile:is(:hover, :focus-visible)) .q__pips .q__pip:nth-child(n + 8) { background: var(--accent); }
+  :global(.tk-tile:is(:hover, :focus-visible)) .q__pip:nth-child(9) { transition-delay: 90ms; }
+  :global(.tk-tile:is(:hover, :focus-visible)) .q__pip:nth-child(10) { transition-delay: 180ms; }
 
   /* ---------- container (GTM container builder): an open container, three blocks inside, one more being dropped in ---------- */
   .c { position: relative; width: 16em; display: flex; flex-direction: column; align-items: flex-end; gap: 0.9em; }
@@ -265,7 +269,9 @@ const { name } = Astro.props;
   @keyframes art-sink { to { transform: translateY(0.6em); } }
   @keyframes art-nudge { to { transform: translateX(0.5em); } }
   @keyframes art-pulse { to { transform: scale(1.06); } }
-  @keyframes art-fill { 0%, 25% { background: var(--line); } 40%, 85% { background: var(--accent); } 100% { background: var(--line); } }
+  /* idle loop fills pips 8 and 9 (never 10) and empties them in reverse; hover fills all */
+  @keyframes art-fill-8 { 0%, 8% { opacity: 0; } 16%, 78% { opacity: 1; } 86%, 100% { opacity: 0; } }
+  @keyframes art-fill-9 { 0%, 18% { opacity: 0; } 26%, 68% { opacity: 1; } 76%, 100% { opacity: 0; } }
   @keyframes art-grow-key { to { width: 75%; } }
   @keyframes art-grow-chip { to { width: 4.6em; } }
   @keyframes art-grow-arrow { to { width: 3.4em; } }
@@ -277,9 +283,8 @@ const { name } = Astro.props;
   :global(.tk-bento--compact) .dl__key { animation: art-grow-key 2.8s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .fm__chip--b { animation: art-grow-chip 2.6s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .fe__arrow { animation: art-grow-arrow 2.2s ease-in-out infinite alternate; }
-  :global(.tk-bento--compact) .q__pip:nth-child(n + 8) { animation: art-fill 4.5s ease-in-out infinite; }
-  :global(.tk-bento--compact) .q__pip:nth-child(9) { animation-delay: 0.4s; }
-  :global(.tk-bento--compact) .q__pip:nth-child(10) { animation-delay: 0.8s; }
+  :global(.tk-bento--compact) .q__pip:nth-child(8)::after { animation: art-fill-8 5s ease-in-out infinite; }
+  :global(.tk-bento--compact) .q__pip:nth-child(9)::after { animation: art-fill-9 5s ease-in-out infinite; }
 
   /* hover settles the loop so the hover effect reads cleanly on top of it */
   :global(.tk-bento--compact .tk-tile:is(:hover, :focus-visible)) .art * { animation-play-state: paused; }
