@@ -260,7 +260,31 @@ const { name } = Astro.props;
   .fe__event { display: grid; place-items: center; width: 4.6em; height: 4.6em; border-radius: 50%; background: var(--soft); color: var(--accent); font: 600 1.3em/1 ui-monospace, "SFMono-Regular", Menlo, monospace; }
   :global(.tk-tile:is(:hover, :focus-visible)) .fe__arrow { width: 3.2em; }
 
+  /* ---------- continuous idle motion, home page band only (compact tiles) ---------- */
+  @keyframes art-float { to { transform: translateY(-0.35em); } }
+  @keyframes art-sink { to { transform: translateY(0.6em); } }
+  @keyframes art-nudge { to { transform: translateX(0.5em); } }
+  @keyframes art-pulse { to { transform: scale(1.06); } }
+  @keyframes art-fill { 0%, 25% { background: var(--line); } 40%, 85% { background: var(--accent); } 100% { background: var(--line); } }
+  @keyframes art-grow-key { to { width: 75%; } }
+  @keyframes art-grow-chip { to { width: 4.6em; } }
+  @keyframes art-grow-arrow { to { width: 3.4em; } }
+
+  :global(.tk-bento--compact) .an__note { animation: art-float 3.2s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .c__drop { animation: art-sink 2.4s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .ex__row--off { animation: art-nudge 2.8s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .cs__btn--main { animation: art-pulse 2.2s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .dl__key { animation: art-grow-key 2.8s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .fm__chip--b { animation: art-grow-chip 2.6s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .fe__arrow { animation: art-grow-arrow 2.2s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .q__pip:nth-child(n + 8) { animation: art-fill 4.5s ease-in-out infinite; }
+  :global(.tk-bento--compact) .q__pip:nth-child(9) { animation-delay: 0.4s; }
+  :global(.tk-bento--compact) .q__pip:nth-child(10) { animation-delay: 0.8s; }
+
+  /* hover settles the loop so the hover effect reads cleanly on top of it */
+  :global(.tk-bento--compact .tk-tile:is(:hover, :focus-visible)) .art * { animation-play-state: paused; }
+
   @media (prefers-reduced-motion: reduce) {
-    .art *, .art *::before, .art *::after { transition: none !important; }
+    .art *, .art *::before, .art *::after { transition: none !important; animation: none !important; }
   }
 </style>
