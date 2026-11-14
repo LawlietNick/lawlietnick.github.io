@@ -97,6 +97,20 @@ const { name } = Astro.props;
     </div>
   )}
 
+  {name === "campaign" && (
+    <div class="cc">
+      <div class="cc__row">
+        <span class="cc__dot"></span><span class="chip cc__chip"></span><span class="cc__sep">_</span><span class="chip cc__chip cc__chip--b"></span><span class="cc__sep">_</span><span class="chip cc__chip cc__chip--c"></span>
+      </div>
+      <div class="cc__row cc__row--2">
+        <span class="cc__dot"></span><span class="chip cc__chip"></span><span class="cc__sep">_</span><span class="chip cc__chip cc__chip--b"></span>
+      </div>
+      <div class="cc__row cc__row--3">
+        <span class="cc__dot"></span><span class="chip cc__chip cc__chip--b"></span><span class="cc__sep">_</span><span class="chip cc__chip cc__chip--c"></span>
+      </div>
+    </div>
+  )}
+
   {name === "form" && (
     <div class="fm">
       <span class="bar" style="width: 30%"></span>
@@ -140,7 +154,7 @@ const { name } = Astro.props;
     border-radius: 99px;
     background: var(--soft-strong);
   }
-  .art :is(.an__note, .q__pips, .c__box, .dl__sheet, .ex__row, .fm__input) {
+  .art :is(.an__note, .q__pips, .c__box, .dl__sheet, .ex__row, .fm__input, .cc__row) {
     background: var(--paper);
     border: 1px solid var(--line);
   }
@@ -243,6 +257,18 @@ const { name } = Astro.props;
   .fm__opt { flex: 1; height: 1.6em; border-radius: 99px; border: 1px solid var(--line); background: var(--paper); transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard); }
   .fm__opt.is-on { background: var(--accent); border-color: var(--accent); }
   :global(.tk-tile:is(:hover, :focus-visible)) .fm__chip--b { width: 4.6em; }
+
+  /* ---------- campaign (Meta CampaignCraft): campaign, ad set and ad names, each level one step in ---------- */
+  .cc { display: flex; flex-direction: column; gap: 0.7em; width: 14em; }
+  .cc__row { display: flex; align-items: center; gap: 0.35em; height: 2.4em; padding: 0 0.8em; border-radius: 0.8em; }
+  .cc__row--2 { margin-left: 1.4em; }
+  .cc__row--3 { margin-left: 2.8em; border-color: var(--accent) !important; box-shadow: 0 0 0 0.25em var(--soft); }
+  .cc__dot { flex: none; width: 0.6em; height: 0.6em; border-radius: 50%; }
+  .cc__chip { height: 0.9em; width: 2.6em; }
+  .cc__chip--b { width: 1.8em; }
+  .cc__chip--c { width: 2.2em; transition: width var(--duration-base) var(--ease-snap); }
+  .cc__sep { color: var(--muted); font: 600 0.8em/1 ui-monospace, "SFMono-Regular", Menlo, monospace; align-self: flex-end; margin-bottom: 0.55em; }
+  :global(.tk-tile:is(:hover, :focus-visible)) .cc__row--3 .cc__chip--c { width: 3.4em; }
   :global(.tk-tile:is(:hover, :focus-visible)) .fm__opt:nth-child(2) { border-color: var(--accent); }
 
   /* ---------- consent (Cookiebot guide): a banner with category switches and two buttons ---------- */
@@ -275,6 +301,7 @@ const { name } = Astro.props;
   @keyframes art-grow-key { to { width: 75%; } }
   @keyframes art-grow-chip { to { width: 4.6em; } }
   @keyframes art-grow-arrow { to { width: 3.4em; } }
+  @keyframes art-grow-cc { to { width: 3.4em; } }
 
   :global(.tk-bento--compact) .an__note { animation: art-float 3.2s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .c__drop { animation: art-sink 2.4s ease-in-out infinite alternate; }
@@ -282,6 +309,7 @@ const { name } = Astro.props;
   :global(.tk-bento--compact) .cs__btn--main { animation: art-pulse 2.2s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .dl__key { animation: art-grow-key 2.8s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .fm__chip--b { animation: art-grow-chip 2.6s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .cc__row--3 .cc__chip--c { animation: art-grow-cc 2.6s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .fe__arrow { animation: art-grow-arrow 2.2s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .q__pip:nth-child(8)::after { animation: art-fill-8 5s ease-in-out infinite; }
   :global(.tk-bento--compact) .q__pip:nth-child(9)::after { animation: art-fill-9 5s ease-in-out infinite; }

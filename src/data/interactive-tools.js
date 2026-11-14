@@ -103,6 +103,7 @@ export const allInteractiveTools = [
     category: "tools",
     slug: "meta-campaigncraft",
     icon: "UTM",
+    art: "campaign",
     order: 8,
     date: "2026-11-01",
     draft: false,
