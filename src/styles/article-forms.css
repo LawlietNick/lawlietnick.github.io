@@ -176,7 +176,11 @@
 }
 
 .prose input[type="radio"] { border-radius: var(--radius-pill); }
-.prose input[type="checkbox"] { border-radius: var(--radius-xs); }
+.prose input[type="checkbox"] {
+  border-radius: var(--radius-xs);
+  inline-size: 1.5rem; /* the same size as every checkbox on the site */
+  block-size: 1.5rem;
+}
 
 .prose :is(input[type="radio"], input[type="checkbox"])::before {
   content: "";
@@ -192,8 +196,8 @@
 }
 
 .prose input[type="checkbox"]::before {
-  inline-size: 0.8rem;
-  block-size: 0.8rem;
+  inline-size: 1rem;
+  block-size: 1rem;
   /* a bold check drawn as a rotated corner, knocked out in the panel color */
   background: var(--bg);
   clip-path: polygon(14% 47%, 0 61%, 40% 100%, 100% 22%, 86% 10%, 38% 72%);

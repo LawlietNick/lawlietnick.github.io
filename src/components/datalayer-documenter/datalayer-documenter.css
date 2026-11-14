@@ -67,7 +67,7 @@
   font-weight: var(--font-weight-medium);
 }
 
-.dl-controls input,
+.dl-controls input:not([type="checkbox"]),
 .dl-controls select {
   min-height: 2.75rem;
   width: 100%;
@@ -130,10 +130,12 @@
 }
 
 .dl-selection input[type="checkbox"] {
-  width: 1.1rem;
-  min-height: 1.1rem;
-  margin: 0.12rem 0 0;
-  accent-color: var(--accent);
+  margin: 0;
+}
+
+.dl-selection input[type="checkbox"]:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .dl-export button,
@@ -271,7 +273,7 @@
 .dl-parameters input:focus,
 .dl-parameters select:focus,
 .dl-parameters textarea:focus,
-.dl-controls input:focus,
+.dl-controls input:not([type="checkbox"]):focus,
 .dl-controls select:focus {
   border-color: var(--accent);
   outline: var(--focus-ring);

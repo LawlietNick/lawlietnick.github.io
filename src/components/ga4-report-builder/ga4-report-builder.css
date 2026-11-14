@@ -208,7 +208,6 @@
   border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
 }
 
-.report-toggles input { inline-size: 1.15rem; block-size: 1.15rem; accent-color: var(--accent); }
 .report-toggles span { display: grid; }
 .report-toggles b { font-size: var(--font-size-ui-sm); }
 .report-toggles small { color: var(--muted); font-size: var(--font-size-ui-xs); }
