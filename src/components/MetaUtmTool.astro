@@ -1,158 +1,415 @@
 ---
-import { directory, formats, kinds, metaDocsUrl, platforms, tactics, terms } from "../data/meta-utm.js";
+import { directory, en, formats, kinds, metaDocsChecked, metaDocsUrl, platforms, tactics, terms } from "../data/meta-utm.js";
 import { fi } from "../data/meta-utm.fi.js";
+import { levelKeys, library, templates } from "../data/meta-naming.js";
 import { tableRows } from "../utils/meta-utm.js";
 
-// Texts come from one language file; a second language is another file with the same keys.
-const t = fi;
+// Texts come from one language file per language, with the same keys. The page renders in
+// Finnish; applyLanguage can swap every [data-i18n] text and the JavaScript-built rows.
 const bare = (macro) => macro.replace(/[{}]/g, "");
-const items = directory.map((entry) => ({
-  ...entry,
-  ...t.entries[entry.id],
-  platformLabel: entry.platform ? t.platforms[entry.platform] : "",
-  categoryLabel: t.categories[entry.category],
-  variable: bare(entry.macro ?? entry.value),
-  shown: entry.example ?? entry.value,
-  isExample: Boolean(entry.example),
-}));
-const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, items: tableRows(items, platforms) };
+const i = (key) => ({ "data-i18n": key });
+const ia = (pairs) => ({ "data-i18n-attr": Object.entries(pairs).map(([attr, key]) => `${attr}:${key}`).join(";") });
+
+const checkedDate = (locale) => new Intl.DateTimeFormat(locale, { day: "numeric", month: locale === "fi-FI" ? "numeric" : "long", year: "numeric", timeZone: "UTC" }).format(new Date(metaDocsChecked));
+
+const forLang = (copy, locale) => {
+  const items = directory.map((entry) => ({
+    ...entry,
+    ...copy.entries[entry.id],
+    platformLabel: entry.platform ? copy.platforms[entry.platform] : "",
+    variable: bare(entry.macro ?? entry.value),
+    shown: entry.example ?? entry.value,
+    isExample: Boolean(entry.example),
+  }));
+  return {
+    ui: { ...copy.ui, checkedOn: copy.ui.checkedOn.replace("{date}", checkedDate(locale)) },
+    kinds: copy.kinds,
+    params: copy.params,
+    terms: copy.terms,
+    naming: copy.naming,
+    utm: copy.utm,
+    page: copy.page,
+    faq: copy.faq,
+    encoding: copy.encoding,
+    selects: {
+      tactic: tactics.map((v) => [v, copy.tactics[v]]),
+      format: formats.map((v) => [v, copy.formats[v]]),
+    },
+    items: tableRows(items, platforms),
+  };
+};
+// The page renders in one language: "fi" (default) or "en". Both sets of copy are in the config so
+// applyLanguage can swap them.
+const { locale = "fi" } = Astro.props;
+const config = { langs: { fi: forLang(fi, "fi-FI"), en: forLang(en, "en-GB") }, library, templates };
+const t = config.langs[locale];
+const selects = t.selects;
+
+const combo = (id, key, label, code, labelKey) => ({ id, key, label, code, labelKey, first: selects[key][0] });
+const mediumPresets = ["paidsocial", "paid_social", "cpc"];
+const levelLabel = (key) => t.naming.levels[key];
+// "Kampanja (Campaign)": the part in brackets gets its own span, which narrow screens hide
+const levelParts = (key) => { const [, main, sub] = levelLabel(key).match(/^(.*?)(?:\s*(\([^)]*\)))?$/); return { main, sub }; };
+const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.naming.sepSpace], ["", t.naming.sepNone]];
 ---
 
-<div class="mu" data-meta-utm>
+<div class="mu" data-meta-utm lang={locale} data-locale={locale}>
   <script type="application/json" data-mu-config set:html={JSON.stringify(config).replace(/</g, "\\u003c")} />
 
-  <section class="mu__panel mu__build" aria-labelledby="mu-build">
-    <h2 id="mu-build" class="mu__head">{t.ui.buildTitle}</h2>
+  <dialog class="mu__dialog" data-custom-dialog aria-labelledby="mu-dialog-title">
+    <form method="dialog" class="mu__dialogform" data-custom-form>
+      <div class="mu__dialoghead">
+        <h3 id="mu-dialog-title" {...i("naming.customToggle")}>{t.naming.customToggle}</h3>
+        <button type="button" class="mu__remove" data-custom-close aria-label={t.naming.close} {...ia({ "aria-label": "naming.close" })}>✕</button>
+      </div>
+      <label class="mu__field">
+        <span class="field-label" {...i("naming.customKey")}>{t.naming.customKey}</span>
+        <input class="field" type="text" data-custom-key autocomplete="off" spellcheck="false" />
+        <span class="field-hint" {...i("naming.customKeyHint")}>{t.naming.customKeyHint}</span>
+      </label>
+      <label class="mu__field">
+        <span class="field-label" {...i("naming.customLabel")}>{t.naming.customLabel}</span>
+        <input class="field" type="text" data-custom-label autocomplete="off" />
+      </label>
+      <div class="mu__field">
+        <label class="field-label" data-custom-type-label {...i("naming.customType")}>{t.naming.customType}</label>
+        <div data-custom-type-host></div>
+      </div>
+      <label class="mu__field" data-custom-allowed-group hidden>
+        <span class="field-label" {...i("naming.customAllowed")}>{t.naming.customAllowed}</span>
+        <input class="field" type="text" data-custom-allowed autocomplete="off" spellcheck="false" />
+        <span class="field-hint" {...i("naming.customAllowedHint")}>{t.naming.customAllowedHint}</span>
+      </label>
+      <p class="field-error" id="mu-custom-error" data-custom-error role="alert" hidden></p>
+      <div class="mu__dialogact">
+        <button type="button" class="cta cta--secondary" data-custom-cancel><span class="cta__surface" {...i("naming.customCancel")}>{t.naming.customCancel}</span></button>
+        <button type="button" class="cta cta--primary" data-custom-save><span class="cta__surface" {...i("naming.customSave")}>{t.naming.customSave}</span></button>
+      </div>
+    </form>
+  </dialog>
 
+  <dialog class="mu__dialog" data-confirm-dialog aria-labelledby="mu-confirm-title" aria-describedby="mu-confirm-body">
+    <form method="dialog" class="mu__dialogform" data-confirm-form>
+      <div class="mu__dialoghead">
+        <h3 id="mu-confirm-title" data-confirm-title></h3>
+      </div>
+      <p id="mu-confirm-body" data-confirm-body></p>
+      <div class="mu__dialogact">
+        <button type="button" class="cta cta--secondary" data-confirm-cancel><span class="cta__surface" {...i("naming.tpl.cancel")}>{t.naming.tpl.cancel}</span></button>
+        <button type="button" class="cta cta--primary" data-confirm-ok><span class="cta__surface" data-confirm-ok-text></span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="mu__frame">
+  <div class="mu__stepbar">
+    <div class="mu__steptabs" role="tablist" aria-label={t.ui.stepsLabel} {...ia({ "aria-label": "ui.stepsLabel" })}>
+      <button type="button" role="tab" id="mu-steptab-naming" aria-controls="mu-step-naming" aria-selected="true" data-step-btn="naming"><span class="mu__num" aria-hidden="true">1</span><span {...i("ui.stepNaming")}>{t.ui.stepNaming}</span></button>
+      <button type="button" role="tab" id="mu-steptab-utm" aria-controls="mu-step-utm" aria-selected="false" tabindex="-1" data-step-btn="utm"><span class="mu__num" aria-hidden="true">2</span><span {...i("ui.stepUtm")}>{t.ui.stepUtm}</span></button>
+    </div>
+  </div>
+
+  <!-- Step 1: naming convention -->
+  <div class="mu__view mu__naming" data-step="naming" id="mu-step-naming" role="tabpanel" aria-labelledby="mu-steptab-naming">
+    <header class="mu__head">
+      <div>
+        <p class="mu__eyebrow" {...i("naming.step")}>{t.naming.step}</p>
+        <h2 {...i("naming.title")}>{t.naming.title}</h2>
+        <p class="mu__intro" {...i("naming.intro")}>{t.naming.intro}</p>
+      </div>
+      <button type="button" class="cta cta--primary" data-continue><span class="cta__surface" {...i("naming.continue")}>{t.naming.continue}</span></button>
+    </header>
+
+    <section class="mu__picker" data-tpl-picker aria-labelledby="mu-tpl-title">
+      <h3 class="mu__tpltitle" id="mu-tpl-title" tabindex="-1" {...i("naming.tpl.title")}>{t.naming.tpl.title}</h3>
+      <div class="mu__termcards mu__tplcards" role="radiogroup" aria-labelledby="mu-tpl-title" data-tpl-cards></div>
+      <button type="button" class="mu__link mu__tpltoggle" data-tpl-toggle aria-expanded="false"></button>
+      <div class="mu__tplpreview" data-tpl-preview aria-live="polite"></div>
+      <div class="mu__act">
+        <button type="button" class="cta cta--primary" data-tpl-use disabled><span class="cta__surface" {...i("naming.tpl.use")}>{t.naming.tpl.use}</span></button>
+        <button type="button" class="cta cta--secondary" data-tpl-cancel hidden><span class="cta__surface" {...i("naming.tpl.cancel")}>{t.naming.tpl.cancel}</span></button>
+      </div>
+    </section>
+
+    <div class="mu__tplbar" data-tpl-bar hidden>
+      <p class="mu__tplname" role="status"><strong data-tpl-name tabindex="-1"></strong><span data-tpl-edited hidden><span aria-hidden="true"> · </span><span {...i("naming.tpl.edited")}>{t.naming.tpl.edited}</span></span></p>
+      <div class="mu__tplactions">
+        <button type="button" class="btn-quiet" data-tpl-reset hidden {...i("naming.tpl.reset")}>{t.naming.tpl.reset}</button>
+        <button type="button" class="btn-quiet" data-tpl-change {...i("naming.tpl.change")}>{t.naming.tpl.change}</button>
+      </div>
+    </div>
+
+    <div class="mu__tabbox" data-tpl-builder hidden>
+    <div class="mu__tabs" role="tablist" aria-label={t.naming.levelsLabel} {...ia({ "aria-label": "naming.levelsLabel" })}>
+      {levelKeys.map((key, n) => <button type="button" role="tab" id={`mu-tab-${key}`} aria-controls="mu-levelpanel" aria-selected={n === 0 ? "true" : "false"} tabindex={n === 0 ? 0 : -1} data-level-btn={key}>{n + 1}. {levelParts(key).main}{levelParts(key).sub && <span class="mu__tabsub"> {levelParts(key).sub}</span>}</button>)}
+    </div>
+
+    <div class="mu__build mu__levelpanel" id="mu-levelpanel" role="tabpanel" aria-labelledby="mu-tab-campaign" tabindex="0">
+      <div class="mu__leftcol">
+      <section class="surface mu__panel mu__comps" aria-labelledby="mu-comps-heading">
+        <div class="panel-heading mu__compshead">
+          <div>
+            <h3 class="panel-heading__title" id="mu-comps-heading" data-comps-heading></h3>
+            <p class="field-hint" {...i("naming.componentsHint")}>{t.naming.componentsHint}</p>
+          </div>
+        </div>
+
+        <div class="mu__levelopts">
+          <div class="mu__sepgroup">
+            <span class="field-label" {...i("naming.separatorLabel")}>{t.naming.separatorLabel}</span>
+            <div class="segmented" role="group" aria-label={t.naming.separatorLabel} {...ia({ "aria-label": "naming.separatorLabel" })}>
+              {separators.map(([value, shown]) => <button type="button" data-sep-btn={value} aria-pressed="false">{shown}</button>)}
+            </div>
+          </div>
+          <label class="mu__check"><input type="checkbox" data-lowercase /><span {...i("naming.lowercase")}>{t.naming.lowercase}</span></label>
+        </div>
+
+        <ul class="mu__complist" data-comps></ul>
+
+        <div class="mu__add">
+          <div class="mu__field mu__addselect" data-library></div>
+          <button type="button" class="btn-quiet btn-quiet--dashed" data-custom-open {...i("naming.customToggle")}>{t.naming.customToggle}</button>
+        </div>
+      </section>
+      <div class="notice mu__validation" data-validation role="status"></div>
+      </div>
+
+      <aside class="surface mu__panel mu__result" aria-label={t.naming.resultTitle} {...ia({ "aria-label": "naming.resultTitle" })}>
+        <h3 class="field-label" id="mu-formula-label" {...i("naming.formulaTitle")}>{t.naming.formulaTitle}</h3>
+        <output class="code-output mu__out" data-formula tabindex="0" aria-labelledby="mu-formula-label"></output>
+        <div class="mu__linkrow">
+          <button type="button" class="mu__link" data-copy-formula>
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            <span {...i("naming.copyFormula")}>{t.naming.copyFormula}</span>
+          </button>
+        </div>
+
+        <h3 class="field-label mu__gap" id="mu-example-label" {...i("naming.exampleTitle")}>{t.naming.exampleTitle}</h3>
+        <output class="code-output mu__out" data-example tabindex="0" aria-labelledby="mu-example-label"></output>
+        <div class="mu__act mu__exampleact">
+          <button type="button" class="cta cta--secondary" data-copy-example><span class="cta__surface" {...i("naming.copyExample")}>{t.naming.copyExample}</span></button>
+        </div>
+        <p class="mu__status" role="status" data-naming-status></p>
+
+        <h3 class="field-label mu__gap" {...i("naming.overviewTitle")}>{t.naming.overviewTitle}</h3>
+        <dl class="mu__overview" data-overview></dl>
+      </aside>
+    </div>
+    </div>
+  </div>
+
+  <!-- Step 2: UTM builder -->
+  <div class="mu__view" data-step="utm" id="mu-step-utm" role="tabpanel" aria-labelledby="mu-steptab-utm" hidden>
+    <header class="mu__head">
+      <div>
+        <p class="mu__eyebrow" {...i("utm.step")}>{t.utm.step}</p>
+        <h2 id="mu-build" {...i("ui.buildTitle")}>{t.ui.buildTitle}</h2>
+      </div>
+    </header>
+    <div class="notice mu__banner" data-banner></div>
+
+  <div class="mu__build">
+  <section class="surface mu__panel mu__choices-card" aria-labelledby="mu-build">
     <fieldset class="mu__choices">
-      <legend>{t.ui.trackingLegend}</legend>
+      <legend {...i("ui.trackingLegend")}>{t.ui.trackingLegend}</legend>
 
-      <label class="mu__field">
-        <span class="mu__label">{t.ui.tacticLabel} <code>utm_marketing_tactic</code></span>
-        <select data-tactic>{tactics.map((v) => <option value={v}>{t.tactics[v]}</option>)}</select>
-      </label>
-
-      <label class="mu__field">
-        <span class="mu__label">{t.ui.formatLabel} <code>utm_creative_format</code></span>
-        <select data-format>{formats.map((v) => <option value={v}>{t.formats[v]}</option>)}</select>
-      </label>
-
-      <div class="mu__field" role="radiogroup" aria-labelledby="mu-term-label">
-        <span class="mu__label" id="mu-term-label">{t.ui.termLegend} <code>utm_term</code></span>
-        <div class="mu__radios">
+      <div class="mu__field" role="radiogroup" aria-labelledby="mu-mode-label">
+        <span class="field-label" id="mu-mode-label" {...i("ui.modeLegend")}>{t.ui.modeLegend}</span>
+        <div class="mu__termcards">
           {
-            Object.keys(terms).map((key, i) => (
-              <label class="mu__radio">
-                <input type="radio" name="mu-term" value={key} data-term checked={i === 0} />
-                <span>{t.terms[key].label}</span>
+            ["new", "published"].map((key, n) => (
+              <label class="mu__termcard">
+                <span class="mu__termtop">
+                  <span class="mu__termname" {...i(`ui.mode.${key}`)}>{t.ui.mode[key]}</span>
+                  <input type="radio" name="mu-mode" value={key} data-mode checked={n === 0} />
+                </span>
               </label>
             ))
           }
         </div>
-        <p class="mu__hint" data-term-effect aria-live="polite"></p>
+      </div>
+
+      <div class="mu__published" data-published-group hidden>
+        <button type="button" class="mu__link mu__linkstart" data-open-naming {...i("ui.namingLink")}>{t.ui.namingLink}</button>
+        {
+          [["campaign", "utm_campaign"], ["term", "utm_term"], ["content", "utm_content"]].map(([key, param]) => (
+            <label class="mu__field">
+              <span class="field-label"><span {...i(`ui.fixed.${key}`)}>{t.ui.fixed[key]}</span> <code>{param}</code></span>
+              <input class="field mu__mono" type="text" {...{ [`data-fixed-${key}`]: "" }} placeholder={t.ui.fixedPlaceholder} {...ia({ placeholder: "ui.fixedPlaceholder" })} autocomplete="off" spellcheck="false" />
+            </label>
+          ))
+        }
+      </div>
+
+      {
+        [combo("mu-tactic", "tactic", t.ui.tacticLabel, "utm_marketing_tactic", "ui.tacticLabel"), combo("mu-format", "format", t.ui.formatLabel, "utm_creative_format", "ui.formatLabel")].map((c) => (
+          <div class="mu__field">
+            <label class="field-label" for={c.id}><span {...i(c.labelKey)}>{c.label}</span> <code>{c.code}</code></label>
+            <div class="combobox">
+              <div class="combobox__control">
+                <input class="field combobox__input" id={c.id} role="combobox" readonly aria-haspopup="listbox" aria-controls={`${c.id}-menu`} aria-expanded="false" type="text" value={c.first[1]} data-value={c.first[0]} data-select={c.key} {...{ [`data-${c.key}`]: "" }} />
+                <button class="combobox__toggle" type="button" tabindex="-1" aria-label={t.ui.listToggle} {...ia({ "aria-label": "ui.listToggle" })} aria-controls={`${c.id}-menu`} aria-expanded="false" data-select-toggle={c.key}>
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+                </button>
+              </div>
+              <div class="combobox__menu" hidden id={`${c.id}-menu`} role="listbox" aria-label={c.label} {...ia({ "aria-label": c.labelKey })} data-select-menu={c.key}></div>
+            </div>
+          </div>
+        ))
+      }
+
+      <label class="mu__field" data-tactic-custom-group hidden>
+        <span class="visually-hidden" {...i("ui.tacticCustomLabel")}>{t.ui.tacticCustomLabel}</span>
+        <input class="field" type="text" data-tactic-custom placeholder={t.ui.tacticCustomPlaceholder} {...ia({ placeholder: "ui.tacticCustomPlaceholder" })} autocomplete="off" spellcheck="false" />
+      </label>
+
+      <div class="mu__field" role="radiogroup" aria-labelledby="mu-term-label" data-term-group>
+        <span class="field-label" id="mu-term-label"><span {...i("ui.termLegend")}>{t.ui.termLegend}</span> <code>utm_term</code></span>
+        <div class="mu__termcards">
+          {
+            Object.keys(terms).map((key, n) => (
+              <label class="mu__termcard">
+                <span class="mu__termtop">
+                  <span class="mu__termname" {...i(`terms.${key}.label`)}>{t.terms[key].label}</span>
+                  <input type="radio" name="mu-term" value={key} data-term checked={n === 0} />
+                </span>
+                <code class="mu__termchip" {...(terms[key] ? {} : i("ui.noTermChip"))}>{terms[key] || t.ui.noTermChip}</code>
+                <span class="mu__termnote" {...i(`terms.${key}.card`)}>{t.terms[key].card}</span>
+              </label>
+            ))
+          }
+        </div>
+        <p class="field-hint" data-term-effect aria-live="polite"></p>
       </div>
     </fieldset>
-
-    <div class="mu__result">
-      <p class="mu__label" id="mu-output-label">{t.ui.outputTitle}</p>
-      <output class="mu__out" data-out tabindex="0" aria-labelledby="mu-output-label"></output>
-      <div class="mu__act">
-        <button type="button" class="cta" data-copy><span class="cta__surface">{t.ui.copy}</span></button>
-        <p class="mu__status" role="status" data-copy-status></p>
-      </div>
-      <details class="mu__parts">
-        <summary>{t.ui.partsSummary}</summary>
-        <ul class="mu__partlist" data-parts></ul>
-      </details>
-    </div>
-
-    <details class="mu__advanced">
-      <summary>{t.ui.advancedSummary}</summary>
-      <p class="mu__hint">{t.ui.advancedHint}</p>
-      <label class="mu__field">
-        <span class="mu__label">{t.ui.mediumLabel} <code>utm_medium</code></span>
-        <input type="text" data-medium value="paidsocial" autocomplete="off" spellcheck="false" />
-      </label>
-      <label class="mu__field">
-        <span class="mu__label">{t.ui.platformLabel} <code>utm_source_platform</code></span>
-        <input type="text" data-platform value="Meta Ads" autocomplete="off" spellcheck="false" />
-      </label>
-    </details>
   </section>
 
-  <section class="mu__panel" aria-labelledby="mu-preview">
-    <h2 id="mu-preview">{t.ui.previewTitle}</h2>
-    <p class="mu__hint">{t.ui.previewNote}</p>
-    <div class="mu__urlcard"><code class="mu__url" data-url aria-label={t.ui.urlLabel}></code></div>
+    <div class="surface mu__panel mu__result">
+      <p class="field-label" id="mu-output-label" {...i("ui.outputTitle")}>{t.ui.outputTitle}</p>
+      <output class="code-output mu__out" data-out tabindex="0" aria-labelledby="mu-output-label"></output>
+      <div class="mu__act">
+        <button type="button" class="cta cta--primary" data-copy><span class="cta__surface" {...i("ui.copy")}>{t.ui.copy}</span></button>
+        <p class="mu__status" role="status" data-copy-status></p>
+      </div>
+      <details class="mu__parts" open>
+        <summary {...i("ui.partsSummary")}>{t.ui.partsSummary}</summary>
+        <div class="mu__tablewrap">
+          <table class="mu__table mu__parttable" role="table" aria-label={t.ui.partsSummary} {...ia({ "aria-label": "ui.partsSummary" })}>
+            <colgroup><col class="mu__col-partvar" /><col class="mu__col-partvalue" /></colgroup>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col" {...i("ui.colVariable")}>{t.ui.colVariable}</th>
+                <th role="columnheader" scope="col" {...i("ui.colValue")}>{t.ui.colValue}</th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup" data-parts></tbody>
+          </table>
+        </div>
+      </details>
+      <div class="mu__place">
+        <p class="mu__placetitle" {...i("ui.placeTitle")}>{t.ui.placeTitle}</p>
+        <p {...i("ui.placeBody")}>{t.ui.placeBody}</p>
+      </div>
+    </div>
+
+    <details class="surface mu__panel mu__advanced">
+      <summary {...i("ui.advancedSummary")}>{t.ui.advancedSummary}</summary>
+      <p class="field-hint" {...i("ui.advancedHint")}>{t.ui.advancedHint}</p>
+      <div class="mu__field">
+        <div class="mu__mediumhead">
+          <label class="field-label" for="mu-medium"><span {...i("ui.mediumLabel")}>{t.ui.mediumLabel}</span> <code>utm_medium</code></label>
+          <span class="mu__muted" {...i("ui.mediumHint")}>{t.ui.mediumHint}</span>
+        </div>
+        <div class="mu__chips" role="group" aria-label={t.ui.mediumLabel} {...ia({ "aria-label": "ui.mediumLabel" })}>
+          {mediumPresets.map((v) => (
+            <button type="button" class="mu__chip" data-medium-preset={v} aria-pressed="false">{v}{v === mediumPresets[0] && <span class="mu__chipnote" {...i("ui.recommended")}>{t.ui.recommended}</span>}</button>
+          ))}
+          <button type="button" class="mu__chip mu__chip--text" data-medium-preset="custom" aria-pressed="false" {...i("ui.mediumCustom")}>{t.ui.mediumCustom}</button>
+        </div>
+        <input class="field mu__mono" id="mu-medium" type="text" data-medium value="paidsocial" autocomplete="off" spellcheck="false" />
+      </div>
+      <label class="mu__field">
+        <span class="field-label"><span {...i("ui.platformLabel")}>{t.ui.platformLabel}</span> <code>utm_source_platform</code></span>
+        <input class="field" type="text" data-platform value="Meta Ads" autocomplete="off" spellcheck="false" />
+      </label>
+    </details>
+  </div>
+
+  <section class="surface mu__panel" aria-labelledby="mu-preview">
+    <h2 id="mu-preview" {...i("ui.previewTitle")}>{t.ui.previewTitle}</h2>
+    <p class="field-hint" {...i("ui.previewNote")}>{t.ui.previewNote}</p>
+    <div class="mu__urlcard"><code class="mu__url" data-url aria-label={t.ui.urlLabel} {...ia({ "aria-label": "ui.urlLabel" })}></code></div>
     <ul class="mu__legend">
-      <li><span class="mu__swatch mu__swatch--base"></span>{t.ui.legendBase}</li>
-      <li><span class="mu__swatch mu__swatch--sep"></span>{t.ui.legendSep}</li>
-      <li><span class="mu__swatch mu__swatch--key"></span>{t.ui.legendKey}</li>
+      <li><span class="mu__swatch mu__swatch--base"></span><span {...i("ui.legendBase")}>{t.ui.legendBase}</span></li>
+      <li><span class="mu__swatch mu__swatch--sep"></span><span {...i("ui.legendSep")}>{t.ui.legendSep}</span></li>
+      <li><span class="mu__swatch mu__swatch--key"></span><span {...i("ui.legendKey")}>{t.ui.legendKey}</span></li>
+      {kinds.map((k) => <li><span class={`mu__swatch mu__swatch--${k}`}></span><span {...i(`kinds.${k}.label`)}>{t.kinds[k].label}</span></li>)}
     </ul>
     <dl class="mu__kinds">
       {kinds.map((k) => (
         <div>
-          <dt><span class={`mu__tag mu__tag--${k}`}>{t.kinds[k].label}</span></dt>
-          <dd>{t.kinds[k].hint}</dd>
+          <dt><span class={`mu__tag mu__tag--${k}`} {...i(`kinds.${k}.label`)}>{t.kinds[k].label}</span></dt>
+          <dd {...i(`kinds.${k}.hint`)}>{t.kinds[k].hint}</dd>
         </div>
       ))}
     </dl>
     <ul class="mu__rows" data-preview></ul>
 
-    <h3 class="mu__sub">{t.ui.reportExampleTitle}</h3>
-    <ul class="mu__report" data-term-report></ul>
-    <p class="mu__hint">{t.ui.reportExampleNote}</p>
   </section>
 
-  <section class="mu__panel" aria-labelledby="mu-dir">
-    <h2 id="mu-dir">{t.ui.directoryTitle}</h2>
-    <p class="mu__intro">{t.ui.directoryIntro}</p>
+  <section class="surface mu__panel" aria-labelledby="mu-dir">
+    <h2 id="mu-dir" {...i("ui.directoryTitle")}>{t.ui.directoryTitle}</h2>
+    <p class="mu__intro" {...i("ui.directoryIntro")}>{t.ui.directoryIntro}</p>
     <div data-dir-controls>
       <label class="mu__field mu__search">
-        <span class="mu__label">{t.ui.searchLabel}</span>
-        <input type="search" data-search placeholder={t.ui.searchPlaceholder} autocomplete="off" spellcheck="false" />
+        <span class="field-label" {...i("ui.searchLabel")}>{t.ui.searchLabel}</span>
+        <input class="field" type="search" data-search placeholder={t.ui.searchPlaceholder} {...ia({ placeholder: "ui.searchPlaceholder" })} autocomplete="off" spellcheck="false" />
       </label>
     </div>
     <p class="mu__status" role="status" data-count></p>
     <div class="mu__tablewrap">
-      <table class="mu__table" role="table" aria-label={t.ui.directoryTitle}>
+      <table class="mu__table" role="table" aria-label={t.ui.directoryTitle} {...ia({ "aria-label": "ui.directoryTitle" })}>
         <colgroup><col class="mu__col-var" /><col class="mu__col-value" /><col class="mu__col-note" /></colgroup>
         <thead role="rowgroup">
           <tr role="row">
-            <th role="columnheader" scope="col">{t.ui.colVariable}</th>
-            <th role="columnheader" scope="col">{t.ui.colValue}</th>
-            <th role="columnheader" scope="col">{t.ui.colNote}</th>
+            <th role="columnheader" scope="col" {...i("ui.colVariable")}>{t.ui.colVariable}</th>
+            <th role="columnheader" scope="col" {...i("ui.colValue")}>{t.ui.colValue}</th>
+            <th role="columnheader" scope="col" {...i("ui.colNote")}>{t.ui.colNote}</th>
           </tr>
         </thead>
         <tbody role="rowgroup" data-dir></tbody>
       </table>
     </div>
-    <p class="mu__empty" data-empty hidden>{t.ui.resultNone}</p>
+    <p class="mu__empty" data-empty hidden {...i("ui.resultNone")}>{t.ui.resultNone}</p>
   </section>
 
-  <section class="mu__panel" aria-labelledby="mu-tech">
-    <h2 id="mu-tech">{t.ui.techTitle}</h2>
-    <h3 class="mu__sub">{t.ui.faqTitle}</h3>
+  <section class="surface mu__panel" aria-labelledby="mu-tech">
+    <h2 id="mu-tech" {...i("ui.techTitle")}>{t.ui.techTitle}</h2>
+    <h3 class="mu__sub" {...i("ui.faqTitle")}>{t.ui.faqTitle}</h3>
     <div class="mu__faq">
       {
-        t.faq.map((item) => (
+        t.faq.map((item, n) => (
           <details>
-            <summary>{item.q}</summary>
-            {item.a.map((p) => <p>{p}</p>)}
+            <summary {...i(`faq.${n}.q`)}>{item.q}</summary>
+            {item.a.map((p, j) => <p {...i(`faq.${n}.a.${j}`)}>{p}</p>)}
           </details>
         ))
       }
     </div>
-    <h3 class="mu__sub">{t.ui.encodingTitle}</h3>
-    {t.encoding.map((p) => <p class="mu__note">{p}</p>)}
+    <h3 class="mu__sub" {...i("ui.encodingTitle")}>{t.ui.encodingTitle}</h3>
+    {t.encoding.map((p, n) => <p class="mu__note" {...i(`encoding.${n}`)}>{p}</p>)}
     <p class="mu__source">
-      {t.ui.sourceLine}: <a href={metaDocsUrl} rel="noopener">facebook.com/business/help/2360940870872492</a>, {t.ui.checkedOn}.
+      <span {...i("ui.sourceLine")}>{t.ui.sourceLine}</span>: <a href={metaDocsUrl} rel="noopener">facebook.com/business/help/2360940870872492</a>, <span {...i("ui.checkedOn")}>{t.ui.checkedOn}</span>.
     </p>
   </section>
+  </div>
+  </div>
 </div>
 
 <script>
-  import { filterDirectory, metaUtm, metaUtmParts, previewRows, termReportRows } from "../utils/meta-utm.js";
+  import { initSelectCombobox } from "../scripts/select-combobox.js";
+  import { filterDirectory, metaUtm, metaUtmParts, previewRows } from "../utils/meta-utm.js";
+  import { addComponent, cleanKey, example, formula, levelKeys, levelsFromTemplate, move, newLevels, sameStructure, setLowercase, setSeparator, startValue, validate } from "../utils/meta-naming.js";
 
   const el = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -160,6 +417,70 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
     if (text != null) node.textContent = text;
     return node;
   };
+  const get = (object, path) => path.split(".").reduce((value, key) => value?.[key], object);
+
+  // The same combobox as the two in the UTM step, built with JavaScript for rows that come and go.
+  // options: [[value, label]]. text overrides what the input shows (for a placeholder).
+  let comboSeq = 0;
+  const makeCombobox = ({ options, value, label, toggleLabel, text, onSelect }) => {
+    const id = `mu-combo-${++comboSeq}`;
+    const root = el("div", "combobox");
+    const control = el("div", "combobox__control");
+    const input = el("input", "field combobox__input");
+    const toggle = el("button", "combobox__toggle");
+    const menu = el("div", "combobox__menu");
+    const labelOf = (list, v) => list.find(([key]) => key === v)?.[1] ?? v;
+
+    input.id = id;
+    input.type = "text";
+    input.readOnly = true;
+    input.autocomplete = "off";
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-haspopup", "listbox");
+    input.setAttribute("aria-controls", `${id}-menu`);
+    input.setAttribute("aria-expanded", "false");
+    input.setAttribute("aria-label", label);
+    input.dataset.value = value;
+    input.value = text ?? labelOf(options, value);
+
+    toggle.type = "button";
+    toggle.tabIndex = -1;
+    toggle.setAttribute("aria-label", toggleLabel);
+    toggle.setAttribute("aria-controls", `${id}-menu`);
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>';
+
+    menu.id = `${id}-menu`;
+    menu.hidden = true;
+    menu.setAttribute("role", "listbox");
+    menu.setAttribute("aria-label", label);
+
+    control.append(input, toggle);
+    root.append(control, menu);
+    // Escape closes an open list first; without this a combobox inside the dialog would close the dialog too
+    input.addEventListener("keydown", (event) => { if (event.key === "Escape" && !menu.hidden) { event.stopPropagation(); event.preventDefault(); } });
+    initSelectCombobox(input, toggle, menu, options, () => onSelect(input.dataset.value));
+
+    return {
+      root,
+      input,
+      set(next) {
+        input.dataset.value = next;
+        input.value = labelOf(options, next);
+        menu.querySelectorAll(".combobox__option").forEach((option) => option.setAttribute("aria-selected", String(option.dataset.value === next)));
+      },
+      relabel(next, nextLabel, nextToggleLabel) {
+        options = next;
+        menu.querySelectorAll(".combobox__option").forEach((option) => (option.querySelector(".combobox__name").textContent = labelOf(next, option.dataset.value)));
+        input.value = labelOf(next, input.dataset.value);
+        input.setAttribute("aria-label", nextLabel);
+        menu.setAttribute("aria-label", nextLabel);
+        toggle.setAttribute("aria-label", nextToggleLabel);
+      },
+    };
+  };
+
+  const mediumPresets = ["paidsocial", "paid_social", "cpc"];
 
   const initMetaUtmTools = () => {
     document.querySelectorAll("[data-meta-utm]").forEach((root) => {
@@ -168,37 +489,84 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
       if (root.dataset.ready) return;
       root.dataset.ready = "true";
 
-      const { ui, kinds, params, terms, items } = JSON.parse(root.querySelector("[data-mu-config]").textContent);
+      const config = JSON.parse(root.querySelector("[data-mu-config]").textContent);
+      const library = Object.fromEntries(Object.entries(config.library).map(([key, def]) => [key, { ...def }]));
+      const levels = newLevels();
+      const selects = ["tactic", "format"];
       const q = (selector) => root.querySelector(selector);
-      const tag = (kind) => el("span", `mu__tag mu__tag--${kind}`, kinds[kind].label);
+      const qa = (selector) => [...root.querySelectorAll(selector)];
 
+      let lang = root.dataset.locale ?? "fi";
+      let step = "naming";
+      let activeLevel = levelKeys[0];
+      let configured = false;
+      const L = () => config.langs[lang];
+      const tag = (kind) => el("span", `mu__tag mu__tag--${kind}`, L().kinds[kind].label);
+      const fill = (text, values) => Object.entries(values).reduce((out, [k, v]) => out.replaceAll(`{${k}}`, v), text);
+
+      const tacticValue = () => {
+        const chosen = q("[data-tactic]").dataset.value;
+        if (chosen !== "custom") return chosen;
+        return q("[data-tactic-custom]").value.trim().toLowerCase().replace(/\s+/g, "_") || "custom";
+      };
       const options = () => ({
-        tactic: q("[data-tactic]").value,
-        format: q("[data-format]").value,
+        tactic: tacticValue(),
+        format: q("[data-format]").dataset.value,
         term: q("[data-term]:checked").value,
+        published: q("[data-mode]:checked").value === "published",
+        campaign: q("[data-fixed-campaign]").value,
+        content: q("[data-fixed-content]").value,
+        termText: q("[data-fixed-term]").value,
         medium: q("[data-medium]").value,
         platform: q("[data-platform]").value,
       });
 
       const out = q("[data-out]");
       const copyStatus = q("[data-copy-status]");
+      const namingStatus = q("[data-naming-status]");
+
+      // ---------- UTM step ----------
+
+      // The published-campaign fields start from the names built in the naming step, once that step has
+      // been completed, and never overwrite a value the user has typed.
+      const fixedLevels = { campaign: "campaign", term: "adset", content: "ad" };
+      function syncFixed() {
+        if (!configured) return;
+        Object.entries(fixedLevels).forEach(([field, level]) => {
+          const input = q(`[data-fixed-${field}]`);
+          if (!input.dataset.touched) input.value = nameOf(level);
+        });
+      }
 
       function renderBuilder() {
+        syncFixed();
+        const { ui, params, terms } = L();
         const o = options();
         out.textContent = metaUtm(o);
         copyStatus.textContent = "";
 
         q("[data-parts]").replaceChildren(
           ...metaUtmParts(o).map(({ key, value }) => {
-            const li = el("li");
-            li.append(el("code", "", key), el("span", "mu__arrow", " → "), el("code", "", value));
-            return li;
+            const tr = el("tr");
+            tr.setAttribute("role", "row");
+            const cell = (label) => {
+              const td = el("td");
+              td.setAttribute("role", "cell");
+              td.dataset.label = label;
+              return td;
+            };
+            const variableCell = cell(ui.colVariable);
+            variableCell.append(el("code", "mu__code", key), el("span", "mu__name", params[key].label));
+            const valueCell = cell(ui.colValue);
+            valueCell.append(el("code", "mu__code", value));
+            tr.append(variableCell, valueCell);
+            return tr;
           })
         );
 
         const urlParts = [el("span", "mu__u-base", ui.urlBase)];
-        metaUtmParts(o).forEach(({ key, value, kind }, i) => {
-          urlParts.push(el("span", "mu__u-sep", i === 0 ? "?" : "&"), el("span", "mu__u-key", key), el("span", "mu__u-sep", "="), el("span", `mu__u-val mu__u-val--${kind}`, value));
+        metaUtmParts(o).forEach(({ key, value, kind }, n) => {
+          urlParts.push(el("span", "mu__u-sep", n === 0 ? "?" : "&"), el("span", "mu__u-key", key), el("span", "mu__u-sep", "="), el("span", `mu__u-val mu__u-val--${kind}`, value));
         });
         q("[data-url]").replaceChildren(...urlParts);
 
@@ -217,18 +585,19 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
           })
         );
 
-        const term = terms[o.term];
-        q("[data-term-effect]").textContent = term.effect;
-        q("[data-term-report]").replaceChildren(
-          ...termReportRows(o.term).map(([source, termValue]) => {
-            const li = el("li");
-            li.append(el("code", "", source), el("span", "mu__arrow", " / "), termValue ? el("code", "", termValue) : el("span", "mu__muted", ui.noTerm));
-            return li;
-          })
-        );
+        q("[data-published-group]").hidden = !o.published;
+        q("[data-term-group]").hidden = o.published;
+        q("[data-tactic-custom-group]").hidden = q("[data-tactic]").dataset.value !== "custom";
+        const mediumNow = q("[data-medium]").value;
+        qa("[data-medium-preset]").forEach((chip) => {
+          const preset = chip.dataset.mediumPreset;
+          chip.setAttribute("aria-pressed", String(preset === "custom" ? !mediumPresets.includes(mediumNow) : preset === mediumNow));
+        });
+        q("[data-term-effect]").textContent = terms[o.term].effect;
       }
 
       function renderDirectory() {
+        const { ui, items } = L();
         const found = filterDirectory(items, { query: q("[data-search]").value });
         q("[data-count]").textContent = found.length === 1 ? ui.resultOne : ui.resultCount.replace("{n}", found.length);
         q("[data-empty]").hidden = found.length > 0;
@@ -236,21 +605,22 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
           ...found.map((item) => {
             const tr = el("tr", "mu__entry");
             tr.setAttribute("role", "row");
-            const cell = (label) => {
+            const cell = (label, column) => {
               const td = el("td");
               td.setAttribute("role", "cell");
               td.dataset.label = label;
+              td.dataset.cell = column;
               return td;
             };
 
-            const variableCell = cell(ui.colVariable);
+            const variableCell = cell(ui.colVariable, "variable");
             variableCell.append(el("code", "mu__code", item.variable));
 
-            const valueCell = cell(ui.colValue);
+            const valueCell = cell(ui.colValue, "value");
             valueCell.append(el("code", "mu__code", item.shown));
             if (item.isExample) valueCell.append(el("span", "mu__name", ui.exampleTag));
 
-            const noteCell = cell(ui.colNote);
+            const noteCell = cell(ui.colNote, "note");
             noteCell.append(el("p", "mu__desc", item.description));
             if (item.name !== item.platformLabel && item.platformLabel) noteCell.append(el("p", "mu__meta", `${item.name} · ${item.platformLabel}`));
             else if (item.isExample) noteCell.append(el("p", "mu__meta", item.name));
@@ -266,16 +636,521 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
           await navigator.clipboard.writeText(text);
           statusEl.textContent = doneText;
         } catch {
-          statusEl.textContent = ui.copyError;
+          statusEl.textContent = L().ui.copyError;
         }
       }
 
+      // ---------- Naming step ----------
+
+      // Templates: the picker chooses a template, "use" copies it into `levels`, and the bar above the
+      // builder compares the live structure with the template's own, so the edited state is always
+      // computed and never remembered.
+      const tplById = Object.fromEntries(config.templates.map((template) => [template.id, template]));
+      // the builder opens with the recommended template already in place; the picker only shows on request
+      let tplId = "recommended";
+      let pickId = "recommended";
+      let showAllTpl = false;
+      let picking = false;
+      const tplLevels = (id) => levelsFromTemplate(tplById[id]);
+      const isEdited = () => tplId !== null && !sameStructure(levels, tplLevels(tplId));
+      const loadTemplate = (id) => {
+        const fresh = tplLevels(id);
+        levelKeys.forEach((key) => (levels[key] = fresh[key]));
+      };
+
+      function renderTplPreview() {
+        const { naming } = L();
+        const box = q("[data-tpl-preview]");
+        if (!pickId) {
+          box.replaceChildren(el("p", "mu__muted", naming.tpl.noSelection));
+        } else {
+          const preview = tplLevels(pickId);
+          const list = el("dl", "mu__overview");
+          levelKeys.forEach((key) => {
+            const dd = el("dd");
+            dd.append(el("code", "", example(preview[key], naming.missingValue) || naming.emptyValue));
+            list.append(el("dt", "", naming.levels[key]), dd);
+          });
+          box.replaceChildren(el("h4", "field-label", naming.tpl.previewTitle), list);
+        }
+        q("[data-tpl-use]").disabled = !pickId;
+      }
+
+      function renderTplBar() {
+        const { naming } = L();
+        q("[data-tpl-bar]").hidden = picking || tplId === null;
+        if (tplId === null) return;
+        q("[data-tpl-name]").textContent = naming.templates[tplId].name;
+        const edited = isEdited();
+        q("[data-tpl-edited]").hidden = !edited;
+        q("[data-tpl-reset]").hidden = !edited;
+      }
+
+      function renderTemplates() {
+        const { naming } = L();
+        q("[data-tpl-picker]").hidden = !picking;
+        q("[data-tpl-builder]").hidden = picking;
+        q("[data-continue]").hidden = picking;
+        q("[data-tpl-cancel]").hidden = tplId === null;
+        q("[data-tpl-cards]").replaceChildren(
+          ...config.templates
+            .filter((template) => showAllTpl || template.main)
+            .map((template) => {
+              const copy = naming.templates[template.id];
+              const label = el("label", "mu__termcard mu__tplcard");
+              const top = el("span", "mu__termtop");
+              const radio = el("input");
+              radio.type = "radio";
+              radio.name = "mu-tpl";
+              radio.value = template.id;
+              radio.checked = pickId === template.id;
+              radio.dataset.tplRadio = "";
+              top.append(el("span", "mu__termname", copy.name), radio);
+              label.append(top, el("span", "mu__termnote", copy.description));
+              return label;
+            })
+        );
+        const toggle = q("[data-tpl-toggle]");
+        toggle.textContent = showAllTpl ? naming.tpl.showLess : naming.tpl.showAll;
+        toggle.setAttribute("aria-expanded", String(showAllTpl));
+        renderTplPreview();
+        renderTplBar();
+      }
+
+      function applyTemplate(id) {
+        loadTemplate(id);
+        tplId = id;
+        pickId = id;
+        picking = false;
+        activeLevel = levelKeys[0];
+        renderTemplates();
+        renderNaming();
+        q("[data-tpl-name]").focus();
+      }
+
+      function showPicker() {
+        picking = true;
+        pickId = tplId;
+        renderTemplates();
+        q("#mu-tpl-title").focus();
+      }
+
+      // one confirm dialog for both questions; Escape and the backdrop cancel it and give focus back
+      const confirmDialog = q("[data-confirm-dialog]");
+      let confirmAction = null;
+      let confirmOpener = null;
+      function openConfirm(kind, action) {
+        const { tpl } = L().naming;
+        q("[data-confirm-title]").textContent = tpl[`${kind}Title`];
+        q("[data-confirm-body]").textContent = tpl[`${kind}Body`];
+        q("[data-confirm-ok-text]").textContent = tpl[`${kind}Confirm`];
+        confirmAction = action;
+        confirmOpener = document.activeElement;
+        confirmDialog.showModal();
+        q("[data-confirm-cancel]").focus();
+      }
+
+      // every place that shows or copies a generated name goes through here
+      const nameOf = (key) => example(levels[key], L().naming.missingValue);
+      const labelOf = (key) => (library[key].custom ? library[key].label : (L().naming.components[key] ?? key));
+      const sepName = (value) => (value === " " ? L().naming.sepSpaceName : value === "" ? L().naming.sepNoneName : value);
+
+      function renderRows() {
+        const { naming } = L();
+        const level = levels[activeLevel];
+        const list = q("[data-comps]");
+
+        if (!level.components.length) {
+          list.replaceChildren(el("li", "mu__nocomps", naming.noComponents));
+          return;
+        }
+
+        list.replaceChildren(
+          ...level.components.map((comp, index) => {
+            const def = library[comp.key];
+            const isLast = index === level.components.length - 1;
+            const row = el("li", "field-row mu__comp");
+            const top = el("div", "field-row__top");
+            const label = el("div", "field-row__label");
+            const controls = el("div", "field-row__controls");
+
+            const arrows = el("div", "mu__arrows");
+            const up = el("button", "mu__arrow-btn", "▲");
+            const down = el("button", "mu__arrow-btn", "▼");
+            up.dataset.act = "up";
+            down.dataset.act = "down";
+            [up, down].forEach((b) => (b.type = "button"));
+            up.setAttribute("aria-label", naming.moveUp);
+            down.setAttribute("aria-label", naming.moveDown);
+            up.disabled = index === 0;
+            down.disabled = isLast;
+            up.addEventListener("click", () => { move(level, index, -1); renderNaming({ index: index - 1, act: "up" }); });
+            down.addEventListener("click", () => { move(level, index, 1); renderNaming({ index: index + 1, act: "down" }); });
+            arrows.append(up, down);
+
+            label.append(el("span", "field-row__key mu__key", `{${comp.key}}`), el("span", "mu__muted", labelOf(comp.key)));
+
+            let value;
+            if (def.type === "predefined" && def.allowed?.length) {
+              // a value outside the list (for example after the list was edited) falls back to the first one
+              if (!def.allowed.includes(comp.value)) comp.value = def.allowed[0];
+              const combo = makeCombobox({
+                options: def.allowed.map((opt) => [opt, opt]),
+                value: comp.value,
+                label: fill(naming.valueFor, { key: comp.key }),
+                toggleLabel: L().ui.listToggle,
+                onSelect: (picked) => { comp.value = picked; renderOutputs(); },
+              });
+              value = combo.root;
+              value.classList.add("mu__compvalue");
+            } else {
+              value = el("input", "field");
+              value.type = "text";
+              value.value = comp.value ?? "";
+              value.placeholder = naming.valuePlaceholder;
+              value.autocomplete = "off";
+              value.spellcheck = false;
+              value.classList.add("mu__compvalue");
+              value.setAttribute("aria-label", fill(naming.valueFor, { key: comp.key }));
+              value.addEventListener("input", () => { comp.value = value.value; renderOutputs(); });
+            }
+
+            const sepWrap = el("label", "mu__compsep");
+            sepWrap.append(el("span", "mu__muted", naming.separatorField));
+            const sep = el("input", "field");
+            sep.type = "text";
+            sep.maxLength = 3;
+            sep.value = isLast ? "" : (comp.sepAfter ?? level.separator);
+            sep.disabled = isLast;
+            sep.spellcheck = false;
+            sep.addEventListener("input", () => { comp.sepAfter = sep.value; renderOutputs(); });
+            sepWrap.append(sep);
+
+            const remove = el("button", "field-row__remove", "×");
+            remove.type = "button";
+            remove.dataset.act = "remove";
+            remove.setAttribute("aria-label", `${naming.remove}: ${comp.key}`);
+            remove.addEventListener("click", () => { level.components.splice(index, 1); renderNaming({ index, act: "remove" }); });
+
+            controls.append(value, sepWrap, arrows, remove);
+            top.append(label, controls);
+            row.append(top);
+            return row;
+          })
+        );
+      }
+
+      function renderLibrary() {
+        const { naming } = L();
+        const used = new Set(levels[activeLevel].components.map((c) => c.key));
+        const combo = makeCombobox({
+          options: Object.keys(library).map((key) => [key, `${labelOf(key)} {${key}}${used.has(key) ? ` (${naming.alreadyAdded})` : ""}`]),
+          value: "",
+          label: naming.addPlaceholder,
+          toggleLabel: L().ui.listToggle,
+          text: `+ ${naming.addPlaceholder}`,
+          onSelect: (key) => {
+            if (!library[key]) return;
+            addComponent(levels[activeLevel], key, startValue(library[key], L().naming.sampleValue));
+            renderNaming();
+            q("[data-library] input").focus();
+          },
+        });
+        q("[data-library]").replaceChildren(combo.root);
+      }
+
+      function renderOutputs() {
+        const { naming } = L();
+        const level = levels[activeLevel];
+        // a "copied" message is about the name that was copied, not the one that replaced it
+        namingStatus.textContent = "";
+
+        q("[data-formula]").textContent = formula(level) || naming.emptyFormula;
+        q("[data-example]").textContent = nameOf(activeLevel) || naming.emptyValue;
+
+        renderTplBar();
+        q("[data-overview]").replaceChildren(
+          ...levelKeys.flatMap((key) => {
+            const dt = el("dt", "", naming.levels[key]);
+            const dd = el("dd");
+            dd.append(el("code", "", nameOf(key) || naming.emptyValue));
+            return [dt, dd];
+          })
+        );
+
+        const warnings = validate(level);
+        const box = q("[data-validation]");
+        if (!warnings.length) {
+          box.replaceChildren(el("span", "", naming.validationOk));
+        } else {
+          const list = el("ul", "mu__warnings");
+          warnings.forEach((w) => list.append(el("li", "", fill(naming.warnings[w.code], { key: `{${w.key ?? ""}}` }))));
+          box.replaceChildren(el("strong", "", naming.validationTitle), list);
+        }
+      }
+
+      // the rows are rebuilt on every change, so a button the user just pressed is gone: put focus on
+      // the matching new one. A disabled arrow hands focus to its neighbour; after the last removal it goes to the add list.
+      function restoreFocus({ index, act }) {
+        const rows = qa("[data-comps] .mu__comp");
+        const button = (row, name) => row?.querySelector(`[data-act="${name}"]`);
+        const target = act === "remove"
+          ? (button(rows[index], "remove") ?? q("[data-library] input"))
+          : (() => { const own = button(rows[index], act); return own && !own.disabled ? own : button(rows[index], act === "up" ? "down" : "up"); })();
+        target?.focus();
+      }
+
+      function renderNaming(focus) {
+        const { naming } = L();
+        const level = levels[activeLevel];
+        q("[data-comps-heading]").textContent = fill(naming.componentsHeading, { level: naming.levels[activeLevel] });
+        qa("[data-level-btn]").forEach((b, n) => {
+          const [, main, sub] = naming.levels[b.dataset.levelBtn].match(/^(.*?)(?:\s*(\([^)]*\)))?$/);
+          b.replaceChildren(`${n + 1}. ${main}`);
+          if (sub) b.append(el("span", "mu__tabsub", ` ${sub}`));
+          const on = b.dataset.levelBtn === activeLevel;
+          b.setAttribute("aria-selected", String(on));
+          b.tabIndex = on ? 0 : -1;
+        });
+        q("#mu-levelpanel").setAttribute("aria-labelledby", `mu-tab-${activeLevel}`);
+        qa("[data-sep-btn]").forEach((b) => {
+          b.setAttribute("aria-pressed", String(b.dataset.sepBtn === level.separator));
+          b.setAttribute("aria-label", sepName(b.dataset.sepBtn));
+          b.textContent = b.dataset.sepBtn === " " ? naming.sepSpace : b.dataset.sepBtn === "" ? naming.sepNone : b.dataset.sepBtn;
+        });
+        q("[data-lowercase]").checked = level.lowercase;
+        renderRows();
+        renderLibrary();
+        renderOutputs();
+        if (focus) restoreFocus(focus);
+      }
+
+      function renderBanner() {
+        const { naming } = L();
+        const box = q("[data-banner]");
+        const button = (text, onClick) => {
+          const b = el("button", "mu__link", text);
+          b.type = "button";
+          b.addEventListener("click", onClick);
+          return b;
+        };
+        if (!configured) {
+          box.replaceChildren(el("span", "", naming.bannerOff), button(naming.bannerOffAction, () => setStep("naming", { scroll: true })));
+          return;
+        }
+        const details = el("details", "mu__bannerdetails");
+        details.append(el("summary", "", naming.bannerShow));
+        const grid = el("dl", "mu__overview");
+        levelKeys.forEach((key) => {
+          const dd = el("dd");
+          dd.append(el("code", "", formula(levels[key])), el("br"), el("code", "mu__strong", nameOf(key)));
+          grid.append(el("dt", "", naming.levels[key]), dd);
+        });
+        details.append(grid);
+        details.addEventListener("toggle", () => (details.querySelector("summary").textContent = details.open ? naming.bannerHide : naming.bannerShow));
+        box.replaceChildren(el("span", "", naming.bannerOn), button(naming.bannerEdit, () => setStep("naming", { scroll: true })), details);
+      }
+
+      // ---------- Steps and language ----------
+
+      function setStep(next, { scroll = false } = {}) {
+        step = next;
+        qa("[data-step]").forEach((view) => (view.hidden = view.dataset.step !== step));
+        qa("[data-step-btn]").forEach((b) => {
+          const on = b.dataset.stepBtn === step;
+          b.setAttribute("aria-selected", String(on));
+          b.tabIndex = on ? 0 : -1;
+        });
+        if (step === "utm") { renderBanner(); renderBuilder(); }
+        if (scroll) q(".mu__stepbar").scrollIntoView({ block: "start" });
+      }
+
+      function applyLanguage() {
+        const d = L();
+        root.lang = lang;
+        qa("[data-i18n]").forEach((node) => {
+          const value = get(d, node.dataset.i18n);
+          if (value == null) return;
+          if ("i18nHtml" in node.dataset) node.innerHTML = value;
+          else node.textContent = value;
+        });
+        // the hero note sits outside the tool, in the page
+        const note = document.querySelector('[data-i18n="page.note"]');
+        if (note) note.innerHTML = d.page.note;
+        qa("[data-i18n-attr]").forEach((node) => {
+          node.dataset.i18nAttr.split(";").forEach((pair) => {
+            const [attr, key] = pair.split(":");
+            const value = get(d, key);
+            if (value != null) node.setAttribute(attr, value);
+          });
+        });
+
+        customType.relabel(typeOptions(), d.naming.customType, d.ui.listToggle);
+
+        // the shared combobox builds its options once, so swap their labels here
+        selects.forEach((key) => {
+          const labels = Object.fromEntries(d.selects[key]);
+          const input = q(`[data-select="${key}"]`);
+          qa(`[data-select-menu="${key}"] .combobox__option`).forEach((option) => (option.querySelector(".combobox__name").textContent = labels[option.dataset.value]));
+          input.value = labels[input.dataset.value];
+        });
+
+        namingStatus.textContent = "";
+        copyStatus.textContent = "";
+        renderTemplates();
+        renderNaming();
+        renderBuilder();
+        renderDirectory();
+        if (step === "utm") renderBanner();
+      }
+
+      // ---------- Events ----------
+
       root.addEventListener("input", (event) => {
+        if (!event.target.closest('[data-step="utm"]')) return;
+        if (event.target.matches("[data-fixed-campaign], [data-fixed-term], [data-fixed-content]")) event.target.dataset.touched = "1";
         if (event.target.closest("[data-dir-controls]")) renderDirectory();
         else renderBuilder();
       });
-      q("[data-copy]").addEventListener("click", () => copyText(out.textContent, copyStatus, ui.copied));
+      q("[data-copy]").addEventListener("click", () => copyText(out.textContent, copyStatus, L().ui.copied));
+      q("[data-copy-formula]").addEventListener("click", () => copyText(formula(levels[activeLevel]), namingStatus, L().naming.formulaCopied));
+      q("[data-copy-example]").addEventListener("click", () => copyText(nameOf(activeLevel), namingStatus, L().naming.exampleCopied));
 
+      // the tabs never scroll the page: only the continue and edit buttons below do
+      qa("[data-step-btn]").forEach((b) => b.addEventListener("click", () => setStep(b.dataset.stepBtn)));
+      qa("[data-level-btn]").forEach((b) => b.addEventListener("click", () => { activeLevel = b.dataset.levelBtn; namingStatus.textContent = ""; renderNaming(); }));
+      qa("[data-step-btn], [data-level-btn]").forEach((b) => b.addEventListener("keydown", (event) => {
+        const all = qa(b.matches("[data-step-btn]") ? "[data-step-btn]" : "[data-level-btn]");
+        const n = all.indexOf(b);
+        const to = { ArrowRight: n + 1, ArrowLeft: n - 1, Home: 0, End: all.length - 1 }[event.key];
+        if (to == null) return;
+        event.preventDefault();
+        const next = all[(to + all.length) % all.length];
+        next.click();
+        next.focus();
+      }));
+      qa("[data-sep-btn]").forEach((b) => b.addEventListener("click", () => { setSeparator(levels[activeLevel], b.dataset.sepBtn); renderNaming(); }));
+      q("[data-lowercase]").addEventListener("change", (event) => { setLowercase(levels[activeLevel], event.target.checked); renderOutputs(); });
+      q("[data-open-naming]").addEventListener("click", () => setStep("naming"));
+
+      q("[data-tpl-cards]").addEventListener("change", (event) => {
+        if (!event.target.matches("[data-tpl-radio]")) return;
+        pickId = event.target.value;
+        renderTplPreview();
+      });
+      q("[data-tpl-toggle]").addEventListener("click", () => {
+        showAllTpl = !showAllTpl;
+        if (!showAllTpl && pickId && !tplById[pickId].main) pickId = null;
+        renderTemplates();
+      });
+      q("[data-tpl-use]").addEventListener("click", () => {
+        if (!pickId) return;
+        if (isEdited()) openConfirm("switch", () => applyTemplate(pickId));
+        else applyTemplate(pickId);
+      });
+      q("[data-tpl-cancel]").addEventListener("click", () => {
+        picking = false;
+        renderTemplates();
+        q("[data-tpl-change]").focus();
+      });
+      q("[data-tpl-change]").addEventListener("click", showPicker);
+      q("[data-tpl-reset]").addEventListener("click", () => openConfirm("reset", () => {
+        loadTemplate(tplId);
+        renderNaming();
+        q("[data-tpl-name]").focus();
+      }));
+      q("[data-confirm-cancel]").addEventListener("click", () => confirmDialog.close());
+      q("[data-confirm-ok]").addEventListener("click", () => {
+        const action = confirmAction;
+        confirmAction = null;
+        confirmDialog.close();
+        action?.();
+      });
+      confirmDialog.addEventListener("click", (event) => { if (event.target === confirmDialog) confirmDialog.close(); });
+      confirmDialog.addEventListener("close", () => {
+        if (!confirmAction) return;
+        confirmAction = null;
+        confirmOpener?.focus();
+      });
+      q("[data-confirm-form]").addEventListener("submit", (event) => event.preventDefault());
+      q("[data-continue]").addEventListener("click", () => { configured = true; setStep("utm", { scroll: true }); });
+
+      // custom component form
+      const typeOptions = () => [["free", L().naming.typeFree], ["predefined", L().naming.typePredefined]];
+      const customType = makeCombobox({
+        options: typeOptions(),
+        value: "free",
+        label: L().naming.customType,
+        toggleLabel: L().ui.listToggle,
+        onSelect: (picked) => (q("[data-custom-allowed-group]").hidden = picked !== "predefined"),
+      });
+      q("[data-custom-type-host]").replaceChildren(customType.root);
+      q("[data-custom-type-label]").htmlFor = customType.input.id;
+      const customError = q("[data-custom-error]");
+      const dialog = q("[data-custom-dialog]");
+      const clearInvalid = () => {
+        customError.hidden = true;
+        q("[data-custom-key]").removeAttribute("aria-invalid");
+        q("[data-custom-key]").removeAttribute("aria-describedby");
+      };
+      const resetCustom = () => {
+        qa("[data-custom-key], [data-custom-label], [data-custom-allowed]").forEach((input) => (input.value = ""));
+        customType.set("free");
+        q("[data-custom-allowed-group]").hidden = true;
+        clearInvalid();
+      };
+      q("[data-custom-key]").addEventListener("input", clearInvalid);
+      q("[data-custom-open]").addEventListener("click", () => { resetCustom(); dialog.showModal(); q("[data-custom-key]").focus(); });
+      qa("[data-custom-close], [data-custom-cancel]").forEach((b) => b.addEventListener("click", () => dialog.close()));
+      // a click on the backdrop (the dialog element itself) closes it
+      dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+      q("[data-custom-form]").addEventListener("submit", (event) => event.preventDefault());
+      q("[data-custom-save]").addEventListener("click", () => {
+        const key = cleanKey(q("[data-custom-key]").value);
+        // the message is a data-i18n text, so a language switch rewrites it
+        const keyInput = q("[data-custom-key]");
+        const fail = (i18nKey) => {
+          customError.dataset.i18n = i18nKey;
+          customError.textContent = get(L(), i18nKey);
+          customError.hidden = false;
+          keyInput.setAttribute("aria-invalid", "true");
+          keyInput.setAttribute("aria-describedby", customError.id);
+          keyInput.focus();
+        };
+        if (!key) return fail("naming.customKeyMissing");
+        if (library[key]) return fail("naming.customKeyExists");
+        clearInvalid();
+
+        const label = q("[data-custom-label]").value.trim() || key;
+        const def = { custom: true, label, type: customType.input.dataset.value };
+        if (def.type === "predefined") {
+          def.allowed = q("[data-custom-allowed]").value.split(",").map((s) => s.trim()).filter(Boolean);
+          if (!def.allowed.length) def.type = "free";
+        }
+        library[key] = def;
+        addComponent(levels[activeLevel], key, startValue(def, L().naming.sampleValue));
+
+        resetCustom();
+        dialog.close();
+        renderNaming();
+      });
+
+      // utm_medium: shortcut chips fill the field; "other" moves the cursor to it
+      qa("[data-medium-preset]").forEach((chip) => chip.addEventListener("click", () => {
+        const field = q("[data-medium]");
+        if (chip.dataset.mediumPreset === "custom") {
+          field.focus();
+          field.select();
+        } else {
+          field.value = chip.dataset.mediumPreset;
+        }
+        renderBuilder();
+      }));
+      selects.forEach((key) => initSelectCombobox(q(`[data-select="${key}"]`), q(`[data-select-toggle="${key}"]`), q(`[data-select-menu="${key}"]`), config.langs[lang].selects[key], renderBuilder));
+
+      loadTemplate(tplId);
+      renderTemplates();
+      renderNaming();
       renderBuilder();
       renderDirectory();
     });
@@ -296,69 +1171,48 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
     --mu-key: light-dark(oklch(40% 0.14 250), oklch(78% 0.1 250));
     --mu-dynamic: light-dark(oklch(44% 0.22 286), oklch(76% 0.14 286));
     --mu-frozen: light-dark(oklch(45% 0.12 60), oklch(80% 0.12 85));
-    max-width: 72rem;
     margin-block: 1.5rem var(--section-y-large);
     display: grid;
     gap: 1.5rem;
     font-size: var(--font-size-ui);
     line-height: var(--line-height-ui);
   }
-  .mu :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .mu :focus-visible { outline: var(--focus-ring); outline-offset: 3px; border-radius: 3px; }
 
   .mu__panel {
     min-width: 0;
     padding: clamp(1rem, 2.5vw, 1.75rem);
-    border-radius: var(--radius-lg);
-    background: var(--color-accent-panel);
   }
   .mu__panel h2 { margin-top: 0; }
-  .mu__build > h2 { font-size: 1.4rem; }
   .mu__intro { max-width: 60ch; margin: 0 0 1.5rem; color: var(--muted); }
-  .mu__hint { margin: 0.25rem 0 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu .field-hint { margin-top: 0.25rem; font-size: var(--font-size-ui-sm); }
   .mu__muted { color: var(--muted); font-size: var(--font-size-ui-sm); }
-  .mu__source { margin: 1.75rem 0 0; color: var(--muted); font-size: var(--font-size-ui-sm); overflow-wrap: anywhere; }
+  .mu__source { margin: 1.5rem 0 0; color: var(--muted); font-size: var(--font-size-ui-sm); overflow-wrap: anywhere; }
   .mu code { font-family: var(--font-mono); overflow-wrap: anywhere; }
 
   /* Builder: choices left, finished string right on wide screens; one column in DOM order on small ones */
-  .mu__build { display: grid; gap: 1rem 2.5rem; align-content: start; }
-  .mu__build > h2 { margin-bottom: 0; }
-  .mu__choices { margin: 0; padding: 0; border: 0; display: grid; gap: 0.9rem; min-width: 0; }
-  .mu__choices legend { padding: 0; margin-bottom: 0.6rem; font-weight: var(--font-weight-strong); }
-  .mu__field { display: grid; gap: 0.35rem; min-width: 0; }
-  .mu__label { color: var(--ink); font-weight: var(--font-weight-strong); }
-  .mu__label code { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-xs); }
-  .mu select, .mu input[type="text"], .mu input[type="search"] {
-    width: 100%;
-    padding: 0.55rem 0.8rem;
-    border: 1px solid var(--mu-field-line);
-    border-radius: var(--radius-md);
-    background: var(--bg);
-    color: var(--ink);
-    font: inherit;
-    font-weight: var(--font-weight-body);
-  }
-  .mu__radios { display: flex; flex-wrap: wrap; gap: 0.15rem 1.25rem; }
-  .mu__radio { display: flex; gap: 0.5rem; align-items: center; padding: 0.4rem 0; cursor: pointer; }
-  .mu__radio input { accent-color: var(--accent); margin: 0; }
+  .mu__build { display: grid; gap: 1.5rem; align-content: start; }
+  .mu__build > * { min-width: 0; }
+  .mu__choices { margin: 0; padding: 0; border: 0; display: grid; gap: 1rem; min-width: 0; }
+  .mu__choices legend { padding: 0; margin-bottom: 0.5rem; font-weight: var(--font-weight-strong); }
+  .mu__field { display: grid; gap: 0.25rem; min-width: 0; }
+  .mu .field-label code { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-xs); }
 
   .mu__result { min-width: 0; align-self: start; }
-  .mu__result .mu__label { margin: 0 0 0.5rem; }
-  .mu__advanced { display: grid; gap: 0.75rem; min-width: 0; padding-top: 0.75rem; border-top: 1px solid var(--line); }
+  .mu__result .field-label { margin: 0 0 0.5rem; }
+  .mu__advanced { display: grid; gap: 0.5rem; min-width: 0; }
   .mu__advanced summary, .mu__parts summary, .mu__faq summary { cursor: pointer; font-weight: var(--font-weight-strong); }
 
-  @media (min-width: 60rem) {
-    .mu__build { grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); grid-template-areas: "head head" "choices result" "adv result"; grid-template-rows: auto auto 1fr; }
-    .mu__choices, .mu__advanced { align-self: start; }
-    .mu__build > h2 { grid-area: head; }
-    .mu__choices { grid-area: choices; }
-    .mu__result { grid-area: result; }
+  @media (min-width: 64rem) {
+    .mu__build { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "choices result" "adv result"; grid-template-rows: auto 1fr; }
+    .mu__choices-card, .mu__advanced { align-self: start; }
+    .mu__choices-card { grid-area: choices; }
+    .mu__result { grid-area: result; position: sticky; top: 1.5rem; }
     .mu__advanced { grid-area: adv; }
   }
 
-  .mu__sub { margin: 1.5rem 0 0.6rem; font-size: 1.05rem; }
+  .mu__sub { margin: 1.5rem 0 0.5rem; font-size: 1.05rem; }
   .mu__note { max-width: 62ch; margin: 0 0 0.5rem; color: var(--muted); font-size: var(--font-size-ui-sm); }
-  .mu__report { margin: 0 0 0.75rem; padding: 0; list-style: none; display: grid; gap: 0.35rem; }
-  .mu__report li { padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--ink) 5%, var(--bg)); }
   .mu__arrow { color: var(--muted); }
 
   /* Kind tags: colour is never the only signal, the label always says it */
@@ -375,11 +1229,11 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
   .mu__tag--dynamic { color: var(--mu-dynamic); }
   .mu__tag--frozen { color: var(--mu-frozen); }
   .mu__kinds { margin: 1rem 0 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1rem; }
-  .mu__kinds dt { margin-bottom: 0.4rem; }
+  .mu__kinds dt { margin-bottom: 0.5rem; }
   .mu__kinds dd { margin: 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
 
   /* URL card and legend: structure parts in neutral tones, values coloured by who fills them */
-  .mu__urlcard { margin: 1rem 0 0.75rem; padding: 1rem 1.1rem; border-radius: var(--radius-md); background: var(--bg); border: 1px solid var(--line); }
+  .mu__urlcard { margin: 1rem 0 0.5rem; padding: 1rem 1.1rem; border-radius: var(--radius-md); background: var(--bg); border: 1px solid var(--line); }
   .mu__url { display: block; font-size: var(--font-size-ui-sm); line-height: 1.8; overflow-wrap: anywhere; }
   .mu__u-base { color: var(--muted); }
   .mu__u-sep { color: var(--muted); }
@@ -388,8 +1242,8 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
   .mu__u-val--fixed { color: var(--mu-fixed); }
   .mu__u-val--dynamic { color: var(--mu-dynamic); }
   .mu__u-val--frozen { color: var(--mu-frozen); }
-  .mu__legend { margin: 0 0 1.25rem; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
-  .mu__legend li { display: flex; align-items: center; gap: 0.4rem; }
+  .mu__legend { margin: 0 0 1rem; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .mu__legend li { display: flex; align-items: center; gap: 0.5rem; }
   .mu__swatch { width: 0.8rem; height: 0.8rem; border-radius: 3px; background: var(--ink); }
   .mu__swatch--base { background: var(--muted); }
   .mu__swatch--sep { background: color-mix(in srgb, var(--muted) 45%, var(--bg)); }
@@ -399,46 +1253,40 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
   .mu__swatch--frozen { background: var(--mu-frozen); }
 
   /* Preview rows: key and tag on the left, meaning and example on the right on wide screens */
-  .mu__rows, .mu__partlist { margin: 0; padding: 0; list-style: none; }
-  .mu__rows { display: grid; gap: 0.6rem; }
-  .mu__row { display: grid; gap: 0.4rem 1.5rem; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  .mu__rows { margin: 0; padding: 0; list-style: none; }
+  .mu__rows { display: grid; gap: 0.5rem; }
+  .mu__row { display: grid; gap: 0.5rem 1.5rem; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
   @media (min-width: 40rem) { .mu__row { grid-template-columns: minmax(11rem, 15rem) 1fr; align-items: start; } }
-  .mu__rowhead { display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem; align-items: center; align-content: start; }
+  .mu__rowhead { display: flex; flex-wrap: wrap; gap: 0.5rem 0.5rem; align-items: center; align-content: start; }
   .mu__key { font-weight: var(--font-weight-strong); }
-  .mu__rowbody { display: grid; gap: 0.35rem; min-width: 0; }
+  .mu__rowbody { display: grid; gap: 0.25rem; min-width: 0; }
   .mu__meaning { margin: 0; color: var(--muted); font-size: var(--font-size-ui-sm); max-width: 62ch; }
 
   /* Output */
   .mu__out {
     display: block;
-    max-height: 9.5rem;
-    overflow-y: auto;
+    /* padding is the same on all sides, and the height is a whole number of lines plus that padding, so a long string is never cut mid-line */
+    box-sizing: border-box;
+    padding: 1rem;
+    max-height: calc(2rem + 2px + 5 * 1.65 * var(--font-size-ui-sm));
     margin: 0 0 1rem;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--mu-field-line);
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--ink) 4%, var(--bg));
-    font-family: var(--font-mono);
     font-size: var(--font-size-ui-sm);
     line-height: 1.65;
+    white-space: normal;
     overflow-wrap: anywhere;
+    user-select: auto;
   }
-  .mu__act { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; }
+  .mu__act { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: center; }
   .mu__status { margin: 0; min-height: 1.5em; color: var(--muted); font-size: var(--font-size-ui-sm); }
   .mu__parts { margin-top: 1rem; }
-  .mu__partlist { margin: 0.75rem 0; display: grid; gap: 0.4rem; }
-  .mu__partlist li { overflow-wrap: anywhere; }
+  .mu__parttable { margin-top: 0; }
+  .mu__parttable td { padding-block: 0.3rem; }
+  .mu__parttable .mu__name { margin-top: 0.25rem; }
+  .mu__col-partvar { width: 44%; }
+  .mu__col-partvalue { width: 56%; }
 
   /* Directory */
-  .mu__vars { margin: 0 0 1rem; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
-  .mu__vars legend { padding: 0; margin-bottom: 0.4rem; font-weight: var(--font-weight-strong); }
-  .mu__var { display: flex; gap: 0.5rem; align-items: center; padding: 0.4rem 0; cursor: pointer; }
-  .mu__var input { accent-color: var(--accent); margin: 0; }
   .mu__search { max-width: 36rem; }
-  .mu__varkey { margin: 0.75rem 0 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
-  .mu__others { margin: 0 0 0.5rem; display: grid; gap: 0.75rem; }
-  .mu__others dt { margin-bottom: 0.2rem; }
-  .mu__others dd { margin: 0; max-width: 62ch; color: var(--muted); font-size: var(--font-size-ui-sm); }
   .mu__tablewrap { margin-top: 0.5rem; }
   .mu__table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: var(--font-size-ui-sm); }
   .mu__col-var { width: 24%; }
@@ -447,9 +1295,9 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
   .mu__table th { padding: 0.5rem 1rem 0.5rem 0; border-bottom: 1px solid var(--mu-field-line); color: var(--muted); font-weight: var(--font-weight-medium); text-align: left; }
   .mu__table td { padding: 0.8rem 1rem 0.8rem 0; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
   .mu__code { padding: 0.1rem 0.4rem; border-radius: var(--radius-xs); background: color-mix(in srgb, var(--ink) 6%, var(--bg)); }
-  .mu__name { display: block; margin-top: 0.4rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .mu__name { display: block; margin-top: 0.5rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
   .mu__desc { margin: 0 0 0.5rem; max-width: 60ch; }
-  .mu__meta { margin: 0; display: flex; flex-wrap: wrap; gap: 0.3rem 0.75rem; align-items: center; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .mu__meta { margin: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 0.5rem; align-items: center; color: var(--muted); font-size: var(--font-size-ui-xs); }
 
   /* Narrow screens: every row becomes a stack, each cell labelled by its column. The ARIA roles
      on the table keep it a table for assistive technology when display is changed. */
@@ -458,19 +1306,170 @@ const config = { ui: t.ui, kinds: t.kinds, params: t.params, terms: t.terms, ite
     .mu__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .mu__table tr { padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
     .mu__table td { padding: 0.25rem 0; border: 0; }
-    .mu__table td::before { content: attr(data-label); display: block; margin-bottom: 0.15rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+    .mu__table td::before { content: attr(data-label); display: block; margin-bottom: 0.25rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
   }
   .mu__empty { margin: 1rem 0 0; }
 
   .mu__faq { display: grid; gap: 0.5rem; }
   .mu__faq details { padding: 0.75rem 0; border-top: 1px solid var(--line); }
-  .mu__faq p { max-width: 62ch; margin: 0.6rem 0 0; }
+  .mu__faq p { max-width: 62ch; margin: 0.5rem 0 0; }
 
   @media (max-width: 39.99rem) {
     .mu__act .cta { width: 100%; }
   }
 
-  @media (pointer: coarse) {
-    .mu select, .mu input[type="text"], .mu input[type="search"] { min-height: 44px; }
+  /* Frame and ribbons. Overflow stays visible so the combobox lists can open past the edges;
+     the ribbons round their own top corners. */
+  .mu { --mu-radius: var(--radius-lg, var(--radius-md)); }
+  .mu__frame { border: 1px solid var(--line); border-radius: var(--mu-radius); background: color-mix(in srgb, var(--ink) 2%, var(--bg)); }
+
+  /* Tab ribbons: the step tabs and the level tabs are the same ribbon with the same tabs */
+  .mu__stepbar, .mu__tabs { display: flex; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--ink) 4%, var(--bg)); border-radius: calc(var(--mu-radius) - 1px) calc(var(--mu-radius) - 1px) 0 0; }
+  .mu__stepbar { flex-wrap: wrap; align-items: stretch; justify-content: space-between; gap: 0.25rem 1.5rem; padding-right: 1rem; }
+  .mu__steptabs, .mu__tabs { display: flex; overflow-x: auto; }
+  .mu__steptabs { align-self: stretch; }
+  .mu__tabs button, .mu__steptabs button { flex: 0 0 auto; min-height: 3.375rem; padding: 0.5rem 1.25rem; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--muted); font: inherit; font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-bold); cursor: pointer; }
+  .mu__tabs button:first-child, .mu__steptabs button:first-child { border-top-left-radius: calc(var(--mu-radius) - 1px); }
+  .mu__tabs button:hover, .mu__steptabs button:hover { color: var(--ink); }
+  /* narrow screens: the English part in brackets goes, so all three level tabs fit and share the width */
+  @media (max-width: 47.99rem) {
+    .mu__tabsub { display: none; }
+    .mu__tabs button { flex: 1 1 0; min-width: 0; padding-inline: 0.5rem; }
+    .mu__stepbar { padding-right: 0; }
+    .mu__steptabs button { padding-inline: 0.6rem; }
+    .mu__num { margin-right: 0.25rem; }
   }
+  /* the ribbon scrolls and clips, so the focus ring sits inside the tab */
+  .mu__tabs button:focus-visible, .mu__steptabs button:focus-visible { outline-offset: -4px; }
+  .mu__tabs button[aria-selected="true"], .mu__steptabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); background: var(--bg); }
+
+  .mu__frame > .mu__view { padding: clamp(1rem, 2.5vw, 1.75rem); }
+  .mu__view { display: grid; gap: 1.5rem; }
+  .mu__view > * { min-width: 0; }
+  .mu__head h2 { margin: 0.25rem 0 0.5rem; }
+  .mu__head .mu__intro { margin-bottom: 0; }
+  .mu__eyebrow { margin: 0; color: var(--muted); font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-strong); text-transform: uppercase; letter-spacing: 0.06em; }
+  /* One frame holds the tabs and both boxes they change */
+  .mu__tabbox { border: 1px solid var(--line); border-radius: var(--mu-radius); background: var(--bg); }
+  .mu__tabbox .mu__levelpanel { gap: 0; }
+  .mu__tabbox .surface { border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+  @media (min-width: 75rem) { .mu__tabbox .mu__result { border-left: 1px solid var(--line); } }
+  @media (max-width: 74.99rem) { .mu__tabbox .mu__result { border-top: 1px solid var(--line); } }
+  .mu__gap { margin-top: 1.5rem; }
+  .mu__result h3.field-label { margin: 0 0 0.5rem; }
+  .mu__result h3.field-label.mu__gap { margin-top: 1.5rem; }
+
+  /* Naming: components left, formula right on wide screens */
+  .mu__naming .mu__build { align-items: start; grid-template-columns: minmax(0, 1fr); grid-template-areas: none; grid-template-rows: auto; }
+  /* inside the tab box the result column stays in the flow */
+  .mu__naming .mu__result { grid-area: auto; position: static; }
+  @media (min-width: 75rem) {
+    .mu__naming .mu__build { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-areas: "comps result"; }
+    .mu__naming .mu__leftcol { grid-area: comps; }
+    .mu__naming .mu__result { grid-area: result; }
+  }
+  .mu__compshead { margin-bottom: 1rem; align-items: flex-start; }
+  .mu__compshead .field-hint { margin: 0.25rem 0 0; }
+  /* the separator and lowercase controls have their own row between the heading and the components */
+  .mu__levelopts { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: flex-end; margin-bottom: 1rem; }
+  .mu__sepgroup { display: grid; gap: 0.25rem; }
+  /* same checkbox as the cookie banner styler (.cbs__check): native input, accent colour, label around it */
+  .mu__check { display: flex; gap: 0.5rem; align-items: center; min-height: 2.9rem; font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-medium); color: var(--ink); cursor: pointer; }
+  .mu__check input { inline-size: 1.1rem; block-size: 1.1rem; margin: 0; accent-color: var(--accent); cursor: pointer; }
+  .mu__complist { margin: 0 0 1rem; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+  .mu__compsep { display: flex; gap: 0.5rem; align-items: center; }
+  .field-row .mu__compsep .field { flex: 0 0 3.5rem; width: 3.5rem; text-align: center; padding-inline: 0.4rem; }
+  .mu__compvalue { min-width: 0; }
+  /* the list picker and the text value share one weight */
+  .mu__comp .combobox__input { font-weight: var(--font-weight-body); }
+  .mu__arrows { display: flex; gap: 0.25rem; }
+  .mu__remove { min-width: 2rem; min-height: 1.75rem; border: 0; border-radius: var(--radius-xs); background: transparent; color: var(--muted); font: inherit; font-size: var(--font-size-ui-xs); cursor: pointer; }
+  .mu__remove:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, var(--bg)); }
+  .mu__arrow-btn { min-width: 2rem; min-height: 1.75rem; border: 0; border-radius: var(--radius-xs); background: transparent; color: var(--muted); font: inherit; font-size: var(--font-size-ui-xs); cursor: pointer; }
+  .mu__arrow-btn:hover:not(:disabled) { color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, var(--bg)); }
+  .mu__arrow-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  @media (max-width: 47.99rem) {
+    .mu__comp .field-row__controls { flex: 1 1 100%; justify-content: flex-start; }
+    .mu__comp .mu__compvalue { flex: 1 1 100%; max-width: none; }
+    .mu__comp .mu__compsep { margin-right: auto; }
+    .mu__add .btn-quiet { flex: 1 1 100%; }
+  }
+  /* touch: bigger targets while the row still fits */
+  @media (pointer: coarse) { .mu__arrow-btn, .mu__remove { min-height: 2.5rem; } }
+  .mu__nocomps { padding: 1rem; border: 1px dashed var(--line); border-radius: var(--radius-md); color: var(--muted); text-align: center; }
+  .mu__warnings { margin: 0.5rem 0 0; padding-left: 1.1rem; }
+  .mu__overview { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.5rem 1rem; }
+  .mu__overview dt { color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__overview dd { margin: 0; overflow-wrap: anywhere; }
+  .mu__strong { font-weight: var(--font-weight-strong); }
+  .mu__banner { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
+  .mu__bannerdetails { flex-basis: 100%; }
+  .mu__bannerdetails summary { cursor: pointer; font-weight: var(--font-weight-strong); }
+  .mu__bannerdetails .mu__overview { margin-top: 0.5rem; }
+  .mu__link { padding: 0; border: 0; background: none; color: var(--accent); font: inherit; font-weight: var(--font-weight-strong); text-decoration: underline; cursor: pointer; }
+
+  /* Naming layout from the Stitch base */
+  .mu__head { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: flex-end; justify-content: space-between; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+  .mu__head > div { min-width: 0; max-width: 46rem; }
+  .mu__num { display: inline-flex; align-items: center; justify-content: center; width: 1.35rem; height: 1.35rem; margin-right: 0.5rem; border-radius: 50%; background: color-mix(in srgb, var(--ink) 14%, var(--bg)); color: var(--ink); font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-strong); }
+  .mu__steptabs button[aria-selected="true"] .mu__num { background: var(--ink); color: var(--bg); }
+  .mu__leftcol { display: grid; gap: 1rem; align-content: start; min-width: 0; }
+  .mu__tabbox .mu__leftcol { padding: 0 0 1rem; }
+  .mu__tabbox .mu__validation { margin-inline: clamp(1rem, 2.5vw, 1.75rem); }
+  .mu__add { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .mu__addselect { flex: 1 1 14rem; }
+  /* the add row and the button rows: same height for the field and the buttons beside it */
+  .mu__add .btn-quiet, .mu__dialogact .cta, .mu__exampleact .cta { min-height: 2.9rem; align-items: center; }
+  .mu__add .combobox__input { min-height: 2.9rem; }
+  .mu__linkrow { display: flex; justify-content: flex-end; margin-top: 0.5rem; }
+  .mu__linkrow .mu__link { display: inline-flex; gap: 0.5rem; align-items: center; font-size: var(--font-size-ui-sm); }
+  .mu__exampleact { margin-top: 0.5rem; }
+  .mu .mu__naming .mu__overview { grid-template-columns: 1fr; gap: 0.25rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: color-mix(in srgb, var(--ink) 5%, var(--bg)); font-family: var(--font-mono); }
+  .mu .mu__naming .mu__overview dt { margin-top: 0.5rem; font-family: var(--font-body, inherit); font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-strong); text-transform: uppercase; letter-spacing: 0.05em; }
+  .mu .mu__naming .mu__overview dt:first-child { margin-top: 0; }
+
+  /* Custom component dialog */
+  /* overflow stays visible so the type list can open past the dialog edge */
+  .mu__dialog { width: min(32rem, calc(100vw - 2rem)); overflow: visible; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); }
+  .mu__dialog::backdrop { background: color-mix(in srgb, black 55%, transparent); }
+  .mu__dialogform { display: grid; gap: 1rem; padding: 1.25rem; }
+  .mu__dialoghead { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .mu__dialoghead h3 { margin: 0; font-size: 1.1rem; }
+  .mu__dialogact { display: flex; justify-content: flex-end; gap: 0.5rem; flex-wrap: wrap; }
+
+  /* utm_term choice cards */
+  .mu__picker { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+  .mu__tpltitle { margin: 0; }
+  .mu .cta:disabled { opacity: 0.5; cursor: not-allowed; }
+  .mu__tplcards { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+  .mu__tpltoggle { justify-self: start; }
+  .mu__tplpreview { display: grid; gap: 0.5rem; }
+  .mu__tplpreview .field-label { margin: 0; }
+  .mu__tplbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; margin-bottom: 1rem; }
+  .mu__tplname { margin: 0; font-size: var(--font-size-ui-sm); }
+  .mu__tplactions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .mu__published { display: grid; gap: 1rem; }
+  .mu__linkstart { justify-self: start; }
+  .mu__termcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: 0.5rem; }
+  .mu__termcard { display: grid; gap: 0.5rem; align-content: start; padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); cursor: pointer; }
+  .mu__termcard:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .mu__termcard:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 3px; }
+  .mu__termtop { display: flex; justify-content: space-between; gap: 0.5rem; align-items: center; }
+  .mu__termtop input { accent-color: var(--accent); margin: 0; }
+  .mu__termname { font-weight: var(--font-weight-strong); }
+  .mu__termchip { width: max-content; max-width: 100%; padding: 0.1rem 0.4rem; border-radius: var(--radius-xs); background: color-mix(in srgb, var(--ink) 6%, var(--bg)); font-size: var(--font-size-ui-xs); }
+  .mu__termnote { color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .mu__place { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__place p { margin: 0; max-width: 62ch; }
+  .mu__placetitle { margin-bottom: 0.5rem !important; color: var(--ink); font-weight: var(--font-weight-strong); }
+
+  /* utm_medium shortcuts */
+  .mu__mediumhead { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; align-items: baseline; justify-content: space-between; }
+  .mu__chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block: 0.5rem 0.5rem; }
+  .mu__chip { min-height: 2.25rem; padding: 0.25rem 0.9rem; border: 1px solid var(--mu-field-line); border-radius: var(--radius-pill); background: var(--bg); color: var(--ink); font: inherit; font-family: var(--font-mono); font-size: var(--font-size-ui-sm); cursor: pointer; }
+  .mu__chip--text { font-family: inherit; }
+  .mu__chip:hover { border-color: var(--ink); }
+  .mu__chip[aria-pressed="true"] { border-color: var(--accent); background: var(--color-accent-soft); font-weight: var(--font-weight-strong); }
+  .mu__chipnote { margin-left: 0.5rem; color: var(--muted); font-family: inherit; font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-body); }
+  .mu__mono { font-family: var(--font-mono); }
 </style>

@@ -1,4 +1,4 @@
-import { exampleValues, formats, macroKinds, tactics, termReport, terms } from "../data/meta-utm.js";
+import { exampleValues, formats, macroKinds, tactics, terms } from "../data/meta-utm.js";
 
 export { formats, tactics, terms };
 
@@ -8,15 +8,18 @@ const encode = (v) => (v.startsWith("{{") ? v : encodeURIComponent(v));
 
 // The string is built from these parts, and so are the preview and the
 // parameter-by-parameter view, so the three can never disagree.
-export const metaUtmParts = ({ medium = "paidsocial", platform = "Meta Ads", tactic = tactics[0], format = formats[0], term = "adset" } = {}) =>
+// A published campaign takes its name, ad name and term as typed values instead of macros,
+// because renaming in Meta would change what a macro returns. An empty typed value drops its
+// parameter. An empty medium falls back to paidsocial, since GA4 needs it for attribution.
+export const metaUtmParts = ({ medium = "paidsocial", platform = "Meta Ads", tactic = tactics[0], format = formats[0], term = "adset", published = false, campaign = "", content = "", termText = "" } = {}) =>
   [
     ["utm_source", "{{site_source_name}}"],
-    ["utm_medium", medium.trim()],
+    ["utm_medium", medium.trim() || "paidsocial"],
     ["utm_source_platform", platform.trim()],
-    ["utm_campaign", "{{campaign.name}}"],
+    ["utm_campaign", published ? campaign.trim() : "{{campaign.name}}"],
     ["utm_id", "{{campaign.id}}"],
-    ["utm_content", "{{ad.name}}"],
-    ["utm_term", terms[term] ?? ""],
+    ["utm_content", published ? content.trim() : "{{ad.name}}"],
+    ["utm_term", published ? termText.trim() : (terms[term] ?? "")],
     ["utm_marketing_tactic", tactic],
     ["utm_creative_format", format],
   ]
@@ -37,8 +40,6 @@ export const previewRows = (options) =>
     shown: kind === "fixed" ? raw : (exampleValues[raw] ?? null),
     isExample: kind !== "fixed",
   }));
-
-export const termReportRows = (term) => termReport[term] ?? termReport.none;
 
 // "Instagram_Stories", "instagram stories" and "stories" all reduce to words,
 // so a search by technical value and by plain name find the same entry.

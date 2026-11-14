@@ -674,3 +674,582 @@ main > .page-section:first-child {
     opacity: 1;
   }
 .featured-card:hover h3 { color: var(--accent); }
+
+/* Tool patterns: workbench layout, field, combobox, segmented control, code output, notice. */
+
+.workbench {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+  margin-block: 1.5rem var(--section-y-large);
+}
+
+.workbench > * {
+  min-width: 0;
+}
+
+.workbench__stack {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 64rem) {
+  .workbench {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .workbench__output {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+.field {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--font-size-ui-sm);
+  caret-color: var(--accent);
+}
+
+.field::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .field {
+    min-height: 44px;
+  }
+}
+
+.field:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+  border-color: var(--accent);
+}
+
+/* Combobox: text input with a toggle and a grouped listbox. Options carry a name, a one-line
+   description and a tag. The wrapper is positioned so the menu can overlay what follows. */
+.combobox {
+  position: relative;
+}
+
+.combobox__control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.combobox__input {
+  min-width: 0;
+  padding-right: 2.75rem;
+  font-weight: var(--font-weight-strong);
+  cursor: pointer;
+}
+
+.combobox__toggle {
+  position: absolute;
+  right: 0.35rem;
+  display: grid;
+  place-items: center;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.combobox__toggle:is(:hover, :focus-visible) {
+  color: var(--ink);
+}
+
+.combobox__toggle:focus-visible {
+  outline: var(--focus-ring);
+}
+
+.combobox__toggle svg {
+  width: 1rem;
+  height: 1rem;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.combobox__toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.combobox__menu {
+  position: absolute;
+  z-index: 30;
+  inset-inline: 0;
+  margin-top: 0.375rem;
+  max-height: 18rem;
+  overflow-y: auto;
+  border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  box-shadow: var(--shadow-panel);
+  font-size: var(--font-size-ui-sm);
+}
+
+.combobox__menu[hidden] {
+  display: none;
+}
+
+.combobox__heading {
+  position: sticky;
+  top: 0;
+  padding: 0.5rem 0.875rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--color-surface);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.combobox__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.combobox__option[hidden] {
+  display: none;
+}
+
+.combobox__option:is(:hover, :focus-visible, [aria-selected="true"], .is-active) {
+  background: var(--color-accent-soft);
+}
+
+.combobox__option:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -3px;
+}
+
+.combobox__option > span:first-child {
+  min-width: 0;
+}
+
+.combobox__name {
+  display: block;
+  font-weight: var(--font-weight-bold);
+}
+
+.combobox__desc {
+  display: block;
+  margin-top: 0.125rem;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: var(--font-size-ui-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.combobox__tag,
+.chip {
+  flex-shrink: 0;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+  border-radius: var(--radius-xs);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+/* Segmented control: a group of toggle buttons where exactly one is pressed. The pressed
+   segment inverts, so state never relies on color alone. */
+.segmented {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+}
+
+.segmented button {
+  min-height: 2.25rem;
+  padding: 0.25rem 1rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: var(--font-size-ui-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.segmented button:hover {
+  color: var(--ink);
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.segmented button:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Code output: a select-all block with a short-lived status line above it. */
+.code-output {
+  max-height: 24rem;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--ink) 6%, var(--bg));
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-ui-xs);
+  line-height: 1.6;
+  white-space: pre;
+  user-select: all;
+}
+
+.code-output:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Notice: one status message. The leading symbol is the second signal beside color. */
+.notice {
+  --notice-color: var(--accent);
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--notice-color);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--notice-color) 8%, var(--bg));
+  color: var(--ink);
+  font-size: var(--font-size-ui-sm);
+}
+
+.notice::before {
+  content: "i";
+  flex-shrink: 0;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border-radius: 50%;
+  background: var(--notice-color);
+  color: var(--bg);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.notice--success { --notice-color: var(--color-success); }
+.notice--success::before { content: "✓"; }
+.notice--warning { --notice-color: var(--color-warning); }
+.notice--warning::before { content: "!"; }
+.notice--danger { --notice-color: var(--color-danger); }
+.notice--danger::before { content: "!"; }
+.notice[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .combobox__toggle svg {
+    transition: none;
+  }
+}
+
+.chip--danger { border-color: var(--color-danger); background: color-mix(in srgb, var(--color-danger) 10%, var(--bg)); }
+.chip--warning { border-color: var(--color-warning); background: color-mix(in srgb, var(--color-warning) 12%, var(--bg)); }
+.chip--success { border-color: var(--color-success); background: color-mix(in srgb, var(--color-success) 10%, var(--bg)); }
+
+.notice .chip { margin-left: auto; }
+
+.notice > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Form pieces: label, hint and error text around a .field. */
+.field-label {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--font-size-ui-sm);
+  font-weight: var(--font-weight-strong);
+}
+
+.field-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-body);
+}
+
+.field-error {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.field-error[hidden] {
+  display: none;
+}
+
+/* Quiet button: a bordered secondary action. Use .cta for the main action of a page. */
+.btn-quiet {
+  min-height: 2.25rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  color: var(--accent);
+  font: inherit;
+  font-size: var(--font-size-ui-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.btn-quiet:hover,
+.btn-quiet[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--color-accent-soft);
+}
+
+.btn-quiet:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.btn-quiet--dashed {
+  border-style: dashed;
+}
+
+.btn-quiet--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.btn-quiet--primary:hover {
+  background: var(--accent);
+  opacity: 0.9;
+}
+
+/* Field row: one labelled value with its controls and an inline error. The label side and the
+   controls wrap onto separate lines on narrow screens. */
+.field-row {
+  display: grid;
+  gap: 0.375rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+
+.field-row__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.625rem;
+}
+
+.field-row__label,
+.field-row__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.field-row__controls {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.field-row__key {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.field-row .field {
+  flex: 1 1 9rem;
+  width: auto;
+  max-width: 14rem;
+  padding: 0.4rem 0.7rem;
+  font-size: var(--font-size-ui-xs);
+}
+
+.field-row .combobox {
+  flex: 1 1 9rem;
+  min-width: 0;
+  max-width: 14rem;
+}
+
+.field-row .combobox .field {
+  flex: 1 1 auto;
+  max-width: none;
+}
+
+.field-row__error,
+.field-row__warning {
+  color: var(--color-danger);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.field-row__remove,
+.popover__close {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.field-row__remove {
+  font-size: 1.1rem;
+}
+
+.field-row__remove:hover {
+  color: var(--color-danger);
+}
+
+.popover__close:hover {
+  color: var(--ink);
+}
+
+.field-row__remove:focus-visible,
+.popover__close:focus-visible {
+  outline: var(--focus-ring);
+}
+
+/* Popover: a panel opened by a button and placed under it. Escape closes it and returns focus to the button. */
+.popover-anchor {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  margin-top: 0.5rem;
+  width: min(100%, 24rem);
+  padding: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+  box-shadow: var(--shadow-panel);
+  font-size: var(--font-size-ui-sm);
+}
+
+.popover[hidden] {
+  display: none;
+}
+
+/* Panel heading: small uppercase title with a rule beneath and room for a chip or count on the right. */
+.panel-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-heading__title {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+/* Link-styled button for an action that is not navigation. Use .text-link for real links. */
+.btn-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: var(--font-size-ui-sm);
+  font-weight: var(--font-weight-bold);
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+  transition: text-decoration-color var(--duration-base) var(--ease-out);
+}
+
+.btn-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.btn-link:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.btn-link[hidden] {
+  display: none;
+}
+
+/* Toast: short status above the control that caused it ("Copied"). Put it in a .toast-anchor, give it
+   role="status", and add .is-visible for a moment. */
+.toast-anchor {
+  position: relative;
+}
+
+.toast {
+  position: absolute;
+  right: 0;
+  top: -1.75rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-xs);
+  background: var(--color-success);
+  color: var(--color-neutral-950);
+  font-size: var(--font-size-ui-xs);
+  font-weight: var(--font-weight-bold);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.toast.is-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: none;
+  }
+}

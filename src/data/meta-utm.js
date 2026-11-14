@@ -1,5 +1,5 @@
-// Language-neutral model for the Meta UTM builder. Labels and explanations live in
-// meta-utm.fi.js, keyed by the ids below.
+// Language-neutral model for the Meta UTM builder, plus the English copy (`en`, at the end).
+// Labels and explanations live in `en` and in meta-utm.fi.js (same keys), keyed by the ids below.
 //
 // kind   fixed   - the value comes from you, typed or picked in the tool
 //        dynamic - Meta fills the value in when the ad is served
@@ -13,9 +13,10 @@ export const metaDocsChecked = "2026-10-20";
 export const kinds = ["fixed", "dynamic", "frozen"];
 export const platforms = ["facebook", "instagram", "messenger", "audience_network", "threads"];
 
-export const tactics = ["prospecting", "remarketing", "all"];
+// "custom" lets the user type their own value; the tool lower-cases it and joins words with underscores.
+export const tactics = ["prospecting", "remarketing", "retention", "branding", "all", "custom"];
 // {{media_type}} is Meta's only format macro and works for Advantage+ catalog ads only.
-export const formats = ["video", "image", "carousel", "{{media_type}}"];
+export const formats = ["video", "image", "carousel", "collection", "story_reels", "{{media_type}}"];
 export const terms = {
   adset: "{{adset.name}}",
   placement: "{{placement}}",
@@ -34,40 +35,41 @@ export const macroKinds = {
   "{{ad.name}}": "frozen",
 };
 
+// Made-up names and IDs. Language-neutral on purpose: both languages show the same
+// technical-looking values, so the English page never shows Finnish.
+const example = {
+  campaignId: "123456789",
+  campaignName: "2026_Q4_Sales_AutumnSale",
+  adsetId: "234567890",
+  adsetName: "Retargeting_30d",
+  adId: "345678901",
+  adName: "Video_Offer_A",
+};
+
 // Made-up values for the preview. {{media_type}} has none: Meta lists no values.
 export const exampleValues = {
   "{{site_source_name}}": "ig",
   "{{placement}}": "instagram_stories",
-  "{{campaign.name}}": "autumn_sale",
-  "{{campaign.id}}": "123456789",
-  "{{adset.name}}": "retargeting_30d",
-  "{{ad.name}}": "autumn_video",
+  "{{campaign.name}}": example.campaignName,
+  "{{campaign.id}}": example.campaignId,
+  "{{adset.name}}": example.adsetName,
+  "{{ad.name}}": example.adName,
 };
 
-// Made-up report rows for the utm_term comparison: [utm_source, utm_term].
-export const termReport = {
-  adset: [["fb", "retargeting_30d"], ["ig", "retargeting_30d"]],
-  placement: [["fb", "facebook_feed"], ["ig", "instagram_stories"]],
-  none: [["fb"], ["ig"]],
-};
-
-// example: a made-up value shown in the table for macros that have no value list.
-const macro = (id, kind, origin = "meta", example = null) => ({ id: `macro:${id}`, value: `{{${id}}}`, macro: null, category: "macro", kind, origin, platform: null, example });
+// sample: a made-up value shown in the table for macros that have no value list.
+const macro = (id, kind, origin = "meta", sample = null) => ({ id: `macro:${id}`, value: `{{${id}}}`, macro: null, category: "macro", kind, origin, platform: null, example: sample });
 const source = (value, platform) => ({ id: `source:${value}`, value, macro: "{{site_source_name}}", category: "source", kind: "dynamic", origin: "meta", platform });
 const placement = (value, platform) => ({ id: `placement:${value}`, value, macro: "{{placement}}", category: "placement", kind: "dynamic", origin: "meta", platform });
-
-// Variables whose values Meta lists. The directory shows one of them at a time.
-export const variables = ["{{placement}}", "{{site_source_name}}"];
 
 export const directory = [
   macro("site_source_name", "dynamic"),
   macro("placement", "dynamic"),
-  macro("campaign.id", "dynamic", "meta", "123456789"),
-  macro("campaign.name", "frozen", "meta", "2026_Q4_Myynti_Syysale"),
-  macro("adset.id", "dynamic", "meta", "234567890"),
-  macro("adset.name", "frozen", "meta", "Retargeting_30pv"),
-  macro("ad.id", "dynamic", "meta", "345678901"),
-  macro("ad.name", "frozen", "meta", "Video_Tarjous_A"),
+  macro("campaign.id", "dynamic", "meta", example.campaignId),
+  macro("campaign.name", "frozen", "meta", example.campaignName),
+  macro("adset.id", "dynamic", "meta", example.adsetId),
+  macro("adset.name", "frozen", "meta", example.adsetName),
+  macro("ad.id", "dynamic", "meta", example.adId),
+  macro("ad.name", "frozen", "meta", example.adName),
   macro("media_type", "dynamic", "unknown"),
 
   source("fb", "facebook"),
@@ -87,5 +89,332 @@ export const directory = [
   placement("messenger_inbox", "messenger"),
   placement("messenger_sponsored_messages", "messenger"),
   placement("threads_stream", "threads"),
-
 ];
+
+// English copy. Same keys as meta-utm.fi.js.
+export const en = {
+  ui: {
+    buildTitle: "Meta UTM builder",
+    trackingLegend: "Tracking choices",
+    listToggle: "Open list",
+    tacticLabel: "What kind of campaign is it?",
+    formatLabel: "What format is the ad?",
+    termLegend: "What do you want to track in more detail?",
+    modeLegend: "Are you making a new campaign or editing a published one?",
+    mode: { new: "New campaign", published: "Published campaign" },
+    namingLink: "Build the updated names in the naming convention step →",
+    fixedPlaceholder: "Paste the current value",
+    fixed: { campaign: "Campaign name", term: "Ad set name", content: "Ad name" },
+    advancedSummary: "Advanced settings",
+    advancedHint: "The defaults work in most cases. Change them only if your tracking needs it.",
+    mediumLabel: "Channel type",
+    platformLabel: "Management platform",
+    previewTitle: "UTM parameters explained",
+    previewNote: "An address is the page address plus a query string. The query string starts with ?, and parameters are joined with &. The UTM parameters live there. The colours show who fills in each value.",
+    urlLabel: "UTM parameters in the address",
+    urlBase: "https://example.com/landing-page",
+    legendBase: "Page address",
+    legendSep: "Separators ? & =",
+    legendKey: "Parameter name",
+    exampleTag: "example",
+    yourChoiceTag: "your choice",
+    noExample: "Meta does not list values for this macro, so there is no example.",
+    outputTitle: "UTM parameters for your Meta ad",
+    copy: "Copy UTM parameters",
+    copied: "UTM parameters copied to the clipboard.",
+    copyError: "Copying failed. Select the text and copy it by hand.",
+    partsSummary: "Each parameter on its own",
+    directoryTitle: "Meta value directory",
+    directoryIntro: "All values in one table. The values for names and IDs are made-up examples, Meta returns the other values as they are. Search by technical name, platform name or words in the description.",
+    searchLabel: "Search values",
+    searchPlaceholder: "For example instagram_stories, Stories or Messenger",
+    resultCount: "{n} values",
+    resultOne: "1 value",
+    resultNone: "No results. Try a shorter search or clear the search field.",
+    colVariable: "Variable",
+    colValue: "Value",
+    colNote: "Description",
+    sourceLine: "Source: Meta Business Help Center",
+    checkedOn: "checked {date}",
+    techTitle: "Technical details",
+    faqTitle: "The parameters in plain language",
+    encodingTitle: "URL encoding",
+    stepsLabel: "Tool steps",
+    stepNaming: "Naming convention",
+    stepUtm: "UTM builder",
+    mediumCustom: "Other (your own value)",
+    mediumHint: "Pick a shortcut or type your own",
+    recommended: "(recommended)",
+    tacticCustomLabel: "Your own value",
+    tacticCustomPlaceholder: "Type your own value, for example leadgen",
+    noTermChip: "No value",
+    placeTitle: "Where does this go in Meta Ads?",
+    placeBody: "Open the ad editor at ad level and go to Tracking > URL parameters. Paste the UTM parameters as they are, without a question mark at the start. Meta adds it after the address.",
+  },
+  utm: {
+    step: "Step 2 / 2",
+  },
+  page: {
+    note: "Meta returns the source as <code>fb</code>, <code>ig</code>, <code>msg</code>, <code>an</code> or <code>th</code>, and the medium defaults to <code>paidsocial</code>. GA4 is case sensitive, so write the values the same way in every campaign.",
+  },
+  naming: {
+    step: "Step 1 / 2",
+    title: "Naming convention builder",
+    intro: "Define the name parts, separators and values for three levels: campaign, ad set and ad.",
+    continue: "Send names to the UTM builder →",
+    levelsLabel: "Naming level",
+    levels: { campaign: "Campaign", adset: "Ad set", ad: "Ad" },
+    componentsHeading: "{level}: naming components",
+    componentsHint: "Reorder the components with the arrows, pick the values and edit the separators.",
+    separatorLabel: "Level separator",
+    sepSpace: "space",
+    sepNone: "none",
+    sepSpaceName: "Space",
+    sepNoneName: "No separator",
+    moveUp: "Move up",
+    moveDown: "Move down",
+    remove: "Remove component",
+    separatorField: "Separator",
+    valuePlaceholder: "Type an example value",
+    sampleValue: "Example",
+    missingValue: "X",
+    emptyValue: "-",
+    lowercase: "Everything in lowercase",
+    valueFor: "Value: {key}",
+    noComponents: "This level has no components. Add some below.",
+    addPlaceholder: "Add a component from the library",
+    alreadyAdded: "already added",
+    customToggle: "Add a new component",
+    customKey: "Component key",
+    customKeyHint: "Lowercase letters, digits and underscores, for example offer",
+    customLabel: "Display name",
+    customType: "Value type",
+    typeFree: "Free text",
+    typePredefined: "Predefined list",
+    customAllowed: "Allowed values, comma separated",
+    customAllowedHint: "For example 20Off, FreeShipping, BOGO",
+    customSave: "Save component",
+    customCancel: "Cancel",
+    close: "Close",
+    customKeyMissing: "Give the component a key.",
+    customKeyExists: "The key is already in the library.",
+    validationOk: "The formula and examples look fine.",
+    validationTitle: "Things to note. They do not block anything.",
+    warnings: {
+      empty: "This level has no components.",
+      noValue: "Component {key} has no example value.",
+      spaces: "The value of {key} contains spaces. Use one consistent separator or CamelCase.",
+      duplicate: "Component {key} appears in the formula more than once.",
+    },
+    resultTitle: "Result",
+    formulaTitle: "Formula",
+    exampleTitle: "Generated name",
+    copyFormula: "Copy formula",
+    copyExample: "Copy name",
+    formulaCopied: "Formula copied to the clipboard.",
+    exampleCopied: "Name copied to the clipboard.",
+    emptyFormula: "(no components)",
+    overviewTitle: "The whole naming convention",
+    bannerOff: "Only the UTM builder is in use, without a naming convention.",
+    bannerOffAction: "Create a naming convention →",
+    bannerOn: "The naming convention is set: campaign, ad set and ad.",
+    bannerEdit: "Edit the naming convention",
+    bannerShow: "Show formulas",
+    bannerHide: "Hide formulas",
+    tpl: {
+      title: "Choose a naming template",
+      showAll: "Show all 7 templates",
+      showLess: "Show fewer",
+      previewTitle: "Preview",
+      noSelection: "Pick a template to see its names.",
+      use: "Use this template",
+      change: "Change template",
+      cancel: "Cancel",
+      edited: "Edited",
+      reset: "Restore defaults",
+      switchTitle: "Replace the current naming convention?",
+      switchBody: "You have edited the current template. Using a new template replaces the components, values and separators of the naming convention.",
+      switchConfirm: "Replace template",
+      resetTitle: "Restore the template defaults?",
+      resetBody: "Changes are discarded. UTM settings stay as they are.",
+      resetConfirm: "Restore defaults",
+    },
+    templates: {
+      recommended: { name: "Recommended", description: "Works for most campaigns." },
+      ecommerce: { name: "E-commerce", description: "Product category, promotion and product in the names." },
+      leadgen: { name: "Lead generation", description: "For lead campaigns, for example B2B services." },
+      custom: { name: "Custom", description: "Start with one component per level and build the rest yourself." },
+      simple: { name: "Simple", description: "A short structure for a small account." },
+      agency: { name: "Agency", description: "The client in the name when you manage several accounts." },
+      international: { name: "International", description: "Country and language for campaigns in several markets." },
+    },
+    components: {
+      market: "Market",
+      year: "Year",
+      objective: "Objective",
+      campaign: "Campaign name",
+      targeting: "Targeting type",
+      audience: "Audience",
+      age_range: "Age range",
+      format: "Creative format",
+      concept: "Concept",
+      version: "Version",
+      product: "Product or category",
+      season: "Season",
+      language: "Language",
+      country: "Country",
+      client: "Client",
+      business_type: "Business type",
+      service: "Service",
+      product_category: "Product category",
+      promotion: "Promotion",
+      funnel_stage: "Funnel stage",
+      optimization: "Optimization",
+      message: "Message",
+      creative: "Creative",
+    },
+  },
+  kinds: {
+    fixed: { label: "You choose", hint: "The value comes from you and stays the same." },
+    dynamic: { label: "Meta fills in", hint: "Meta fills in the value when the ad is served. It can differ from click to click." },
+    frozen: { label: "Locks at publish", hint: "Meta fills in the name, but uses the name it had when the ad was first published. Renaming it later does not change it." },
+  },
+  platforms: {
+    facebook: "Facebook",
+    instagram: "Instagram",
+    messenger: "Messenger",
+    audience_network: "Audience Network",
+    threads: "Threads",
+  },
+  tactics: {
+    prospecting: "Prospecting (new audiences)",
+    remarketing: "Remarketing (people already contacted)",
+    retention: "Retention (existing customers)",
+    branding: "Branding (awareness)",
+    all: "All",
+    custom: "Other (your own value)",
+  },
+  formats: {
+    video: "Video",
+    image: "Image",
+    carousel: "Carousel",
+    collection: "Collection",
+    story_reels: "Story or Reels (vertical video)",
+    "{{media_type}}": "Advantage+ catalog ad (Meta fills in the type)",
+  },
+  terms: {
+    adset: {
+      label: "The ad set",
+      effect: "The report shows which ad set brought the traffic.",
+      card: "Ad set name",
+    },
+    placement: {
+      label: "The placement",
+      effect: "The report shows where the ad was shown, for example Instagram Stories or the Facebook feed.",
+      card: "Feed, Stories, Reels and so on",
+    },
+    none: {
+      label: "Neither",
+      effect: "The UTM parameters stay shorter, and the report gets no further breakdown.",
+      card: "Leave utm_term out completely",
+    },
+  },
+  params: {
+    utm_source: { label: "Source", meaning: "Where the click came from: Facebook, Instagram, Messenger, Audience Network or Threads." },
+    utm_medium: { label: "Channel type", meaning: "Says the traffic is paid social media." },
+    utm_source_platform: { label: "Management platform", meaning: "The platform the campaign is managed in. Not the same as the source." },
+    utm_campaign: { label: "Campaign name", meaning: "The campaign name as it was at publish time." },
+    utm_id: { label: "Campaign ID", meaning: "The campaign ID. It stays the same even if the name changes." },
+    utm_content: { label: "Ad name", meaning: "The ad name from publish time. Tells the ads of one campaign apart." },
+    utm_term: { label: "Further detail to track", meaning: "The ad set name or the placement, depending on your choice." },
+    utm_marketing_tactic: { label: "Campaign type", meaning: "Says whether you are going after new people, people already contacted, or both." },
+    utm_creative_format: { label: "Ad format", meaning: "Says whether the ad is a video, an image or a carousel." },
+  },
+  entries: {
+    "macro:site_source_name": { name: "Source", description: "Tells where the click came from. Returns one of the source codes: fb, ig, msg, an or th." },
+    "macro:placement": { name: "Placement", description: "Tells which placement the ad was shown in. Returns one of the placement values in this table." },
+    "macro:campaign.id": { name: "Campaign ID", description: "Meta gives the campaign an ID automatically. It stays the same even if the name changes." },
+    "macro:adset.id": { name: "Ad set ID", description: "Meta gives the ad set an ID automatically. It stays the same even if the name changes." },
+    "macro:ad.id": { name: "Ad ID", description: "Meta gives the ad an ID automatically. It stays the same even if the name changes." },
+    "macro:campaign.name": { name: "Campaign name", description: "The campaign name you wrote. It locks at the first publish, so a later rename does not update." },
+    "macro:adset.name": { name: "Ad set name", description: "The ad set name you wrote. It locks at the first publish, so a later rename does not update." },
+    "macro:ad.name": { name: "Ad name", description: "The ad name you wrote. It locks at the first publish, so a later rename does not update." },
+    "macro:media_type": { name: "Media type", description: "For Advantage+ catalog ads only. Meta does not list the possible values, so they are not here." },
+
+    "source:fb": { name: "Facebook", description: "The click came from Facebook. The value names the platform, not the part of Facebook where the ad was shown." },
+    "source:ig": { name: "Instagram", description: "The click came from Instagram. The value names the platform, not whether the ad was in the feed or in Stories." },
+    "source:msg": { name: "Messenger", description: "The click came from Messenger. The value names the platform, not whether it was the inbox or a sponsored message." },
+    "source:an": { name: "Audience Network", description: "The click came from Audience Network, meaning an app or site outside Meta where Meta shows ads. The value does not say which app or site." },
+    "source:th": { name: "Threads", description: "The click came from Threads. The value names the platform, not a single placement." },
+
+    "placement:audience_network_classic": { name: "Audience Network: native, banner and interstitial", description: "The ad was shown in an app or site outside Meta through Audience Network. The value covers native ads, banners and interstitial ads." },
+    "placement:audience_network_rewarded_video": { name: "Audience Network: rewarded video", description: "The ad was shown as a rewarded video in an app outside Meta. The user watches the video in exchange for a reward in the app." },
+    "placement:facebook_feed": { name: "Facebook feed", description: "The ad was shown in the Facebook feed among other posts. According to Meta, the placement also includes the Friends tab from March 2026." },
+    "placement:facebook_instream": { name: "Facebook in-stream reels", description: "The ad was shown with Facebook in-stream reels content. Meta's list does not name other Facebook reels placements separately." },
+    "placement:facebook_marketplace": { name: "Facebook Marketplace", description: "The ad was shown in Facebook Marketplace, the part of Facebook where people buy and sell goods." },
+    "placement:facebook_right_column": { name: "Facebook right column", description: "The ad was shown in the right column of Facebook, outside the feed." },
+    "placement:instagram_feed": { name: "Instagram feed", description: "The ad was shown in the Instagram feed among other posts." },
+    "placement:instagram_stories": { name: "Instagram Stories", description: "The ad was shown with Instagram Stories content in a full-screen vertical format." },
+    "placement:messenger_inbox": { name: "Messenger inbox", description: "The ad was shown in the Messenger inbox. Not the same thing as messenger_sponsored_messages." },
+    "placement:messenger_sponsored_messages": { name: "Messenger sponsored messages", description: "The ad arrived in Messenger as a sponsored message. Not the same thing as messenger_inbox." },
+    "placement:threads_stream": { name: "Threads", description: "The ad was shown in the Threads feed. The stream in the name refers to the feed." },
+  },
+  faq: [
+    {
+      q: "What is utm_source?",
+      a: ["It tells where the click came from. Meta fills in the value with the {{site_source_name}} macro. The options are fb (Facebook), ig (Instagram), msg (Messenger), an (Audience Network) and th (Threads)."],
+    },
+    {
+      q: "How do utm_source and utm_source_platform differ?",
+      a: [
+        "utm_source tells where the ad was shown and clicked. utm_source_platform tells which platform the campaign is managed in, here Meta Ads.",
+        "So one management platform can bring traffic from many sources.",
+        "That is why utm_source_platform is included. In GA4 you can limit a report to all Meta ad traffic with the condition Session source platform = Meta Ads. Add a dimension such as Session source / medium to the table to see each source separately: fb, ig, msg, an and th.",
+      ],
+    },
+    {
+      q: "Why is utm_medium paidsocial?",
+      a: [
+        "It is a convention for separating paid social from other traffic. The value is your choice, not set by Meta.",
+        "In the GA4 default channel grouping, Paid Social needs two things. The source has to be on Google's list of social sites, and the medium has to meet Google's condition. GA4 accepts every medium that starts with paid into Paid Social. When the source is a Meta source Google recognises, paidsocial, paid_social and paid-social all work.",
+        "Google does not publish the source list on its help page, and this tool has not checked it. So do not assume that fb, ig, msg, an and th all end up in Paid Social. Check the classification in your GA4 reports and, if needed, create a new channel group or update the old one.",
+      ],
+    },
+    {
+      q: "What does utm_marketing_tactic mean?",
+      a: ["It tells what the campaign is after. Prospecting means reaching new audiences and remarketing means people already contacted. All means a campaign that targets both. The values are this tool's convention, not defined by Meta or Google."],
+    },
+    {
+      q: "What does utm_creative_format tell?",
+      a: [
+        "It tells the ad format: video, image or carousel. Meta has no macro for the format of ordinary ads, so you choose the value yourself.",
+        "Only in Advantage+ catalog ads can you use the {{media_type}} macro. Meta does not list its possible values.",
+      ],
+    },
+    {
+      q: "Why can the campaign name be old after a rename?",
+      a: [
+        "The name macros lock to the name that was in force at the first publish of the campaign, ad set or ad. If the name is changed later, the report still gets the old name.",
+        "You only get a new name in the report by publishing a new campaign, ad set or ad. Changing the URL parameter after publishing can send the ad set back to the learning phase.",
+      ],
+    },
+    {
+      q: "What is the difference between the campaign name and the ID?",
+      a: [
+        "The name is readable, but it can be out of date or written differently in different campaigns. The ID does not depend on the name, so it lets you match a row to the right campaign.",
+        "That is why the UTM parameters have both utm_campaign and utm_id.",
+      ],
+    },
+    {
+      q: "Why can one ad produce different UTM values?",
+      a: [
+        "The source and the placement depend on where the ad was shown and clicked. The same ad can therefore produce several values in utm_source and, if you pick the placement, in utm_term.",
+        "The names and IDs stay the same.",
+      ],
+    },
+  ],
+  encoding: [
+    "Values you type are URL encoded: a space is written as %20, for example Meta%20Ads, and other special characters with percent encoding. Meta's macros stay as they are.",
+    "A plus sign and %20 are both read as a space in a query string. The tool uses %20, because a plus sign works as a space only there.",
+  ],
+};

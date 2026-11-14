@@ -13,6 +13,7 @@
   --color-pop: oklch(89% 0.16 92);
   --color-success: light-dark(oklch(60% 0.18 150), oklch(72% 0.2 150));
   --color-danger: light-dark(oklch(52% 0.19 27), oklch(70% 0.17 25));
+  --color-warning: light-dark(oklch(55% 0.14 70), oklch(80% 0.14 85));
 
   /* Semantic colors. Existing aliases stay as compatibility tokens. */
   --color-ink: light-dark(var(--color-neutral-950), var(--color-neutral-100));

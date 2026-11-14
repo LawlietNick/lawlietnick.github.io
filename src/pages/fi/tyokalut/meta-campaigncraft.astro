@@ -1,0 +1,30 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ToolHero from "../../../components/ToolHero.astro";
+import MetaUtmTool from "../../../components/MetaUtmTool.astro";
+import { fi } from "../../../data/meta-utm.fi.js";
+
+const title = "Meta CampaignCraft";
+const summary = "Meta Ads Naming & UTM Builder: rakenna nimeämiskäytäntö kampanjalle, mainosjoukolle ja mainokselle ja sen jälkeen kopioitava UTM-rimpsu. Lähde, kampanja, mainos ja ID:t täyttyvät Metasta dynaamisesti.";
+const description = "Rakenna Meta-mainoksille nimeämiskäytäntö ja kopioitava UTM-rimpsu. Lähde, kampanja, mainos ja ID:t täyttyvät dynaamisesti.";
+---
+
+<Base primaryCategory="analytics" title={title} description={description} alternate={{ lang: "en", href: "/tools/meta-campaigncraft/" }}>
+  <Breadcrumb
+    fi
+    crumbs={[
+      { label: "Etusivu", href: "/fi/", icon: true },
+      { label: "Työkalut", href: "/fi/tyokalut/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note" data-i18n="page.note" data-i18n-html set:html={fi.page.note} />
+  </ToolHero>
+
+  <div class="wide-band">
+    <MetaUtmTool />
+  </div>
+</Base>

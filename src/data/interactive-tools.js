@@ -4,7 +4,7 @@
 // tool out of hubs, sitemap and llms.txt and out of the production build.
 // `date` (plain Helsinki calendar day) is when the tool went live; the home page
 // shows the three newest. PROPOSAL: current values come from git history, with
-// meta-utm-builder from its file date. Niko to confirm or correct each one.
+// campaigncraft from its file date. Niko to confirm or correct each one.
 export const allInteractiveTools = [
   {
     category: "tools",
@@ -101,15 +101,19 @@ export const allInteractiveTools = [
   },
   {
     category: "tools",
-    slug: "meta-utm-builder",
+    slug: "meta-campaigncraft",
     icon: "UTM",
     order: 8,
     date: "2026-11-01",
-    draft: true,
+    draft: false,
+    en: {
+      title: "Meta CampaignCraft",
+      summary: "Meta Ads Naming & UTM Builder: build a naming convention for campaigns, ad sets and ads, then a copyable UTM string for Meta ads.",
+    },
     fi: {
-      slug: "metan-utm-rimpsu",
-      title: "Metan UTM-rimpsu",
-      summary: "Rakenna yksi kopioitava UTM-rimpsu Meta-mainoksille dynaamisilla lähde-, kampanja- ja mainosarvoilla.",
+      slug: "meta-campaigncraft",
+      title: "Meta CampaignCraft",
+      summary: "Meta Ads Naming & UTM Builder: rakenna nimeämiskäytäntö ja kopioitava UTM-rimpsu Meta-mainoksille.",
     },
   },
   {
@@ -127,6 +131,18 @@ export const allInteractiveTools = [
       slug: "viittausten-poissulkeminen",
       title: "GA4-viittausten poissulkeminen",
       summary: "Valitse palvelut ja kopioi niiden domainit GA4:n ei-toivottujen viittausten listalle.",
+    },
+  },
+  {
+    category: "tools",
+    slug: "meta-event-builder",
+    draft: true,
+    icon: "fb",
+    order: 10,
+    date: "2026-11-13",
+    en: {
+      title: "Meta event builder",
+      summary: "Build a Meta event with the Meta Pixel call, the dataLayer push and the Conversions API request.",
     },
   },
   {

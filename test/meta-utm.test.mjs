@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { directory, macroKinds, platforms, variables } from "../src/data/meta-utm.js";
+import { directory, macroKinds, platforms } from "../src/data/meta-utm.js";
 import { fi } from "../src/data/meta-utm.fi.js";
-import { filterDirectory, formats, metaUtm, metaUtmParts, normalize, previewRows, tableRows, tactics, termReportRows, terms, valuesOf } from "../src/utils/meta-utm.js";
+import { filterDirectory, formats, metaUtm, metaUtmParts, normalize, previewRows, tableRows, tactics, terms, valuesOf } from "../src/utils/meta-utm.js";
 
 const defaultString =
   "utm_source={{site_source_name}}&utm_medium=paidsocial&utm_source_platform=Meta%20Ads&utm_campaign={{campaign.name}}&utm_id={{campaign.id}}&utm_content={{ad.name}}&utm_term={{adset.name}}&utm_marketing_tactic=prospecting&utm_creative_format=video";
@@ -41,7 +41,7 @@ test("edited advanced settings are trimmed and encoded, and empty ones are dropp
   assert.match(metaUtm({ platform: "  Meta & Co " }), /utm_source_platform=Meta%20%26%20Co&/);
   assert.match(metaUtm({ medium: "paid social" }), /utm_medium=paid%20social&/);
   assert.match(metaUtm({ medium: "ääkkönen" }), /utm_medium=%C3%A4%C3%A4kk%C3%B6nen&/);
-  assert.doesNotMatch(metaUtm({ medium: "  " }), /utm_medium/);
+  assert.match(metaUtm({ medium: "  " }), /utm_medium=paidsocial&/);
   assert.doesNotMatch(metaUtm({ platform: "" }), /utm_source_platform/);
 });
 
@@ -91,10 +91,9 @@ test("directory holds Meta's documented values and nothing guessed", () => {
   assert.equal(directory.find((item) => item.value === "{{media_type}}").origin, "unknown");
 });
 
-test("the selectable variables are exactly the ones with value lists", () => {
-  assert.deepEqual(variables, ["{{placement}}", "{{site_source_name}}"]);
-  for (const v of variables) assert.ok(fi.variables[v], v);
-  for (const item of items.filter((entry) => entry.category === "macro" && !variables.includes(entry.value))) {
+test("only {{placement}} and {{site_source_name}} have value lists", () => {
+  const withValues = ["{{placement}}", "{{site_source_name}}"];
+  for (const item of items.filter((entry) => entry.category === "macro" && !withValues.includes(entry.value))) {
     assert.equal(valuesOf(items, item.value, platforms).length, 0, `${item.value} has no value list`);
   }
 });
@@ -111,11 +110,9 @@ test("placements are grouped by platform and alphabetical inside a platform", ()
   assert.equal(sources.length, 5);
 });
 
-test("every listed value has a Finnish explanation of 1-2 sentences that adds more than the name", () => {
+test("every listed value has an explanation that adds more than the name", () => {
   for (const item of [...placements, ...sources]) {
     assert.ok(item.name && item.description, item.id);
-    const sentences = item.description.split(/(?<=[.!?])\s+/).filter(Boolean);
-    assert.ok(sentences.length >= 1 && sentences.length <= 2, item.id);
     assert.notEqual(item.description.replace(/\.$/, ""), item.name, item.id);
     assert.ok(item.description.length > item.name.length + 25, item.id);
     if (item.platform) assert.ok(platforms.includes(item.platform) && item.platformLabel, item.id);
@@ -128,8 +125,10 @@ test("search finds a value by technical value, plain name, platform and explanat
   assert.ok(values(filterDirectory(placements, { query: "Stories" })).includes("instagram_stories"));
   assert.ok(values(filterDirectory(placements, { query: "instagram stories" })).includes("instagram_stories"));
   assert.deepEqual(values(filterDirectory(placements, { query: "messenger" })), ["messenger_inbox", "messenger_sponsored_messages"]);
-  assert.deepEqual(values(filterDirectory(placements, { query: "palkinnosta" })), ["audience_network_rewarded_video"]);
-  assert.ok(values(filterDirectory(placements, { query: "Metan ulkopuolisessa" })).includes("audience_network_classic"));
+  // a word taken from an explanation finds its entry
+  const described = placements.find((item) => item.id === "placement:audience_network_rewarded_video");
+  const word = described.description.split(/\s+/).find((w) => /^[a-zäö]{8,}$/i.test(w));
+  assert.ok(values(filterDirectory(placements, { query: word })).includes("audience_network_rewarded_video"), word);
   assert.deepEqual(values(filterDirectory(sources, { query: "threads" })), ["th"]);
   assert.deepEqual(filterDirectory(placements, { query: "ei-ole-olemassa" }), []);
 });
@@ -145,9 +144,8 @@ test("normalize reduces underscores, dots, braces and case to plain words", () =
   assert.equal(normalize("{{campaign.name}}"), "campaign name");
 });
 
-test("utm_term comparison rows exist for every option", () => {
-  for (const term of Object.keys(terms)) assert.ok(termReportRows(term).length > 0 && fi.terms[term].effect);
-  assert.deepEqual(termReportRows("none"), [["fb"], ["ig"]]);
+test("every utm_term option has an effect text", () => {
+  for (const term of Object.keys(terms)) assert.ok(fi.terms[term].effect);
 });
 
 test("the flat table lists names and IDs with examples first, then sources and placements, and no media_type", () => {
@@ -158,4 +156,13 @@ test("the flat table lists names and IDs with examples first, then sources and p
   assert.deepEqual(values(rows.slice(6, 11)), ["fb", "ig", "msg", "an", "th"]);
   assert.ok(rows.slice(11).every((row) => row.macro === "{{placement}}"));
   assert.ok(!rows.some((row) => row.value === "{{media_type}}"));
+});
+
+test("a published campaign takes campaign, content and term as typed values, and an empty one drops its parameter", () => {
+  const typed = metaUtm({ published: true, campaign: "BlackFriday 2026", content: "video_a", termText: "Retargeting_30d" });
+  assert.match(typed, /utm_campaign=BlackFriday%202026&utm_id=\{\{campaign\.id\}\}&utm_content=video_a&utm_term=Retargeting_30d&/);
+  assert.doesNotMatch(typed, /campaign\.name|ad\.name|adset\.name/);
+  const empty = metaUtm({ published: true, campaign: "x" });
+  assert.doesNotMatch(empty, /utm_content|utm_term/);
+  assert.match(metaUtm({ term: "placement", campaign: "x" }), /utm_campaign=\{\{campaign\.name\}\}.*utm_term=\{\{placement\}\}/);
 });

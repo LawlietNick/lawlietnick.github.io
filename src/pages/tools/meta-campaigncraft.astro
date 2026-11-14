@@ -1,0 +1,29 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import ToolHero from "../../components/ToolHero.astro";
+import MetaUtmTool from "../../components/MetaUtmTool.astro";
+import { en } from "../../data/meta-utm.js";
+
+const title = "Meta CampaignCraft";
+const summary = "Meta Ads Naming & UTM Builder: build a naming convention for campaigns, ad sets and ads, then a copyable UTM string. Source, campaign, ad and IDs are filled in dynamically from Meta.";
+const description = "Build a naming convention and a copyable UTM string for Meta ads. Source, campaign, ad and IDs are filled in dynamically.";
+---
+
+<Base primaryCategory="analytics" title={title} description={description} alternate={{ lang: "fi", href: "/fi/tyokalut/meta-campaigncraft/" }}>
+  <Breadcrumb
+    crumbs={[
+      { label: "Home", href: "/", icon: true },
+      { label: "Tools", href: "/tools/" },
+      { label: title },
+    ]}
+  />
+
+  <ToolHero title={title} summary={summary}>
+    <p class="tool-note" data-i18n="page.note" data-i18n-html set:html={en.page.note} />
+  </ToolHero>
+
+  <div class="wide-band">
+    <MetaUtmTool locale="en" />
+  </div>
+</Base>
