@@ -1,0 +1,55 @@
+---
+import VizFrame from "./VizFrame.astro";
+import { languageVisuals, total } from "../../data/language-visuals.js";
+
+const { fi = false } = Astro.props;
+const text = languageVisuals[fi ? "fi" : "en"];
+const c = text.viewsMerge;
+const sum = total(c.rows);
+const most = Math.max(...c.rows.map((row) => row.views));
+const num = (n: number) => n.toLocaleString(text.locale);
+---
+
+<VizFrame
+  name="views-merge"
+  title={c.title}
+  caption={c.caption(num(sum))}
+  replay={text.replay}
+  phases={c.phases}
+  controls={{ merge: c.merge, before: c.before, after: c.after, viewGroup: c.viewGroup }}
+  {fi}
+>
+  <div class="vm" role="table" aria-label={c.tableLabel}>
+    <div class="vm__head" role="row">
+      <span role="columnheader">{c.colContent}</span>
+      <span role="columnheader" class="vm__num">{c.colViews}</span>
+    </div>
+
+    <div class="vm__parent" role="row">
+      <span class="vm__parent-title" role="rowheader">
+        {c.parentTitle}
+        <small>{c.parentHint}</small>
+      </span>
+      <span class="vm__parent-total vm__num" role="cell"><strong>{num(sum)}</strong></span>
+    </div>
+
+    <div class="vm__rows">
+      <span class="vm__rail" aria-hidden="true"></span>
+      {c.rows.map((row, i) => (
+        <div class="vm__row" role="row" style={`--i:${i}`}>
+          <div class="vm__left">
+            <span class="vm__lang" role="rowheader">{row.code}</span>
+            <span class="vm__body">
+              <code class="vm__path" role="cell">{row.path}</code>
+              <span class="vm__meta" aria-hidden="true">
+                <span class="vm__tag">{c.tag}</span>
+                <span class="vm__bar"><i style={`--w:${(row.views / most).toFixed(3)}`}></i></span>
+              </span>
+            </span>
+          </div>
+          <span class="vm__num" role="cell">{num(row.views)}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</VizFrame>

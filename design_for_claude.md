@@ -72,6 +72,7 @@ The site supports light and dark themes through `color-scheme` and `light-dark()
 --color-accent: light-dark(oklch(52% 0.23 286), oklch(72% 0.17 286));
 --color-pop: oklch(89% 0.16 92);
 --color-danger: light-dark(oklch(52% 0.19 27), oklch(70% 0.17 25));
+--color-warning: light-dark(oklch(55% 0.14 70), oklch(80% 0.14 85));
 --color-ink: light-dark(var(--color-neutral-950), var(--color-neutral-100));
 --color-bg: light-dark(var(--color-neutral-050), oklch(17% 0.008 286));
 --color-muted: light-dark(var(--color-neutral-700), var(--color-neutral-500));
@@ -168,6 +169,24 @@ Use `ButtonLink.astro` rather than recreating CTA markup.
 ### Surfaces and lists
 
 - `.surface`: quiet tinted background, `1px` line, and `--radius-md`.
+- `.workbench`: two-column tool layout. Inputs stack on the left; `.workbench__output` is sticky beside them from 64rem and stacks below on narrow screens. Use it for tools where the output updates live as the user edits.
+- `.field`: text input and select. 1px control border at 3:1 contrast, `--radius-md`, `--focus-ring` on focus.
+- `.combobox`: text input with a toggle and a grouped listbox menu (`.combobox__menu`, `__heading`, `__option`, `__name`, `__desc`, `__tag`). Options show a name, a one-line truncated description and a tag. Use `role="combobox"` with `aria-controls`, `aria-expanded` and `aria-activedescendant`; options carry `aria-selected`. The menu heading is sticky.
+- `.segmented`: group of toggle buttons where one has `aria-pressed="true"`. The pressed segment inverts ink and background, so state does not rely on color alone.
+- `.code-output`: select-all `<pre>` for generated code, with the mono font and a 1px control border. Add `data-no-chrome` so the shared code-block header and copy button are skipped when the tool has its own copy button.
+- `.notice`: one status message with a leading symbol as the second signal. Variants: `--success`, `--warning`, `--danger`; the default uses `--accent`. Set `role="status"` (or `role="alert"` for errors).
+- `.chip`: small bordered label for state or category inside tools (`--danger`, `--warning`, `--success`). Use `.badge` for the yellow content-type label and `.tag` for article metadata.
+- `.field-label`, `.field-hint`, `.field-error`: label, hint and error text around a `.field`. The error uses `--color-danger` with bold weight; pair it with `role="alert"` or `aria-live` when it appears after input.
+- `.btn-quiet`: bordered secondary action (`--dashed` for "add" actions, `--primary` for the filled accent version). Use `.cta` for the main action of a page and `.btn-quiet` inside tools. Toggle state uses `aria-pressed`.
+- `.field-row`: one labelled value with its controls and an inline error (`__top`, `__label`, `__key`, `__controls`, `__error`, `__warning`, `__remove`). The label side and the controls wrap onto separate lines on narrow screens.
+- `.popover` with `.popover-anchor`: panel opened by a button and placed under it, with `.popover__close`. The button carries `aria-expanded` and `aria-controls`; Escape closes the panel and returns focus to the button.
+- `.combobox` select-only variant: a read-only `.combobox__input` with a listbox of `.combobox__option` items that have a `.combobox__name` only. Use it instead of a native `<select>` when the list is long. The chosen value lives in `data-value`; arrow keys move `.is-active`, Enter or Space selects, Escape and Tab close.
+- `.panel-heading` with `.panel-heading__title`: small uppercase title with a rule beneath and room for a chip or count on the right. The title class also works alone for a small uppercase label.
+- `.btn-link`: link-styled button for an action that is not navigation. Use `.text-link` for real links.
+- `.toast` with `.toast-anchor`: short status ("Copied") above the control that caused it. Give it `role="status"` and add `.is-visible` for a moment.
+- `.wide-band`: full-width wrapper for tool pages that need more room than the reading column. The Meta event builder uses it around `.workbench`.
+- `.viz`: bordered figure frame for in-article animated explainers (`src/styles/viz.css`, tokens only, so light and dark follow the site). The default markup is the finished state; `[data-state]` adds the animation, so the figure still reads without JavaScript or with reduced motion. Parts: `.viz__head`, `.viz__title`, `.viz__replay`, `.viz__phase`, `.viz__caption`. Visual-specific classes use short prefixes (`.vm__*`, `.df__*`, `.uc__*`).
+- Tool-specific layout classes (`.meb-*` in `src/styles/meta-event-builder.css`) only handle spacing and arrangement. Compose the shared pieces above first.
 - `.about` and `.page-section`: responsive two-column content sections.
 - `.process-list`: numbered process presentation.
 - `.formats-list`: compact arrow-led options.
@@ -184,6 +203,8 @@ Reusable components include:
 - `PatternList.astro`: numbered and arrow list variants.
 - `Badge.astro`: accessible repeated labels.
 - `ImageModal.astro`: shared full-window image viewer for opted-in figures or image links. Uses the native dialog, theme tokens and the body font. Keeps close and zoom controls visible, fits images without cropping, supports dragging and pinch zoom, and restores focus and the reading position. See README for the `data-image-modal` markup and fallback link.
+- `viz/VizFrame.astro`, `ViewsMerge.astro`, `DataFlow.astro`, `UrlChange.astro`: language-version visuals for articles. All text is real HTML/SVG text. `src/layouts/ArticleWithVisuals.astro` wraps Markdown articles: mark each spot with `<div data-viz="views-merge"></div>` (or `data-flow`, `url-change`) and the layout swaps in the rendered component. Copy comes from `src/data/language-visuals.js`; the figure takes `lang` from the page path.
+- `Appearances.astro`: talks, podcasts and publications list used on the About pages. Each item has a date, a yellow `Podcast` badge and the episode language on one meta line, then a serif title, a muted description and pill-shaped platform links under a "Listen on" label. Data comes from `src/data/appearances.js`. The design-system page renders the component itself.
 - `ArticleCard.astro`: article preview card.
 - `PostHero.astro`, `TableOfContents.astro`, `AskAI.astro`, `Postscript.astro`, and `RelatedArticles.astro`: article-page patterns.
 

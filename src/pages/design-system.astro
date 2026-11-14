@@ -1,4 +1,5 @@
 ---
+import Appearances from "../components/Appearances.astro";
 import AskAI from "../components/AskAI.astro";
 import Badge from "../components/Badge.astro";
 import Base from "../layouts/Base.astro";
@@ -12,6 +13,8 @@ import ServiceGroups from "../components/ServiceGroups.astro";
 import ServiceProof from "../components/ServiceProof.astro";
 import SplitSection from "../components/SplitSection.astro";
 import WorkflowSteps from "../components/WorkflowSteps.astro";
+import ViewsMerge from "../components/viz/ViewsMerge.astro";
+import "../styles/viz.css";
 
 const measurementSteps = [
   { label: "Question", title: "Start with a decision", description: "Choose what the team needs to decide. For this example: which articles help readers move on to a useful tool?", outcome: "One question the measurement needs to answer.", image: "/images/blog/content-consumption-metrics.jpeg", imageAlt: "Illustrated teacher explaining stages of reading an article" },
@@ -519,6 +522,57 @@ const sampleServices = [
     </form>
   </section>
 
+  <section class="ds-section" aria-labelledby="tool-controls-title">
+    <div class="ds-section__heading">
+      <p class="eyebrow">Tools</p>
+      <h2 id="tool-controls-title">Tool controls</h2>
+      <p>Shared pieces for interactive tools such as the Meta event builder.</p>
+    </div>
+    <div class="surface" style="padding: 1.25rem; display: grid; gap: 1rem;">
+      <div class="panel-heading">
+        <h3 class="panel-heading__title">Panel heading</h3>
+        <span class="chip">2 active</span>
+      </div>
+      <div>
+        <label class="field-label" for="ds-tool-field">Field label</label>
+        <input class="field" id="ds-tool-field" type="text" placeholder="Text field" aria-describedby="ds-tool-hint" />
+        <p class="field-hint" id="ds-tool-hint">Hint text</p>
+      </div>
+      <div class="segmented" role="group" aria-label="Segmented example">
+        <button type="button" aria-pressed="true">Pressed</button>
+        <button type="button" aria-pressed="false">Not pressed</button>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+        <button class="btn-quiet" type="button">Quiet</button>
+        <button class="btn-quiet btn-quiet--dashed" type="button">+ Add</button>
+        <button class="btn-quiet btn-quiet--primary" type="button">Primary</button>
+        <button class="btn-link" type="button">Link-styled button</button>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <span class="chip">Default</span>
+        <span class="chip chip--success">Success</span>
+        <span class="chip chip--warning">Warning</span>
+        <span class="chip chip--danger">Danger</span>
+      </div>
+      <div class="notice" role="status">Default notice</div>
+      <div class="notice notice--success" role="status">Success notice</div>
+      <div class="notice notice--warning" role="status">Warning notice</div>
+      <div class="notice notice--danger" role="alert">Danger notice</div>
+      <pre class="code-output" data-no-chrome tabindex="0">gtag('event', 'Lead', &#123; value: 10 &#125;);</pre>
+    </div>
+  </section>
+
+  <section class="ds-section" aria-labelledby="viz-title">
+    <div class="ds-section__heading">
+      <p class="eyebrow">Article visuals</p>
+      <h2 id="viz-title">Language-version visual</h2>
+      <p>The <code>.viz</code> frame from <code>ArticleWithVisuals</code>, shown on its own. It renders inside <code>.prose</code>.</p>
+    </div>
+    <div class="prose">
+      <ViewsMerge />
+    </div>
+  </section>
+
   <section class="ds-section" aria-labelledby="page-patterns-title">
     <div class="ds-section__heading">
       <p class="eyebrow">Page patterns</p>
@@ -570,28 +624,8 @@ const sampleServices = [
       </article>
 
       <article class="ds-pattern">
-        <p class="eyebrow">Appearances item</p>
-        <div class="ds-appearance-list">
-          <article class="ds-appearance">
-            <div class="ds-appearance__meta">
-              <time datetime="2025-06-25">25.6.2025</time>
-              <Badge class="appearance__type">Podcast</Badge>
-            </div>
-            <div class="ds-appearance__body">
-              <h3>Signaali: Web-analytiikka, SEO ja evästeet</h3>
-              <p>
-                Keskustelimme evästeistä, web-analytiikasta, tekoälystä ja
-                hakukoneoptimoinnin muutoksesta.
-              </p>
-              <a
-                class="ds-appearance__link"
-                href="https://open.spotify.com/episode/0tHszPbmKj7UVnMrscOsQy?si=627aee896bcd46b3"
-              >
-                Kuuntele jakso Spotifyssa <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
-        </div>
+        <p class="eyebrow">Appearances</p>
+        <Appearances />
       </article>
     </div>
   </section>
@@ -919,87 +953,12 @@ const sampleServices = [
     margin-top: 1rem;
   }
 
-  .ds-appearance-list {
-    border-top: 1px solid var(--line);
-  }
-
-  .ds-appearance {
-    display: grid;
-    gap: 1.25rem;
-    padding-block: 1.75rem;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .ds-appearance__meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.65rem;
-    color: var(--muted);
-    font-size: 0.78rem;
-    font-weight: 560;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .ds-appearance__body h3 {
-    margin: 0;
-    font-size: clamp(1.25rem, 3cqi, 1.55rem);
-  }
-
-  .ds-appearance__body p {
-    max-width: 58ch;
-    margin: 0.65rem 0 0.9rem;
-    color: var(--muted);
-  }
-
-  .ds-appearance__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: var(--accent);
-    font-weight: 650;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 0.2em;
-    transition: color var(--duration-base) var(--ease-out), text-decoration-color var(--duration-base) var(--ease-out);
-  }
-
-  .ds-appearance__link span {
-    transition: transform var(--duration-base) var(--ease-snap);
-  }
-
-  .ds-appearance__link:hover {
-    text-decoration-color: currentColor;
-  }
-
-  .ds-appearance__link:hover span {
-    transform: translateX(0.2rem);
-  }
-
-  .ds-appearance__link:focus-visible {
-    outline: 3px solid var(--pop);
-    outline-offset: 4px;
-    border-radius: var(--radius-xs);
-  }
-
   @container page (min-width: 46rem) {
     .ds-list-grid,
     .ds-surface-grid,
     .ds-brand-grid,
     .ds-font-grid {
       grid-template-columns: 1fr 1fr;
-    }
-
-    .ds-appearance {
-      grid-template-columns: 7.5rem minmax(0, 1fr);
-      gap: 1.5rem;
-    }
-
-    .ds-appearance__meta {
-      align-content: start;
-      align-items: flex-start;
-      flex-direction: column;
     }
   }
 </style>

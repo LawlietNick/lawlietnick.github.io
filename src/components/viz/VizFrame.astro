@@ -1,0 +1,42 @@
+---
+// Shared frame for the language-version visuals: title, replay button, caption and the
+// animation hook. Everything inside is real HTML/SVG text. Without JavaScript (or with
+// reduced motion) the figure simply shows its finished state.
+
+interface Props {
+  name: string;
+  title: string;
+  caption: string;
+  replay: string;
+  fi?: boolean;
+  // two-phase figures: a visible label per phase and the texts of the controls the script adds
+  phases?: string[];
+  controls?: { merge: string; before: string; after: string; viewGroup: string };
+}
+const { name, title, caption, replay, fi = false, phases, controls } = Astro.props;
+const id = `viz-${name}`;
+---
+
+<figure
+  class="viz"
+  data-viz-root={name}
+  data-replay-label={replay}
+  data-viz-phases={phases?.length}
+  data-label-merge={controls?.merge}
+  data-label-before={controls?.before}
+  data-label-after={controls?.after}
+  data-label-view={controls?.viewGroup}
+  lang={fi ? "fi" : "en"}
+  aria-labelledby={`${id}-title`}
+>
+  <div class="viz__head">
+    <p class="viz__title" id={`${id}-title`}>{title}</p>
+  </div>
+  {phases && (
+    <p class="viz__phase" aria-live="polite">
+      {phases.map((label, i) => <span data-phase-label={i + 1}>{label}</span>)}
+    </p>
+  )}
+  <slot />
+  <figcaption class="viz__caption">{caption}</figcaption>
+</figure>

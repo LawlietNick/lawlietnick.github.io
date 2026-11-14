@@ -1,0 +1,66 @@
+---
+import VizFrame from "./VizFrame.astro";
+import { languageVisuals } from "../../data/language-visuals.js";
+
+const { fi = false } = Astro.props;
+const text = languageVisuals[fi ? "fi" : "en"];
+const c = text.dataFlow;
+// each step appears 0.5 s after the previous one; the detail inside a step follows its node
+const at = (i: number, extra = 0) => `--d:${(i * 0.55 + extra).toFixed(2)}s`;
+---
+
+<VizFrame name="data-flow" title={c.title} caption={c.caption} replay={text.replay} {fi}>
+  <ol class="df">
+    {c.steps.map((step, i) => (
+      <li class={`df__step df__step--${step.key}`}>
+        <span class={`df__node df__node--${step.key} viz-step`} style={at(i)}>
+          <span class="df__n" aria-hidden="true">{i + 1}</span>
+          <span class="df__label">{step.label}</span>
+        </span>
+
+        {step.key === "cms" && <p class="df__note viz-step" style={at(i, 0.2)}>{c.cmsNote}</p>}
+
+        {step.key === "page" && (
+          <ul class="df__pills" aria-label={c.pageNote}>
+            {c.langs.map((code, j) => (
+              <li class="df__pill viz-step" style={at(i, 0.2 + j * 0.08)}>{code}</li>
+            ))}
+          </ul>
+        )}
+
+        {step.key === "dl" && (
+          <div class="df__panel">
+            <p class="df__panel-note viz-step" style={at(i, 0.15)}>{c.dlNote}</p>
+            <div class="df__groups">
+              <div class="df__group df__group--shared viz-step" style={at(i, 0.3)}>
+                <p class="df__group-head">{c.sharedHeading}</p>
+                <ul class="df__chips">
+                  {c.shared.map((field) => <li><code>{field}</code></li>)}
+                </ul>
+              </div>
+              <div class="df__group df__group--lang viz-step" style={at(i + 1, 0.1)}>
+                <p class="df__group-head">{c.langHeading}</p>
+                <p class="df__field"><code>{c.langField}</code></p>
+                <ul class="df__chips df__chips--values">
+                  {c.langs.map((code) => <li><code>{c.langValues[code]}</code></li>)}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step.key === "tm" && <p class="df__note viz-step" style={at(i, 0.2)}>{c.tmNote}</p>}
+
+        {step.key === "rep" && (
+          <div class="df__report viz-step" style={at(i, 0.2)}>
+            <strong class="df__report-title">{c.reportTitle}</strong>
+            <span class="df__report-hint">{c.reportHint}</span>
+            <ul class="df__report-langs">
+              {c.langs.map((code) => <li>{code}</li>)}
+            </ul>
+          </div>
+        )}
+      </li>
+    ))}
+  </ol>
+</VizFrame>

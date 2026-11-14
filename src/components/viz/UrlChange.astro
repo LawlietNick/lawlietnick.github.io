@@ -1,0 +1,68 @@
+---
+import VizFrame from "./VizFrame.astro";
+import { languageVisuals } from "../../data/language-visuals.js";
+
+const { fi = false } = Astro.props;
+const text = languageVisuals[fi ? "fi" : "en"];
+const c = text.urlChange;
+
+// Illustrative trend lines in a 240 x 90 box. Both charts show the same history: in A it
+// is split in two lines at the URL change, in B it is one line. oldLine + newLine
+// therefore follow the same points as joinedLine.
+const oldLine = "M6 52 L30 44 L54 48 L78 34 L102 38 L120 30";
+const newLine = "M126 28 L150 26 L174 20 L198 22 L234 14";
+const joinedLine = "M6 52 L30 44 L54 48 L78 34 L102 38 L120 30 L150 26 L174 20 L198 22 L234 14";
+---
+
+<VizFrame name="url-change" title={c.title} caption={c.caption} replay={text.replay} {fi}>
+  <div class="uc">
+    <section class="uc__opt" aria-labelledby="uc-a-h">
+      <h3 class="uc__heading" id="uc-a-h">{c.a.heading}</h3>
+      <div class="uc__rows">
+        <p class="uc__row viz-step" style="--d:0s">
+          <code>{c.oldPath}</code>
+          <span class="uc__badge">{c.oldLabel}</span>
+        </p>
+        <p class="uc__row uc__row--new viz-step" style="--d:1.2s">
+          <code>{c.newPath}</code>
+          <span class="uc__badge">{c.newLabel}</span>
+        </p>
+      </div>
+      <svg class="uc__chart" viewBox="0 0 240 90" role="img" aria-label={c.a.chartLabel}>
+        <line class="uc__axis" x1="4" y1="84" x2="236" y2="84"></line>
+        <line class="uc__split" x1="123" y1="8" x2="123" y2="84"></line>
+        <path class="uc__line uc__line--old viz-draw" d={oldLine} pathLength="1" style="--d:0.4s"></path>
+        <path class="uc__line uc__line--new viz-draw" d={newLine} pathLength="1" style="--d:2.2s"></path>
+      </svg>
+      <ul class="uc__legend">
+        <li class="uc__key uc__key--old viz-step" style="--d:0.9s">{c.a.oldHistory}</li>
+        <li class="uc__key uc__key--new viz-step" style="--d:2.7s">{c.a.newHistory}</li>
+      </ul>
+      <p class="uc__result viz-step" style="--d:3s">{c.a.result}</p>
+    </section>
+
+    <section class="uc__opt uc__opt--b" aria-labelledby="uc-b-h">
+      <h3 class="uc__heading" id="uc-b-h">{c.b.heading}</h3>
+      <p class="uc__proposal">{c.b.badge}</p>
+      <div class="uc__rows">
+        <p class="uc__row viz-step" style="--d:0s">
+          <code>{c.oldPath}</code>
+          <span class="uc__id"><code>{c.b.id}</code></span>
+        </p>
+        <p class="uc__row uc__row--new viz-step" style="--d:1.2s">
+          <code>{c.newPath}</code>
+          <span class="uc__id"><code>{c.b.id}</code></span>
+        </p>
+      </div>
+      <svg class="uc__chart" viewBox="0 0 240 90" role="img" aria-label={c.b.chartLabel}>
+        <line class="uc__axis" x1="4" y1="84" x2="236" y2="84"></line>
+        <line class="uc__split" x1="123" y1="8" x2="123" y2="84"></line>
+        <path class="uc__line uc__line--joined viz-draw" d={joinedLine} pathLength="1" style="--d:0.4s"></path>
+      </svg>
+      <ul class="uc__legend">
+        <li class="uc__key uc__key--new viz-step" style="--d:2.4s">{c.b.history}</li>
+      </ul>
+      <p class="uc__result viz-step" style="--d:3s">{c.b.result}</p>
+    </section>
+  </div>
+</VizFrame>

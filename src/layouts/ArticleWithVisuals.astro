@@ -1,0 +1,39 @@
+---
+// Article layout for Markdown that embeds the language-version visuals. Markdown cannot
+// hold Astro components, so the article marks each spot with
+// <div data-viz="name"></div>. This wrapper renders the matching component to HTML and
+// swaps it in, then hands the result to Base, which stays untouched for every other page.
+//
+// Base renders the Markdown slot to a string before its own <head>. A component rendered
+// inside that slot would emit the page's styles and CSP <meta> into the body, so the
+// visuals are rendered separately with the container API. Their CSS and script are
+// attached here instead.
+import { experimental_AstroContainer as AstroContainer } from "astro/container";
+import Base from "./Base.astro";
+import ViewsMerge from "../components/viz/ViewsMerge.astro";
+import DataFlow from "../components/viz/DataFlow.astro";
+import UrlChange from "../components/viz/UrlChange.astro";
+import "../styles/viz.css";
+
+const visuals = {
+  "views-merge": ViewsMerge,
+  "data-flow": DataFlow,
+  "url-change": UrlChange,
+};
+
+const fi = Astro.url.pathname.startsWith("/fi/");
+const html = await Astro.slots.render("default");
+// split() with a capture group keeps the marker names at the odd indexes
+const parts = html.split(/<div data-viz="([a-z-]+)"><\/div>/);
+const container = await AstroContainer.create();
+const rendered = await Promise.all(
+  parts.map((part, i) =>
+    i % 2 === 0 ? part : visuals[part] ? container.renderToString(visuals[part], { props: { fi } }) : "",
+  ),
+);
+---
+
+<Base {...Astro.props}>
+  <Fragment set:html={rendered.join("")} />
+  {rendered.length > 1 && <script>import { enhanceViz } from "../scripts/viz"; document.addEventListener("astro:page-load", enhanceViz);</script>}
+</Base>
