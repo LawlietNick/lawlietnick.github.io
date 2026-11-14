@@ -852,6 +852,11 @@ main > .page-section:first-child {
   font-weight: var(--font-weight-bold);
 }
 
+/* An option with no description reads like the selected value; bold only separates a name from its description. */
+.combobox__name:only-child {
+  font-weight: var(--font-weight-body);
+}
+
 .combobox__desc {
   display: block;
   margin-top: 0.125rem;

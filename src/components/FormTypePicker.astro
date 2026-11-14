@@ -12,13 +12,13 @@ const copy = fi
       nameNote: "Tämän lomakkeen oma nimi. Valinnainen, mutta sen avulla kaksi yhteydenottolomaketta erottuvat toisistaan. Kirjoita nimi englanniksi, jotta raportit pysyvät yhtenäisinä kaikilla kielillä.",
       strip: "Kaksoispiste ja pystyviiva erottavat arvon kolme osaa, joten ne poistetaan nimestä.",
       outLabel: "Lomakkeen koko nimi", key: "mitä se on &nbsp;·&nbsp; mikä tyyppi &nbsp;·&nbsp; oma nimi",
-      copyValue: "Kopioi arvo", wait: "Valitse kategoria ja tyyppi, niin arvo valmistuu.", snippet: "dataLayer-koodi", copySnippet: "Kopioi koodi",
+      copyValue: "Kopioi arvo", wait: "Valitse kategoria ja tyyppi, niin arvo valmistuu.",
       choose: "Valitse…", chooseCatFirst: "Valitse ensin kategoria", sensitive: "arkaluonteinen",
       catPrompt: "Kuvaa kävijän toimintaa, älä lomakkeen otsikkoa. Vaihtoehtoja on kaksitoista.", forExample: "Esimerkiksi",
       kindsOf: "{n} tyyppiä kategoriassa {cat}. Valitse yksi, niin näet, milloin sitä käytetään.", waiting: "Vastaa ensin yllä olevaan kysymykseen.",
       mistaken: "Sekoitetaan useimmin tyyppiin", careful: "Käsittele varoen", note: "Huomio",
       examples: "Esimerkkejä lomakkeiden nimistä:", catPart: "kategoria", typePart: "tyyppi", namePart: "oma nimi",
-      copied: "Kopioitu", copyManual: "Valitse ja kopioi käsin",
+      copied: "Kopioitu", copyManual: "Valitse ja kopioi käsin", listToggle: "Avaa lista",
     }
   : {
       intro: "Answer two questions about your form, give it a name, and you get one consistent value to track it with — the same value every time, whoever builds the next form.",
@@ -26,13 +26,13 @@ const copy = fi
       nameNote: "Your own name for this exact form. Optional — but it is what tells two contact forms apart.",
       strip: "A colon and a vertical bar separate the three parts, so they are removed from the name.",
       outLabel: "Full form name", key: "what it is &nbsp;·&nbsp; which kind &nbsp;·&nbsp; your own name for it",
-      copyValue: "Copy value", wait: "Pick a category and a kind to finish the value.", snippet: "dataLayer snippet", copySnippet: "Copy snippet",
+      copyValue: "Copy value", wait: "Pick a category and a kind to finish the value.",
       choose: "Choose one…", chooseCatFirst: "Choose a category first", sensitive: "sensitive",
       catPrompt: "Describe the visitor's action, not the form's title. Twelve to choose from.", forExample: "For example",
       kindsOf: "{n} kinds of {catLower} form. Pick one to see when it applies.", waiting: "Waiting on the question above.",
       mistaken: "Most often mistaken for", careful: "Handle with care", note: "Note",
       examples: "Examples of form names:", catPart: "category", typePart: "kind", namePart: "your name for it",
-      copied: "Copied", copyManual: "Select and copy manually",
+      copied: "Copied", copyManual: "Select and copy manually", listToggle: "Open list",
     };
 const config = { ...taxonomy, copy };
 ---
@@ -46,9 +46,7 @@ const config = { ...taxonomy, copy };
     <div class="ftp__step">
       <label class="ftp__label" for="ftp-cat">{copy.q1}</label>
       <div class="ftp__field">
-        <div class="ftp__select">
-          <select id="ftp-cat" data-cat aria-describedby="ftp-cat-note"></select>
-        </div>
+        <div class="combobox" data-cat-combo></div>
         <p class="ftp__note" id="ftp-cat-note" data-cat-note></p>
       </div>
     </div>
@@ -56,9 +54,7 @@ const config = { ...taxonomy, copy };
     <div class="ftp__step">
       <label class="ftp__label" for="ftp-type">{copy.q2}</label>
       <div class="ftp__field">
-        <div class="ftp__select">
-          <select id="ftp-type" data-type disabled aria-describedby="ftp-type-note"></select>
-        </div>
+        <div class="combobox" data-type-combo></div>
         <div class="ftp__note" id="ftp-type-note" data-type-note aria-live="polite"></div>
       </div>
     </div>
@@ -85,25 +81,62 @@ const config = { ...taxonomy, copy };
       <button type="button" class="cta" data-copy hidden><span class="cta__surface">{copy.copyValue}</span></button>
       <p class="ftp__wait" data-wait>{copy.wait}</p>
     </div>
-
-    <details class="ftp__snippet" data-snippet hidden>
-      <summary>{copy.snippet}</summary>
-      <pre><code data-code></code></pre>
-      <button type="button" class="ftp__link" data-copy-code>{copy.copySnippet}</button>
-    </details>
   </div>
 </div>
 
 <script>
   import { formValue } from "../data/form-types.js";
+  import { initSelectCombobox } from "../scripts/select-combobox.js";
 
   document.querySelectorAll("[data-form-type-picker]").forEach((root) => {
     const { types, categories, copy } = JSON.parse(root.querySelector("[data-ftp-config]").textContent);
     const el = (s) => root.querySelector(s);
 
     const nameEl = el("[data-name]");
-    const catEl = el("[data-cat]");
-    const typeEl = el("[data-type]");
+    const chevron = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>`;
+    const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+    /* The site's shared combobox instead of a native select, so the open list looks the
+       same as in CampaignCraft. The shared script builds its options once, so a list that
+       changes (the types follow the category) is mounted again from scratch. */
+    function combo(host, id, describedby, onSelect) {
+      const api = {
+        value: "",
+        mount(options, disabled = false) {
+          api.value = "";
+          const first = options[0];
+          host.innerHTML =
+            `<div class="combobox__control">` +
+            `<input class="field combobox__input is-empty" id="${id}" role="combobox" readonly aria-haspopup="listbox" aria-controls="${id}-menu" aria-expanded="false" aria-describedby="${describedby}" type="text" value="${esc(first[1])}" data-value="${esc(first[0])}"${disabled ? " disabled" : ""} />` +
+            `<button class="combobox__toggle" type="button" tabindex="-1" aria-label="${esc(copy.listToggle)}" aria-controls="${id}-menu" aria-expanded="false"${disabled ? " disabled" : ""}>${chevron}</button>` +
+            `</div><div class="combobox__menu" hidden id="${id}-menu" role="listbox"></div>`;
+          const input = host.querySelector("input");
+          const menu = host.querySelector(".combobox__menu");
+          menu.setAttribute("aria-label", root.querySelector(`label[for="${id}"]`).textContent);
+          if (!disabled) {
+            initSelectCombobox(input, host.querySelector(".combobox__toggle"), menu, options, () => {
+              api.value = input.dataset.value;
+              input.classList.toggle("is-empty", !api.value);
+              onSelect();
+            });
+          }
+          api.input = input;
+        },
+        set(value, options) {
+          const input = api.input;
+          api.value = value;
+          input.dataset.value = value;
+          input.value = options.find(([v]) => v === value)[1];
+          input.classList.toggle("is-empty", !value);
+        },
+      };
+      return api;
+    }
+
+    const catEl = combo(el("[data-cat-combo]"), "ftp-cat", "ftp-cat-note", () => { fillTypes(); paintAll(); });
+    const typeEl = combo(el("[data-type-combo]"), "ftp-type", "ftp-type-note", () => paintAll());
+    let catOptions = [];
+    let typeOptions = [];
     const catNote = el("[data-cat-note]");
     const typeNote = el("[data-type-note]");
     const valueEl = el("[data-value]");
@@ -111,42 +144,26 @@ const config = { ...taxonomy, copy };
     const waitEl = el("[data-wait]");
     const exEl = el("[data-ex]");
     const stripEl = el("[data-strip]");
-    const snippetEl = el("[data-snippet]");
-    const codeEl = el("[data-code]");
 
     const label = (t) => (t.category === t.type ? t.type : `${t.category} ${t.type}`);
     const inCat = (id) => types.filter((t) => t.category === id);
     const selected = () => types.find((t) => t.id === typeEl.value) || null;
     const actionable = (note) => /^(SENSITIVE|Exclude|Required|Review trigger)/.test(note);
 
-    /* A disabled placeholder option never becomes the selection, which renders
-       the closed select blank. Keep it selectable and check the value instead. */
-    function option(value, text, into) {
-      const o = document.createElement("option");
-      o.value = value;
-      o.textContent = text;
-      into.append(o);
-      return o;
-    }
-
-    option("", copy.choose, catEl);
-    categories.forEach((c) => option(c.id, `${c.id} — ${c.action}`, catEl));
-    catEl.selectedIndex = 0;
+    catOptions = [["", copy.choose], ...categories.map((c) => [c.id, `${c.id} — ${c.action}`])];
+    catEl.mount(catOptions);
 
     function fillTypes() {
-      typeEl.innerHTML = "";
       if (!catEl.value) {
-        option("", copy.chooseCatFirst, typeEl);
-        typeEl.disabled = true;
-        typeEl.selectedIndex = 0;
+        typeOptions = [["", copy.chooseCatFirst]];
+        typeEl.mount(typeOptions, true);
         return;
       }
-      option("", copy.choose, typeEl);
-      inCat(catEl.value).forEach((t) =>
-        option(t.id, t.note.startsWith("SENSITIVE") ? `${t.type} — ${copy.sensitive}` : t.type, typeEl)
-      );
-      typeEl.disabled = false;
-      typeEl.selectedIndex = 0;
+      typeOptions = [
+        ["", copy.choose],
+        ...inCat(catEl.value).map((t) => [t.id, t.note.startsWith("SENSITIVE") ? `${t.type} — ${copy.sensitive}` : t.type]),
+      ];
+      typeEl.mount(typeOptions);
     }
 
     function paintCatNote() {
@@ -181,11 +198,11 @@ const config = { ...taxonomy, copy };
       typeNote.querySelector("[data-goto]")?.addEventListener("click", () => {
         const target = types.find((x) => label(x) === t.confusedWith);
         if (!target) return;
-        catEl.value = target.category;
+        catEl.set(target.category, catOptions);
         fillTypes();
-        typeEl.value = target.id;
+        typeEl.set(target.id, typeOptions);
         paintAll();
-        typeEl.focus();
+        typeEl.input.focus();
       });
     }
 
@@ -209,19 +226,10 @@ const config = { ...taxonomy, copy };
 
       copyEl.hidden = !t;
       waitEl.hidden = Boolean(t);
-      snippetEl.hidden = !t;
       if (!t) return;
 
       const value = formValue(t.category, t.type, name);
       copyEl.dataset.value = value;
-      codeEl.textContent = [
-        "window.dataLayer = window.dataLayer || [];",
-        "window.dataLayer.push({",
-        "  event: 'form_submit',",
-        `  form_full_name: '${value.replace(/'/g, "\\'")}',`,
-        "  form_id: form.id || form.name,",
-        "});",
-      ].join("\n");
     }
 
     function paintExamples() {
@@ -262,16 +270,10 @@ const config = { ...taxonomy, copy };
       setTimeout(() => (btn.innerHTML = html), 1800);
     }
 
-    catEl.addEventListener("change", () => {
-      fillTypes();
-      paintAll();
-    });
-    typeEl.addEventListener("change", paintAll);
     nameEl.addEventListener("input", paintValue);
     copyEl.addEventListener("click", (e) =>
       copyText(e.currentTarget.dataset.value, e.currentTarget, `<span class='cta__surface'>${copy.copied}</span>`)
     );
-    el("[data-copy-code]").addEventListener("click", (e) => copyText(codeEl.textContent, e.currentTarget, copy.copied));
 
     fillTypes();
     paintAll();
@@ -283,11 +285,11 @@ const config = { ...taxonomy, copy };
     --ftp-alert: light-dark(oklch(52% 0.2 25), oklch(76% 0.15 25));
     /* Control boundaries need 3:1; the page's --line token is ~1.2:1. */
     --ftp-field-line: color-mix(in srgb, var(--ink) 50%, var(--bg));
-    max-width: 72rem;
     margin-block: 1.5rem var(--section-y-large);
-    padding: clamp(1.25rem, 3vw, 2.5rem);
-    border-radius: var(--radius-lg);
-    background: var(--color-accent-panel);
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg, var(--radius-md));
+    background: color-mix(in srgb, var(--ink) 2%, var(--bg));
     font-size: var(--font-size-ui);
     line-height: var(--line-height-ui);
   }
@@ -337,37 +339,14 @@ const config = { ...taxonomy, copy };
 
   .ftp input::placeholder { color: var(--muted); opacity: 0.75; }
 
-  .ftp__select { position: relative; }
-
-  .ftp__select::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 0.9rem;
-    width: 0.45rem;
-    height: 0.45rem;
-    border-right: 1.5px solid currentColor;
-    border-bottom: 1.5px solid currentColor;
-    transform: translateY(-70%) rotate(45deg);
-    color: var(--muted);
-    pointer-events: none;
-  }
-
-  .ftp select {
-    appearance: none;
-    width: 100%;
-    padding: 0.65rem 2.1rem 0.65rem 0.8rem;
-    border: 1px solid var(--ftp-field-line);
-    border-radius: var(--radius-md);
-    background: var(--bg);
-    color: var(--ink);
-    font: inherit;
-    cursor: pointer;
-  }
-
-  .ftp select:hover:not(:disabled),
+  /* The shared combobox: placeholder text reads muted, the chosen value at body weight. */
+  .ftp :global(.combobox__input) { font-weight: var(--font-weight-body); font-size: inherit; }
+  .ftp :global(.combobox__input.is-empty),
+  .ftp :global(.combobox__input:disabled) { color: var(--muted); }
+  .ftp :global(.combobox__input:disabled),
+  .ftp :global(.combobox__input:disabled + .combobox__toggle) { cursor: not-allowed; }
+  .ftp :global(.combobox__menu) { font-size: inherit; }  .ftp :global(.field:hover:not(:disabled)),
   .ftp input[type="text"]:hover { border-color: var(--ink); }
-  .ftp select:disabled { color: var(--muted); cursor: not-allowed; }
 
   /* Descriptions read at full muted strength — a lighter tint disappears in
      light mode, which is exactly what made this column look empty. */
@@ -407,28 +386,32 @@ const config = { ...taxonomy, copy };
   .ftp__ex { line-height: 1.9; }
   .ftp :global(.ftp__strip) { color: var(--ink); }
 
-  .ftp__out { padding-top: 2.5rem; }
+  /* Same result panel as CampaignCraft: a bordered box on the frame, label above a code block. */
+  .ftp__out {
+    margin-top: 1.5rem;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+  }
 
   .ftp__outlabel {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem 0.75rem;
     align-items: baseline;
-    margin: 0 0 0.75rem;
-    color: var(--muted);
-    font-size: var(--font-size-ui-xs);
-    font-weight: var(--font-weight-medium);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    margin: 0 0 0.5rem;
+    color: var(--ink);
+    font-size: var(--font-size-ui-sm);
+    font-weight: var(--font-weight-strong);
   }
 
   /* The key the value is pushed under, for anyone wiring up GTM. */
   .ftp__outlabel code {
-    color: var(--ink);
+    color: var(--muted);
     font-family: var(--font-mono);
+    font-size: var(--font-size-ui-xs);
     font-weight: var(--font-weight-body);
-    text-transform: none;
-    letter-spacing: 0;
   }
 
   /* Reads as a readout, not as another paragraph: its own surface, one border,
@@ -439,12 +422,12 @@ const config = { ...taxonomy, copy };
     gap: 0.3rem 0.6rem;
     align-items: baseline;
     margin: 0;
-    padding: 1rem 1.15rem;
-    border: 1px solid var(--line);
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
     border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--ink) 4%, var(--bg));
+    background: color-mix(in srgb, var(--ink) 6%, var(--bg));
     font-family: var(--font-mono);
-    font-size: clamp(1.1rem, 3.2cqi, 1.5rem);
+    font-size: clamp(1rem, 2.6cqi, 1.25rem);
   }
 
   .ftp__value :global(.ftp__v) {
@@ -462,7 +445,7 @@ const config = { ...taxonomy, copy };
 
   .ftp__key { margin: 0.6rem 0 0; padding-inline: 0.1rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
 
-  .ftp__act { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; margin-top: 1.75rem; }
+  .ftp__act { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; margin-top: 1.25rem; }
   .ftp__wait { margin: 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
 
   .ftp :global(.ftp__link) {
@@ -479,22 +462,8 @@ const config = { ...taxonomy, copy };
 
   .ftp :global(.ftp__link:hover) { color: var(--accent); }
 
-  .ftp__snippet { margin-top: 2.25rem; }
-  .ftp__snippet summary { cursor: pointer; color: var(--muted); font-size: var(--font-size-ui-sm); }
-  .ftp__snippet summary:hover { color: var(--ink); }
-
-  .ftp__snippet pre {
-    overflow-x: auto;
-    margin: 0.9rem 0;
-    padding: 1rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-ui-xs);
-  }
-
   @media (pointer: coarse) {
     .ftp :global(.ftp__link) { padding-block: 0.35rem; }
-    .ftp select,
     .ftp input[type="text"] { min-height: 44px; }
   }
 </style>

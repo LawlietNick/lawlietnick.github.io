@@ -41,7 +41,7 @@ By default, a submission produces the HubSpot form name exactly as it is stored:
 }
 ```
 
-If your form names follow a `Category : Type | Name` convention, one optional setting turns that single string into three reporting dimensions:
+If your form names follow a `Category : Type | Name` convention (the [form name builder](/tools/form-name-builder/) gives you consistent names), one optional setting turns that single string into three reporting dimensions:
 
 ```javascript
 {
