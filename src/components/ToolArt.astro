@@ -99,15 +99,14 @@ const { name } = Astro.props;
 
   {name === "campaign" && (
     <div class="cc">
-      <div class="cc__row">
-        <span class="cc__dot"></span><span class="chip cc__chip"></span><span class="cc__sep">_</span><span class="chip cc__chip cc__chip--b"></span><span class="cc__sep">_</span><span class="chip cc__chip cc__chip--c"></span>
+      <div class="cc__parts">
+        <div class="cc__line"><span class="cc__chip"></span><span class="cc__stub"></span></div>
+        <div class="cc__line"><span class="cc__chip"></span><span class="cc__stub"></span></div>
+        <div class="cc__line"><span class="cc__chip"></span><span class="cc__stub"></span></div>
       </div>
-      <div class="cc__row cc__row--2">
-        <span class="cc__dot"></span><span class="chip cc__chip"></span><span class="cc__sep">_</span><span class="chip cc__chip cc__chip--b"></span>
-      </div>
-      <div class="cc__row cc__row--3">
-        <span class="cc__dot"></span><span class="chip cc__chip cc__chip--b"></span><span class="cc__sep">_</span><span class="chip cc__chip cc__chip--c"></span>
-      </div>
+      <span class="cc__spine"></span>
+      <span class="cc__out"></span>
+      <span class="cc__result"><span class="cc__bar"></span></span>
     </div>
   )}
 
@@ -154,7 +153,7 @@ const { name } = Astro.props;
     border-radius: 99px;
     background: var(--soft-strong);
   }
-  .art :is(.an__note, .q__pips, .c__box, .dl__sheet, .ex__row, .fm__input, .cc__row) {
+  .art :is(.an__note, .q__pips, .c__box, .dl__sheet, .ex__row, .fm__input) {
     background: var(--paper);
     border: 1px solid var(--line);
   }
@@ -258,17 +257,17 @@ const { name } = Astro.props;
   .fm__opt.is-on { background: var(--accent); border-color: var(--accent); }
   :global(.tk-tile:is(:hover, :focus-visible)) .fm__chip--b { width: 4.6em; }
 
-  /* ---------- campaign (Meta CampaignCraft): campaign, ad set and ad names, each level one step in ---------- */
-  .cc { display: flex; flex-direction: column; gap: 0.7em; width: 14em; }
-  .cc__row { display: flex; align-items: center; gap: 0.35em; height: 2.4em; padding: 0 0.8em; border-radius: 0.8em; }
-  .cc__row--2 { margin-left: 1.4em; }
-  .cc__row--3 { margin-left: 2.8em; border-color: var(--accent) !important; box-shadow: 0 0 0 0.25em var(--soft); }
-  .cc__dot { flex: none; width: 0.6em; height: 0.6em; border-radius: 50%; }
-  .cc__chip { height: 0.9em; width: 2.6em; }
-  .cc__chip--b { width: 1.8em; }
-  .cc__chip--c { width: 2.2em; transition: width var(--duration-base) var(--ease-snap); }
-  .cc__sep { color: var(--muted); font: 600 0.8em/1 ui-monospace, "SFMono-Regular", Menlo, monospace; align-self: flex-end; margin-bottom: 0.55em; }
-  :global(.tk-tile:is(:hover, :focus-visible)) .cc__row--3 .cc__chip--c { width: 3.4em; }
+  /* ---------- campaign (Meta CampaignCraft): three name parts join into one name ---------- */
+  .cc { --cc-line: color-mix(in srgb, var(--accent) 70%, var(--bg)); position: relative; display: flex; align-items: center; width: 13.4em; height: 8em; }
+  .cc__parts { display: flex; flex-direction: column; gap: 1.3em; }
+  .cc__line { display: flex; align-items: center; }
+  .cc__chip { display: block; width: 4.2em; height: 1.8em; border-radius: 99px; background: var(--soft-strong); border: 1px solid var(--cc-line); }
+  .cc__stub { width: 1.6em; height: 2px; background: var(--cc-line); }
+  .cc__spine { position: absolute; left: 5.8em; top: 0.9em; width: 2px; height: 6.2em; background: var(--cc-line); }
+  .cc__out { position: absolute; left: 5.8em; top: calc(50% - 1px); width: 1.6em; height: 2px; background: var(--cc-line); }
+  .cc__result { position: absolute; left: 7.4em; top: calc(50% - 1.1em); display: grid; place-items: center; width: 5em; height: 2.2em; border-radius: 99px; background: var(--accent); transition: width var(--duration-base) var(--ease-snap); }
+  .cc__bar { width: 55%; height: 0.22em; border-radius: 99px; background: var(--bg); }
+  :global(.tk-tile:is(:hover, :focus-visible)) .cc__result { width: 6em; }
   :global(.tk-tile:is(:hover, :focus-visible)) .fm__opt:nth-child(2) { border-color: var(--accent); }
 
   /* ---------- consent (Cookiebot guide): a banner with category switches and two buttons ---------- */
@@ -301,7 +300,7 @@ const { name } = Astro.props;
   @keyframes art-grow-key { to { width: 75%; } }
   @keyframes art-grow-chip { to { width: 4.6em; } }
   @keyframes art-grow-arrow { to { width: 3.4em; } }
-  @keyframes art-grow-cc { to { width: 3.4em; } }
+  @keyframes art-grow-cc { to { width: 6em; } }
 
   :global(.tk-bento--compact) .an__note { animation: art-float 3.2s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .c__drop { animation: art-sink 2.4s ease-in-out infinite alternate; }
@@ -309,7 +308,7 @@ const { name } = Astro.props;
   :global(.tk-bento--compact) .cs__btn--main { animation: art-pulse 2.2s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .dl__key { animation: art-grow-key 2.8s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .fm__chip--b { animation: art-grow-chip 2.6s ease-in-out infinite alternate; }
-  :global(.tk-bento--compact) .cc__row--3 .cc__chip--c { animation: art-grow-cc 2.6s ease-in-out infinite alternate; }
+  :global(.tk-bento--compact) .cc__result { animation: art-grow-cc 2.6s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .fe__arrow { animation: art-grow-arrow 2.2s ease-in-out infinite alternate; }
   :global(.tk-bento--compact) .q__pip:nth-child(8)::after { animation: art-fill-8 5s ease-in-out infinite; }
   :global(.tk-bento--compact) .q__pip:nth-child(9)::after { animation: art-fill-9 5s ease-in-out infinite; }
