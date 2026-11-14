@@ -1,5 +1,6 @@
 // Regenerates EN/FI default and tool social cards as JPEG in public/images/og/ (1200×630).
 // Run `node scripts/generate-og.mjs` after changing the brand or site typography.
+// `node scripts/generate-og.mjs <tool-slug>` writes only that tool's cards.
 import { chromium } from "@playwright/test";
 import sharp from "sharp";
 import { mkdirSync, readFileSync } from "node:fs";
@@ -29,7 +30,9 @@ try {
       cards.push([lang, headline, words.join(" "), "", tool[lang].slug ?? tool.slug]);
     }
   }
+  const only = process.argv[2];
   for (const [lang, headline, emphasis, ending, slug] of cards) {
+  if (only && slug !== only) continue;
   const output = slug ? `public/images/og/${lang}-${slug}.jpeg` : `public/images/og/og-default${lang === "fi" ? "-fi" : ""}.jpeg`;
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1, colorScheme: "light" });
   await page.setContent(`<!doctype html><html lang="${lang}"><head><style>
