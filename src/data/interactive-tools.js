@@ -136,18 +136,6 @@ export const allInteractiveTools = [
   },
   {
     category: "tools",
-    slug: "meta-event-builder",
-    draft: true,
-    icon: "fb",
-    order: 10,
-    date: "2026-11-13",
-    en: {
-      title: "Meta event builder",
-      summary: "Build a Meta event with the Meta Pixel call, the dataLayer push and the Conversions API request.",
-    },
-  },
-  {
-    category: "tools",
     slug: "form-name-builder",
     icon: "\u25a4",
     art: "form",
