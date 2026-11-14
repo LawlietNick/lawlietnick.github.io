@@ -230,6 +230,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
       const saveGroups = () => {
         write(groupsKey, {
           custom: bodies().filter(isCustom).map((body) => ({ id: body.dataset.group, name: body.dataset.groupLabel })),
+          order: items().map(valueOf),
           assign: Object.fromEntries(
             items()
               .filter((tr) => tr.closest("tbody").dataset.group !== tr.dataset.defaultGroup)
@@ -364,6 +365,12 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
         body.append(tr);
         layoutChanged();
       };
+      // Dropping on a row puts the dragged row before or after it, in that row's group
+      const placeRow = (tr, ref, before) => {
+        if (tr === ref) return;
+        ref[before ? "before" : "after"](tr);
+        layoutChanged();
+      };
       const removeGroup = (body) => {
         itemRows(body).forEach((tr) => (bodyOf(tr.dataset.defaultGroup) ?? bodies()[0]).append(tr));
         body.remove();
@@ -494,7 +501,14 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
         const el = event.target instanceof Element ? event.target : event.target.parentElement;
         return el?.closest("tbody[data-group], [data-new-group]") ?? null;
       };
-      const clearDrop = () => root.querySelectorAll(".pr__dropping").forEach((el) => el.classList.remove("pr__dropping"));
+      const clearDrop = () => root.querySelectorAll(".pr__dropping, .pr__before, .pr__after").forEach((el) => el.classList.remove("pr__dropping", "pr__before", "pr__after"));
+      const rowTarget = (event) => {
+        const el = event.target instanceof Element ? event.target : event.target.parentElement;
+        const tr = el?.closest("tr[data-match]");
+        if (!tr || tr === dragged || !tr.closest("tbody[data-group]")) return null;
+        const box = tr.getBoundingClientRect();
+        return { tr, before: event.clientY < box.top + box.height / 2 };
+      };
       root.addEventListener("dragstart", (event) => {
         const handle = event.target instanceof Element ? event.target.closest("[data-handle]") : null;
         if (!handle) return;
@@ -505,22 +519,26 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
         dragged.classList.add("pr__dragging");
       });
       root.addEventListener("dragover", (event) => {
-        const target = dropTarget(event);
-        if (!dragged || !target) return;
+        const onRow = dragged ? rowTarget(event) : null;
+        const target = onRow ? null : dropTarget(event);
+        if (!dragged || !(onRow || target)) return;
         event.preventDefault();
         event.dataTransfer.dropEffect = "move";
         clearDrop();
-        target.classList.add("pr__dropping");
+        if (onRow) onRow.tr.classList.add(onRow.before ? "pr__before" : "pr__after");
+        else target.classList.add("pr__dropping");
       });
       root.addEventListener("dragleave", (event) => {
         if (!root.contains(event.relatedTarget)) clearDrop();
       });
       root.addEventListener("drop", (event) => {
-        const target = dropTarget(event);
-        if (!dragged || !target) return;
+        const onRow = dragged ? rowTarget(event) : null;
+        const target = onRow ? null : dropTarget(event);
+        if (!dragged || !(onRow || target)) return;
         event.preventDefault();
         const row = dragged;
         clearDrop();
+        if (onRow) return placeRow(row, onRow.tr, onRow.before);
         moveRow(row, target.matches("[data-new-group]") ? addGroup() : target);
       });
       root.addEventListener("dragend", () => {
@@ -539,6 +557,12 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
         const body = bodyOf(saved.assign?.[valueOf(tr)]);
         if (body) body.append(tr);
       });
+      // Saved order: appending in that order rebuilds the order inside each group
+      const byValue = new Map(items().map((tr) => [valueOf(tr), tr]));
+      (Array.isArray(saved.order) ? saved.order : []).forEach((value) => {
+        const tr = byValue.get(value);
+        if (tr) tr.parentElement.append(tr);
+      });
       items().forEach(mark);
       syncSelects();
       filter();
@@ -553,53 +577,55 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
 <style is:global>
   .pr { margin-block: 1.5rem var(--section-y-large); display: grid; gap: 1.5rem; font-size: var(--font-size-ui); line-height: var(--line-height-ui); }
   .pr :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-  .pr__panel { min-width: 0; padding: clamp(1rem, 2.5vw, 1.75rem); border-radius: var(--radius-lg); background: var(--color-accent-panel); }
+  .pr__panel { min-width: 0; padding: clamp(1rem, 3vw, 1.5rem); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--color-surface); }
   .pr__panel h2 { margin-top: 0; }
-  .pr__hint { max-width: 62ch; margin: 0.25rem 0 1rem; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .pr__hint { max-width: 62ch; margin: 0.5rem 0 1rem; color: var(--muted); font-size: var(--font-size-ui-sm); }
   .pr code { font-family: var(--font-mono); overflow-wrap: anywhere; }
   .pr [hidden], .pr .pr__collapsed { display: none !important; }
   .pr input[type="checkbox"] { accent-color: var(--accent); margin: 0; }
-  .pr__uses { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
-  .pr__field { display: grid; gap: 0.35rem; max-width: 36rem; margin-bottom: 0.5rem; }
+  .pr__uses { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+  .pr__field { display: grid; gap: 0.5rem; max-width: 36rem; margin-bottom: 0.5rem; }
   .pr__label { font-weight: var(--font-weight-strong); }
-  .pr textarea { width: 100%; padding: 0.55rem 0.8rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); resize: vertical; }
-  .pr__use input { width: 1.15rem; height: 1.15rem; flex: none; cursor: pointer; }
-  .pr__use { display: flex; gap: 0.5rem; align-items: center; padding: 0.4rem 0; cursor: pointer; }
-  .pr__tag { display: block; margin-top: 0.2rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .pr textarea { width: 100%; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); resize: vertical; }
+  .pr__use input { width: 1.5rem; height: 1.5rem; flex: none; cursor: pointer; }
+  .pr__use { display: flex; gap: 0.5rem; align-items: center; padding: 0.5rem 0; cursor: pointer; }
+  .pr__tag { display: block; margin-top: 0.5rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
   .pr__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .pr__status { margin: 0 0 0.5rem; min-height: 1.5em; color: var(--muted); font-size: var(--font-size-ui-sm); overflow-wrap: anywhere; }
-  .pr__bar { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; align-items: center; margin-bottom: 0.5rem; }
+  .pr__bar { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; margin-bottom: 0.5rem; }
   .pr__bar .pr__status { margin: 0; }
   .pr__warn { margin: 0 0 0.5rem; max-width: 62ch; color: var(--color-danger); font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-strong); }
   .pr__warn:empty { display: none; }
   .pr__tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
   .pr__table { width: 100%; border-collapse: collapse; font-size: var(--font-size-ui-sm); }
-  .pr__table th { padding: 0.5rem 0.75rem; background: var(--bg); border-bottom: 1px solid var(--line); color: var(--muted); font-weight: var(--font-weight-medium); text-align: left; }
-  .pr__table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+  .pr__table th { padding: 0.5rem 1rem; background: var(--bg); border-bottom: 1px solid var(--line); color: var(--muted); font-weight: var(--font-weight-medium); text-align: left; }
+  .pr__table td { padding: 1rem; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.5rem; overflow-wrap: anywhere; }
   .pr__table td:first-child, .pr__table th:first-child { width: 1%; white-space: nowrap; }
-  .pr__table .pr__grouphead th { width: auto; white-space: normal; padding: 0.75rem; background: var(--color-accent-soft); color: var(--ink); border-top: 1px solid var(--line); }
-  .pr__headrow { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; align-items: center; }
+  .pr__table .pr__grouphead th { width: auto; white-space: normal; padding: 1rem; background: color-mix(in srgb, var(--ink) 4%, var(--bg)); color: var(--ink); border-top: 1px solid var(--line); }
+  .pr__headrow { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
   .pr__groupname { font-weight: var(--font-weight-strong); }
   .pr__groupcount { color: var(--muted); font-size: var(--font-size-ui-xs); }
   .pr__merge { display: inline-flex; gap: 0.5rem; align-items: center; margin-left: auto; cursor: pointer; font-weight: var(--font-weight-medium); }
-  .pr__merge input { width: 1.15rem; height: 1.15rem; flex: none; cursor: pointer; }
+  .pr__merge input { width: 1.5rem; height: 1.5rem; flex: none; cursor: pointer; }
   .pr__merged td { background: var(--color-accent-soft); }
-  .pr__emptyrow td { padding: 1rem 0.75rem; color: var(--muted); text-align: center; }
+  .pr__emptyrow td { padding: 1rem; color: var(--muted); text-align: center; }
   .pr__done td:not(:first-child), .pr__done code { color: var(--muted); }
-  .pr__table input[type="checkbox"] { width: 1.15rem; height: 1.15rem; cursor: pointer; }
+  .pr__table input[type="checkbox"] { width: 1.5rem; height: 1.5rem; vertical-align: top; cursor: pointer; }
   .pr__table td:last-child { width: 1%; white-space: nowrap; }
-  .pr__handle { display: inline-block; margin-right: 0.35rem; padding: 0.15rem 0.1rem; color: var(--muted); letter-spacing: -0.25em; cursor: grab; user-select: none; vertical-align: middle; }
+  .pr__handle { display: inline-flex; align-items: center; justify-content: center; width: 1rem; height: 1.5rem; margin-right: 0.5rem; color: var(--muted); font-size: 1rem; letter-spacing: 0; line-height: 1; cursor: grab; user-select: none; vertical-align: top; }
   .pr__dragging { opacity: 0.45; }
+  .pr__table tr.pr__before td { box-shadow: inset 0 2px 0 var(--accent); }
+  .pr__table tr.pr__after td { box-shadow: inset 0 -2px 0 var(--accent); }
   .pr__table tbody.pr__dropping td, .pr__table tbody.pr__dropping th { background: var(--color-accent-soft); }
   .pr__table tbody.pr__dropping .pr__grouphead th { box-shadow: inset 0 0 0 2px var(--accent); }
-  .pr__move { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.4rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
-  .pr__move select { max-width: 16rem; padding: 0.2rem 0.5rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); }
-  .pr__newgroup { display: block; width: 100%; margin-top: 0.75rem; padding: 0.75rem 1rem; border: 2px dashed color-mix(in srgb, var(--ink) 35%, var(--bg)); border-radius: var(--radius-md); background: transparent; color: var(--ink); font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; }
+  .pr__move { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .pr__move select { max-width: 16rem; min-height: 2rem; padding: 0.25rem 0.5rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); }
+  .pr__newgroup { display: block; width: 100%; margin-top: 1rem; padding: 1rem; border: 2px dashed color-mix(in srgb, var(--ink) 35%, var(--bg)); border-radius: var(--radius-md); background: transparent; color: var(--ink); font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; }
   .pr__newgroup span { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-sm); }
   .pr__newgroup.pr__dropping { border-color: var(--accent); background: var(--color-accent-soft); }
   .pr__copied { background: var(--color-accent-soft); border-color: var(--accent); }
-  .pr__copy[data-value] { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-width: 2.25rem; min-height: 2.25rem; padding: 0.35rem; }
-  .pr__big .pr__copy[data-value] { padding: 0.35rem 0.9rem; }
+  .pr__copy[data-value] { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-width: 2.5rem; min-height: 2.5rem; padding: 0.5rem; margin-block: -0.5rem; }
+  .pr__big .pr__copy[data-value] { padding: 0.5rem 1rem; margin-block: 0; }
   .pr__i-done, .pr__copied .pr__i-copy { display: none; }
   .pr__copied .pr__i-done { display: block; }
   @media (hover: hover) {
@@ -610,14 +636,14 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
     .pr__copy { transition: background-color 0.15s, border-color 0.15s, transform 0.15s; }
   }
   .pr__copy:disabled { opacity: 0.5; cursor: not-allowed; }
-  .pr__copy { padding: 0.35rem 0.9rem; border: 1px solid var(--line); border-radius: var(--radius-pill); background: transparent; color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); white-space: nowrap; cursor: pointer; }
+  .pr__copy { min-height: 2.5rem; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--accent); font: inherit; font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-bold); white-space: nowrap; cursor: pointer; }
   .pr__steps { max-width: 62ch; padding-left: 1.25rem; }
-  .pr input[type="number"], .pr input[type="text"] { width: 100%; padding: 0.55rem 0.8rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); }
-  .pr .pr__groupinput { width: min(100%, 16rem); padding: 0.3rem 0.6rem; font-weight: var(--font-weight-strong); }
-  .pr__bigs { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.75rem; }
-  .pr__big { padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  .pr input[type="number"], .pr input[type="text"] { width: 100%; min-height: 2.5rem; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); }
+  .pr .pr__groupinput { width: min(100%, 16rem); min-height: 2rem; padding: 0.25rem 0.5rem; font-weight: var(--font-weight-strong); }
+  .pr__bigs { margin: 0; padding: 0; list-style: none; display: grid; gap: 1rem; }
+  .pr__big { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
   .pr__bigcode { display: block; font-size: var(--font-size-ui-sm); line-height: 1.65; overflow-wrap: anywhere; }
-  .pr__bigmeta { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; justify-content: space-between; color: var(--muted); font-size: var(--font-size-ui-xs); }
+  .pr__bigmeta { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; justify-content: space-between; color: var(--muted); font-size: var(--font-size-ui-xs); }
 
   /* Touch screens cannot drag a handle reliably: the group select does the same job */
   @media (hover: none) {
@@ -629,7 +655,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
   @media (max-width: 47.99rem) {
     .pr__table, .pr__table tbody { display: block; }
     .pr__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-    .pr__table tr { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 0.75rem; align-items: center; padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--line); }
+    .pr__table tr { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem 1rem; align-items: center; padding: 1rem; border-bottom: 1px solid var(--line); }
     .pr__table .pr__grouphead, .pr__table .pr__emptyrow { padding: 0; }
     .pr__table .pr__grouphead th, .pr__table .pr__emptyrow td { grid-column: 1 / -1; border-bottom: 0; }
     .pr__merge { margin-left: 0; }
@@ -642,8 +668,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
     .pr__table .pr__emptyrow td:first-child::after { content: none; }
     .pr__merged { background: var(--color-accent-soft); }
     .pr__merged td { background: transparent; }
-    .pr__copy { padding: 0.5rem 1rem; }
-    .pr__copy[data-value] { min-width: 2.75rem; min-height: 2.75rem; padding: 0.5rem; }
-    .pr__big .pr__copy[data-value] { padding: 0.5rem 1rem; }
+    .pr__copy[data-value] { min-width: 3rem; min-height: 3rem; margin-block: 0; }
+    .pr__big .pr__copy[data-value] { min-width: 0; }
   }
 </style>
