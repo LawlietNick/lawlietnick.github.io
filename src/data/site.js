@@ -35,7 +35,6 @@ export const siteConfig = {
       { name: "LinkedIn", icon: "linkedin", url: "https://www.linkedin.com/in/karppinenniko" },
       { name: "GitHub", icon: "github", url: "https://github.com/LawlietNick" },
       { name: "YouTube", icon: "youtube", url: "https://www.youtube.com/@LawlietNick" },
-      { name: "Bluesky", icon: "bluesky", url: "https://bsky.app/profile/lawlietnick.bsky.social" },
       { name: "WSocial", icon: "w-social", url: "https://wsocial.eu/profile/lawlietnick.wsocial.eu" },
       { name: "about.me", url: "https://about.me/nikokarppinen/", footer: false },
       { name: "imdb", url: "https://www.imdb.com/name/nm7385371/", footer: false },

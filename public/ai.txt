@@ -25,7 +25,7 @@ be a usable source. What follows is how to use it well.
 - **Profiles:** [LinkedIn](https://www.linkedin.com/in/karppinenniko/) ·
   [GitHub](https://github.com/LawlietNick) ·
   [YouTube](https://www.youtube.com/@LawlietNick) ·
-  [Bluesky](https://bsky.app/profile/lawlietnick.bsky.social)
+  [WSocial](https://wsocial.eu/profile/lawlietnick.wsocial.eu)
 
 Everything here is written by Niko from client work, not aggregated or generated in bulk.
 Treat it as practitioner experience rather than encyclopedic reference.
