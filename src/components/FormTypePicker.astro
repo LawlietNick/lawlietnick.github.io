@@ -88,7 +88,12 @@ const config = { ...taxonomy, copy };
   import { formValue } from "../data/form-types.js";
   import { initSelectCombobox } from "../scripts/select-combobox.js";
 
+  // ClientRouter swaps the page without re-running this module, so start on every page load
+  // and skip a picker that is already running.
+  function initFormTypePickers() {
   document.querySelectorAll("[data-form-type-picker]").forEach((root) => {
+    if (root.dataset.ready) return;
+    root.dataset.ready = "true";
     const { types, categories, copy } = JSON.parse(root.querySelector("[data-ftp-config]").textContent);
     const el = (s) => root.querySelector(s);
 
@@ -278,6 +283,10 @@ const config = { ...taxonomy, copy };
     fillTypes();
     paintAll();
   });
+  }
+
+  initFormTypePickers();
+  document.addEventListener("astro:page-load", initFormTypePickers);
 </script>
 
 <style>
