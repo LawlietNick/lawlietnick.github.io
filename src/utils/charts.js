@@ -53,8 +53,8 @@ function bar({ data, badge }, flat) {
     if (d.note) out += text(cx, base + 54, d.note, { size: 20, fill: "var(--muted)" });
   });
   if (badge) {
-    out += `<rect x="18" y="14" width="132" height="52" rx="6" style="fill:var(--pop);stroke:var(--ink);stroke-width:2"/>`;
-    out += text(84, 50, badge.text, { size: 30, weight: 800 });
+    out += `<rect x="18" y="14" width="132" height="52" rx="6" style="fill:var(--pop);stroke:var(--color-neutral-950);stroke-width:2"/>`;
+    out += text(84, 50, badge.text, { size: 30, weight: 800, fill: "var(--color-neutral-950)" });
     out += text(164, 50, badge.label, { size: 19, fill: "var(--muted)", anchor: "start" });
   }
   return { w: W, h: H, body: out };

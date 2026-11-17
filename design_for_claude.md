@@ -86,7 +86,7 @@ The site supports light and dark themes through `color-scheme` and `light-dark()
 Semantic aliases are `--ink`, `--bg`, `--muted`, `--line`, `--accent`, and `--pop`.
 
 - Use `--accent` for links, emphasis, and quiet active states.
-- Use `--pop` for the yellow comic accent, badges, and primary tactile moments.
+- Use `--pop` for the yellow comic accent, badges, and primary tactile moments. Text on `--pop` is always `--color-neutral-950`, never `--ink` (white in dark mode).
 - Use tinted neutrals instead of pure black or white.
 - Pair color with a second signal (weight, underline, icon, text) for every state, so it survives color blindness and forced-colors mode.
 - Maintain WCAG AA contrast in both themes.

@@ -26,7 +26,7 @@ Design tokens live in `src/styles/tokens.css`.
 - Radius, spacing, focus and motion tokens should be used before introducing hard-coded values.
 - Light and dark themes are handled with `color-scheme` and `light-dark()`.
 
-Use `--color-warning` for warning states, with `--color-success` and `--color-danger`. Use `--pop` for the yellow comic accent. Use `--accent` for links, emphasis and quiet active states. Pair accent color with a second signal (weight, underline, icon) whenever it marks state.
+Use `--color-warning` for warning states, with `--color-success` and `--color-danger`. Use `--pop` for the yellow comic accent. Text on `--pop` yellow is always `--color-neutral-950`, never `--ink`, which turns white in dark mode. Use `--accent` for links, emphasis and quiet active states. Pair accent color with a second signal (weight, underline, icon) whenever it marks state.
 
 ## Global styles
 
