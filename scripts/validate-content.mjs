@@ -7,49 +7,45 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import yaml from "js-yaml";
-import { z } from "zod";
+import { z } from "astro/zod";
 import { formCategories, formTypes } from "../src/data/form-types.js";
 import { classifyPage } from "../src/utils/page-classification.js";
 
 const root = process.cwd();
 const pagesRoot = path.join(root, "src/pages");
 
-const serviceSchema = z
-  .object({
-    title: z.string().min(1),
-    group: z.enum(["seo", "analytics", "reporting"]),
-    order: z.number(),
-    icon: z.string().min(1),
-    summary: z.string().min(1),
-    navSummary: z.string().max(60).optional(), // short line for the nav menus
-    format: z.enum(["fixed", "monthly"]),
-    deliverables: z.array(z.string()).optional(),
-    ctaLabel: z.string().min(1).optional(),
-    ctaHref: z.string().min(1).optional(),
-    related: z.array(z.string().min(1)).optional(),
-    stage: z.enum(["diagnose", "build", "improve"]).optional(),
-    stageOrder: z.number().optional(),
-    primaryKeyword: z.string().optional(),
-    metaTitle: z.string().optional(),
-    metaDescription: z.string().optional(),
-    faq: z.array(z.object({ q: z.string().min(1), a: z.string().min(1) })).optional(),
-    nextSteps: z.array(z.object({ title: z.string().min(1), text: z.string().min(1) })).optional(),
-  })
-  .passthrough(); // layout + alternate are page keys, checked separately
+const serviceSchema = z.looseObject({
+  title: z.string().min(1),
+  group: z.enum(["seo", "analytics", "reporting"]),
+  order: z.number(),
+  icon: z.string().min(1),
+  summary: z.string().min(1),
+  navSummary: z.string().max(60).optional(), // short line for the nav menus
+  format: z.enum(["fixed", "monthly"]),
+  deliverables: z.array(z.string()).optional(),
+  ctaLabel: z.string().min(1).optional(),
+  ctaHref: z.string().min(1).optional(),
+  related: z.array(z.string().min(1)).optional(),
+  stage: z.enum(["diagnose", "build", "improve"]).optional(),
+  stageOrder: z.number().optional(),
+  primaryKeyword: z.string().optional(),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
+  faq: z.array(z.object({ q: z.string().min(1), a: z.string().min(1) })).optional(),
+  nextSteps: z.array(z.object({ title: z.string().min(1), text: z.string().min(1) })).optional(),
+}); // loose: layout + alternate are page keys, checked separately
 
-const toolSchema = z
-  .object({
-    title: z.string().min(1),
-    category: z.enum(["tools", "templates"]),
-    order: z.number(),
-    summary: z.string().min(1),
-    icon: z.string().min(1).optional(),
-    ctaLabel: z.string().min(1).optional(),
-    ctaHref: z.string().min(1).optional(),
-    metaTitle: z.string().optional(),
-    metaDescription: z.string().optional(),
-  })
-  .passthrough();
+const toolSchema = z.looseObject({
+  title: z.string().min(1),
+  category: z.enum(["tools", "templates"]),
+  order: z.number(),
+  summary: z.string().min(1),
+  icon: z.string().min(1).optional(),
+  ctaLabel: z.string().min(1).optional(),
+  ctaHref: z.string().min(1).optional(),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
+});
 
 // one entry per toolkit category; empty dirs are simply skipped
 const toolType = (name, enDir, fiDir, enPrefix, fiPrefix, requireAlternate = true) => ({
