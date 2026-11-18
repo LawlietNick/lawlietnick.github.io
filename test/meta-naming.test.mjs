@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import test from "node:test";
+import { test } from "vitest";
 import { library, templates as templateList } from "../src/data/meta-naming.js";
 import { en } from "../src/data/meta-utm.js";
 import { fi } from "../src/data/meta-utm.fi.js";

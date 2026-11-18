@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import { classifyPage } from "../src/utils/page-classification.js";
 
 test("classifies English and Finnish routes with language-independent values", () => {

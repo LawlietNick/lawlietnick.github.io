@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import test from "node:test";
+import { test } from "vitest";
 import { appearances } from "../src/data/appearances.js";
 import { authorName, brandName, siteConfig, siteName } from "../src/data/site.js";
 import { buildSchemaGraph, breadcrumbs, isoDate, publicImage } from "../src/utils/schema.ts";

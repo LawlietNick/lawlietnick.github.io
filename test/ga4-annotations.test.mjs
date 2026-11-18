@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import { annotationCategories, annotationDateGuidance, characterCount, hasPlaceholder, getDescriptionSuggestions } from "../src/data/ga4-annotations.js";
 import { resolveLanguageLinks } from "../src/utils/language-links.js";
 

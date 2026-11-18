@@ -54,7 +54,7 @@ The dev server runs at `http://localhost:4321/`.
 | `npm run dev` | Start the dev server |
 | `npm run build` | Build to `dist/` and validate content |
 | `npm run preview` | Serve the production build locally |
-| `npm test` | Unit and legacy tests |
+| `npm test` | Unit tests (vitest) |
 | `npm run test:e2e` | Playwright browser tests |
 | `npm run validate:content` | Check frontmatter and EN↔FI translation links |
 

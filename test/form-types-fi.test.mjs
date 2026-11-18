@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import { formCategories, formTypes } from "../src/data/form-types.js";
 import { categoriesFi, typesFi, localizeFormTaxonomy } from "../src/data/form-types.fi.js";
 

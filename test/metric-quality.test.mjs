@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import { assessMetric, metricBandIndex, metricQuestions } from "../src/utils/metric-quality.js";
 
 const allYes = () => Object.fromEntries(metricQuestions.map(({ id }) => [id, "yes"]));

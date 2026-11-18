@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import { directory, macroKinds, platforms } from "../src/data/meta-utm.js";
 import { fi } from "../src/data/meta-utm.fi.js";
 import { filterDirectory, formats, metaUtm, metaUtmParts, normalize, previewRows, tableRows, tactics, terms, valuesOf } from "../src/utils/meta-utm.js";

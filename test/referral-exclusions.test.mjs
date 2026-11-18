@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import { groups, isRe2Safe, matchTypes, rowMatches, rows, services } from "../src/data/payment-referrals.js";
 import { bigRegexes, ownDomainRows } from "../src/utils/referral-exclusions.js";
 
