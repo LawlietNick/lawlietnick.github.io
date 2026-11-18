@@ -577,7 +577,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
 <style is:global>
   .pr { margin-block: 1.5rem var(--section-y-large); display: grid; gap: 1.5rem; font-size: var(--font-size-ui); line-height: var(--line-height-ui); }
   .pr :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-  .pr__panel { min-width: 0; padding: clamp(1rem, 3vw, 1.5rem); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--color-surface); }
+  .pr__panel { min-width: 0; padding: clamp(1rem, 3vw, 1.5rem); border: 1px solid var(--line); border-radius: var(--radius-md); corner-shape: squircle; background: var(--color-surface); }
   .pr__panel h2 { margin-top: 0; }
   .pr__hint { max-width: 62ch; margin: 0.5rem 0 1rem; color: var(--muted); font-size: var(--font-size-ui-sm); }
   .pr code { font-family: var(--font-mono); overflow-wrap: anywhere; }
@@ -585,7 +585,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
   .pr__uses { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
   .pr__field { display: grid; gap: 0.5rem; max-width: 36rem; margin-bottom: 0.5rem; }
   .pr__label { font-weight: var(--font-weight-strong); }
-  .pr textarea { width: 100%; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); resize: vertical; }
+  .pr textarea { width: 100%; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); resize: vertical; }
   .pr__use input { width: 1.5rem; height: 1.5rem; flex: none; cursor: pointer; }
   .pr__use { display: flex; gap: 0.5rem; align-items: center; padding: 0.5rem 0; cursor: pointer; }
   .pr__tag { display: block; margin-top: 0.5rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
@@ -595,7 +595,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
   .pr__bar .pr__status { margin: 0; }
   .pr__warn { margin: 0 0 0.5rem; max-width: 62ch; color: var(--color-danger); font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-strong); }
   .pr__warn:empty { display: none; }
-  .pr__tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  .pr__tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); }
   .pr__table { width: 100%; border-collapse: collapse; font-size: var(--font-size-ui-sm); }
   .pr__table th { padding: 0.5rem 1rem; background: var(--bg); border-bottom: 1px solid var(--line); color: var(--muted); font-weight: var(--font-weight-medium); text-align: left; }
   .pr__table td { padding: 1rem; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.5rem; overflow-wrap: anywhere; }
@@ -618,8 +618,8 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
   .pr__table tbody.pr__dropping td, .pr__table tbody.pr__dropping th { background: var(--color-accent-soft); }
   .pr__table tbody.pr__dropping .pr__grouphead th { box-shadow: inset 0 0 0 2px var(--accent); }
   .pr__move { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
-  .pr__move select { max-width: 16rem; min-height: 2rem; padding: 0.25rem 0.5rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); }
-  .pr__newgroup { display: block; width: 100%; margin-top: 1rem; padding: 1rem; border: 2px dashed color-mix(in srgb, var(--ink) 35%, var(--bg)); border-radius: var(--radius-md); background: transparent; color: var(--ink); font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; }
+  .pr__move select { max-width: 16rem; min-height: 2rem; padding: 0.25rem 0.5rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); color: var(--ink); font: inherit; font-size: var(--font-size-ui-xs); }
+  .pr__newgroup { display: block; width: 100%; margin-top: 1rem; padding: 1rem; border: 2px dashed color-mix(in srgb, var(--ink) 35%, var(--bg)); border-radius: var(--radius-md); corner-shape: squircle; background: transparent; color: var(--ink); font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; }
   .pr__newgroup span { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-sm); }
   .pr__newgroup.pr__dropping { border-color: var(--accent); background: var(--color-accent-soft); }
   .pr__copied { background: var(--color-accent-soft); border-color: var(--accent); }
@@ -635,12 +635,12 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
     .pr__copy { transition: background-color 0.15s, border-color 0.15s, transform 0.15s; }
   }
   .pr__copy:disabled { opacity: 0.5; cursor: not-allowed; }
-  .pr__copy { min-height: 2.5rem; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--accent); font: inherit; font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-bold); white-space: nowrap; cursor: pointer; }
+  .pr__copy { min-height: 2.5rem; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); color: var(--accent); font: inherit; font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-bold); white-space: nowrap; cursor: pointer; }
   .pr__steps { max-width: 62ch; padding-left: 1.25rem; }
-  .pr input[type="number"], .pr input[type="text"] { width: 100%; min-height: 2.5rem; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); }
+  .pr input[type="number"], .pr input[type="text"] { width: 100%; min-height: 2.5rem; padding: 0.5rem 1rem; border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg)); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); color: var(--ink); font: inherit; font-weight: var(--font-weight-body); }
   .pr .pr__groupinput { width: min(100%, 16rem); min-height: 2rem; padding: 0.25rem 0.5rem; font-weight: var(--font-weight-strong); }
   .pr__bigs { margin: 0; padding: 0; list-style: none; display: grid; gap: 1rem; }
-  .pr__big { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  .pr__big { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); }
   .pr__bigcode { display: block; font-size: var(--font-size-ui-sm); line-height: 1.65; overflow-wrap: anywhere; }
   .pr__bigmeta { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; justify-content: space-between; color: var(--muted); font-size: var(--font-size-ui-xs); }
 

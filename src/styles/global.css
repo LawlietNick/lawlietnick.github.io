@@ -442,6 +442,7 @@ main:focus {
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--color-surface);
 }
 
@@ -482,6 +483,7 @@ main:focus {
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   color: var(--muted);
   background-color: var(--color-surface);
   font-family: var(--font-body);
@@ -785,6 +787,7 @@ a:is(:hover, :focus-visible) > .content-link {
   padding: 1.25rem;
   padding-top: 1rem;
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   font-family: var(--font-mono); /* match the inline code chips */
   font-size: 0.85rem;
 }
@@ -800,6 +803,7 @@ a:is(:hover, :focus-visible) > .content-link {
   background: #1c1921 !important;
   border: 1px solid #3b3544;
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   white-space: normal;
 }
 
@@ -828,6 +832,7 @@ a:is(:hover, :focus-visible) > .content-link {
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--color-surface);
 }
 
@@ -876,6 +881,7 @@ a:is(:hover, :focus-visible) > .content-link {
   overflow: clip;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: #24292e;
 }
 .prose .code-block > pre {
@@ -931,6 +937,7 @@ a:is(:hover, :focus-visible) > .content-link {
   margin-block: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   overflow: clip;
 }
 
@@ -993,6 +1000,7 @@ a:is(:hover, :focus-visible) > .content-link {
   margin-block: 2rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   font-size: 0.92rem;
 }
 
@@ -1166,6 +1174,7 @@ a:is(:hover, :focus-visible) > .content-link {
   padding: clamp(1.25rem, 3vw, 1.75rem);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   color: var(--ink);
   background: var(--color-accent-panel);
   overflow-wrap: anywhere;
@@ -1231,6 +1240,7 @@ a:is(:hover, :focus-visible) > .content-link {
   margin-block: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--bg);
 }
 

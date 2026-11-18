@@ -128,14 +128,14 @@ const { id, label, steps, outcomeLabel = "Output", previousLabel = "Previous ste
 </script>
 
 <style>
-  .workflow { display: block; min-width: 0; overflow: clip; border: 1px solid var(--line); border-radius: var(--radius-xl); background: var(--color-surface); }
+  .workflow { display: block; min-width: 0; overflow: clip; border: 1px solid var(--line); border-radius: var(--radius-xl); corner-shape: squircle; background: var(--color-surface); }
   .workflow [hidden] { display: none; }
   .workflow__navigation { border-bottom: 1px solid var(--line); }
   .workflow__tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; padding: 0.75rem; }
   .workflow__progress { display: flex; gap: 0.5rem; margin: 0 0.75rem 1rem; }
   .workflow__progress span { flex: 1; height: 3px; border-radius: var(--radius-pill); background: var(--line); }
   .workflow__progress .is-reached { background: var(--ink); }
-  .workflow button { font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; border: 1px solid transparent; border-radius: var(--radius-md); color: var(--ink); background: transparent; min-height: 48px; }
+  .workflow button { font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; border: 1px solid transparent; border-radius: var(--radius-md); corner-shape: squircle; color: var(--ink); background: transparent; min-height: 48px; }
   .workflow__tabs button { display: flex; justify-content: center; align-items: center; gap: 0.65rem; padding: 0.75rem; }
   .workflow__tabs button[aria-selected="true"] { background: var(--pop); color: var(--color-neutral-950); border-color: color-mix(in srgb, var(--color-neutral-950) 20%, transparent); font-weight: var(--font-weight-bold); }
   .workflow button:hover:not(:disabled) { border-color: var(--ink); }
@@ -149,7 +149,7 @@ const { id, label, steps, outcomeLabel = "Output", previousLabel = "Previous ste
   .workflow[data-ready] .workflow__panel[hidden] { display: grid; visibility: hidden; pointer-events: none; }
   .workflow__panel { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 1.5rem; padding: clamp(1rem, 3cqi, 2rem); margin: 0; }
   .workflow__figure { margin: 0; min-width: 0; }
-  .workflow__figure :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-md); }
+  .workflow__figure :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-md); corner-shape: squircle; }
   .workflow__figure figcaption { margin-top: 0.5rem; color: var(--muted); font-size: var(--font-size-ui-xs); }
   .workflow__copy h3 { margin: 0; font-size: clamp(1.65rem, 3.5cqi, 2.4rem); line-height: 1.15; }
   .workflow__copy p { margin: 1rem 0 1.5rem; max-width: 42ch; color: var(--muted); }

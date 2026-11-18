@@ -38,6 +38,7 @@
   background: var(--color-accent-panel);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
 }
 
 .gtm-builder__privacy::before {
@@ -399,6 +400,7 @@
   padding: 1.5rem;
   border: 2px solid var(--ink);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--bg);
 }
 
@@ -492,6 +494,7 @@
   background: var(--pop);
   border-color: color-mix(in srgb, var(--color-neutral-950) 28%, var(--pop));
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   font-size: var(--font-size-ui-sm);
 }
 

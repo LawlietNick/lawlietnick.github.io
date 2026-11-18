@@ -24,6 +24,7 @@
   padding: 0.8rem 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--color-accent-panel);
   font-size: 0.88rem;
 }
@@ -46,6 +47,7 @@
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
+  corner-shape: squircle;
   background: var(--line);
 }
 
@@ -181,6 +183,7 @@
   background: var(--pop);
   border-color: color-mix(in srgb, var(--color-neutral-950) 25%, var(--pop));
   border-radius: var(--radius-md);
+  corner-shape: squircle;
 }
 
 .dl-status {
@@ -195,6 +198,7 @@
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
+  corner-shape: squircle;
   background: var(--dl-paper);
 }
 
@@ -434,6 +438,7 @@
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
 }
 
 .dl-parameters table {
@@ -479,6 +484,7 @@
 .dl-code .dl-editable {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--dl-code);
 }
 

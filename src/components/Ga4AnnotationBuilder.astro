@@ -446,7 +446,7 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
   .annotation-category-hint { color: var(--muted); font-size: var(--font-size-ui-sm); margin: 1.25rem 0 0; }
   .annotation-category-mobile { display: none; }
   /* The editor is a bordered panel on the frame, as in CampaignCraft. */
-  .annotation-editor { min-width: 0; padding: clamp(1rem, 2.5vw, 1.5rem); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  .annotation-editor { min-width: 0; padding: clamp(1rem, 2.5vw, 1.5rem); border: 1px solid var(--line); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); }
   .annotation-builder :global(.combobox__input) { font-weight: var(--font-weight-body); font-size: inherit; }
   .annotation-builder :global(.combobox__menu) { font-size: inherit; }
   .annotation-editor-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.25rem; }
@@ -454,14 +454,14 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
   .annotation-language { display: flex; flex-wrap: wrap; gap: 0.2rem; }
   .annotation-language legend { font-size: var(--font-size-ui-xs); color: var(--muted); margin-bottom: 0.35rem; }
   .annotation-language label { position: relative; cursor: pointer; }
-  .annotation-language span { display: block; padding: 0.45rem 0.8rem; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-md); font-size: var(--font-size-ui-sm); }
+  .annotation-language span { display: block; padding: 0.45rem 0.8rem; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-md); corner-shape: squircle; font-size: var(--font-size-ui-sm); }
   .annotation-language input:checked + span { background: var(--ink); color: var(--bg); }
   .annotation-language input:focus-visible + span { outline: var(--focus-ring-strong); outline-offset: 3px; }
   .annotation-language-note { font-size: var(--font-size-ui-sm); color: var(--muted); margin: -0.5rem 0 1.5rem; }
   .annotation-template-row { margin-bottom: 1.5rem; }
   .annotation-label { display: block; font-weight: var(--font-weight-strong); margin-bottom: 0.55rem; }
   .annotation-required { font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-body); color: var(--muted); }
-  .annotation-builder :is(input[type="text"], textarea) { width: 100%; min-width: 0; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-md); padding: 0.75rem; background: var(--bg); color: var(--ink); font: inherit; caret-color: var(--accent); }
+  .annotation-builder :is(input[type="text"], textarea) { width: 100%; min-width: 0; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-md); corner-shape: squircle; padding: 0.75rem; background: var(--bg); color: var(--ink); font: inherit; caret-color: var(--accent); }
   .annotation-builder :is(textarea, input)::placeholder { color: var(--muted); opacity: 1; }
   .annotation-builder :is(input, textarea)[aria-invalid="true"] { border-color: var(--color-danger); }
   .annotation-builder textarea { resize: vertical; min-height: 6.5rem; display: block; }
@@ -473,7 +473,7 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
   .annotation-count { margin-left: auto; font-size: var(--font-size-ui-xs); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
   .annotation-count.is-over-limit { color: var(--color-danger); font-weight: var(--font-weight-bold); }
   /* wraps the input under a long tag (e.g. [NEWSLETTER]) instead of overflowing at 200% zoom */
-  .annotation-title-input { display: flex; flex-wrap: wrap; align-items: center; background: var(--bg); border: 1px solid var(--annotation-field-line); border-radius: var(--radius-md); }
+  .annotation-title-input { display: flex; flex-wrap: wrap; align-items: center; background: var(--bg); border: 1px solid var(--annotation-field-line); border-radius: var(--radius-md); corner-shape: squircle; }
   .annotation-title-input > span { padding-left: 0.8rem; color: var(--muted); white-space: nowrap; }
   .annotation-title-input input[type="text"] { flex: 1 1 8rem; width: auto; border: 0; background: transparent; }
   .annotation-title-input input:focus-visible { outline: none; }
@@ -481,12 +481,12 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
   .annotation-title-input:has([aria-invalid="true"]) { border-color: var(--color-danger); }
   .annotation-field-footer { display: flex; justify-content: space-between; align-items: start; gap: 0.75rem 1.25rem; margin-top: 0.6rem; }
   .annotation-field-footer p { margin: 0; max-width: 44ch; font-size: var(--font-size-ui-xs); color: var(--muted); }
-  .annotation-copy { min-width: min(9rem, 100%); max-width: 100%; flex-shrink: 0; padding: 0.55rem 0.8rem; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-md); background: var(--bg); color: var(--accent); font: inherit; font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-bold); cursor: pointer; min-height: 44px; }
+  .annotation-copy { min-width: min(9rem, 100%); max-width: 100%; flex-shrink: 0; padding: 0.55rem 0.8rem; border: 1px solid var(--annotation-field-line); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); color: var(--accent); font: inherit; font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-bold); cursor: pointer; min-height: 44px; }
   .annotation-copy:hover:not(:disabled) { border-color: var(--accent); background: var(--color-accent-soft); }
   .annotation-copy:disabled { color: var(--muted); border-color: var(--line); cursor: not-allowed; }
   .annotation-suggestions-toggle { font: inherit; font-size: var(--font-size-ui-xs); color: var(--ink); background: transparent; border: 0; min-height: 44px; padding: 0.25rem; cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }
   .annotation-description-input { position: relative; }
-  .annotation-suggestions { position: absolute; inset: auto 0 calc(100% + 0.5rem); z-index: 3; padding: 0.75rem; max-height: 15rem; display: flex; flex-direction: column; overflow: hidden; overscroll-behavior: contain; background: var(--bg); border-radius: var(--radius-md); box-shadow: var(--shadow-panel); }
+  .annotation-suggestions { position: absolute; inset: auto 0 calc(100% + 0.5rem); z-index: 3; padding: 0.75rem; max-height: 15rem; display: flex; flex-direction: column; overflow: hidden; overscroll-behavior: contain; background: var(--bg); border-radius: var(--radius-md); corner-shape: squircle; box-shadow: var(--shadow-panel); }
   .annotation-suggestions-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.25rem; flex-shrink: 0; }
   .annotation-suggestions-heading p { font-weight: var(--font-weight-medium); font-size: var(--font-size-ui-sm); margin: 0; }
   .annotation-suggestions-heading button { font: inherit; font-size: var(--font-size-ui-sm); color: var(--ink); background: transparent; border: 0; padding: 0.5rem; min-height: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }

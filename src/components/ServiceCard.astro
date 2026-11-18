@@ -46,6 +46,7 @@ const { href, icon, title, summary, quiet = false } = Astro.props;
     z-index: -1;
     inset: 0;
     border-radius: var(--radius-md);
+    corner-shape: squircle;
     background: var(--bg);
     border: 2px solid var(--ink);
     transition: border-color var(--duration-base) var(--ease-out);
@@ -59,6 +60,7 @@ const { href, icon, title, summary, quiet = false } = Astro.props;
     inset: 0;
     pointer-events: none;
     border-radius: var(--radius-md);
+    corner-shape: squircle;
     background-image: radial-gradient(
       circle,
       var(--ht-color) 0 var(--ht-dot-size),

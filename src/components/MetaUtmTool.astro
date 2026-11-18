@@ -1233,7 +1233,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   .mu__kinds dd { margin: 0; color: var(--muted); font-size: var(--font-size-ui-sm); }
 
   /* URL card and legend: structure parts in neutral tones, values coloured by who fills them */
-  .mu__urlcard { margin: 1rem 0 0.5rem; padding: 1rem 1.1rem; border-radius: var(--radius-md); background: var(--bg); border: 1px solid var(--line); }
+  .mu__urlcard { margin: 1rem 0 0.5rem; padding: 1rem 1.1rem; border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); border: 1px solid var(--line); }
   .mu__url { display: block; font-size: var(--font-size-ui-sm); line-height: 1.8; overflow-wrap: anywhere; }
   .mu__u-base { color: var(--muted); }
   .mu__u-sep { color: var(--muted); }
@@ -1255,7 +1255,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   /* Preview rows: key and tag on the left, meaning and example on the right on wide screens */
   .mu__rows { margin: 0; padding: 0; list-style: none; }
   .mu__rows { display: grid; gap: 0.5rem; }
-  .mu__row { display: grid; gap: 0.5rem 1.5rem; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); }
+  .mu__row { display: grid; gap: 0.5rem 1.5rem; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); }
   @media (min-width: 40rem) { .mu__row { grid-template-columns: minmax(11rem, 15rem) 1fr; align-items: start; } }
   .mu__rowhead { display: flex; flex-wrap: wrap; gap: 0.5rem 0.5rem; align-items: center; align-content: start; }
   .mu__key { font-weight: var(--font-weight-strong); }
@@ -1395,7 +1395,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   }
   /* touch: bigger targets while the row still fits */
   @media (pointer: coarse) { .mu__arrow-btn, .mu__remove { min-height: 2.5rem; } }
-  .mu__nocomps { padding: 1rem; border: 1px dashed var(--line); border-radius: var(--radius-md); color: var(--muted); text-align: center; }
+  .mu__nocomps { padding: 1rem; border: 1px dashed var(--line); border-radius: var(--radius-md); corner-shape: squircle; color: var(--muted); text-align: center; }
   .mu__warnings { margin: 0.5rem 0 0; padding-left: 1.1rem; }
   .mu__overview { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.5rem 1rem; }
   .mu__overview dt { color: var(--muted); font-size: var(--font-size-ui-sm); }
@@ -1423,13 +1423,13 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   .mu__linkrow { display: flex; justify-content: flex-end; margin-top: 0.5rem; }
   .mu__linkrow .mu__link { display: inline-flex; gap: 0.5rem; align-items: center; font-size: var(--font-size-ui-sm); }
   .mu__exampleact { margin-top: 0.5rem; }
-  .mu .mu__naming .mu__overview { grid-template-columns: 1fr; gap: 0.25rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: color-mix(in srgb, var(--ink) 5%, var(--bg)); font-family: var(--font-mono); }
+  .mu .mu__naming .mu__overview { grid-template-columns: 1fr; gap: 0.25rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); corner-shape: squircle; background: color-mix(in srgb, var(--ink) 5%, var(--bg)); font-family: var(--font-mono); }
   .mu .mu__naming .mu__overview dt { margin-top: 0.5rem; font-family: var(--font-body, inherit); font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-strong); text-transform: uppercase; letter-spacing: 0.05em; }
   .mu .mu__naming .mu__overview dt:first-child { margin-top: 0; }
 
   /* Custom component dialog */
   /* overflow stays visible so the type list can open past the dialog edge */
-  .mu__dialog { width: min(32rem, calc(100vw - 2rem)); overflow: visible; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); color: var(--ink); }
+  .mu__dialog { width: min(32rem, calc(100vw - 2rem)); overflow: visible; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); color: var(--ink); }
   .mu__dialog::backdrop { background: color-mix(in srgb, black 55%, transparent); }
   .mu__dialogform { display: grid; gap: 1rem; padding: 1.25rem; }
   .mu__dialoghead { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -1450,7 +1450,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   .mu__published { display: grid; gap: 1rem; }
   .mu__linkstart { justify-self: start; }
   .mu__termcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: 0.5rem; }
-  .mu__termcard { display: grid; gap: 0.5rem; align-content: start; padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg); cursor: pointer; }
+  .mu__termcard { display: grid; gap: 0.5rem; align-content: start; padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); corner-shape: squircle; background: var(--bg); cursor: pointer; }
   .mu__termcard:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
   .mu__termcard:has(input:focus-visible) { outline: var(--focus-ring); outline-offset: 3px; }
   .mu__termtop { display: flex; justify-content: space-between; gap: 0.5rem; align-items: center; }

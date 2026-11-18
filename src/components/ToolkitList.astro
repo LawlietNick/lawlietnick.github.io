@@ -111,8 +111,8 @@ const Heading = compact ? "h3" : "h2";
     border: 1px solid var(--line);
     transition: border-color var(--duration-base) var(--ease-standard);
   }
-  .tk-featured { border-radius: var(--radius-lg); }
-  .tk-card { border-radius: var(--radius-md); grid-template-rows: auto 1fr; }
+  .tk-featured { border-radius: var(--radius-lg); corner-shape: squircle; }
+  .tk-card { border-radius: var(--radius-md); corner-shape: squircle; grid-template-rows: auto 1fr; }
   .tk-featured:is(:hover, :focus-visible), .tk-card:is(:hover, :focus-visible) {
     border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
   }
@@ -158,6 +158,7 @@ const Heading = compact ? "h3" : "h2";
     background: var(--color-surface);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
+    corner-shape: squircle;
     transition: border-color var(--duration-base) var(--ease-standard);
   }
   /* halftone (from .featured-card) sits behind the vignette and text, on the tile surface only */
@@ -241,7 +242,7 @@ const Heading = compact ? "h3" : "h2";
     color: inherit;
     text-decoration: none;
   }
-  .tk-row:focus-visible { outline-offset: -3px; border-radius: var(--radius-md); }
+  .tk-row:focus-visible { outline-offset: -3px; border-radius: var(--radius-md); corner-shape: squircle; }
 
   .tk-row__icon {
     grid-area: icon;

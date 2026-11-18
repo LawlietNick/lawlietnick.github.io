@@ -5,6 +5,7 @@
   padding: 1.5rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--color-accent-panel); /* faint lavender wash, in the accent family */
 }
 
@@ -324,6 +325,7 @@
   background: var(--color-neutral-900);
   border: 2px solid var(--color-neutral-500);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   box-shadow: 0 2px 0 1px var(--btn-shadow);
   cursor: pointer;
   transform: translateY(0);

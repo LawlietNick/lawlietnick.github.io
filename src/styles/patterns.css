@@ -38,6 +38,7 @@
   background: var(--cta-bg);
   border: 2px solid var(--cta-border);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   box-shadow:
     0 var(--cta-shadow-y) 0 var(--cta-shadow-spread) var(--cta-shadow),
     0 calc(var(--cta-shadow-y) + 5px) 12px -6px var(--cta-shadow-soft);
@@ -319,6 +320,7 @@
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
+  corner-shape: squircle;
   background: var(--bg);
 }
 
@@ -327,6 +329,7 @@
   min-width: 0;
   overflow: hidden;
   border-radius: var(--radius-lg);
+  corner-shape: squircle;
   background: var(--color-neutral-950);
 }
 
@@ -520,6 +523,7 @@ main > .page-section:first-child {
   color: var(--ink);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
 }
 
 .stats {
@@ -709,6 +713,7 @@ main > .page-section:first-child {
   padding: 0.65rem 0.85rem;
   border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--bg);
   color: var(--ink);
   font: inherit;
@@ -793,6 +798,7 @@ main > .page-section:first-child {
   overflow-y: auto;
   border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--bg);
   box-shadow: var(--shadow-panel);
   font-size: var(--font-size-ui-sm);
@@ -926,6 +932,7 @@ main > .page-section:first-child {
   overflow: auto;
   border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: color-mix(in srgb, var(--ink) 6%, var(--bg));
   color: var(--ink);
   font-family: var(--font-mono);
@@ -949,6 +956,7 @@ main > .page-section:first-child {
   padding: 0.65rem 0.9rem;
   border: 1px solid var(--notice-color);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: color-mix(in srgb, var(--notice-color) 8%, var(--bg));
   color: var(--ink);
   font-size: var(--font-size-ui-sm);
@@ -1025,6 +1033,7 @@ main > .page-section:first-child {
   padding: 0.35rem 0.9rem;
   border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--bg);
   color: var(--accent);
   font: inherit;
@@ -1067,6 +1076,7 @@ main > .page-section:first-child {
   padding: 0.75rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  corner-shape: squircle;
   background: var(--bg);
 }
 
@@ -1169,6 +1179,7 @@ main > .page-section:first-child {
   padding: 0.75rem;
   border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
   border-radius: var(--radius-lg);
+  corner-shape: squircle;
   background: var(--bg);
   box-shadow: var(--shadow-panel);
   font-size: var(--font-size-ui-sm);
