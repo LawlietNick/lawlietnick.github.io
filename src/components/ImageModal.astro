@@ -56,7 +56,7 @@ const t = fi ? {
 <style is:global>
   html.image-modal-open { overflow: hidden; }
   html.image-modal-open body { position: fixed; width: 100%; }
-  .image-modal-trigger { display: block; cursor: zoom-in; border-radius: var(--radius-sm); }
+  .image-modal-trigger { display: block; cursor: zoom-in; border-radius: var(--radius-sm); corner-shape: squircle; }
   .image-modal-trigger:focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
   .image-modal {
     position: fixed;
@@ -94,6 +94,7 @@ const t = fi ? {
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
+    corner-shape: squircle;
     background: var(--color-surface);
     color: var(--ink);
     font: var(--font-weight-medium) 1rem/1.4 var(--font-body);
