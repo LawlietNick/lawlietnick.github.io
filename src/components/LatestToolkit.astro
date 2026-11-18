@@ -2,7 +2,7 @@
 // Home page band: the three newest tools or implementation templates in one language.
 import ToolkitList from "./ToolkitList.astro";
 import { interactiveTools } from "../data/interactive-tools.js";
-import { selectLatestToolkit } from "../utils/latest-toolkit.ts";
+import { selectNewest } from "../utils/select-newest.ts";
 
 const { fi = false } = Astro.props;
 
@@ -47,7 +47,9 @@ const tools = interactiveTools
     href: fi ? `/fi/tyokalut/${t.fi.slug ?? t.slug}/` : `/tools/${t.slug}/`,
   }));
 
-const items = selectLatestToolkit([...templates, ...tools]);
+const items = selectNewest([...templates, ...tools], {
+  tieBreak: (a, b) => a.order - b.order || a.href.localeCompare(b.href),
+});
 ---
 
 {items.length > 0 && (
