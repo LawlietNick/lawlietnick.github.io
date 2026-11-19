@@ -94,7 +94,6 @@ Shared patterns live in `src/styles/patterns.css`.
 
 - `.wide-band`: full-width wrapper for tool pages that need more room than the reading column. The Meta event builder uses it around `.workbench`.
 - `.viz`: bordered figure frame for in-article animated explainers (`src/styles/viz.css`, tokens only, so light and dark follow the site). The default markup is the finished state; `[data-state]` adds the animation, so the figure still reads without JavaScript or with reduced motion. Parts: `.viz__head`, `.viz__title`, `.viz__replay`, `.viz__phase`, `.viz__caption`. Visual-specific classes use short prefixes (`.vm__*`, `.df__*`, `.uc__*`).
-- Tool-specific layout classes (`.meb-*` in `src/styles/meta-event-builder.css`) only handle spacing and arrangement. Compose the shared pieces above first.
 
 Keep existing class names when they are already part of the site language.
 
