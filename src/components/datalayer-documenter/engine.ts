@@ -478,7 +478,7 @@ const priorityOrder = [
 
 const priorityById = new Map(priorityOrder.map((id, index) => [id, index]));
 
-export const initialSections = [...sectionDefinitions].sort(
+export const initialSections = sectionDefinitions.toSorted(
   (a, b) => (priorityById.get(a.id) ?? Number.MAX_SAFE_INTEGER) - (priorityById.get(b.id) ?? Number.MAX_SAFE_INTEGER),
 );
 

@@ -138,6 +138,10 @@ const { id, label, steps, outcomeLabel = "Output", previousLabel = "Previous ste
   .workflow button { font: inherit; font-weight: var(--font-weight-medium); cursor: pointer; border: 1px solid transparent; border-radius: var(--radius-md); corner-shape: squircle; color: var(--ink); background: transparent; min-height: 48px; }
   .workflow__tabs button { display: flex; justify-content: center; align-items: center; gap: 0.65rem; padding: 0.75rem; }
   .workflow__tabs button[aria-selected="true"] { background: var(--pop); color: var(--color-neutral-950); border-color: color-mix(in srgb, var(--color-neutral-950) 20%, transparent); font-weight: var(--font-weight-bold); }
+  /* forced colors drops the background, so mark the selected tab with a border */
+  @media (forced-colors: active) {
+    .workflow__tabs button[aria-selected="true"] { border: 2px solid SelectedItem; }
+  }
   .workflow button:hover:not(:disabled) { border-color: var(--ink); }
   .workflow button:active:not(:disabled) { transform: scale(0.98); }
   .workflow :is(button, [role="tabpanel"]):focus-visible { outline: var(--focus-ring); outline-offset: -4px; }
