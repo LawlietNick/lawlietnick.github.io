@@ -11,9 +11,10 @@ const encode = (v) => (v.startsWith("{{") ? v : encodeURIComponent(v));
 // A published campaign takes its name, ad name and term as typed values instead of macros,
 // because renaming in Meta would change what a macro returns. An empty typed value drops its
 // parameter. An empty medium falls back to paidsocial, since GA4 needs it for attribution.
-export const metaUtmParts = ({ medium = "paidsocial", platform = "Meta Ads", tactic = tactics[0], format = formats[0], term = "adset", published = false, campaign = "", content = "", termText = "" } = {}) =>
+// A typed source replaces the {{site_source_name}} macro; an empty one keeps the macro.
+export const metaUtmParts = ({ source = "", medium = "paidsocial", platform = "Meta Ads", tactic = tactics[0], format = formats[0], term = "adset", published = false, campaign = "", content = "", termText = "" } = {}) =>
   [
-    ["utm_source", "{{site_source_name}}"],
+    ["utm_source", source.trim() || "{{site_source_name}}"],
     ["utm_medium", medium.trim() || "paidsocial"],
     ["utm_source_platform", platform.trim()],
     ["utm_campaign", published ? campaign.trim() : "{{campaign.name}}"],

@@ -142,6 +142,7 @@ export const en = {
     stepsLabel: "Tool steps",
     stepNaming: "Naming convention",
     stepUtm: "UTM builder",
+    sourceManual: "Own source value",
     mediumCustom: "Other (your own value)",
     mediumHint: "Pick a shortcut or type your own",
     recommended: "(recommended)",

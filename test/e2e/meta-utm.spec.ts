@@ -651,6 +651,34 @@ test("the medium has shortcut buttons and a field for your own value, and emptyi
   await expect(page.getByLabel(/Hallinta-alusta/)).toHaveValue("Meta Ads");
 });
 
+test("the source keeps the Meta macro, or takes a manual value, and an empty manual field falls back to the macro", async ({ page }) => {
+  await openUtm(page);
+  await page.getByText("Lisäasetukset").click();
+  const field = page.locator("[data-source]");
+  const chip = (name: string | RegExp) => page.locator("[data-source-preset]").filter({ hasText: name });
+  await expect(page.locator("[data-source-preset]")).toHaveText(["{{site_source_name}}", "Oma source arvo"]);
+  await expect(chip("site_source_name")).toHaveAttribute("aria-pressed", "true");
+  await expect(field).toBeHidden();
+
+  await chip("Oma source arvo").click();
+  await expect(field).toBeVisible();
+  await expect(field).toBeFocused();
+  await expect(page.locator("[data-out]")).toContainText("utm_source={{site_source_name}}&");
+  await field.fill("uutiskirje");
+  await expect(page.locator("[data-out]")).toContainText("utm_source=uutiskirje&utm_medium=paidsocial&");
+  await expect(page.locator("[data-out]")).not.toContainText("site_source_name");
+  await expect(chip("Oma source arvo")).toHaveAttribute("aria-pressed", "true");
+
+  await field.fill("");
+  await expect(page.locator("[data-out]")).toContainText("utm_source={{site_source_name}}&");
+
+  await field.fill("uutiskirje");
+  await chip("site_source_name").click();
+  await expect(field).toBeHidden();
+  await expect(page.locator("[data-out]")).toContainText("utm_source={{site_source_name}}&");
+  await expect(chip("site_source_name")).toHaveAttribute("aria-pressed", "true");
+});
+
 test("a published campaign swaps campaign, content and term for typed values", async ({ page }) => {
   await openUtm(page);
   const out = page.locator("[data-out]");

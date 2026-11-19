@@ -45,6 +45,15 @@ test("edited advanced settings are trimmed and encoded, and empty ones are dropp
   assert.doesNotMatch(metaUtm({ platform: "" }), /utm_source_platform/);
 });
 
+test("a typed source replaces the macro, trimmed and encoded, and an empty one keeps the macro", () => {
+  assert.match(metaUtm({ source: "  uutiskirje " }), /^utm_source=uutiskirje&/);
+  assert.match(metaUtm({ source: "oma kumppani" }), /^utm_source=oma%20kumppani&/);
+  assert.match(metaUtm({ source: "" }), /^utm_source={{site_source_name}}&/);
+  assert.match(metaUtm({ source: "   " }), /^utm_source={{site_source_name}}&/);
+  assert.equal(metaUtmParts({ source: "uutiskirje" })[0].kind, "fixed");
+  assert.equal(metaUtmParts({})[0].kind, "dynamic");
+});
+
 test("{{media_type}} is kept as a macro in the format slot", () => {
   const string = metaUtm({ format: "{{media_type}}" });
   assert.ok(string.endsWith("utm_creative_format={{media_type}}"));

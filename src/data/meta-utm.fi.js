@@ -51,6 +51,7 @@ export const fi = {
     stepsLabel: "Työkalun vaiheet",
     stepNaming: "Nimeämiskäytäntö",
     stepUtm: "UTM-rakentaja",
+    sourceManual: "Oma source arvo",
     mediumCustom: "Muu (oma arvo)",
     mediumHint: "Valitse pikavalinta tai syötä oma",
     recommended: "(suositus)",

@@ -317,6 +317,16 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
       <p class="field-hint" {...i("ui.advancedHint")}>{t.ui.advancedHint}</p>
       <div class="mu__field">
         <div class="mu__mediumhead">
+          <label class="field-label" for="mu-source"><span {...i("params.utm_source.label")}>{t.params.utm_source.label}</span> <code>utm_source</code></label>
+        </div>
+        <div class="mu__chips" role="group" aria-label={t.params.utm_source.label} {...ia({ "aria-label": "params.utm_source.label" })}>
+          <button type="button" class="mu__chip" data-source-preset="macro" aria-pressed="true">{"{{site_source_name}}"}</button>
+          <button type="button" class="mu__chip mu__chip--text" data-source-preset="manual" aria-pressed="false" {...i("ui.sourceManual")}>{t.ui.sourceManual}</button>
+        </div>
+        <input class="field mu__mono" id="mu-source" type="text" data-source autocomplete="off" spellcheck="false" hidden />
+      </div>
+      <div class="mu__field">
+        <div class="mu__mediumhead">
           <label class="field-label" for="mu-medium"><span {...i("ui.mediumLabel")}>{t.ui.mediumLabel}</span> <code>utm_medium</code></label>
           <span class="mu__muted" {...i("ui.mediumHint")}>{t.ui.mediumHint}</span>
         </div>
@@ -500,6 +510,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
       let step = "naming";
       let activeLevel = levelKeys[0];
       let configured = false;
+      let manualSource = false;
       const L = () => config.langs[lang];
       const tag = (kind) => el("span", `mu__tag mu__tag--${kind}`, L().kinds[kind].label);
       const fill = (text, values) => Object.entries(values).reduce((out, [k, v]) => out.replaceAll(`{${k}}`, v), text);
@@ -510,6 +521,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         return q("[data-tactic-custom]").value.trim().toLowerCase().replace(/\s+/g, "_") || "custom";
       };
       const options = () => ({
+        source: manualSource ? q("[data-source]").value : "",
         tactic: tacticValue(),
         format: q("[data-format]").dataset.value,
         term: q("[data-term]:checked").value,
@@ -588,6 +600,8 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         q("[data-published-group]").hidden = !o.published;
         q("[data-term-group]").hidden = o.published;
         q("[data-tactic-custom-group]").hidden = q("[data-tactic]").dataset.value !== "custom";
+        q("[data-source]").hidden = !manualSource;
+        qa("[data-source-preset]").forEach((chip) => chip.setAttribute("aria-pressed", String((chip.dataset.sourcePreset === "manual") === manualSource)));
         const mediumNow = q("[data-medium]").value;
         qa("[data-medium-preset]").forEach((chip) => {
           const preset = chip.dataset.mediumPreset;
@@ -1134,6 +1148,13 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         dialog.close();
         renderNaming();
       });
+
+      // utm_source: the macro is the default; "keep a manual source" shows a field for your own value
+      qa("[data-source-preset]").forEach((chip) => chip.addEventListener("click", () => {
+        manualSource = chip.dataset.sourcePreset === "manual";
+        renderBuilder();
+        if (manualSource) q("[data-source]").focus();
+      }));
 
       // utm_medium: shortcut chips fill the field; "other" moves the cursor to it
       qa("[data-medium-preset]").forEach((chip) => chip.addEventListener("click", () => {
