@@ -1204,9 +1204,9 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
     min-width: 0;
     padding: clamp(1rem, 2.5vw, 1.75rem);
   }
-  .mu__panel h2 { margin-top: 0; }
+  .mu__panel h2 { margin: 0 0 1.5rem; }
   .mu__intro { max-width: 60ch; margin: 0 0 1.5rem; color: var(--muted); }
-  .mu .field-hint { margin-top: 0.25rem; font-size: var(--font-size-ui-sm); }
+  .mu .field-hint { margin-top: 0; font-size: var(--font-size-ui-sm); }
   .mu__muted { color: var(--muted); font-size: var(--font-size-ui-sm); }
   .mu__source { margin: 1.5rem 0 0; color: var(--muted); font-size: var(--font-size-ui-sm); overflow-wrap: anywhere; }
   .mu code { font-family: var(--font-mono); overflow-wrap: anywhere; }
@@ -1216,12 +1216,15 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   .mu__build > * { min-width: 0; }
   .mu__choices { margin: 0; padding: 0; border: 0; display: grid; gap: 1rem; min-width: 0; }
   .mu__choices legend { padding: 0; margin-bottom: 0.5rem; font-weight: var(--font-weight-strong); }
-  .mu__field { display: grid; gap: 0.25rem; min-width: 0; }
+  .mu__field { display: grid; gap: 0.5rem; min-width: 0; }
   .mu .field-label code { color: var(--muted); font-weight: var(--font-weight-body); font-size: var(--font-size-ui-xs); }
 
   .mu__result { min-width: 0; align-self: start; }
   .mu__result .field-label { margin: 0 0 0.5rem; }
   .mu__advanced { display: grid; gap: 0.5rem; min-width: 0; }
+  /* 8px scale: 24px between settings, 8px between a label, its shortcuts and its field */
+  .mu__advanced > .mu__field { margin-top: 1.5rem; }
+  .mu__advanced .field-hint { margin: 0; }
   .mu__advanced summary, .mu__parts summary, .mu__faq summary { cursor: pointer; font-weight: var(--font-weight-strong); }
 
   @media (min-width: 64rem) {
@@ -1280,7 +1283,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   @media (min-width: 40rem) { .mu__row { grid-template-columns: minmax(11rem, 15rem) 1fr; align-items: start; } }
   .mu__rowhead { display: flex; flex-wrap: wrap; gap: 0.5rem 0.5rem; align-items: center; align-content: start; }
   .mu__key { font-weight: var(--font-weight-strong); }
-  .mu__rowbody { display: grid; gap: 0.25rem; min-width: 0; }
+  .mu__rowbody { display: grid; gap: 0.5rem; min-width: 0; }
   .mu__meaning { margin: 0; color: var(--muted); font-size: var(--font-size-ui-sm); max-width: 62ch; }
 
   /* Output */
@@ -1299,6 +1302,10 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   }
   .mu__act { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: center; }
   .mu__status { margin: 0; min-height: 1.5em; color: var(--muted); font-size: var(--font-size-ui-sm); }
+  .mu__panel > div + .mu__status { margin-top: 0.5rem; }
+  /* the shared field row, on the 8px scale inside this tool */
+  .mu .field-row { gap: 0.5rem; }
+  .mu .field-row__top { gap: 0.5rem; }
   .mu__parts { margin-top: 1rem; }
   .mu__parttable { margin-top: 0; }
   .mu__parttable td { padding-block: 0.3rem; }
@@ -1367,7 +1374,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   .mu__frame > .mu__view { padding: clamp(1rem, 2.5vw, 1.75rem); }
   .mu__view { display: grid; gap: 1.5rem; }
   .mu__view > * { min-width: 0; }
-  .mu__head h2 { margin: 0.25rem 0 0.5rem; }
+  .mu__head h2 { margin: 0.5rem 0; }
   .mu__head .mu__intro { margin-bottom: 0; }
   .mu__eyebrow { margin: 0; color: var(--muted); font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-strong); text-transform: uppercase; letter-spacing: 0.06em; }
   /* One frame holds the tabs and both boxes they change */
@@ -1390,10 +1397,10 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
     .mu__naming .mu__result { grid-area: result; }
   }
   .mu__compshead { margin-bottom: 1rem; align-items: flex-start; }
-  .mu__compshead .field-hint { margin: 0.25rem 0 0; }
+  .mu__compshead .field-hint { margin: 0.5rem 0 0; }
   /* the separator and lowercase controls have their own row between the heading and the components */
   .mu__levelopts { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: flex-end; margin-bottom: 1rem; }
-  .mu__sepgroup { display: grid; gap: 0.25rem; }
+  .mu__sepgroup { display: grid; gap: 0.5rem; }
   /* same checkbox as the cookie banner styler (.cbs__check): native input, accent colour, label around it */
   .mu__check { display: flex; gap: 0.5rem; align-items: center; min-height: 2.9rem; font-size: var(--font-size-ui-sm); font-weight: var(--font-weight-medium); color: var(--ink); cursor: pointer; }
   .mu__complist { margin: 0 0 1rem; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
@@ -1402,7 +1409,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   .mu__compvalue { min-width: 0; }
   /* the list picker and the text value share one weight */
   .mu__comp .combobox__input { font-weight: var(--font-weight-body); }
-  .mu__arrows { display: flex; gap: 0.25rem; }
+  .mu__arrows { display: flex; gap: 0.5rem; }
   .mu__remove { min-width: 2rem; min-height: 1.75rem; border: 0; border-radius: var(--radius-xs); background: transparent; color: var(--muted); font: inherit; font-size: var(--font-size-ui-xs); cursor: pointer; }
   .mu__remove:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, var(--bg)); }
   .mu__arrow-btn { min-width: 2rem; min-height: 1.75rem; border: 0; border-radius: var(--radius-xs); background: transparent; color: var(--muted); font: inherit; font-size: var(--font-size-ui-xs); cursor: pointer; }
@@ -1484,8 +1491,8 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   .mu__placetitle { margin-bottom: 0.5rem !important; color: var(--ink); font-weight: var(--font-weight-strong); }
 
   /* utm_medium shortcuts */
-  .mu__mediumhead { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; align-items: baseline; justify-content: space-between; }
-  .mu__chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block: 0.5rem 0.5rem; }
+  .mu__mediumhead { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: baseline; justify-content: space-between; }
+  .mu__chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .mu__chip { min-height: 2.25rem; padding: 0.25rem 0.9rem; border: 1px solid var(--mu-field-line); border-radius: var(--radius-pill); background: var(--bg); color: var(--ink); font: inherit; font-family: var(--font-mono); font-size: var(--font-size-ui-sm); cursor: pointer; }
   .mu__chip--text { font-family: inherit; }
   .mu__chip:hover { border-color: var(--ink); }
