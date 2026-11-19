@@ -141,6 +141,8 @@ const { id, label, steps, outcomeLabel = "Output", previousLabel = "Previous ste
   /* forced colors drops the background, so mark the selected tab with a border */
   @media (forced-colors: active) {
     .workflow__tabs button[aria-selected="true"] { border: 2px solid SelectedItem; }
+    .workflow__progress span { border: 1px solid GrayText; }
+    .workflow__progress .is-reached { border-color: CanvasText; background: CanvasText; forced-color-adjust: none; }
   }
   .workflow button:hover:not(:disabled) { border-color: var(--ink); }
   .workflow button:active:not(:disabled) { transform: scale(0.98); }
