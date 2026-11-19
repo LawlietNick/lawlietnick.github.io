@@ -60,7 +60,7 @@ test("advanced settings stay editable, and an empty one drops its parameter", as
   await openUtm(page);
   await expect(page.locator("details.mu__advanced")).not.toHaveAttribute("open", "");
   await page.getByText("Lisäasetukset").click();
-  await page.getByLabel(/Hallinta-alusta/).fill("Meta & Co");
+  await page.getByLabel(/^Alusta/).fill("Meta & Co");
   await expect(page.locator("[data-out]")).toContainText("utm_source_platform=Meta%20%26%20Co");
   await page.locator("[data-medium]").fill("");
   await expect(page.locator("[data-out]")).toContainText("utm_medium=paidsocial&");
@@ -648,7 +648,7 @@ test("the medium has shortcut buttons and a field for your own value, and emptyi
   await field.fill("");
   await expect(page.locator("[data-out]")).toContainText("utm_medium=paidsocial&");
   expect(await previewKeys(page)).toContain("utm_medium");
-  await expect(page.getByLabel(/Hallinta-alusta/)).toHaveValue("Meta Ads");
+  await expect(page.getByLabel(/^Alusta/)).toHaveValue("Meta Ads");
 });
 
 test("the source keeps the Meta macro, or takes a manual value, and an empty manual field falls back to the macro", async ({ page }) => {
@@ -926,7 +926,7 @@ test("templates: switching and restoring leave the UTM settings untouched", asyn
   await choose(page, /Millainen kampanja on/, "Retention (nykyiset asiakkaat)");
   await page.getByText("Lisäasetukset").click();
   await page.locator("[data-medium]").fill("cpc");
-  await page.getByLabel(/Hallinta-alusta/).fill("Meta & Co");
+  await page.getByLabel(/^Alusta/).fill("Meta & Co");
   const before = await utmState(page);
 
   await page.getByRole("tab", { name: /Nimeämiskäytäntö/ }).click();

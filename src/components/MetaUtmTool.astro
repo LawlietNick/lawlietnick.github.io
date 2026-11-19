@@ -1149,7 +1149,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         renderNaming();
       });
 
-      // utm_source: the macro is the default; "keep a manual source" shows a field for your own value
+      // utm_source: the macro is the default; "own source value" shows a field for it
       qa("[data-source-preset]").forEach((chip) => chip.addEventListener("click", () => {
         manualSource = chip.dataset.sourcePreset === "manual";
         renderBuilder();

@@ -17,7 +17,7 @@ export const fi = {
     advancedSummary: "Lisäasetukset",
     advancedHint: "Oletukset toimivat useimmissa tapauksissa. Muuta niitä vain, jos seurantasi vaatii.",
     mediumLabel: "Kanavatyyppi",
-    platformLabel: "Hallinta-alusta",
+    platformLabel: "Alusta",
     previewTitle: "UTM-parametrit selitettynä",
     previewNote: "Osoite koostuu sivun osoitteesta ja kyselymerkkijonosta. Kyselymerkkijono alkaa ?-merkillä, ja parametrit liitetään toisiinsa &-merkillä. UTM-parametrit lisätään siihen. Värit kertovat, kuka arvon täyttää.",
     urlLabel: "UTM-parametrit osoitteessa",
@@ -232,7 +232,7 @@ export const fi = {
   params: {
     utm_source: { label: "Lähde", meaning: "Mistä klikki tuli: Facebook, Instagram, Messenger, Audience Network tai Threads." },
     utm_medium: { label: "Kanavatyyppi", meaning: "Kertoo, että liikenne on maksettua sosiaalista mediaa." },
-    utm_source_platform: { label: "Hallinta-alusta", meaning: "Alusta, jolla kampanjaa hallitaan. Eri asia kuin lähde." },
+    utm_source_platform: { label: "Alusta", meaning: "Alusta, jolla kampanjaa hallitaan. Eri asia kuin lähde." },
     utm_campaign: { label: "Kampanjan nimi", meaning: "Kampanjan nimi sellaisena kuin se oli julkaisuhetkellä." },
     utm_id: { label: "Kampanjan tunniste", meaning: "Kampanjan ID. Pysyy samana, vaikka nimi muuttuisi." },
     utm_content: { label: "Mainoksen nimi", meaning: "Mainoksen nimi julkaisuhetkeltä. Erottaa saman kampanjan mainokset toisistaan." },

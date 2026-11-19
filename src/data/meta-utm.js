@@ -108,7 +108,7 @@ export const en = {
     advancedSummary: "Advanced settings",
     advancedHint: "The defaults work in most cases. Change them only if your tracking needs it.",
     mediumLabel: "Channel type",
-    platformLabel: "Management platform",
+    platformLabel: "Platform",
     previewTitle: "UTM parameters explained",
     previewNote: "An address is the page address plus a query string. The query string starts with ?, and parameters are joined with &. The UTM parameters live there. The colours show who fills in each value.",
     urlLabel: "UTM parameters in the address",
@@ -323,7 +323,7 @@ export const en = {
   params: {
     utm_source: { label: "Source", meaning: "Where the click came from: Facebook, Instagram, Messenger, Audience Network or Threads." },
     utm_medium: { label: "Channel type", meaning: "Says the traffic is paid social media." },
-    utm_source_platform: { label: "Management platform", meaning: "The platform the campaign is managed in. Not the same as the source." },
+    utm_source_platform: { label: "Platform", meaning: "The platform the campaign is managed in. Not the same as the source." },
     utm_campaign: { label: "Campaign name", meaning: "The campaign name as it was at publish time." },
     utm_id: { label: "Campaign ID", meaning: "The campaign ID. It stays the same even if the name changes." },
     utm_content: { label: "Ad name", meaning: "The ad name from publish time. Tells the ads of one campaign apart." },
