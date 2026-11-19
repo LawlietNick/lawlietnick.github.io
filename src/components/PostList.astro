@@ -183,6 +183,7 @@ const latestLabel = fi ? "Uusin juttu" : "Latest article";
   .featured-post__media:not(.featured-post__media--fallback) {
     aspect-ratio: 16 / 9;
     border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+    corner-shape: squircle;
   }
 
   .featured-post__media img {
@@ -191,11 +192,13 @@ const latestLabel = fi ? "Uusin juttu" : "Latest article";
     height: 100%;
     object-fit: cover;
     border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+    corner-shape: squircle;
   }
 
   .featured-post__media--fallback {
     min-height: 7rem;
     border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+    corner-shape: squircle;
     background: var(--color-surface);
   }
 

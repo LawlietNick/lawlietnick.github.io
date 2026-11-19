@@ -1349,10 +1349,10 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   /* Frame and ribbons. Overflow stays visible so the combobox lists can open past the edges;
      the ribbons round their own top corners. */
   .mu { --mu-radius: var(--radius-lg, var(--radius-md)); }
-  .mu__frame { border: 1px solid var(--line); border-radius: var(--mu-radius); background: color-mix(in srgb, var(--ink) 2%, var(--bg)); }
+  .mu__frame { border: 1px solid var(--line); border-radius: var(--mu-radius); corner-shape: squircle; background: color-mix(in srgb, var(--ink) 2%, var(--bg)); }
 
   /* Tab ribbons: the step tabs and the level tabs are the same ribbon with the same tabs */
-  .mu__stepbar, .mu__tabs { display: flex; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--ink) 4%, var(--bg)); border-radius: calc(var(--mu-radius) - 1px) calc(var(--mu-radius) - 1px) 0 0; }
+  .mu__stepbar, .mu__tabs { display: flex; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--ink) 4%, var(--bg)); border-radius: calc(var(--mu-radius) - 1px) calc(var(--mu-radius) - 1px) 0 0; corner-shape: squircle; }
   .mu__stepbar { flex-wrap: wrap; align-items: stretch; justify-content: space-between; gap: 0.25rem 1.5rem; padding-right: 1rem; }
   .mu__steptabs, .mu__tabs { display: flex; overflow-x: auto; }
   .mu__steptabs { align-self: stretch; }
@@ -1378,7 +1378,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   .mu__head .mu__intro { margin-bottom: 0; }
   .mu__eyebrow { margin: 0; color: var(--muted); font-size: var(--font-size-ui-xs); font-weight: var(--font-weight-strong); text-transform: uppercase; letter-spacing: 0.06em; }
   /* One frame holds the tabs and both boxes they change */
-  .mu__tabbox { border: 1px solid var(--line); border-radius: var(--mu-radius); background: var(--bg); }
+  .mu__tabbox { border: 1px solid var(--line); border-radius: var(--mu-radius); corner-shape: squircle; background: var(--bg); }
   .mu__tabbox .mu__levelpanel { gap: 0; }
   .mu__tabbox .surface { border: 0; border-radius: 0; box-shadow: none; background: transparent; }
   @media (min-width: 75rem) { .mu__tabbox .mu__result { border-left: 1px solid var(--line); } }

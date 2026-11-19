@@ -25,6 +25,7 @@
   border: 1px solid var(--line);
   border-bottom: 0;
   border-radius: var(--radius-md) var(--radius-md) 0 0;
+  corner-shape: squircle;
   font-family: var(--font-body);
   font-size: clamp(1.05rem, 2cqi, 1.25rem);
   font-weight: var(--font-weight-bold);

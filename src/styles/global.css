@@ -1255,6 +1255,7 @@ a:is(:hover, :focus-visible) > .content-link {
   cursor: pointer;
   list-style: none;
   border-radius: calc(var(--radius-md) - 1px); /* hug the card's inner corners */
+  corner-shape: squircle;
   transition: background-color var(--duration-fast) var(--ease-out);
 }
 
@@ -1266,6 +1267,7 @@ a:is(:hover, :focus-visible) > .content-link {
 
 .prose details[open] summary {
   border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
+  corner-shape: squircle;
 }
 
 .prose summary::-webkit-details-marker {
