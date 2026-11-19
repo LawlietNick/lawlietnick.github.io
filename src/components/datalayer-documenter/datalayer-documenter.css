@@ -432,6 +432,7 @@
 }
 
 .dl-table-wrap {
+  position: relative; /* the visually-hidden labels in the cells are absolutely positioned: this keeps them inside the scroller */
   width: 100%;
   min-width: 0;
   max-width: 100%;
