@@ -186,7 +186,6 @@ Use `ButtonLink.astro` rather than recreating CTA markup.
 - `.toast` with `.toast-anchor`: short status ("Copied") above the control that caused it. Give it `role="status"` and add `.is-visible` for a moment.
 - `.wide-band`: full-width wrapper for tool pages that need more room than the reading column. The Meta event builder uses it around `.workbench`.
 - `.viz`: bordered figure frame for in-article animated explainers (`src/styles/viz.css`, tokens only, so light and dark follow the site). The default markup is the finished state; `[data-state]` adds the animation, so the figure still reads without JavaScript or with reduced motion. Parts: `.viz__head`, `.viz__title`, `.viz__replay`, `.viz__phase`, `.viz__caption`. Visual-specific classes use short prefixes (`.vm__*`, `.df__*`, `.uc__*`).
-- Tool-specific layout classes (`.meb-*` in `src/styles/meta-event-builder.css`) only handle spacing and arrangement. Compose the shared pieces above first.
 - `.about` and `.page-section`: responsive two-column content sections.
 - `.process-list`: numbered process presentation.
 - `.formats-list`: compact arrow-led options.

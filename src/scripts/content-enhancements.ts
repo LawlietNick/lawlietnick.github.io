@@ -40,19 +40,32 @@ export function enhanceContent(root: HTMLElement) {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "copy";
-      b.setAttribute("aria-live", "polite");
       b.textContent = label;
+      // the button label is the visible feedback; this region announces it
+      const status = document.createElement("span");
+      status.className = "visually-hidden";
+      status.setAttribute("role", "status");
+      let timer: ReturnType<typeof setTimeout> | undefined;
       b.onclick = async () => {
         const code = pre.querySelector<HTMLElement>(":scope > code");
+        let message: string;
         try {
           await navigator.clipboard.writeText(code?.textContent ?? pre.textContent ?? "");
-          b.textContent = fi ? "Kopioitu" : "Copied";
+          message = fi ? "Kopioitu" : "Copied";
         } catch {
-          b.textContent = fi ? "Yritä uudelleen" : "Try again";
+          message = fi ? "Yritä uudelleen" : "Try again";
         }
-        setTimeout(() => (b.textContent = label), 1500);
+        clearTimeout(timer);
+        b.textContent = message;
+        // VoiceOver skips a repeat of the previous message, so make repeats differ
+        status.textContent = status.dataset.last === message ? `${message} ` : message;
+        status.dataset.last = status.textContent;
+        timer = setTimeout(() => {
+          b.textContent = label;
+          status.textContent = "";
+        }, 1500);
       };
-      header.append(b);
+      header.append(b, status);
     });
 
     root.querySelectorAll<HTMLElement>("[data-code-accordion]").forEach((accordion) => {

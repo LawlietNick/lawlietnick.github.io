@@ -466,7 +466,11 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
   }
   function applyTheme(preference: ThemePreference): void {
     const resolvedTheme = resolveTheme(preference);
-    try { localStorage.setItem(STORAGE_KEY, preference); } catch { /* storage blocked */ }
+    // "system" is the absence of an override, so drop the key instead of storing it
+    try {
+      if (preference === "system") localStorage.removeItem(STORAGE_KEY);
+      else localStorage.setItem(STORAGE_KEY, preference);
+    } catch { /* storage blocked */ }
     const el = document.documentElement;
     el.dataset.themePreference = preference;
     el.dataset.theme = resolvedTheme;
@@ -492,6 +496,10 @@ const servicesHref = fi ? "/fi/palvelut/" : "/services/";
   if (!(window as any).__themeMediaBound) {
     (window as any).__themeMediaBound = true;
     darkQuery.addEventListener("change", onSystemChange);
+    // follow a theme change made in another tab
+    window.addEventListener("storage", (event) => {
+      if (event.key === STORAGE_KEY || event.key === null) applyTheme(getThemePreference());
+    });
   }
 
   // Per-page wiring: check the saved radio and bind change handling to the current fieldset.
