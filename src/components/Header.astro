@@ -777,11 +777,8 @@ const showDesktopCta = false;
 
 <script>
   // ported (trimmed) from blog-layout-astrojs Header: click-to-open mega panels + mobile overlay.
-  // The header is re-rendered on every client navigation (no transition:persist), so element
-  // listeners are (re)bound in initHeader() on each astro:page-load — fresh elements, old ones
-  // are discarded with the swapped-out header so nothing leaks. The document/matchMedia listeners
-  // are bound once and read the current header via the module-scoped refs that initHeader refreshes,
-  // so they never accumulate.
+  // initHeader() binds the header's element listeners; the document/matchMedia listeners are
+  // bound once and read the header through the module-scoped refs that initHeader sets.
   const desktopBreakpoint = matchMedia("(min-width: 56rem)");
   let nav, megaItems = [], mobileToggle, overlay, mobilePanel, closeControls, inertRoots;
   let lastFocus = null;
@@ -951,5 +948,5 @@ const showDesktopCta = false;
     }
   });
 
-  document.addEventListener("astro:page-load", initHeader);
+  initHeader();
 </script>

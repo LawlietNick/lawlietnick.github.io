@@ -39,7 +39,6 @@ test("external icons survive navigation and dynamic link updates without duplica
   assert.equal(social.querySelectorAll(".external-link-icon").length, 0);
   assert.equal(document.querySelectorAll(".ask-ai svg").length, 1);
 
-  document.dispatchEvent(new window.Event("astro:page-load"));
   assert.equal(document.querySelectorAll(".external-link-icon").length, 1);
   assert.equal(employer.querySelectorAll(".external-link-icon").length, 0);
   assert.equal(document.querySelectorAll(".cta .external-link-icon").length, 0);
@@ -54,7 +53,6 @@ test("external icons survive navigation and dynamic link updates without duplica
   assert.equal(source.querySelectorAll(".external-link-icon").length, 0);
 
   document.body.innerHTML = '<a href="//example.org">New page</a><a href="https://karppinen.one/about/">About</a>';
-  document.dispatchEvent(new window.Event("astro:page-load"));
   await tick();
   assert.equal(document.querySelectorAll(".external-link-icon").length, 1);
   dom.window.close();

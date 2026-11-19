@@ -494,8 +494,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
 
   const initMetaUtmTools = () => {
     document.querySelectorAll("[data-meta-utm]").forEach((root) => {
-      // astro:page-load also fires on first load, and the router may restore a
-      // page that is already set up: never bind the same elements twice.
+      // never bind the same elements twice
       if (root.dataset.ready) return;
       root.dataset.ready = "true";
 
@@ -1178,7 +1177,6 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   };
 
   initMetaUtmTools();
-  document.addEventListener("astro:page-load", initMetaUtmTools);
 </script>
 
 <style is:global>
