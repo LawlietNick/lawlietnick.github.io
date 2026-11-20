@@ -122,9 +122,6 @@ const label = fi ? "Tällä sivulla" : "On this page";
 </style>
 
 <script>
-  // Re-init on every client navigation (astro:page-load also fires on first load).
-  // scroll/resize are bound to the persisted window, so drop the previous page's
-  // handler before binding this page's to avoid leaking a listener per navigation.
   let tocScrollHandler = null;
   const initToc = () => {
     if (tocScrollHandler) {
@@ -204,5 +201,5 @@ const label = fi ? "Tällä sivulla" : "On this page";
     spy();
     }
   };
-  document.addEventListener("astro:page-load", initToc);
+  initToc();
 </script>

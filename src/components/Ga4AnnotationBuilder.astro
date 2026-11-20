@@ -381,7 +381,6 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
     window.addEventListener("resize", reposition, { signal: viewportController.signal });
     window.visualViewport?.addEventListener("resize", reposition, { signal: viewportController.signal });
     window.visualViewport?.addEventListener("scroll", reposition, { signal: viewportController.signal });
-    document.addEventListener("astro:before-swap", () => viewportController.abort(), { once: true });
 
     async function copyField(field: HTMLInputElement | HTMLTextAreaElement, text: string) {
       const isTitle = field === title;
@@ -410,7 +409,6 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
   }
 
   initAnnotationBuilder();
-  document.addEventListener("astro:page-load", initAnnotationBuilder);
 </script>
 
 <style>

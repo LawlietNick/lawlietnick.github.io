@@ -34,6 +34,13 @@ html {
      browser's default canvas flash through — very visible in dark mode */
   background: var(--bg);
 }
+
+/* cross-fade between pages; browsers without cross-document view transitions
+   (Firefox) navigate instantly */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -156,14 +163,6 @@ main:focus {
   ::before,
   ::after {
     transition: none !important;
-    animation: none !important;
-  }
-
-  /* view-transition pseudo-elements aren't matched by * above; kill their
-     animations too so page navigation is an instant swap (no fade/morph) */
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
     animation: none !important;
   }
 }

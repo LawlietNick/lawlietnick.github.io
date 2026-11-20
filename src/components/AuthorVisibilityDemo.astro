@@ -31,8 +31,6 @@ const copy = fi ? {
     cleanup = observeAuthorVisibility(document.querySelector("[data-author-visibility-demo]"));
   }
   init();
-  document.addEventListener("astro:page-load", init);
-  document.addEventListener("astro:before-swap", () => cleanup());
   window.addEventListener("pagehide", () => cleanup());
   window.addEventListener("pageshow", (event) => { if (event.persisted) init(); });
 </script>

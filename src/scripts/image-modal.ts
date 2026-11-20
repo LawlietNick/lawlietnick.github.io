@@ -243,5 +243,4 @@ export function enhanceImageModal(root: HTMLElement) {
     observer.disconnect();
     controller.abort();
   };
-  document.addEventListener("astro:before-swap", dispose, { once: true, signal });
 }

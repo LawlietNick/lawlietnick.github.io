@@ -45,12 +45,12 @@ const t = fi ? {
 </dialog>
 
 <script>
-  document.addEventListener("astro:page-load", async () => {
+  (async () => {
     const root = document.body;
     if (!root.querySelector("[data-image-modal]")) return;
     const { enhanceImageModal } = await import("../scripts/image-modal");
     if (root.isConnected) enhanceImageModal(root);
-  });
+  })();
 </script>
 
 <style is:global>
