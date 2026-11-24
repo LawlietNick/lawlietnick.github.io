@@ -16,6 +16,7 @@ import WorkflowSteps from "../components/WorkflowSteps.astro";
 import ViewsMerge from "../components/viz/ViewsMerge.astro";
 import Listbox from "../../packages/ui/Listbox.astro";
 import Copy from "../../packages/ui/Copy.astro";
+import ToggleGroup from "../../packages/ui/ToggleGroup.astro";
 import "../styles/viz.css";
 
 const measurementSteps = [
@@ -611,6 +612,29 @@ const sampleServices = [
         <input class="field" id="ds-copy-field" type="text" value="utm_source=newsletter&utm_medium=email" aria-label="UTM-parametrit" />
         <Copy for="ds-copy-field" label="Kopioi parametrit" />
       </div>
+    </div>
+  </section>
+
+  <section class="ds-section" aria-labelledby="sdk-toggle-title">
+    <div class="ds-section__heading">
+      <p class="eyebrow">UI SDK pilot</p>
+      <h2 id="sdk-toggle-title">Toggle group</h2>
+      <p><code>&lt;k-toggle-group&gt;</code> from <code>packages/ui</code>. One pressed button at a time; the look comes from the site's existing <code>.segmented</code> and <code>.btn-quiet</code> classes.</p>
+    </div>
+    <div class="surface" style="padding: 1.25rem; display: grid; gap: 1rem; justify-items: start;">
+      <ToggleGroup
+        class="segmented"
+        label="Preview size"
+        options={[
+          { value: "desktop", label: "Desktop" },
+          { value: "mobile", label: "Mobile" },
+        ]}
+      />
+      <ToggleGroup label="Medium" value="paid_social" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <button class="btn-quiet" value="paid_social">paid_social <span style="font-weight: normal;">(recommended)</span></button>
+        <button class="btn-quiet" value="social">social</button>
+        <button class="btn-quiet" value="custom">Custom</button>
+      </ToggleGroup>
     </div>
   </section>
 

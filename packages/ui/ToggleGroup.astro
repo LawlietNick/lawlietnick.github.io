@@ -1,0 +1,21 @@
+---
+// Astro wrapper for <k-toggle-group>. Pass `options` for plain text buttons, or your own
+// <button value="…"> elements in the default slot when a button needs extra markup.
+interface Props {
+  label: string;
+  options?: { value: string; label: string }[];
+  value?: string;
+  class?: string;
+  style?: string;
+}
+const { options = [], class: className, ...attrs } = Astro.props;
+---
+
+<k-toggle-group class={className} {...attrs}>
+  {options.map((o) => <button type="button" value={o.value}>{o.label}</button>)}
+  <slot />
+</k-toggle-group>
+
+<script>
+  import "./toggle-group.js";
+</script>

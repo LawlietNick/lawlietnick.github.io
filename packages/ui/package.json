@@ -7,6 +7,8 @@
     "./copy": "./copy.js",
     "./Copy.astro": "./Copy.astro",
     "./listbox": "./listbox.js",
-    "./Listbox.astro": "./Listbox.astro"
+    "./Listbox.astro": "./Listbox.astro",
+    "./toggle-group": "./toggle-group.js",
+    "./ToggleGroup.astro": "./ToggleGroup.astro"
   }
 }
