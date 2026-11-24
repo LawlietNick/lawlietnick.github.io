@@ -159,40 +159,25 @@ test("English article slides open from both images and caption links", async ({ 
   }
 });
 
-test("the global opt-in works in English and survives ClientRouter navigation", async ({ page }) => {
+test("works in English and Finnish across real page navigations", async ({ page }) => {
   const requests: string[] = [];
   page.on("request", (request) => requests.push(request.url()));
   await page.goto("/about/");
   expect(requests.some((url) => url.includes("/scripts/image-modal"))).toBe(false);
-  await page.evaluate(() => {
-    const link = document.createElement("a");
-    link.href = "/images/blog/mckinsey-analysis-slide-en.jpeg";
-    link.dataset.imageModal = "";
-    link.dataset.imageCaption = "Analysis slide";
-    link.textContent = "Enlarge example";
-    document.querySelector("main")!.prepend(link);
-    document.dispatchEvent(new Event("astro:page-load"));
-  });
-  const link = page.getByRole("link", { name: "Enlarge example" });
-  await expect(link).toHaveAttribute("aria-haspopup", "dialog");
-  await link.click();
+  await page.goto("/blog/mckinsey-style-presentation-chatgpt-gemini/");
+  const trigger = page.locator("figure[data-image-modal] .image-modal-trigger").nth(1);
+  await expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
+  await trigger.click();
   const dialog = page.getByRole("dialog", { name: "Image viewer", exact: true });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Zoom in", exact: true })).toBeEnabled();
   await dialog.getByRole("button", { name: "Close", exact: true }).click();
-  await page.evaluate((href) => {
-    const navigation = document.createElement("a");
-    navigation.href = href;
-    navigation.textContent = "Visit Finnish example";
-    document.querySelector("main")!.prepend(navigation);
-  }, article);
-  await page.getByRole("link", { name: "Visit Finnish example" }).click();
-  await expect(page).toHaveURL(new RegExp(article));
+  await page.goto(article);
   await expect(page.locator("#image-modal")).toHaveCount(1);
   const opened = await openImage(page);
-  await expect(opened.dialog.getByRole("button", { name: "Sulje", exact: true })).toBeVisible();
+  await opened.dialog.getByRole("button", { name: "Sulje", exact: true }).click();
   await page.goBack();
-  await expect(page).toHaveURL(/\/about\/$/);
+  await expect(page).toHaveURL(/\/blog\/mckinsey-style-presentation-chatgpt-gemini\/$/);
   await expect(page.locator("html")).not.toHaveClass(/image-modal-open/);
   await page.goForward();
   await openImage(page);

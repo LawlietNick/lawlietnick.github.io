@@ -101,7 +101,7 @@ const markers = [
    * - contentArea is the article body only (main#main also holds the hero,
    *   CTA and related posts, which would push midpoint/end too far down)
    * - no excluded elements: nothing trails the readable text inside .prose
-   * - SPA history hooks replaced by Astro's ClientRouter page events
+   * - no SPA history hooks: every navigation is a full page load
    * - each pushed event also lights up its line or shows a toast
    */
   const contentArea = "article.prose";
@@ -365,33 +365,16 @@ const markers = [
     return cleanup;
   }
 
-  let cleanup: (() => void) | null = null;
-  document.addEventListener("astro:page-load", () => {
+  (() => {
     const markers = document.querySelector("[data-reading-markers]");
     const toasts = document.querySelector("[data-reading-toasts]");
     const content = document.querySelector(contentArea);
     if (!content) return;
     if (markers) content.append(markers);
-    // ClientRouter keeps `window` between pages, so drop the previous visit's
-    // events to start each page view clean.
-    // ponytail: in-place splice is fine without GTM; with GTM, leave dataLayer alone
-    const dataLayer: Record<string, unknown>[] = (window as any).dataLayer ?? [];
-    for (let i = dataLayer.length - 1; i >= 0; i--) {
-      if (dataLayer[i]?.event === "content_reading") dataLayer.splice(i, 1);
-    }
     // own listener: the tracker disposes itself after the estimated read
     const paint = () => markers && paintMarkers(markers);
     window.addEventListener("scroll", paint, { passive: true });
     window.addEventListener("resize", paint);
-    const stop = start(content, markers, toasts);
-    cleanup = () => {
-      stop?.();
-      window.removeEventListener("scroll", paint);
-      window.removeEventListener("resize", paint);
-    };
-  });
-  document.addEventListener("astro:before-swap", () => {
-    cleanup?.();
-    cleanup = null;
-  });
+    start(content, markers, toasts);
+  })();
 </script>

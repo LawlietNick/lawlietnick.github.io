@@ -89,8 +89,7 @@ const config = { ...taxonomy, copy };
   import { initSelectCombobox } from "../scripts/select-combobox.js";
   import { bindCopy } from "../../packages/ui/copy.js";
 
-  // ClientRouter swaps the page without re-running this module, so start on every page load
-  // and skip a picker that is already running.
+  // Skip a picker that is already running.
   function initFormTypePickers() {
   document.querySelectorAll("[data-form-type-picker]").forEach((root) => {
     if (root.dataset.ready) return;
@@ -279,7 +278,6 @@ const config = { ...taxonomy, copy };
   }
 
   initFormTypePickers();
-  document.addEventListener("astro:page-load", initFormTypePickers);
 </script>
 
 <style>

@@ -48,4 +48,3 @@ function enhanceExternalLinks() {
 }
 
 enhanceExternalLinks();
-document.addEventListener("astro:page-load", enhanceExternalLinks);

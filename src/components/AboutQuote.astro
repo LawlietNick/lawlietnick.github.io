@@ -41,8 +41,6 @@ const quote = fi
 <script>
   // scroll-scrubbed word fill: each word ramps faint -> solid (+ a subtle rise) as the
   // quote travels through the viewport, tracking scroll position. No-JS/reduced-motion = full text.
-  // Re-init per client navigation; scroll/resize live on the persisted window, so drop the
-  // previous page's handler first to avoid leaking a listener per navigation.
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   let quoteScrollHandler = null;
   const initQuoteScrub = () => {
@@ -76,5 +74,5 @@ const quote = fi
     update();
     }
   };
-  document.addEventListener("astro:page-load", initQuoteScrub);
+  initQuoteScrub();
 </script>

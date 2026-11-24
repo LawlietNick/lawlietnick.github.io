@@ -16,7 +16,6 @@ import AuthorBio from "../components/AuthorBio.astro";
 import ImageModal from "../components/ImageModal.astro";
 import AuthorVisibilityDemo from "../components/AuthorVisibilityDemo.astro";
 import Schema from "../components/Schema.astro";
-import { ClientRouter } from "astro:transitions";
 import { getCollection } from "astro:content";
 import { resolveLanguageLinks } from "../utils/language-links.js";
 import { selectRelatedPosts } from "../utils/related-posts.ts";
@@ -227,10 +226,7 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
     <link rel="icon" type="image/svg+xml" sizes="any" href="/nk-logo.svg" />
     <!-- scripts: theme init is intentionally render-blocking (end-of-head still runs before first paint) -->
     <script is:inline>
-      // Resolve the theme preference (system|light|dark) before first paint to avoid a flash,
-      // and re-apply after every view-transition swap: ClientRouter replaces the <html>
-      // attributes with the incoming server-rendered document, which has no theme attributes
-      // (they are client-set), so without this the theme resets to system on each navigation.
+      // Resolve the theme preference (system|light|dark) before first paint to avoid a flash.
       (() => {
         const syncThemeColor = (preference, resolvedTheme) => {
           document.querySelectorAll('meta[name="theme-color"][data-theme-color]').forEach((meta) => {
@@ -260,11 +256,8 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
             syncThemeColor(preference, resolvedTheme);
           }
         });
-        // fires before paint on each ClientRouter navigation
-        document.addEventListener("astro:after-swap", applyTheme);
       })();
     </script>
-    <ClientRouter />
     {needsFormStyles && <style is:inline data-article-forms set:html={articleFormsCss} />}
     {needsAlgorithmStyles && <style is:inline data-article-algorithm set:html={articleAlgorithmCss} />}
     <slot name="head" />
@@ -342,12 +335,12 @@ const ogUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefi
       import "../scripts/external-links";
 
       // Check the DOM, not just fm: tools can have copyable code blocks too.
-      document.addEventListener("astro:page-load", async () => {
+      (async () => {
         const root = document.body;
         if (!root.querySelector("pre, [data-code-accordion], [data-feedback-example], .contains-task-list, .prose :disabled")) return;
         const { enhanceContent } = await import("../scripts/content-enhancements");
         if (root.isConnected) enhanceContent(root);
-      });
+      })();
     </script>
   </body>
 </html>

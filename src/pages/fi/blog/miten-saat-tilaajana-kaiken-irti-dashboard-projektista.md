@@ -582,7 +582,7 @@ Hyvä projekti on yhteistyötä. Toimittaja tuo analytiikan, datan ja visualisoi
     });
     showStage(0, false);
   }
-  document.addEventListener("astro:page-load", init);
+  init();
   if (document.readyState !== "loading") init(); else document.addEventListener("DOMContentLoaded", init);
 })();
 </script>

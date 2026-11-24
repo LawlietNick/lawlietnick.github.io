@@ -133,13 +133,11 @@ for (const locale of locales) {
 }
 
 
-test("initializes the checker after client-side language navigation", async ({ page }) => {
+test("initializes the checker after switching language", async ({ page }) => {
   await page.goto("/tools/metric-quality-checker/");
-  await page.evaluate(() => { window.__metricNavigationMarker = true; });
   await page.locator(".lang-menu__trigger").first().click();
   await page.locator('a[href="/fi/tyokalut/mittarin-laatutarkistus/"]').first().click();
   await expect(page).toHaveURL(/fi\/tyokalut\/mittarin-laatutarkistus\//);
-  expect(await page.evaluate(() => window.__metricNavigationMarker)).toBe(true);
   await answerAll(page);
   await expect(page.getByRole("heading", { name: "Hyvä pohja päätöksenteolle" })).toBeVisible();
 });
