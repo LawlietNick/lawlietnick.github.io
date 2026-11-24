@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import { press } from "./testing.js";
 import { bindListbox } from "./listbox.js";
 
 const mount = (html, lang = "en") => {
@@ -6,7 +7,6 @@ const mount = (html, lang = "en") => {
   const box = document.querySelector("k-listbox");
   return { box, input: box.querySelector('[data-part="input"]') };
 };
-const key = (input, k) => input.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
 const opts = '<option value="a">Apple</option><option value="b">Banana</option><option value="c">Cherry</option>';
 
 test("arrow keys move and Enter selects, firing change", () => {
@@ -15,18 +15,18 @@ test("arrow keys move and Enter selects, firing change", () => {
   box.addEventListener("change", () => changes++);
   expect(input.value).toBe("Apple");
   expect(input.readOnly).toBe(true);
-  key(input, "ArrowDown"); // opens on the selected option
+  press(input, "ArrowDown"); // opens on the selected option
   expect(input.getAttribute("aria-expanded")).toBe("true");
-  key(input, "ArrowDown");
-  key(input, "ArrowDown");
+  press(input, "ArrowDown");
+  press(input, "ArrowDown");
   expect(document.getElementById(input.getAttribute("aria-activedescendant")).textContent).toBe("Cherry");
-  key(input, "ArrowDown"); // wraps
-  key(input, "Enter");
+  press(input, "ArrowDown"); // wraps
+  press(input, "Enter");
   expect(box.value).toBe("a");
   expect(changes).toBe(0);
-  key(input, "ArrowDown");
-  key(input, "End");
-  key(input, "Enter");
+  press(input, "ArrowDown");
+  press(input, "End");
+  press(input, "Enter");
   expect(box.value).toBe("c");
   expect(changes).toBe(1);
   expect(input.getAttribute("aria-expanded")).toBe("false");
@@ -44,7 +44,7 @@ test("searchable filters, shows empty state, and restores label on close", () =>
   const empty = box.querySelector('[data-part="empty"]');
   expect(empty.hidden).toBe(false);
   expect(empty.textContent).toBe("Ei tuloksia");
-  key(input, "Escape");
+  press(input, "Escape");
   expect(input.value).toBe("Banana");
   expect(empty.hidden).toBe(true);
 });
@@ -69,10 +69,10 @@ test("bindListbox on site markup: editable mode, own option markup, no Home/End 
   input.dispatchEvent(new Event("input"));
   expect(input.dataset.value).toBe("s"); // free text is the value in editable mode
   expect(items.filter((o) => !o.hidden).map((o) => o.dataset.value)).toEqual(["SEK", "USD"]);
-  key(input, "ArrowDown");
-  key(input, "End"); // not enabled: stays on the first match
+  press(input, "ArrowDown");
+  press(input, "End"); // not enabled: stays on the first match
   expect(items[1].classList.contains("is-active")).toBe(true);
-  key(input, "Enter");
+  press(input, "Enter");
   expect([input.value, input.dataset.value]).toEqual(["SEK", "SEK"]);
   expect(selects).toBe(2);
 });

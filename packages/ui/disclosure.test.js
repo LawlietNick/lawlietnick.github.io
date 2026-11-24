@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
+import { press } from "./testing.js";
 import { bindDisclosure } from "./disclosure.js";
 
-const key = (el, k) => el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
 const parts = (box) => ({ trigger: box.querySelector("button"), panel: box.querySelector("[data-panel]") });
 
 test("plain mode toggles, starts open from the attribute, and ignores Escape", () => {
@@ -17,7 +17,7 @@ test("plain mode toggles, starts open from the attribute, and ignores Escape", (
   expect(panel.hidden).toBe(true);
   expect(box.hasAttribute("open")).toBe(false);
   box.open = true;
-  key(panel, "Escape");
+  press(panel, "Escape");
   expect(box.open).toBe(true);
   expect(events).toEqual([false, true]);
 });
@@ -31,14 +31,14 @@ test("popup mode: arrows open and move, Escape returns focus, outside click clos
   const { trigger, panel } = parts(lang);
   const links = [...panel.querySelectorAll("a")];
 
-  key(trigger, "ArrowUp");
+  press(trigger, "ArrowUp");
   expect(lang.open).toBe(true);
   expect(document.activeElement).toBe(links[2]);
-  key(links[2], "ArrowDown"); // wraps
+  press(links[2], "ArrowDown"); // wraps
   expect(document.activeElement).toBe(links[0]);
-  key(links[0], "End");
+  press(links[0], "End");
   expect(document.activeElement).toBe(links[2]);
-  key(links[2], "Escape");
+  press(links[2], "Escape");
   expect(lang.open).toBe(false);
   expect(document.activeElement).toBe(trigger);
 

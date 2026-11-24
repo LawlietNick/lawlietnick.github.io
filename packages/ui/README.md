@@ -7,7 +7,17 @@ Each element comes two ways:
 - **`bind*()`** adds behaviour to markup you already have and keeps your classes. Use it when the site owns the HTML and CSS.
 - **`<k-*>`** is a custom element built on that same function. Use it for new markup. An Astro wrapper exists for each.
 
-Nothing ships with styles. Style the `data-part` attributes, the ARIA state (`aria-expanded`, `aria-pressed`, `aria-selected`) or your own classes.
+Style the `data-part` attributes, the ARIA state (`aria-expanded`, `aria-pressed`, `aria-selected`) or your own classes.
+
+## Default look
+
+`ui.css` is optional. It gives the `<k-*>` elements the karppinen.one look:
+
+```js
+import "@karppinen/ui/ui.css";
+```
+
+Everything sits in `@layer k-ui`, so your own unlayered rules always win. Change colours, radius and font size through the `--k-*` properties at the top of the file. On karppinen.one they follow the site tokens (`--ink`, `--accent` and so on), and elsewhere the built-in fallbacks apply. Markup bound with `bind*()` is never styled by it.
 
 ## Install
 
@@ -90,13 +100,33 @@ Elements with their own text (copy, listbox) choose Finnish or English from the 
 
 ## Tests
 
+The SDK's own tests:
+
 ```bash
 npx vitest run packages/ui
+```
+
+Helpers for your project's tests (Vitest with jsdom), from `@karppinen/ui/testing`:
+
+```js
+import { mount, press, type, unnamedControls } from "@karppinen/ui/testing";
+
+mount(`<k-tabs label="Format"><button value="a">A</button><button value="b">B</button></k-tabs>`);
+press(document.querySelector('[role="tab"]'), "ArrowRight");
+expect(unnamedControls(document.body)).toEqual([]); // every control has an accessible name
+```
+
+## Skill for agents
+
+`skills/karppinen-ui/SKILL.md` tells Claude how to use the SDK: which form to pick, how to style and name controls, and how to test. To use it in another project, link it into that project's skills folder:
+
+```bash
+ln -s ~/Documents/05_projects/karppinen-one-astrojs-website/packages/ui/skills/karppinen-ui .claude/skills/karppinen-ui
 ```
 
 ## Adding an element
 
 1. Write `name.js` with `bindName()` first, then the `<k-name>` class on top of it, extending `ElementBase` and registered with `define()` from `element.js`.
-2. Add `name.d.ts`, `name.test.js` and, if it has an element, `Name.astro`.
+2. Add `name.d.ts`, `name.test.js` and, if it has an element, `Name.astro` and its styles in `ui.css`.
 3. Export it in `index.js`, `index.d.ts` and `package.json`.
-4. Add a demo to `/design-system`.
+4. Add a demo to `/design-system` and a line to the skill.

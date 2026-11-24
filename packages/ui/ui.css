@@ -1,0 +1,205 @@
+/* Optional default look for the <k-*> elements, in the karppinen.one style.
+   Import it once: `import "@karppinen/ui/ui.css"`. Everything sits in @layer k-ui, so any unlayered
+   rule of yours wins without !important. Markup bound with bind*() keeps its own classes and is not
+   touched. Change the look through the --k-* properties; on karppinen.one they follow the site tokens,
+   elsewhere the fallbacks below apply. */
+
+@layer k-ui {
+  :where(k-copy, k-disclosure, k-listbox, k-tabs, k-toggle-group) {
+    --k-ink: var(--ink, light-dark(oklch(18% 0.01 286), oklch(96% 0.006 286)));
+    --k-bg: var(--bg, light-dark(oklch(99.5% 0.004 286), oklch(17% 0.008 286)));
+    --k-muted: var(--muted, light-dark(oklch(50% 0.018 286), oklch(68% 0.018 286)));
+    --k-line: var(--line, light-dark(oklch(93% 0.006 286), oklch(25% 0.008 286)));
+    --k-accent: var(--accent, light-dark(oklch(52% 0.23 286), oklch(72% 0.17 286)));
+    --k-accent-soft: color-mix(in srgb, var(--k-accent) 8%, transparent);
+    --k-border: color-mix(in srgb, var(--k-ink) 50%, var(--k-bg));
+    --k-radius: var(--radius-md, 12px);
+    --k-shadow: var(--shadow-panel, 0 24px 60px color-mix(in srgb, var(--k-ink) 12%, transparent));
+    --k-font-size: var(--font-size-ui-sm, 0.875rem);
+    --k-bold: var(--font-weight-bold, 700);
+    --k-focus: var(--focus-ring, 3px solid var(--k-accent));
+    font-size: var(--k-font-size);
+  }
+
+  :where(k-copy, k-disclosure, k-listbox, k-tabs, k-toggle-group) [hidden] {
+    display: none;
+  }
+
+  /* Shared control surface: inputs, triggers, buttons */
+  :where(k-listbox [data-part="input"], k-disclosure [data-part="trigger"], k-copy [data-part="button"], k-toggle-group [data-part="item"]) {
+    min-height: 2.25rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--k-border);
+    border-radius: var(--k-radius);
+    corner-shape: squircle;
+    background: var(--k-bg);
+    color: var(--k-ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  :where(k-copy, k-disclosure, k-listbox, k-tabs, k-toggle-group) :focus-visible {
+    outline: var(--k-focus);
+    outline-offset: 2px;
+  }
+
+  /* Popups: listbox menu, its empty state, popup disclosure panels */
+  :where(k-listbox, k-disclosure[popup]) {
+    position: relative;
+  }
+
+  :where(k-listbox) {
+    display: grid;
+    gap: 0.4rem;
+    max-width: 24rem;
+  }
+
+  :where(k-listbox [data-part="listbox"], k-listbox [data-part="empty"], k-disclosure[popup] > [data-panel]) {
+    position: absolute;
+    z-index: 30;
+    top: 100%;
+    inset-inline-start: 0;
+    min-width: max(100%, 14rem);
+    max-height: 18rem;
+    margin: 0.375rem 0 0;
+    overflow-y: auto;
+    border: 1px solid var(--k-border);
+    border-radius: var(--k-radius);
+    corner-shape: squircle;
+    background: var(--k-bg);
+    box-shadow: var(--k-shadow);
+  }
+
+  /* Listbox */
+  :where(k-listbox [data-part="label"]) {
+    font-weight: var(--k-bold);
+  }
+
+  :where(k-listbox [data-part="input"]) {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    cursor: text;
+  }
+
+  :where(k-listbox [data-part="input"][readonly]) {
+    cursor: pointer;
+  }
+
+  :where(k-listbox [data-part="option"], k-listbox [data-part="empty"], k-disclosure[popup] > [data-panel] :is(a, button)) {
+    display: block;
+    padding: 0.625rem 0.875rem;
+  }
+
+  :where(k-listbox [data-part="option"]) {
+    border-bottom: 1px solid var(--k-line);
+    cursor: pointer;
+  }
+
+  :where(k-listbox [data-part="option"]:is(:hover, [data-active]), k-disclosure[popup] > [data-panel] :is(a, button):is(:hover, :focus-visible)) {
+    background: var(--k-accent-soft);
+  }
+
+  :where(k-listbox [data-part="option"][aria-selected="true"]) {
+    font-weight: var(--k-bold);
+  }
+
+  :where(k-listbox [data-part="empty"]) {
+    color: var(--k-muted);
+  }
+
+  /* Disclosure */
+  :where(k-disclosure) {
+    display: block;
+  }
+
+  :where(k-disclosure [data-part="trigger"]) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: var(--k-bold);
+  }
+
+  :where(k-disclosure [data-part="trigger"])::after {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform var(--duration-base, 180ms) ease;
+  }
+
+  :where(k-disclosure [data-part="trigger"][aria-expanded="true"])::after {
+    transform: translateY(2px) rotate(-135deg);
+  }
+
+  :where(k-disclosure[popup] > [data-panel] :is(a, button)) {
+    width: 100%;
+    border: 0;
+    background: none;
+    color: var(--k-ink);
+    font: inherit;
+    text-align: start;
+    text-decoration: none;
+  }
+
+  /* Toggle group */
+  :where(k-toggle-group) {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  :where(k-toggle-group [data-part="item"][aria-pressed="true"]) {
+    border-color: var(--k-accent);
+    background: var(--k-accent-soft);
+    font-weight: var(--k-bold);
+  }
+
+  /* Tabs: an underlined row */
+  :where(k-tabs) {
+    display: block;
+  }
+
+  :where(k-tabs [data-part="tablist"]) {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--k-line);
+  }
+
+  :where(k-tabs [data-part="tab"]) {
+    flex: 0 0 auto;
+    min-height: 3rem;
+    padding: 0.5rem 1.25rem;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--k-muted);
+    font: inherit;
+    font-weight: var(--k-bold);
+    cursor: pointer;
+  }
+
+  :where(k-tabs [data-part="tab"]:is(:hover, [aria-selected="true"])) {
+    color: var(--k-ink);
+  }
+
+  :where(k-tabs [data-part="tab"][aria-selected="true"]) {
+    border-bottom-color: var(--k-accent);
+  }
+
+  :where(k-tabs [data-part="tab"]:focus-visible) {
+    outline-offset: -4px;
+  }
+
+  /* Copy */
+  :where(k-copy [data-part="button"]) {
+    color: var(--k-accent);
+    font-weight: var(--k-bold);
+  }
+
+  :where(k-copy [data-part="button"]:is(:hover, [data-state="done"])) {
+    border-color: var(--k-accent);
+    background: var(--k-accent-soft);
+  }
+}

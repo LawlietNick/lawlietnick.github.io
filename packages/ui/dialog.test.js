@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
+import { press } from "./testing.js";
 import { bindDialog } from "./dialog.js";
 
-const key = (el, k, extra = {}) => el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true, ...extra }));
 
 test("custom modal: inert page, focus trap, Escape, focus back to the opener", () => {
   document.body.innerHTML = `<main><button id="menu">Menu</button></main><footer>f</footer>
@@ -18,11 +18,11 @@ test("custom modal: inert page, focus trap, Escape, focus back to the opener", (
   expect(document.querySelector("main").inert).toBe(true);
   expect(document.activeElement.id).toBe("close");
   document.querySelector('[href="/a"]').focus();
-  key(panel, "Tab"); // last visible item wraps to the first
+  press(panel, "Tab"); // last visible item wraps to the first
   expect(document.activeElement.id).toBe("close");
-  key(panel, "Tab", { shiftKey: true });
+  press(panel, "Tab", { shiftKey: true });
   expect(document.activeElement.getAttribute("href")).toBe("/a");
-  key(panel, "Escape");
+  press(panel, "Escape");
   expect(menu.isOpen).toBe(false);
   expect(document.querySelector("footer").inert).toBe(false);
   expect(document.activeElement.id).toBe("menu");

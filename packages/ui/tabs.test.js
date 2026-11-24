@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
+import { press } from "./testing.js";
 import { bindTabs } from "./tabs.js";
 
-const key = (el, k) => el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
 const mount = (html) => {
   document.body.innerHTML = html;
   const tabs = document.querySelector("k-tabs");
@@ -23,11 +23,11 @@ test("wires tabs to their own panels and moves with arrow keys, Home and End", (
   let changes = 0;
   tabs.addEventListener("change", () => changes++);
   buttons[0].focus();
-  key(buttons[0], "ArrowLeft"); // wraps to the last tab
+  press(buttons[0], "ArrowLeft"); // wraps to the last tab
   expect(tabs.value).toBe("check");
   expect(document.activeElement).toBe(buttons[2]);
-  key(buttons[2], "Home");
-  key(buttons[0], "ArrowRight");
+  press(buttons[2], "Home");
+  press(buttons[0], "ArrowRight");
   expect(tabs.value).toBe("utm");
   expect(panels.map((p) => p.hidden)).toEqual([true, false, true]);
   expect(buttons.map((b) => b.tabIndex)).toEqual([-1, 0, -1]);
@@ -64,7 +64,7 @@ test("bindTabs keeps existing markup, calls onSelect only for user picks, and se
   expect(tabs.value).toBe("css");
   expect(document.querySelector('[data-panel="js"]').hidden).toBe(true);
   css.focus();
-  key(css, "End");
+  press(css, "End");
   expect(picked).toEqual(["js"]);
   expect(document.activeElement).toBe(js);
   tabs.select("css");
