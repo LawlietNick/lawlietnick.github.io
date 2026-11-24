@@ -18,6 +18,7 @@ import Listbox from "../../packages/ui/Listbox.astro";
 import Copy from "../../packages/ui/Copy.astro";
 import ToggleGroup from "../../packages/ui/ToggleGroup.astro";
 import Tabs from "../../packages/ui/Tabs.astro";
+import Disclosure from "../../packages/ui/Disclosure.astro";
 import "../styles/viz.css";
 
 const measurementSteps = [
@@ -672,6 +673,37 @@ const sampleServices = [
     </div>
   </section>
 
+  <section class="ds-section" aria-labelledby="sdk-disclosure-title">
+    <div class="ds-section__heading">
+      <p class="eyebrow">UI SDK pilot</p>
+      <h2 id="sdk-disclosure-title">Disclosure and popup menu</h2>
+      <p><code>&lt;k-disclosure&gt;</code> from <code>packages/ui</code>. Plain mode only shows and hides. With <code>popup</code>, Escape, a click outside and arrow keys work like the header menus; menus in one <code>group</code> close each other.</p>
+    </div>
+    <div class="surface ds-disclosure-demo">
+      <Disclosure open>
+        <Fragment slot="trigger">On this page</Fragment>
+        <ul>
+          <li><a href="#sdk-listbox-title">Listbox</a></li>
+          <li><a href="#sdk-copy-title">Copy button</a></li>
+          <li><a href="#sdk-tabs-title">Tabs</a></li>
+        </ul>
+      </Disclosure>
+      <div class="ds-disclosure-demo__menus">
+        <Disclosure popup group="ds-menus">
+          <Fragment slot="trigger">Language</Fragment>
+          <a href="#sdk-disclosure-title" lang="en">English</a>
+          <a href="#sdk-disclosure-title" lang="fi">Suomi</a>
+        </Disclosure>
+        <Disclosure popup group="ds-menus">
+          <Fragment slot="trigger">Toolkit</Fragment>
+          <a href="#sdk-disclosure-title">Meta UTM tool</a>
+          <a href="#sdk-disclosure-title">GTM container builder</a>
+          <a href="#sdk-disclosure-title">GA4 report builder</a>
+        </Disclosure>
+      </div>
+    </div>
+  </section>
+
   <script>
     const outputs: Record<string, string> = {
       css: ".banner { color: var(--ink); }",
@@ -837,6 +869,98 @@ const sampleServices = [
 
   .ds-listbox-demo :global([hidden]) {
     display: none;
+  }
+
+  /* Demo skin for the unstyled <k-disclosure>. */
+  .ds-disclosure-demo {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .ds-disclosure-demo__menus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .ds-disclosure-demo :global(k-disclosure) {
+    position: relative;
+    display: block;
+  }
+
+  .ds-disclosure-demo :global([data-part="trigger"]) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--font-size-ui-sm);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+  }
+
+  .ds-disclosure-demo :global([data-part="trigger"])::after {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+
+  .ds-disclosure-demo :global([data-part="trigger"][aria-expanded="true"])::after {
+    transform: translateY(2px) rotate(-135deg);
+  }
+
+  .ds-disclosure-demo :global([data-part="trigger"]:focus-visible) {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .ds-disclosure-demo :global([data-panel]) {
+    margin-top: 0.5rem;
+  }
+
+  .ds-disclosure-demo :global([data-panel] ul) {
+    margin: 0;
+  }
+
+  .ds-disclosure-demo :global(k-disclosure[popup] [data-panel]:not([hidden])) {
+    position: absolute;
+    z-index: 30;
+    top: 100%;
+    left: 0;
+    display: grid;
+    min-width: 14rem;
+    border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+    background: var(--bg);
+    box-shadow: var(--shadow-panel);
+    font-size: var(--font-size-ui-sm);
+  }
+
+  .ds-disclosure-demo :global(k-disclosure[popup] [data-panel] a) {
+    padding: 0.625rem 0.875rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .ds-disclosure-demo :global(k-disclosure[popup] [data-panel] a:is(:hover, :focus-visible)) {
+    background: var(--color-accent-soft);
+  }
+
+  .ds-disclosure-demo :global(k-disclosure[popup] [data-panel] a:focus-visible) {
+    outline: var(--focus-ring);
+    outline-offset: -3px;
   }
 
   /* Demo skin for the unstyled <k-tabs>, matching the Meta UTM tool's tabs. */

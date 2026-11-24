@@ -1,0 +1,21 @@
+---
+// Astro wrapper for <k-disclosure>. The `trigger` slot holds the button's content;
+// the default slot is the panel.
+interface Props {
+  popup?: boolean;
+  open?: boolean;
+  group?: string;
+  class?: string;
+  panelClass?: string;
+}
+const { popup = false, open = false, group, class: className, panelClass } = Astro.props;
+---
+
+<k-disclosure class={className} popup={popup || undefined} open={open || undefined} group={group}>
+  <button type="button" aria-expanded={String(open)}><slot name="trigger" /></button>
+  <div class={panelClass} data-panel hidden={!open}><slot /></div>
+</k-disclosure>
+
+<script>
+  import "./disclosure.js";
+</script>
