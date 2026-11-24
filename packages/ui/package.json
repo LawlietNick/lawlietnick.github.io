@@ -8,6 +8,8 @@
     "./Copy.astro": "./Copy.astro",
     "./listbox": "./listbox.js",
     "./Listbox.astro": "./Listbox.astro",
+    "./tabs": "./tabs.js",
+    "./Tabs.astro": "./Tabs.astro",
     "./toggle-group": "./toggle-group.js",
     "./ToggleGroup.astro": "./ToggleGroup.astro"
   }

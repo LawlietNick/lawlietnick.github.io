@@ -17,6 +17,7 @@ import ViewsMerge from "../components/viz/ViewsMerge.astro";
 import Listbox from "../../packages/ui/Listbox.astro";
 import Copy from "../../packages/ui/Copy.astro";
 import ToggleGroup from "../../packages/ui/ToggleGroup.astro";
+import Tabs from "../../packages/ui/Tabs.astro";
 import "../styles/viz.css";
 
 const measurementSteps = [
@@ -638,6 +639,52 @@ const sampleServices = [
     </div>
   </section>
 
+  <section class="ds-section" aria-labelledby="sdk-tabs-title">
+    <div class="ds-section__heading">
+      <p class="eyebrow">UI SDK pilot</p>
+      <h2 id="sdk-tabs-title">Tabs</h2>
+      <p><code>&lt;k-tabs&gt;</code> from <code>packages/ui</code>. Arrow keys, Home and End move between tabs. Panels are either one per tab or one shared panel whose content the page swaps.</p>
+    </div>
+    <div class="ds-tabs-demo">
+      <Tabs
+        class="surface"
+        label="Steps"
+        tabs={[
+          { value: "naming", label: "1 Naming" },
+          { value: "utm", label: "2 UTM" },
+        ]}
+      >
+        <div data-panel="naming"><p>Pick a naming template and adjust its levels.</p></div>
+        <div data-panel="utm"><p>Build the UTM parameters from the chosen names.</p></div>
+      </Tabs>
+      <Tabs
+        class="surface"
+        id="ds-tabs-shared"
+        label="Output"
+        tabs={[
+          { value: "css", label: "CSS" },
+          { value: "html", label: "HTML" },
+          { value: "js", label: "JavaScript" },
+        ]}
+      >
+        <pre class="code-output" data-no-chrome data-panel="">.banner &#123; color: var(--ink); &#125;</pre>
+      </Tabs>
+    </div>
+  </section>
+
+  <script>
+    const outputs: Record<string, string> = {
+      css: ".banner { color: var(--ink); }",
+      html: '<div class="banner"></div>',
+      js: "banner.hidden = false;",
+    };
+    const shared = document.getElementById("ds-tabs-shared") as (HTMLElement & { value: string }) | null;
+    shared?.addEventListener("change", () => {
+      const pre = shared.querySelector("[data-panel]");
+      if (pre) pre.textContent = outputs[shared.value] ?? "";
+    });
+  </script>
+
   <section class="ds-section" aria-labelledby="viz-title">
     <div class="ds-section__heading">
       <p class="eyebrow">Article visuals</p>
@@ -790,6 +837,64 @@ const sampleServices = [
 
   .ds-listbox-demo :global([hidden]) {
     display: none;
+  }
+
+  /* Demo skin for the unstyled <k-tabs>, matching the Meta UTM tool's tabs. */
+  .ds-tabs-demo {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .ds-tabs-demo :global(k-tabs) {
+    display: block;
+    overflow: hidden;
+  }
+
+  .ds-tabs-demo :global([data-part="tablist"]) {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ds-tabs-demo :global([data-part="tab"]) {
+    flex: 0 0 auto;
+    min-height: 3rem;
+    padding: 0.5rem 1.25rem;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: var(--font-size-ui-sm);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+  }
+
+  .ds-tabs-demo :global([data-part="tab"]:hover) {
+    color: var(--ink);
+  }
+
+  .ds-tabs-demo :global([data-part="tab"][aria-selected="true"]) {
+    border-bottom-color: var(--accent);
+    color: var(--ink);
+  }
+
+  .ds-tabs-demo :global([data-part="tab"]:focus-visible) {
+    outline: var(--focus-ring);
+    outline-offset: -4px;
+  }
+
+  .ds-tabs-demo :global([data-panel]) {
+    margin: 1.25rem;
+  }
+
+  .ds-tabs-demo :global([data-panel]:focus-visible) {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .ds-tabs-demo :global([data-panel] p) {
+    margin: 0;
   }
 
   /* Demo skin for the unstyled <k-copy>, matching .btn-quiet. */

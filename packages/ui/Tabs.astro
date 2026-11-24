@@ -1,0 +1,21 @@
+---
+// Astro wrapper for <k-tabs>. `tabs` become the tab buttons; put panels in the default slot,
+// each marked data-panel="<tab value>", or one shared panel marked data-panel="".
+interface Props {
+  label: string;
+  tabs: { value: string; label: string }[];
+  value?: string;
+  class?: string;
+  id?: string;
+}
+const { tabs, class: className, ...attrs } = Astro.props;
+---
+
+<k-tabs class={className} {...attrs}>
+  {tabs.map((t) => <button type="button" value={t.value}>{t.label}</button>)}
+  <slot />
+</k-tabs>
+
+<script>
+  import "./tabs.js";
+</script>
