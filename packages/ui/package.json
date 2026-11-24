@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./copy": "./copy.js",
+    "./Copy.astro": "./Copy.astro",
     "./listbox": "./listbox.js",
     "./Listbox.astro": "./Listbox.astro"
   }

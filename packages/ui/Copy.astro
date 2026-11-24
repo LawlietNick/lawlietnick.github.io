@@ -1,0 +1,16 @@
+---
+// Astro wrapper for <k-copy>. `for` names the element whose value or text is copied.
+// For text generated at click time, set the element's `text` property to a function in a script.
+interface Props {
+  for?: string;
+  label?: string;
+  class?: string;
+}
+const { class: className, ...attrs } = Astro.props;
+---
+
+<k-copy class={className} {...attrs}></k-copy>
+
+<script>
+  import "./copy.js";
+</script>

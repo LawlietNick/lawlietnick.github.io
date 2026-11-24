@@ -15,6 +15,7 @@ import SplitSection from "../components/SplitSection.astro";
 import WorkflowSteps from "../components/WorkflowSteps.astro";
 import ViewsMerge from "../components/viz/ViewsMerge.astro";
 import Listbox from "../../packages/ui/Listbox.astro";
+import Copy from "../../packages/ui/Copy.astro";
 import "../styles/viz.css";
 
 const measurementSteps = [
@@ -595,6 +596,24 @@ const sampleServices = [
     </div>
   </section>
 
+  <section class="ds-section" aria-labelledby="sdk-copy-title">
+    <div class="ds-section__heading">
+      <p class="eyebrow">UI SDK pilot</p>
+      <h2 id="sdk-copy-title">Copy button</h2>
+      <p><code>&lt;k-copy&gt;</code> from <code>packages/ui</code>. Copies the element named by <code>for</code>; the look below comes from this page.</p>
+    </div>
+    <div class="surface ds-copy-demo">
+      <div class="ds-copy-demo__row">
+        <pre class="code-output" data-no-chrome id="ds-copy-code" tabindex="0">fbq('track', 'Lead');</pre>
+        <Copy for="ds-copy-code" />
+      </div>
+      <div class="ds-copy-demo__row" lang="fi">
+        <input class="field" id="ds-copy-field" type="text" value="utm_source=newsletter&utm_medium=email" aria-label="UTM-parametrit" />
+        <Copy for="ds-copy-field" label="Kopioi parametrit" />
+      </div>
+    </div>
+  </section>
+
   <section class="ds-section" aria-labelledby="viz-title">
     <div class="ds-section__heading">
       <p class="eyebrow">Article visuals</p>
@@ -747,6 +766,50 @@ const sampleServices = [
 
   .ds-listbox-demo :global([hidden]) {
     display: none;
+  }
+
+  /* Demo skin for the unstyled <k-copy>, matching .btn-quiet. */
+  .ds-copy-demo {
+    display: grid;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .ds-copy-demo__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .ds-copy-demo__row > :is(pre, input) {
+    flex: 1 1 16rem;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .ds-copy-demo :global([data-part="button"]) {
+    min-height: 2.25rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+    background: var(--bg);
+    color: var(--accent);
+    font: inherit;
+    font-size: var(--font-size-ui-sm);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+  }
+
+  .ds-copy-demo :global([data-part="button"]:is(:hover, [data-state="done"])) {
+    border-color: var(--accent);
+    background: var(--color-accent-soft);
+  }
+
+  .ds-copy-demo :global([data-part="button"]:focus-visible) {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
   }
 
   .ds-hero p {
