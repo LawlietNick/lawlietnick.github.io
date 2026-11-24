@@ -1,0 +1,20 @@
+---
+// Astro wrapper for <k-listbox>. Renders server-side <option>s; the custom element upgrades them in the browser.
+interface Props {
+  options: { value: string; label: string }[];
+  label?: string;
+  value?: string;
+  placeholder?: string;
+  searchable?: boolean;
+  class?: string;
+}
+const { options, searchable = false, class: className, ...attrs } = Astro.props;
+---
+
+<k-listbox class={className} searchable={searchable || undefined} {...attrs}>
+  {options.map((o) => <option value={o.value}>{o.label}</option>)}
+</k-listbox>
+
+<script>
+  import "./listbox.js";
+</script>

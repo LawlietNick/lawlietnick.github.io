@@ -14,6 +14,7 @@ import ServiceProof from "../components/ServiceProof.astro";
 import SplitSection from "../components/SplitSection.astro";
 import WorkflowSteps from "../components/WorkflowSteps.astro";
 import ViewsMerge from "../components/viz/ViewsMerge.astro";
+import Listbox from "../../packages/ui/Listbox.astro";
 import "../styles/viz.css";
 
 const measurementSteps = [
@@ -562,6 +563,38 @@ const sampleServices = [
     </div>
   </section>
 
+  <section class="ds-section" aria-labelledby="sdk-listbox-title">
+    <div class="ds-section__heading">
+      <p class="eyebrow">UI SDK pilot</p>
+      <h2 id="sdk-listbox-title">Listbox</h2>
+      <p><code>&lt;k-listbox&gt;</code> from <code>packages/ui</code>. Unstyled in the package; the look below comes from this page.</p>
+    </div>
+    <div class="surface ds-listbox-demo">
+      <Listbox
+        label="Event"
+        value="Lead"
+        options={[
+          { value: "PageView", label: "PageView" },
+          { value: "Lead", label: "Lead" },
+          { value: "Purchase", label: "Purchase" },
+          { value: "CompleteRegistration", label: "CompleteRegistration" },
+        ]}
+      />
+      <div lang="fi">
+        <Listbox
+          label="Valuutta (haku)"
+          searchable
+          options={[
+            { value: "EUR", label: "EUR – euro" },
+            { value: "SEK", label: "SEK – Ruotsin kruunu" },
+            { value: "NOK", label: "NOK – Norjan kruunu" },
+            { value: "USD", label: "USD – Yhdysvaltain dollari" },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
   <section class="ds-section" aria-labelledby="viz-title">
     <div class="ds-section__heading">
       <p class="eyebrow">Article visuals</p>
@@ -634,6 +667,86 @@ const sampleServices = [
 <style>
   .ds-hero {
     border-top: 0;
+  }
+
+  /* Demo skin for the unstyled <k-listbox>; its parts render at runtime, hence :global. */
+  .ds-listbox-demo {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .ds-listbox-demo :global(k-listbox) {
+    position: relative;
+    display: grid;
+    gap: 0.4rem;
+    max-width: 24rem;
+  }
+
+  .ds-listbox-demo :global([data-part="label"]) {
+    font-size: var(--font-size-ui-sm);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .ds-listbox-demo :global([data-part="input"]) {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--font-size-ui-sm);
+  }
+
+  .ds-listbox-demo :global([data-part="input"][readonly]) {
+    cursor: pointer;
+  }
+
+  .ds-listbox-demo :global([data-part="input"]:focus-visible) {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+    border-color: var(--accent);
+  }
+
+  .ds-listbox-demo :global(:is([data-part="listbox"], [data-part="empty"])) {
+    position: absolute;
+    z-index: 30;
+    top: 100%;
+    inset-inline: 0;
+    margin: 0.375rem 0 0;
+    max-height: 18rem;
+    overflow-y: auto;
+    border: 1px solid color-mix(in srgb, var(--ink) 50%, var(--bg));
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+    background: var(--bg);
+    box-shadow: var(--shadow-panel);
+    font-size: var(--font-size-ui-sm);
+  }
+
+  .ds-listbox-demo :global([data-part="empty"]) {
+    padding: 0.625rem 0.875rem;
+    color: var(--muted);
+  }
+
+  .ds-listbox-demo :global([data-part="option"]) {
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+  }
+
+  .ds-listbox-demo :global([data-part="option"]:is(:hover, [data-active])) {
+    background: var(--color-accent-soft);
+  }
+
+  .ds-listbox-demo :global([data-part="option"][aria-selected="true"]) {
+    font-weight: var(--font-weight-bold);
+  }
+
+  .ds-listbox-demo :global([hidden]) {
+    display: none;
   }
 
   .ds-hero p {

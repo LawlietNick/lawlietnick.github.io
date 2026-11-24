@@ -7,7 +7,7 @@ export default defineConfig({
         test: {
           name: "dom",
           environment: "jsdom",
-          include: ["test/gtm/**/*.test.{ts,tsx}", "src/components/datalayer-documenter/**/*.test.{ts,tsx}"],
+          include: ["test/gtm/**/*.test.{ts,tsx}", "src/components/datalayer-documenter/**/*.test.{ts,tsx}", "packages/ui/**/*.test.js"],
           setupFiles: ["test/gtm/setup.ts"],
         },
       },

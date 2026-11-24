@@ -1,0 +1,10 @@
+{
+  "name": "@karppinen/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./listbox": "./listbox.js",
+    "./Listbox.astro": "./Listbox.astro"
+  }
+}
