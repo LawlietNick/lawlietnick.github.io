@@ -420,6 +420,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   import { initSelectCombobox } from "../scripts/select-combobox.js";
   import { bindCopy } from "../../packages/ui/copy.js";
   import { bindTabs } from "../../packages/ui/tabs.js";
+  import { bindToggleGroup } from "../../packages/ui/toggle-group.js";
   import { filterDirectory, metaUtm, metaUtmParts, previewRows } from "../utils/meta-utm.js";
   import { addComponent, cleanKey, example, formula, levelKeys, levelsFromTemplate, move, newLevels, sameStructure, setLowercase, setSeparator, startValue, validate } from "../utils/meta-naming.js";
 
@@ -551,6 +552,34 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         panelFor: () => q("#mu-levelpanel"),
         onSelect: (value) => { activeLevel = value; namingStatus.textContent = ""; renderNaming(); },
       });
+      // The SDK owns the pressed state; the tool's state decides which chip is pressed when it renders.
+      const sepToggles = bindToggleGroup(q("[data-sep-btn]").parentElement, {
+        getValue: (b) => b.dataset.sepBtn,
+        onPress: (value) => { setSeparator(levels[activeLevel], value); renderNaming(); },
+      });
+      // utm_source: the macro is the default; "own source value" shows a field for it
+      const sourceToggles = bindToggleGroup(q("[data-source-preset]").parentElement, {
+        getValue: (b) => b.dataset.sourcePreset,
+        onPress: (value) => {
+          manualSource = value === "manual";
+          renderBuilder();
+          if (manualSource) q("[data-source]").focus();
+        },
+      });
+      // utm_medium: shortcut chips fill the field; "other" moves the cursor to it, also when already pressed
+      const mediumToggles = bindToggleGroup(q("[data-medium-preset]").parentElement, {
+        getValue: (b) => b.dataset.mediumPreset,
+        onPress: (value) => {
+          const field = q("[data-medium]");
+          if (value === "custom") {
+            field.focus();
+            field.select();
+          } else {
+            field.value = value;
+          }
+          renderBuilder();
+        },
+      });
 
       // ---------- UTM step ----------
 
@@ -616,12 +645,9 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         q("[data-term-group]").hidden = o.published;
         q("[data-tactic-custom-group]").hidden = q("[data-tactic]").dataset.value !== "custom";
         q("[data-source]").hidden = !manualSource;
-        qa("[data-source-preset]").forEach((chip) => chip.setAttribute("aria-pressed", String((chip.dataset.sourcePreset === "manual") === manualSource)));
+        sourceToggles.select(manualSource ? "manual" : "macro");
         const mediumNow = q("[data-medium]").value;
-        qa("[data-medium-preset]").forEach((chip) => {
-          const preset = chip.dataset.mediumPreset;
-          chip.setAttribute("aria-pressed", String(preset === "custom" ? !mediumPresets.includes(mediumNow) : preset === mediumNow));
-        });
+        mediumToggles.select(mediumPresets.includes(mediumNow) ? mediumNow : "custom");
         q("[data-term-effect]").textContent = terms[o.term].effect;
       }
 
@@ -936,8 +962,8 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
           if (sub) b.append(el("span", "mu__tabsub", ` ${sub}`));
         });
         levelTabs.select(activeLevel);
+        sepToggles.select(level.separator);
         qa("[data-sep-btn]").forEach((b) => {
-          b.setAttribute("aria-pressed", String(b.dataset.sepBtn === level.separator));
           b.setAttribute("aria-label", sepName(b.dataset.sepBtn));
           b.textContent = b.dataset.sepBtn === " " ? naming.sepSpace : b.dataset.sepBtn === "" ? naming.sepNone : b.dataset.sepBtn;
         });
@@ -1034,7 +1060,6 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
       copyButton(q("[data-copy-formula]"), () => formula(levels[activeLevel]), namingStatus, () => L().naming.formulaCopied);
       copyButton(q("[data-copy-example]"), () => nameOf(activeLevel), namingStatus, () => L().naming.exampleCopied);
 
-      qa("[data-sep-btn]").forEach((b) => b.addEventListener("click", () => { setSeparator(levels[activeLevel], b.dataset.sepBtn); renderNaming(); }));
       q("[data-lowercase]").addEventListener("change", (event) => { setLowercase(levels[activeLevel], event.target.checked); renderOutputs(); });
       q("[data-open-naming]").addEventListener("click", () => setStep("naming"));
 
@@ -1140,24 +1165,6 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         renderNaming();
       });
 
-      // utm_source: the macro is the default; "own source value" shows a field for it
-      qa("[data-source-preset]").forEach((chip) => chip.addEventListener("click", () => {
-        manualSource = chip.dataset.sourcePreset === "manual";
-        renderBuilder();
-        if (manualSource) q("[data-source]").focus();
-      }));
-
-      // utm_medium: shortcut chips fill the field; "other" moves the cursor to it
-      qa("[data-medium-preset]").forEach((chip) => chip.addEventListener("click", () => {
-        const field = q("[data-medium]");
-        if (chip.dataset.mediumPreset === "custom") {
-          field.focus();
-          field.select();
-        } else {
-          field.value = chip.dataset.mediumPreset;
-        }
-        renderBuilder();
-      }));
       selects.forEach((key) => initSelectCombobox(q(`[data-select="${key}"]`), q(`[data-select-toggle="${key}"]`), q(`[data-select-menu="${key}"]`), config.langs[lang].selects[key], renderBuilder));
 
       loadTemplate(tplId);

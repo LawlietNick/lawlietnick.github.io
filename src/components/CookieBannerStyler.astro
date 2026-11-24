@@ -830,6 +830,7 @@ const alignFields = [
 <script>
   import { bindCopy } from "../../packages/ui/copy.js";
   import { bindTabs } from "../../packages/ui/tabs.js";
+  import { bindToggleGroup } from "../../packages/ui/toggle-group.js";
 
   const root = document.querySelector(".cbs");
   if (root) {
@@ -1077,24 +1078,22 @@ const alignFields = [
       });
     });
 
+    const previewSizes = bindToggleGroup(root.querySelector(".cbs__preview-size").parentElement, {
+      getValue: (button) => button.dataset.previewSize,
+      onPress: (size) => {
+        state.previewSize = size;
+        setPreviewSize(size);
+        refresh();
+      },
+    });
     const setPreviewSize = (size) => {
       const mobile = size === "mobile";
       frame.classList.toggle("is-mobile", mobile);
       frame.title = copy.previewTitle.replace("{size}", mobile ? copy.mobile : copy.desktop);
       frame.contentDocument?.documentElement.classList.toggle("preview-desktop", !mobile);
-      root.querySelectorAll(".cbs__preview-size").forEach((item) => {
-        const active = item.dataset.previewSize === size;
-        item.classList.toggle("is-active", active);
-        item.setAttribute("aria-pressed", String(active));
-      });
+      previewSizes.select(size);
+      root.querySelectorAll(".cbs__preview-size").forEach((item) => item.classList.toggle("is-active", item.dataset.previewSize === size));
     };
-    root.querySelectorAll(".cbs__preview-size").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.previewSize = button.dataset.previewSize;
-        setPreviewSize(state.previewSize);
-        refresh();
-      });
-    });
 
     // tabs
     bindTabs(root.querySelector(".cbs__tabs"), {
