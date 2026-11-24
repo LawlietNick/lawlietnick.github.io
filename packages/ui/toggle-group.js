@@ -10,6 +10,8 @@
 //   Fires a bubbling `change` event only when the choice changes; read or set it with `element.value`.
 // Parts: data-part="item" on each button. No text of its own, so no FI/EN strings.
 
+import { ElementBase, define } from "./element.js";
+
 export function bindToggleGroup(group, { getValue = (button) => button.value, onPress = () => {}, label } = {}) {
   const items = [...group.querySelectorAll("button")];
   if (label) {
@@ -40,7 +42,7 @@ export function bindToggleGroup(group, { getValue = (button) => button.value, on
   };
 }
 
-export class KToggleGroup extends HTMLElement {
+export class KToggleGroup extends ElementBase {
   connectedCallback() {
     if (this.group) return;
     const buttons = [...this.querySelectorAll("button")];
@@ -68,4 +70,4 @@ export class KToggleGroup extends HTMLElement {
   }
 }
 
-if (!customElements.get("k-toggle-group")) customElements.define("k-toggle-group", KToggleGroup);
+define("k-toggle-group", KToggleGroup);

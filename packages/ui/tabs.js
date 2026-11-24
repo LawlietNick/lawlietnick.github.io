@@ -10,6 +10,8 @@
 //   Fires a bubbling `change` event; read or set the choice with `element.value`.
 // Parts: data-part="tablist|tab". No text of its own, so no FI/EN strings.
 
+import { ElementBase, define } from "./element.js";
+
 let uid = 0;
 
 export function bindTabs(list, { getValue = (tab) => tab.value, panelFor = () => null, onSelect = () => {} } = {}) {
@@ -78,7 +80,7 @@ export function bindTabs(list, { getValue = (tab) => tab.value, panelFor = () =>
   };
 }
 
-export class KTabs extends HTMLElement {
+export class KTabs extends ElementBase {
   connectedCallback() {
     if (this.tabs) return;
     const buttons = [...this.querySelectorAll(":scope > button")];
@@ -108,4 +110,4 @@ export class KTabs extends HTMLElement {
   }
 }
 
-if (!customElements.get("k-tabs")) customElements.define("k-tabs", KTabs);
+define("k-tabs", KTabs);

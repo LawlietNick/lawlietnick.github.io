@@ -14,6 +14,8 @@
 //   `change` event when the choice changes; read or set it with `element.value`.
 // Parts: data-part="label|input|listbox|option|empty".
 
+import { ElementBase, define } from "./element.js";
+
 const STRINGS = {
   en: { choose: "Choose…", search: "Search…", empty: "No results" },
   fi: { choose: "Valitse…", search: "Hae…", empty: "Ei tuloksia" },
@@ -175,7 +177,7 @@ export function bindListbox(input, menu, { options = [], toggle, mode = "select"
   };
 }
 
-export class KListbox extends HTMLElement {
+export class KListbox extends ElementBase {
   connectedCallback() {
     if (this.listbox) return; // ponytail: render once; options are read at first connect only
     const id = `k-listbox-${++uid}`;
@@ -237,4 +239,4 @@ function el(tag, attrs) {
   return node;
 }
 
-if (!customElements.get("k-listbox")) customElements.define("k-listbox", KListbox);
+define("k-listbox", KListbox);

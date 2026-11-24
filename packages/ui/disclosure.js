@@ -14,6 +14,8 @@
 //   with detail { open } (not `toggle`, which the browser uses itself).
 // Parts: data-part="trigger" and your panel. No text of its own, so no FI/EN strings.
 
+import { ElementBase, define } from "./element.js";
+
 let uid = 0;
 const FOCUSABLE = "a[href], button:not([disabled])";
 const groups = new Map(); // group name -> Set of controllers
@@ -112,7 +114,7 @@ export function bindDisclosure(trigger, panel, { popup = false, root = trigger.p
   return controller;
 }
 
-export class KDisclosure extends HTMLElement {
+export class KDisclosure extends ElementBase {
   connectedCallback() {
     if (this.controller) return;
     const trigger = this.querySelector(":scope > button");
@@ -143,4 +145,4 @@ export class KDisclosure extends HTMLElement {
   }
 }
 
-if (!customElements.get("k-disclosure")) customElements.define("k-disclosure", KDisclosure);
+define("k-disclosure", KDisclosure);

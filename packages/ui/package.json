@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    ".": "./index.js",
     "./dialog": "./dialog.js",
     "./disclosure": "./disclosure.js",
     "./Disclosure.astro": "./Disclosure.astro",

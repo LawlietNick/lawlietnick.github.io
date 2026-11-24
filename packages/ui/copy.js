@@ -10,6 +10,8 @@
 //   named by `for` (its value for form fields, otherwise its textContent). Attributes: label, quiet.
 // Built-in FI/EN labels follow the nearest `lang`. Parts: data-part="button|status".
 
+import { ElementBase, define } from "./element.js";
+
 const STRINGS = {
   en: { copy: "Copy", done: "Copied", fail: "Try again" },
   fi: { copy: "Kopioi", done: "Kopioitu", fail: "Yritä uudelleen" },
@@ -73,7 +75,7 @@ export function bindCopy(button, { text = "", quiet = false, label } = {}) {
   });
 }
 
-export class KCopy extends HTMLElement {
+export class KCopy extends ElementBase {
   connectedCallback() {
     if (this.button) return;
     let button = this.querySelector(":scope > button");
@@ -98,4 +100,4 @@ export class KCopy extends HTMLElement {
   }
 }
 
-if (!customElements.get("k-copy")) customElements.define("k-copy", KCopy);
+define("k-copy", KCopy);
