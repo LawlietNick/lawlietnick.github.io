@@ -87,6 +87,7 @@ const config = { ...taxonomy, copy };
 <script>
   import { formValue } from "../data/form-types.js";
   import { initSelectCombobox } from "../scripts/select-combobox.js";
+  import { bindCopy } from "../../packages/ui/copy.js";
 
   // ClientRouter swaps the page without re-running this module, so start on every page load
   // and skip a picker that is already running.
@@ -264,21 +265,13 @@ const config = { ...taxonomy, copy };
       paintValue();
     }
 
-    async function copyText(text, btn, done) {
-      const html = btn.innerHTML;
-      try {
-        await navigator.clipboard.writeText(text);
-        btn.innerHTML = done;
-      } catch {
-        btn.innerHTML = done.includes("<") ? done.replace(/>[^<]*</, `>${copy.copyManual}<`) : copy.copyManual;
-      }
-      setTimeout(() => (btn.innerHTML = html), 1800);
-    }
-
     nameEl.addEventListener("input", paintValue);
-    copyEl.addEventListener("click", (e) =>
-      copyText(e.currentTarget.dataset.value, e.currentTarget, `<span class='cta__surface'>${copy.copied}</span>`)
-    );
+    const copyLabel = copyEl.innerHTML;
+    bindCopy(copyEl, { text: () => copyEl.dataset.value, quiet: true });
+    copyEl.addEventListener("k-copy", (e) => {
+      copyEl.innerHTML = `<span class='cta__surface'>${e.detail.ok ? copy.copied : copy.copyManual}</span>`;
+      setTimeout(() => (copyEl.innerHTML = copyLabel), 1800);
+    });
 
     fillTypes();
     paintAll();

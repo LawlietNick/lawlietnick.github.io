@@ -828,6 +828,8 @@ const alignFields = [
 </style>
 
 <script>
+  import { bindCopy } from "../../packages/ui/copy.js";
+
   const root = document.querySelector(".cbs");
   if (root) {
     const defaults = JSON.parse(root.dataset.defaults);
@@ -1104,9 +1106,9 @@ const alignFields = [
     // copy buttons
     root.querySelectorAll(".cbs__copy").forEach((btn) => {
       const label = btn.textContent;
-      btn.addEventListener("click", () => {
-        const el = document.getElementById(btn.dataset.copy);
-        navigator.clipboard.writeText(el.value);
+      bindCopy(btn, { text: () => document.getElementById(btn.dataset.copy).value, quiet: true });
+      btn.addEventListener("k-copy", (event) => {
+        if (!event.detail.ok) return; // no failure text yet; at least never claim a copy that failed
         btn.textContent = copy.copied;
         setTimeout(() => (btn.textContent = label), 1500);
       });

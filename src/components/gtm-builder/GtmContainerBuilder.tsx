@@ -22,6 +22,7 @@ import {
 } from "./engine";
 import { FI_DESCRIPTIONS, FI_GROUPS, FI_MESSAGES, FI_NECESSITY } from "./fi";
 import "./gtm-builder.css";
+import { copyText } from "../../../packages/ui/copy.js";
 
 const SOURCES = {
   individual: individualTemplate as GtmRecord,
@@ -185,22 +186,9 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
   const copy = async () => {
     if (!ready) return;
     const json = generateSelectedJson(state, source);
-    try {
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(json);
-      else {
-        const textarea = document.createElement("textarea");
-        textarea.value = json;
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.append(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-      }
-      setStatus(tr("JSON copied to the clipboard.", "JSON kopioitiin leikepöydälle."));
-    } catch {
-      setStatus(tr("Copy failed. Open the preview and copy the JSON manually.", "Kopiointi epäonnistui. Avaa esikatselu ja kopioi JSON käsin."));
-    }
+    // ponytail: React owns the click, so this calls the SDK's copyText rather than bindCopy
+    if (await copyText(json)) setStatus(tr("JSON copied to the clipboard.", "JSON kopioitiin leikepöydälle."));
+    else setStatus(tr("Copy failed. Open the preview and copy the JSON manually.", "Kopiointi epäonnistui. Avaa esikatselu ja kopioi JSON käsin."));
   };
 
   const download = () => {

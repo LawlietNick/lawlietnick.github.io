@@ -150,6 +150,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
 
 <script>
   import { bigRegexes, ga4RowLimit, ownDomainRows } from "../utils/referral-exclusions.js";
+  import { copyText } from "../../packages/ui/copy.js";
 
   const init = () => {
     document.querySelectorAll("[data-payment-referrals]").forEach((root) => {
@@ -485,11 +486,11 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
         const value = button.dataset.value;
         const isBig = Boolean(button.closest("[data-big]"));
         const message = isBig ? bigStatus : status;
-        try {
-          await navigator.clipboard.writeText(value);
+        // ponytail: rows are built at runtime and share one delegated listener, so this uses copyText, not bindCopy
+        if (await copyText(value)) {
           flash(button);
           message.textContent = isBig || value.length > 120 ? fmt(ui.copiedRegex, { n: value.length }) : fmt(ui.copied, { value });
-        } catch {
+        } else {
           message.textContent = ui.copyFailed;
         }
       });

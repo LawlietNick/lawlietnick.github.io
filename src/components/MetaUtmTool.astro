@@ -418,6 +418,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
 
 <script>
   import { initSelectCombobox } from "../scripts/select-combobox.js";
+  import { bindCopy } from "../../packages/ui/copy.js";
   import { filterDirectory, metaUtm, metaUtmParts, previewRows } from "../utils/meta-utm.js";
   import { addComponent, cleanKey, example, formula, levelKeys, levelsFromTemplate, move, newLevels, sameStructure, setLowercase, setSeparator, startValue, validate } from "../utils/meta-naming.js";
 
@@ -645,13 +646,10 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         );
       }
 
-      async function copyText(text, statusEl, doneText) {
-        try {
-          await navigator.clipboard.writeText(text);
-          statusEl.textContent = doneText;
-        } catch {
-          statusEl.textContent = L().ui.copyError;
-        }
+      // The SDK button copies; the tool keeps its own status line. `done` runs at click time so the text follows the UI language.
+      function copyButton(button, text, statusEl, done) {
+        bindCopy(button, { text, quiet: true });
+        button.addEventListener("k-copy", (event) => (statusEl.textContent = event.detail.ok ? done() : L().ui.copyError));
       }
 
       // ---------- Naming step ----------
@@ -1026,9 +1024,9 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         if (event.target.closest("[data-dir-controls]")) renderDirectory();
         else renderBuilder();
       });
-      q("[data-copy]").addEventListener("click", () => copyText(out.textContent, copyStatus, L().ui.copied));
-      q("[data-copy-formula]").addEventListener("click", () => copyText(formula(levels[activeLevel]), namingStatus, L().naming.formulaCopied));
-      q("[data-copy-example]").addEventListener("click", () => copyText(nameOf(activeLevel), namingStatus, L().naming.exampleCopied));
+      copyButton(q("[data-copy]"), () => out.textContent, copyStatus, () => L().ui.copied);
+      copyButton(q("[data-copy-formula]"), () => formula(levels[activeLevel]), namingStatus, () => L().naming.formulaCopied);
+      copyButton(q("[data-copy-example]"), () => nameOf(activeLevel), namingStatus, () => L().naming.exampleCopied);
 
       // the tabs never scroll the page: only the continue and edit buttons below do
       qa("[data-step-btn]").forEach((b) => b.addEventListener("click", () => setStep(b.dataset.stepBtn)));

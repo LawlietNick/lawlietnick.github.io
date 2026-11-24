@@ -336,6 +336,7 @@ let questionNumber = 0;
 
 <script>
   import { assessMetric } from "../utils/metric-quality.js";
+  import { bindCopy } from "../../packages/ui/copy.js";
 
   const initializeMetricCheckers = () => {
     document.querySelectorAll("[data-metric-checker]").forEach((checker) => {
@@ -466,17 +467,14 @@ let questionNumber = 0;
           render();
         });
       });
-      const copyText = async (text, link = false) => {
-        try {
-          await navigator.clipboard.writeText(text);
-          if (link) history.replaceState(null, "", text);
-          el("[data-copy-status]").textContent = copy.copied;
-        } catch {
-          el("[data-copy-status]").textContent = copy.copyError;
-        }
+      const copied = ({ detail: { ok, text } }, link = false) => {
+        if (ok && link) history.replaceState(null, "", text);
+        el("[data-copy-status]").textContent = ok ? copy.copied : copy.copyError;
       };
-      el("[data-copy-summary]").addEventListener("click", () => copyText(buildSummary()));
-      el("[data-copy-link]").addEventListener("click", () => copyText(buildLink(), true));
+      bindCopy(el("[data-copy-summary]"), { text: buildSummary, quiet: true });
+      bindCopy(el("[data-copy-link]"), { text: buildLink, quiet: true });
+      el("[data-copy-summary]").addEventListener("k-copy", (event) => copied(event));
+      el("[data-copy-link]").addEventListener("k-copy", (event) => copied(event, true));
       render();
     });
   };

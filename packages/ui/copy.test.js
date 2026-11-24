@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from "vitest";
-import "./copy.js";
+import { bindCopy, copyText } from "./copy.js";
 
 const writeText = vi.fn();
 Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true });
@@ -48,4 +48,28 @@ test("reads a form value, a text function at click time, and reports failure in 
   expect(writeText).toHaveBeenLastCalledWith("json 1");
   expect(button.textContent).toBe("Yritä uudelleen");
   expect(button.dataset.state).toBe("fail");
+});
+
+test("bindCopy quiet keeps the button's markup and leaves feedback to the caller", async () => {
+  writeText.mockResolvedValue();
+  document.body.innerHTML = '<div lang="en"><button class="cta"><span>Copy value</span></button></div>';
+  const button = document.querySelector("button");
+  const events = [];
+  bindCopy(button, { text: () => "form_contact", quiet: true });
+  button.addEventListener("k-copy", (e) => events.push(e.detail));
+  await click(button);
+  expect(events).toEqual([{ ok: true, text: "form_contact" }]);
+  expect(button.innerHTML).toBe("<span>Copy value</span>");
+  expect(document.querySelector('[data-part="status"]')).toBeNull();
+});
+
+test("copyText reports a denied clipboard as failure and uses execCommand only without the API", async () => {
+  writeText.mockRejectedValue(new Error("denied"));
+  document.execCommand = vi.fn(() => true);
+  expect(await copyText("x")).toBe(false);
+  expect(document.execCommand).not.toHaveBeenCalled();
+  Object.defineProperty(navigator, "clipboard", { value: undefined, configurable: true });
+  expect(await copyText("x")).toBe(true);
+  expect(document.execCommand).toHaveBeenCalledWith("copy");
+  Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true });
 });

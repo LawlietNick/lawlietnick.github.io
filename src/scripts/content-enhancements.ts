@@ -1,3 +1,5 @@
+import { bindCopy } from "../../packages/ui/copy.js";
+
 // Loaded only when Base finds content that needs enhancement.
 const enhancedRoots = new WeakSet<HTMLElement>();
 
@@ -41,31 +43,12 @@ export function enhanceContent(root: HTMLElement) {
       b.type = "button";
       b.className = "copy";
       b.textContent = label;
-      // the button label is the visible feedback; this region announces it
-      const status = document.createElement("span");
-      status.className = "visually-hidden";
-      status.setAttribute("role", "status");
-      let timer: ReturnType<typeof setTimeout> | undefined;
-      b.onclick = async () => {
-        const code = pre.querySelector<HTMLElement>(":scope > code");
-        let message: string;
-        try {
-          await navigator.clipboard.writeText(code?.textContent ?? pre.textContent ?? "");
-          message = fi ? "Kopioitu" : "Copied";
-        } catch {
-          message = fi ? "Yritä uudelleen" : "Try again";
-        }
-        clearTimeout(timer);
-        b.textContent = message;
-        // VoiceOver skips a repeat of the previous message, so make repeats differ
-        status.textContent = status.dataset.last === message ? `${message} ` : message;
-        status.dataset.last = status.textContent;
-        timer = setTimeout(() => {
-          b.textContent = label;
-          status.textContent = "";
-        }, 1500);
-      };
-      header.append(b, status);
+      header.append(b);
+      // the SDK button shows the result in its label and announces it in a hidden status region after it
+      bindCopy(b, {
+        text: () => pre.querySelector<HTMLElement>(":scope > code")?.textContent ?? pre.textContent ?? "",
+        label,
+      });
     });
 
     root.querySelectorAll<HTMLElement>("[data-code-accordion]").forEach((accordion) => {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { buildGa4ReportUrl, compactValues, isPropertySpecificField, normalizeCustomDimensions, reportErrors, type FilterType, type ReportConfig } from "./engine";
 import "./ga4-report-builder.css";
+import { copyText } from "../../../packages/ui/copy.js";
 
 type FieldOption = { value: string; label: string; custom?: boolean };
 type Template = Omit<ReportConfig, "propertyId"> & { id: string; description: string };
@@ -240,21 +241,14 @@ export default function Ga4ReportBuilder() {
 
   const copy = async () => {
     if (!ready) return;
-    try {
-      await navigator.clipboard.writeText(buildGa4ReportUrl(config));
-      setStatus("GA4 report link copied.");
-    } catch {
-      setStatus("Copy failed. Open the report and copy the URL from the new tab.");
-    }
+    if (await copyText(buildGa4ReportUrl(config))) setStatus("GA4 report link copied.");
+    else setStatus("Copy failed. Open the report and copy the URL from the new tab.");
   };
 
   const copyPropertySpecificFields = async () => {
-    try {
-      await navigator.clipboard.writeText(propertySpecificFields.map((value) => labels.get(value) ?? value.replace(/^[^:]+:/, "")).join("\n"));
-      setStatus("Custom field names copied. Add them in the GA4 report editor.");
-    } catch {
-      setStatus("Copy failed. Use the custom field list shown above.");
-    }
+    const names = propertySpecificFields.map((value) => labels.get(value) ?? value.replace(/^[^:]+:/, "")).join("\n");
+    if (await copyText(names)) setStatus("Custom field names copied. Add them in the GA4 report editor.");
+    else setStatus("Copy failed. Use the custom field list shown above.");
   };
 
   return (

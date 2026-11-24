@@ -125,6 +125,7 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
   import { annotationCategories, annotationDateGuidance, characterCount, getDescriptionSuggestions, hasPlaceholder } from "../data/ga4-annotations.js";
   // @ts-ignore: plain JavaScript module
   import { initSelectCombobox } from "../scripts/select-combobox.js";
+  import { bindCopy } from "../../packages/ui/copy.js";
 
   type Option = [string, string];
   const chevron = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>`;
@@ -383,15 +384,14 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
     window.visualViewport?.addEventListener("scroll", reposition, { signal: viewportController.signal });
     document.addEventListener("astro:before-swap", () => viewportController.abort(), { once: true });
 
-    async function copyField(field: HTMLInputElement | HTMLTextAreaElement, text: string) {
+    function copiedField(field: HTMLInputElement | HTMLTextAreaElement, ok: boolean) {
       const isTitle = field === title;
-      try {
-        await navigator.clipboard.writeText(text);
+      if (ok) {
         const button = isTitle ? titleCopy : descriptionCopy;
         button.textContent = copy.copied;
         status.textContent = isTitle ? copy.titleCopied : copy.descriptionCopied;
         window.setTimeout(() => { button.textContent = isTitle ? copy.copyTitle : copy.copyDescription; }, 2500);
-      } catch {
+      } else {
         closeSuggestions(true);
         field.focus();
         field.select();
@@ -400,8 +400,10 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
         status.textContent = message;
       }
     }
-    titleCopy.addEventListener("click", () => copyField(title, fullTitle()));
-    descriptionCopy.addEventListener("click", () => copyField(description, description.value));
+    bindCopy(titleCopy, { text: fullTitle, quiet: true });
+    bindCopy(descriptionCopy, { text: () => description.value, quiet: true });
+    titleCopy.addEventListener("k-copy", (event) => copiedField(title, (event as CustomEvent).detail.ok));
+    descriptionCopy.addEventListener("k-copy", (event) => copiedField(description, (event as CustomEvent).detail.ok));
     el("[data-color-dot]").style.setProperty("--annotation-color", category.color);
     description.placeholder = copy.placeholder[language];
     const languageNote = root.querySelector<HTMLElement>("[data-language-note]");
