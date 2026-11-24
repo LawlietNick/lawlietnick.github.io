@@ -776,14 +776,14 @@ const showDesktopCta = false;
 </style>
 
 <script>
+  import { bindDialog } from "../../packages/ui/dialog.js";
   import { bindDisclosure } from "../../packages/ui/disclosure.js";
 
   // ported (trimmed) from blog-layout-astrojs Header: click-to-open mega panels + mobile overlay.
   // initHeader() binds the header's element listeners; the document/matchMedia listeners are
   // bound once and read the header through the module-scoped refs that initHeader sets.
   const desktopBreakpoint = matchMedia("(min-width: 56rem)");
-  let nav, megaItems = [], mobileToggle, overlay, mobilePanel, closeControls, inertRoots;
-  let lastFocus = null;
+  let nav, megaItems = [], mobileToggle, overlay, mobilePanel, closeControls, mobileMenu;
   let lastFocusedElement = null;
   let headerObserver;
 
@@ -792,24 +792,21 @@ const showDesktopCta = false;
   const openMega = () => megaItems.find((entry) => entry.open);
   const closeAllMegas = () => megaItems.forEach((entry) => entry.toggle(false));
 
-  const mobileIsOpen = () => mobileToggle?.getAttribute("aria-expanded") === "true";
-
+  // The mobile overlay is an SDK dialog: main and footer go inert, Tab stays inside, Escape closes, and
+  // focus goes to the close button and back to the opener. The header keeps its own classes and animation.
+  const mobileIsOpen = () => Boolean(mobileMenu?.isOpen);
   const setMobileOpen = (isOpen, { restoreFocus = true } = {}) => {
-    if (!mobileToggle) return;
-    if (isOpen) lastFocus = document.activeElement;
+    if (!mobileMenu) return;
+    if (isOpen) mobileMenu.open();
+    else mobileMenu.close({ restoreFocus });
+  };
+  const paintMobile = (isOpen) => {
     mobileToggle.setAttribute("aria-expanded", String(isOpen));
     mobileToggle.classList.toggle("is-hidden", isOpen);
     document.body.classList.toggle("has-mobile-nav-open", isOpen);
     overlay.classList.toggle("is-open", isOpen);
     overlay.setAttribute("aria-hidden", String(!isOpen));
     mobilePanel.classList.toggle("is-open", isOpen);
-    inertRoots.forEach((el) => (el.inert = isOpen));
-
-    if (isOpen) {
-      requestAnimationFrame(() => closeControls[1]?.focus());
-    } else if (restoreFocus && lastFocus) {
-      requestAnimationFrame(() => lastFocus.focus());
-    }
   };
 
   const initHeader = () => {
@@ -845,8 +842,11 @@ const showDesktopCta = false;
     overlay = document.querySelector("[data-mobile-nav-overlay]");
     mobilePanel = document.querySelector("[data-mobile-nav-panel]");
     closeControls = document.querySelectorAll("[data-mobile-nav-close]");
-    inertRoots = document.querySelectorAll("main, footer");
+    const inertRoots = [...document.querySelectorAll("main, footer")];
     inertRoots.forEach((el) => (el.inert = false));
+    mobileMenu = mobileToggle && mobilePanel
+      ? bindDialog(mobilePanel, { initialFocus: () => closeControls[1], inertRoots, onToggle: paintMobile })
+      : null;
     const header = document.querySelector("[data-site-header]");
     const updateHeaderHeight = () => overlay?.style.setProperty("--mobile-header-height", `${header.getBoundingClientRect().height}px`);
     headerObserver = new ResizeObserver(updateHeaderHeight);
@@ -863,19 +863,9 @@ const showDesktopCta = false;
       });
     });
 
-    // close overlay when a link inside is chosen; trap Tab within the panel
+    // close overlay when a link inside is chosen
     mobilePanel?.addEventListener("click", (e) => {
       if (e.target.closest("a")) setMobileOpen(false);
-    });
-    mobilePanel?.addEventListener("keydown", (e) => {
-      if (e.key !== "Tab" || !mobileIsOpen()) return;
-      const focusable = [...mobilePanel.querySelectorAll('a[href], button:not([disabled])')]
-        .filter((el) => !el.closest("[hidden]"));
-      if (!focusable.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
   };
 

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./dialog": "./dialog.js",
     "./disclosure": "./disclosure.js",
     "./Disclosure.astro": "./Disclosure.astro",
     "./copy": "./copy.js",

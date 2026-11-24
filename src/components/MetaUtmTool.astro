@@ -421,6 +421,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
   import { bindCopy } from "../../packages/ui/copy.js";
   import { bindTabs } from "../../packages/ui/tabs.js";
   import { bindToggleGroup } from "../../packages/ui/toggle-group.js";
+  import { bindDialog } from "../../packages/ui/dialog.js";
   import { filterDirectory, metaUtm, metaUtmParts, previewRows } from "../utils/meta-utm.js";
   import { addComponent, cleanKey, example, formula, levelKeys, levelsFromTemplate, move, newLevels, sameStructure, setLowercase, setSeparator, startValue, validate } from "../utils/meta-naming.js";
 
@@ -786,19 +787,17 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         q("#mu-tpl-title").focus();
       }
 
-      // one confirm dialog for both questions; Escape and the backdrop cancel it and give focus back
-      const confirmDialog = q("[data-confirm-dialog]");
+      // one confirm dialog for both questions; the SDK dialog cancels it on Escape and the backdrop and gives
+      // focus back, unless the confirmed action moved focus on purpose
+      const confirmDialog = bindDialog(q("[data-confirm-dialog]"), { initialFocus: () => q("[data-confirm-cancel]") });
       let confirmAction = null;
-      let confirmOpener = null;
       function openConfirm(kind, action) {
         const { tpl } = L().naming;
         q("[data-confirm-title]").textContent = tpl[`${kind}Title`];
         q("[data-confirm-body]").textContent = tpl[`${kind}Body`];
         q("[data-confirm-ok-text]").textContent = tpl[`${kind}Confirm`];
         confirmAction = action;
-        confirmOpener = document.activeElement;
-        confirmDialog.showModal();
-        q("[data-confirm-cancel]").focus();
+        confirmDialog.open();
       }
 
       // every place that shows or copies a generated name goes through here
@@ -1095,12 +1094,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         confirmDialog.close();
         action?.();
       });
-      confirmDialog.addEventListener("click", (event) => { if (event.target === confirmDialog) confirmDialog.close(); });
-      confirmDialog.addEventListener("close", () => {
-        if (!confirmAction) return;
-        confirmAction = null;
-        confirmOpener?.focus();
-      });
+      q("[data-confirm-dialog]").addEventListener("close", () => (confirmAction = null));
       q("[data-confirm-form]").addEventListener("submit", (event) => event.preventDefault());
       q("[data-continue]").addEventListener("click", () => { configured = true; setStep("utm", { scroll: true }); });
 
@@ -1116,7 +1110,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
       q("[data-custom-type-host]").replaceChildren(customType.root);
       q("[data-custom-type-label]").htmlFor = customType.input.id;
       const customError = q("[data-custom-error]");
-      const dialog = q("[data-custom-dialog]");
+      const dialog = bindDialog(q("[data-custom-dialog]"), { initialFocus: () => q("[data-custom-key]") });
       const clearInvalid = () => {
         customError.hidden = true;
         q("[data-custom-key]").removeAttribute("aria-invalid");
@@ -1129,10 +1123,8 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
         clearInvalid();
       };
       q("[data-custom-key]").addEventListener("input", clearInvalid);
-      q("[data-custom-open]").addEventListener("click", () => { resetCustom(); dialog.showModal(); q("[data-custom-key]").focus(); });
+      q("[data-custom-open]").addEventListener("click", () => { resetCustom(); dialog.open(); });
       qa("[data-custom-close], [data-custom-cancel]").forEach((b) => b.addEventListener("click", () => dialog.close()));
-      // a click on the backdrop (the dialog element itself) closes it
-      dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
       q("[data-custom-form]").addEventListener("submit", (event) => event.preventDefault());
       q("[data-custom-save]").addEventListener("click", () => {
         const key = cleanKey(q("[data-custom-key]").value);
