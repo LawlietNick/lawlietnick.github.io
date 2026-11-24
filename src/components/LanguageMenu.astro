@@ -204,6 +204,9 @@ const groups = postWithoutTranslation
 </style>
 
 <script>
+  import { bindDisclosure } from "../../packages/ui/disclosure.js";
+
+  // The SDK popup: Escape, outside click, focus leaving, and arrow keys between the languages.
   function initLanguageMenus(): void {
     document.querySelectorAll<HTMLElement>("[data-lang-menu]").forEach((menu) => {
       if ((menu as any).__langBound) return;
@@ -211,25 +214,7 @@ const groups = postWithoutTranslation
       const trigger = menu.querySelector<HTMLButtonElement>(".lang-menu__trigger");
       const panel = menu.querySelector<HTMLElement>(".lang-menu__panel");
       if (!trigger || !panel) return;
-
-      const setOpen = (open: boolean) => {
-        trigger.setAttribute("aria-expanded", String(open));
-        panel.hidden = !open;
-      };
-      trigger.addEventListener("click", () => setOpen(panel.hidden));
-      document.addEventListener("click", (event) => {
-        if (!menu.contains(event.target as Node)) setOpen(false);
-      });
-      menu.addEventListener("keydown", (event) => {
-        if (event.key !== "Escape") return;
-        setOpen(false);
-        trigger.focus();
-      });
-      menu.addEventListener("focusout", (event) => {
-        const next = event.relatedTarget as Node | null;
-        if (next && menu.contains(next)) return;
-        setOpen(false);
-      });
+      bindDisclosure(trigger, panel, { popup: true, root: menu });
     });
   }
 

@@ -122,6 +122,8 @@ const label = fi ? "Tällä sivulla" : "On this page";
 </style>
 
 <script>
+  import { bindDisclosure } from "../../packages/ui/disclosure.js";
+
   // Re-init on every client navigation (astro:page-load also fires on first load).
   // scroll/resize are bound to the persisted window, so drop the previous page's
   // handler before binding this page's to avoid leaking a listener per navigation.
@@ -138,18 +140,9 @@ const label = fi ? "Tällä sivulla" : "On this page";
     const list = toc.querySelector(".toc__list");
     const links = [...toc.querySelectorAll(".toc__link")];
 
-    // collapse toggle (desktop + mobile, same control)
-    toggle.addEventListener("click", () => {
-      const open = toggle.getAttribute("aria-expanded") === "true";
-      toggle.setAttribute("aria-expanded", String(!open));
-      list.hidden = open;
-    });
-
-    // start collapsed on narrow screens
-    if (matchMedia("(max-width: 60rem)").matches) {
-      toggle.setAttribute("aria-expanded", "false");
-      list.hidden = true;
-    }
+    // collapse toggle (desktop + mobile, same control), from the SDK; starts collapsed on narrow screens
+    if (matchMedia("(max-width: 60rem)").matches) toggle.setAttribute("aria-expanded", "false");
+    bindDisclosure(toggle, list);
 
     // A section runs from its heading to the next heading. Highlight every
     // section that overlaps the visible viewport below the sticky header.

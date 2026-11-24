@@ -776,6 +776,8 @@ const showDesktopCta = false;
 </style>
 
 <script>
+  import { bindDisclosure } from "../../packages/ui/disclosure.js";
+
   // ported (trimmed) from blog-layout-astrojs Header: click-to-open mega panels + mobile overlay.
   // The header is re-rendered on every client navigation (no transition:persist), so element
   // listeners are (re)bound in initHeader() on each astro:page-load — fresh elements, old ones
@@ -788,20 +790,10 @@ const showDesktopCta = false;
   let lastFocusedElement = null;
   let headerObserver;
 
-  const setMegaOpen = (entry, isOpen) => {
-    entry.trigger.setAttribute("aria-expanded", String(isOpen));
-    entry.panel.hidden = !isOpen;
-    entry.item.classList.toggle("is-open", isOpen);
-  };
-  const entryIsOpen = (entry) => entry.trigger.getAttribute("aria-expanded") === "true";
-  const openMega = () => megaItems.find(entryIsOpen);
-  const closeAllMegas = () => megaItems.forEach((e) => setMegaOpen(e, false));
-
-  const focusPanelLink = (entry, position) => {
-    const focusable = entry.panel.querySelectorAll("a[href]");
-    const target = position === "last" ? focusable[focusable.length - 1] : focusable[0];
-    if (target) requestAnimationFrame(() => target.focus());
-  };
+  // Each dropdown is an SDK popup (Escape, outside click, focus leaving, arrow keys into and inside the
+  // panel); the "site-nav" group keeps one open at a time. The header keeps the menubar's left/right keys.
+  const openMega = () => megaItems.find((entry) => entry.open);
+  const closeAllMegas = () => megaItems.forEach((entry) => entry.toggle(false));
 
   const mobileIsOpen = () => mobileToggle?.getAttribute("aria-expanded") === "true";
 
@@ -827,46 +819,14 @@ const showDesktopCta = false;
     headerObserver?.disconnect();
     document.body.classList.remove("has-mobile-nav-open");
     nav = document.querySelector(".site-header__nav");
-    megaItems = [...document.querySelectorAll("[data-nav-item]")].map((item) => ({
-      item,
-      trigger: item.querySelector("[data-nav-trigger]"),
-      panel: item.querySelector("[data-nav-panel]"),
-    }));
-
-    megaItems.forEach((entry) => {
-      entry.trigger.addEventListener("click", () => {
-        const wasOpen = entryIsOpen(entry);
-        closeAllMegas();                       // opening one closes the others
-        if (!wasOpen) setMegaOpen(entry, true);
-      });
-      entry.trigger.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowDown") { e.preventDefault(); closeAllMegas(); setMegaOpen(entry, true); focusPanelLink(entry, "first"); }
-        if (e.key === "ArrowUp") { e.preventDefault(); closeAllMegas(); setMegaOpen(entry, true); focusPanelLink(entry, "last"); }
-      });
-      entry.panel.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          e.preventDefault();
-          setMegaOpen(entry, false);
-          entry.trigger.focus();
-          return;
-        }
-        // roving focus within the open dropdown (menubar vertical model)
-        const links = [...entry.panel.querySelectorAll("a[href]")];
-        const i = links.indexOf(document.activeElement);
-        if (i === -1 || !links.length) return;
-        const n = links.length;
-        let next = null;
-        if (e.key === "ArrowDown") next = links[(i + 1) % n];
-        else if (e.key === "ArrowUp") next = links[(i - 1 + n) % n];
-        else if (e.key === "Home") next = links[0];
-        else if (e.key === "End") next = links[n - 1];
-        if (next) { e.preventDefault(); next.focus(); }
-      });
-    });
-    nav?.addEventListener("focusout", (e) => {
-      if (e.relatedTarget && nav.contains(e.relatedTarget)) return;
-      closeAllMegas();
-    });
+    megaItems = [...document.querySelectorAll("[data-nav-item]")].map((item) =>
+      bindDisclosure(item.querySelector("[data-nav-trigger]"), item.querySelector("[data-nav-panel]"), {
+        popup: true,
+        root: item,
+        group: "site-nav",
+        onToggle: (open) => item.classList.toggle("is-open", open),
+      }),
+    );
 
     // roving focus across top-level items (menubar horizontal model).
     // Up/Down stay owned by the trigger handler above (open/enter the panel).
@@ -901,13 +861,8 @@ const showDesktopCta = false;
 
     // accordion sections
     document.querySelectorAll("[data-mobile-nav-section]").forEach((section) => {
-      const sToggle = section.querySelector("[data-mobile-section-toggle]");
-      const sPanel = section.querySelector("[data-mobile-section-panel]");
-      sToggle.addEventListener("click", () => {
-        const open = sToggle.getAttribute("aria-expanded") !== "true";
-        sToggle.setAttribute("aria-expanded", String(open));
-        section.classList.toggle("is-open", open);
-        sPanel.hidden = !open;
+      bindDisclosure(section.querySelector("[data-mobile-section-toggle]"), section.querySelector("[data-mobile-section-panel]"), {
+        onToggle: (open) => section.classList.toggle("is-open", open),
       });
     });
 
@@ -932,11 +887,9 @@ const showDesktopCta = false;
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     if (mobileIsOpen()) { e.preventDefault(); setMobileOpen(false); return; }
+    // the SDK handles Escape inside a dropdown; this covers one opened by mouse with focus elsewhere
     const open = openMega();
-    if (open) { e.preventDefault(); setMegaOpen(open, false); open.trigger.focus(); }
-  });
-  document.addEventListener("click", (e) => {
-    if (nav && !nav.contains(e.target)) closeAllMegas();
+    if (open) { e.preventDefault(); open.toggle(false); open.trigger.focus(); }
   });
   document.addEventListener("focusin", (e) => { lastFocusedElement = e.target; });
   desktopBreakpoint.addEventListener("change", (e) => {

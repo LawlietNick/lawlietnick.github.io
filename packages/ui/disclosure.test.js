@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import "./disclosure.js";
+import { bindDisclosure } from "./disclosure.js";
 
 const key = (el, k) => el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
 const parts = (box) => ({ trigger: box.querySelector("button"), panel: box.querySelector("[data-panel]") });
@@ -47,4 +47,25 @@ test("popup mode: arrows open and move, Escape returns focus, outside click clos
   expect([lang.open, tools.open]).toEqual([false, true]);
   document.getElementById("outside").click();
   expect(tools.open).toBe(false);
+});
+
+test("bindDisclosure on existing markup: onToggle, start state from aria-expanded, focusOut off keeps it open", () => {
+  document.body.innerHTML = `<div class="anchor"><button id="add" aria-expanded="false">+ Add</button>
+    <div id="pop" hidden><input id="search"><button>utm_source</button></div></div><p id="out">x</p>`;
+  const changes = [];
+  const picker = bindDisclosure(document.getElementById("add"), document.getElementById("pop"), {
+    popup: true,
+    root: document.querySelector(".anchor"),
+    focusOut: false,
+    onToggle: (open) => changes.push(open),
+  });
+  expect(document.getElementById("pop").hidden).toBe(true);
+  document.getElementById("add").click();
+  expect(picker.open).toBe(true);
+  document.getElementById("search").focus();
+  document.getElementById("search").blur(); // focus leaves: stays open with focusOut off
+  expect(picker.open).toBe(true);
+  document.getElementById("out").click();
+  expect(picker.open).toBe(false);
+  expect(changes).toEqual([true, false]);
 });

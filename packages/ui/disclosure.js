@@ -1,96 +1,145 @@
-// <k-disclosure>: unstyled show/hide button for a panel, optionally behaving as a popup menu.
-// Direct children: one <button> trigger and one panel marked data-panel.
-// Plain mode (table of contents, code accordion): the button only toggles the panel.
-// `popup` mode (language menu, header mega menu) adds: Escape closes and returns focus to the trigger,
-// a click outside or focus leaving closes it, ArrowDown/ArrowUp on the trigger open it on the first/last
-// link or button, and Up/Down/Home/End move between them inside the panel.
-// `open` sets the start state and reflects the current one. Disclosures sharing a `group` name close
-// each other, so only one is open at a time.
-// Fires a bubbling `k-toggle` event with detail { open } (not `toggle`, which the browser uses itself). Parts: data-part="trigger" and your data-panel.
-// No text of its own, so no FI/EN strings.
+// Show/hide button for a panel, optionally behaving as a popup menu, two ways:
+// - bindDisclosure(trigger, panel, { popup, root, group, arrows, onToggle }): behaviour on existing markup.
+//   Plain (table of contents, menu sections): the button only toggles the panel.
+//   `popup` (language menu, header dropdowns): Escape closes and returns focus to the trigger; a click
+//   outside `root` or focus leaving it closes it. `root` defaults to the trigger's parent and must hold
+//   both. With `arrows` (default on for popups), ArrowDown/ArrowUp on the trigger open the panel on its
+//   first/last link or button, and Up/Down/Home/End move between them. `focusOut: false` keeps a popup
+//   open when focus leaves it (for panels with fields, where clicking empty space would blur them).
+//   Disclosures sharing a `group` name close each other. `onToggle(open)` runs on every change, for
+//   classes or content the markup needs. The start state is the trigger's aria-expanded.
+//   Returns { open, toggle(force) }; toggle() from code also calls onToggle.
+// - <k-disclosure>: the declarative element. Direct children: one <button> trigger and one panel marked
+//   data-panel. Attributes: popup, open (start state, reflected), group. Fires a bubbling `k-toggle` event
+//   with detail { open } (not `toggle`, which the browser uses itself).
+// Parts: data-part="trigger" and your panel. No text of its own, so no FI/EN strings.
 
 let uid = 0;
 const FOCUSABLE = "a[href], button:not([disabled])";
+const groups = new Map(); // group name -> Set of controllers
+const openPopups = new Set();
+let outsideBound = false;
+
+// One document listener for every popup, so pages that rebind on each navigation don't pile up listeners.
+function bindOutsideClick() {
+  if (outsideBound) return;
+  outsideBound = true;
+  document.addEventListener("click", (event) => {
+    for (const popup of [...openPopups]) {
+      if (!popup.root.isConnected) openPopups.delete(popup);
+      else if (!popup.root.contains(event.target)) popup.toggle(false);
+    }
+  });
+}
+
+export function bindDisclosure(trigger, panel, { popup = false, root = trigger.parentElement, group, arrows = popup, focusOut = popup, onToggle = () => {} } = {}) {
+  panel.id ||= `k-disclosure-${++uid}`;
+  trigger.type = "button";
+  trigger.dataset.part = "trigger";
+  trigger.setAttribute("aria-controls", panel.id);
+  let open = trigger.getAttribute("aria-expanded") === "true";
+
+  const controller = {
+    root,
+    trigger,
+    get open() {
+      return open;
+    },
+    toggle(force = !open) {
+      if (force === open) return;
+      open = force;
+      if (open && group) {
+        for (const other of groups.get(group)) {
+          if (!other.trigger.isConnected) groups.get(group).delete(other);
+          else if (other !== controller) other.toggle(false);
+        }
+      }
+      if (popup) open ? openPopups.add(controller) : openPopups.delete(controller);
+      render();
+      onToggle(open);
+    },
+  };
+
+  function render() {
+    trigger.setAttribute("aria-expanded", String(open));
+    panel.hidden = !open;
+  }
+
+  render();
+  if (open && popup) openPopups.add(controller);
+  if (group) {
+    if (!groups.has(group)) groups.set(group, new Set());
+    groups.get(group).add(controller);
+  }
+  trigger.addEventListener("click", () => controller.toggle());
+  if (!popup) return controller;
+
+  bindOutsideClick();
+  const items = () => [...panel.querySelectorAll(FOCUSABLE)];
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (!open) return;
+      e.preventDefault();
+      controller.toggle(false);
+      trigger.focus();
+      return;
+    }
+    if (!arrows) return;
+    if (e.target === trigger && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+      e.preventDefault();
+      controller.toggle(true);
+      const list = items();
+      const target = list[e.key === "ArrowDown" ? 0 : list.length - 1];
+      target?.focus();
+      // a panel styled visibility: hidden until its open class applies can refuse focus for a frame
+      if (target && document.activeElement !== target) requestAnimationFrame(() => target.focus());
+      return;
+    }
+    const list = items();
+    const i = list.indexOf(document.activeElement);
+    if (i < 0) return;
+    const n = list.length;
+    const next = { ArrowDown: list[(i + 1) % n], ArrowUp: list[(i - 1 + n) % n], Home: list[0], End: list[n - 1] }[e.key];
+    if (!next) return;
+    e.preventDefault();
+    next.focus();
+  });
+  if (focusOut) {
+    root.addEventListener("focusout", (e) => {
+      if (!e.relatedTarget || !root.contains(e.relatedTarget)) controller.toggle(false);
+    });
+  }
+  return controller;
+}
 
 export class KDisclosure extends HTMLElement {
   connectedCallback() {
-    if (this.trigger) {
-      if (this.onOutside) document.addEventListener("click", this.onOutside); // moved in the DOM
-      return;
-    }
-    const trigger = (this.trigger = this.querySelector(":scope > button"));
-    const panel = (this.panel = this.querySelector(":scope > [data-panel]"));
+    if (this.controller) return;
+    const trigger = this.querySelector(":scope > button");
+    const panel = this.querySelector(":scope > [data-panel]");
     if (!trigger || !panel) return;
-    panel.id ||= `k-disclosure-${++uid}`;
-    trigger.type = "button";
-    trigger.dataset.part = "trigger";
-    trigger.setAttribute("aria-controls", panel.id);
-    trigger.addEventListener("click", () => this.toggle());
-    this.render();
-    if (!this.hasAttribute("popup")) return;
-
-    const items = () => [...panel.querySelectorAll(FOCUSABLE)];
-    trigger.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.open) this.toggle(false);
-      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
-      e.preventDefault();
-      this.toggle(true);
-      const list = items();
-      list[e.key === "ArrowDown" ? 0 : list.length - 1]?.focus();
+    trigger.setAttribute("aria-expanded", String(this.hasAttribute("open")));
+    this.controller = bindDisclosure(trigger, panel, {
+      popup: this.hasAttribute("popup"),
+      root: this,
+      group: this.getAttribute("group") ?? undefined,
+      onToggle: (open) => {
+        this.toggleAttribute("open", open);
+        this.dispatchEvent(new CustomEvent("k-toggle", { bubbles: true, detail: { open } }));
+      },
     });
-    panel.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        this.toggle(false);
-        trigger.focus();
-        return;
-      }
-      const list = items();
-      const i = list.indexOf(document.activeElement);
-      if (i < 0) return;
-      const n = list.length;
-      const next = { ArrowDown: list[(i + 1) % n], ArrowUp: list[(i - 1 + n) % n], Home: list[0], End: list[n - 1] }[e.key];
-      if (!next) return;
-      e.preventDefault();
-      next.focus();
-    });
-    this.addEventListener("focusout", (e) => {
-      if (!e.relatedTarget || !this.contains(e.relatedTarget)) this.toggle(false);
-    });
-    this.onOutside = (e) => {
-      if (!this.contains(e.target)) this.toggle(false);
-    };
-    document.addEventListener("click", this.onOutside);
-  }
-
-  disconnectedCallback() {
-    if (this.onOutside) document.removeEventListener("click", this.onOutside);
   }
 
   get open() {
-    return this.hasAttribute("open");
+    return this.controller?.open ?? this.hasAttribute("open");
   }
 
   set open(value) {
-    this.toggle(Boolean(value));
+    this.controller?.toggle(Boolean(value));
   }
 
-  toggle(force = !this.open) {
-    if (!this.trigger || force === this.open) return;
-    this.toggleAttribute("open", force);
-    if (force && this.hasAttribute("group")) {
-      const name = this.getAttribute("group");
-      document.querySelectorAll("k-disclosure[group][open]").forEach((other) => {
-        if (other !== this && other.getAttribute("group") === name) other.toggle(false);
-      });
-    }
-    this.render();
-    this.dispatchEvent(new CustomEvent("k-toggle", { bubbles: true, detail: { open: force } }));
-  }
-
-  render() {
-    this.trigger.setAttribute("aria-expanded", String(this.open));
-    this.panel.hidden = !this.open;
+  toggle(force) {
+    this.controller?.toggle(force);
   }
 }
 
