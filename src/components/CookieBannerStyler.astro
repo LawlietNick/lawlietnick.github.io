@@ -829,6 +829,7 @@ const alignFields = [
 
 <script>
   import { bindCopy } from "../../packages/ui/copy.js";
+  import { bindTabs } from "../../packages/ui/tabs.js";
 
   const root = document.querySelector(".cbs");
   if (root) {
@@ -1096,11 +1097,10 @@ const alignFields = [
     });
 
     // tabs
-    root.querySelectorAll(".cbs__tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        root.querySelectorAll(".cbs__tab").forEach((t) => { t.classList.toggle("is-active", t === tab); t.setAttribute("aria-selected", String(t === tab)); });
-        root.querySelectorAll(".cbs__panel").forEach((p) => { p.hidden = p.dataset.panel !== tab.dataset.tab; });
-      });
+    bindTabs(root.querySelector(".cbs__tabs"), {
+      getValue: (tab) => tab.dataset.tab,
+      panelFor: (value) => root.querySelector(`.cbs__panel[data-panel="${value}"]`),
+      onSelect: (value) => root.querySelectorAll(".cbs__tab").forEach((t) => t.classList.toggle("is-active", t.dataset.tab === value)),
     });
 
     // copy buttons

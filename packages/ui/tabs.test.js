@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import "./tabs.js";
+import { bindTabs } from "./tabs.js";
 
 const key = (el, k) => el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
 const mount = (html) => {
@@ -45,4 +45,30 @@ test("a shared panel follows the selected tab", () => {
   expect(tabs.value).toBe("css");
   expect(panels[0].getAttribute("aria-labelledby")).toBe(buttons[0].id);
   expect(panels[0].hidden).toBe(false);
+});
+
+test("bindTabs keeps existing markup, calls onSelect only for user picks, and select() stays silent", () => {
+  document.body.innerHTML = `<div class="cbs__tabs" aria-label="Output">
+    <button class="cbs__tab" data-tab="css" aria-selected="true">CSS</button><button class="cbs__tab" data-tab="js">JS</button></div>
+    <div class="cbs__panel" data-panel="css"></div><div class="cbs__panel" data-panel="js"></div>`;
+  const list = document.querySelector(".cbs__tabs");
+  const [css, js] = list.querySelectorAll("button");
+  const picked = [];
+  const tabs = bindTabs(list, {
+    getValue: (tab) => tab.dataset.tab,
+    panelFor: (value) => document.querySelector(`.cbs__panel[data-panel="${value}"]`),
+    onSelect: (value) => picked.push(value),
+  });
+  expect(list.getAttribute("role")).toBe("tablist");
+  expect(css.className).toBe("cbs__tab");
+  expect(tabs.value).toBe("css");
+  expect(document.querySelector('[data-panel="js"]').hidden).toBe(true);
+  css.focus();
+  key(css, "End");
+  expect(picked).toEqual(["js"]);
+  expect(document.activeElement).toBe(js);
+  tabs.select("css");
+  expect(picked).toEqual(["js"]);
+  expect([css.tabIndex, js.tabIndex]).toEqual([0, -1]);
+  expect(document.querySelector('[data-panel="css"]').hidden).toBe(false);
 });

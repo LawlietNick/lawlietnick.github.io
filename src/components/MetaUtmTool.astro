@@ -419,6 +419,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
 <script>
   import { initSelectCombobox } from "../scripts/select-combobox.js";
   import { bindCopy } from "../../packages/ui/copy.js";
+  import { bindTabs } from "../../packages/ui/tabs.js";
   import { filterDirectory, metaUtm, metaUtmParts, previewRows } from "../utils/meta-utm.js";
   import { addComponent, cleanKey, example, formula, levelKeys, levelsFromTemplate, move, newLevels, sameStructure, setLowercase, setSeparator, startValue, validate } from "../utils/meta-naming.js";
 
@@ -537,6 +538,19 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
       const out = q("[data-out]");
       const copyStatus = q("[data-copy-status]");
       const namingStatus = q("[data-naming-status]");
+
+      // The SDK owns tab state and keys; the tool keeps `step` and `activeLevel` and renders from them.
+      // The tabs never scroll the page: only the continue and edit buttons below do.
+      const stepTabs = bindTabs(q(".mu__steptabs"), {
+        getValue: (b) => b.dataset.stepBtn,
+        panelFor: (value) => q(`[data-step="${value}"]`),
+        onSelect: (value) => setStep(value),
+      });
+      const levelTabs = bindTabs(q(".mu__tabs"), {
+        getValue: (b) => b.dataset.levelBtn,
+        panelFor: () => q("#mu-levelpanel"),
+        onSelect: (value) => { activeLevel = value; namingStatus.textContent = ""; renderNaming(); },
+      });
 
       // ---------- UTM step ----------
 
@@ -920,11 +934,8 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
           const [, main, sub] = naming.levels[b.dataset.levelBtn].match(/^(.*?)(?:\s*(\([^)]*\)))?$/);
           b.replaceChildren(`${n + 1}. ${main}`);
           if (sub) b.append(el("span", "mu__tabsub", ` ${sub}`));
-          const on = b.dataset.levelBtn === activeLevel;
-          b.setAttribute("aria-selected", String(on));
-          b.tabIndex = on ? 0 : -1;
         });
-        q("#mu-levelpanel").setAttribute("aria-labelledby", `mu-tab-${activeLevel}`);
+        levelTabs.select(activeLevel);
         qa("[data-sep-btn]").forEach((b) => {
           b.setAttribute("aria-pressed", String(b.dataset.sepBtn === level.separator));
           b.setAttribute("aria-label", sepName(b.dataset.sepBtn));
@@ -967,12 +978,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
 
       function setStep(next, { scroll = false } = {}) {
         step = next;
-        qa("[data-step]").forEach((view) => (view.hidden = view.dataset.step !== step));
-        qa("[data-step-btn]").forEach((b) => {
-          const on = b.dataset.stepBtn === step;
-          b.setAttribute("aria-selected", String(on));
-          b.tabIndex = on ? 0 : -1;
-        });
+        stepTabs.select(step);
         if (step === "utm") { renderBanner(); renderBuilder(); }
         if (scroll) q(".mu__stepbar").scrollIntoView({ block: "start" });
       }
@@ -1028,19 +1034,6 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
       copyButton(q("[data-copy-formula]"), () => formula(levels[activeLevel]), namingStatus, () => L().naming.formulaCopied);
       copyButton(q("[data-copy-example]"), () => nameOf(activeLevel), namingStatus, () => L().naming.exampleCopied);
 
-      // the tabs never scroll the page: only the continue and edit buttons below do
-      qa("[data-step-btn]").forEach((b) => b.addEventListener("click", () => setStep(b.dataset.stepBtn)));
-      qa("[data-level-btn]").forEach((b) => b.addEventListener("click", () => { activeLevel = b.dataset.levelBtn; namingStatus.textContent = ""; renderNaming(); }));
-      qa("[data-step-btn], [data-level-btn]").forEach((b) => b.addEventListener("keydown", (event) => {
-        const all = qa(b.matches("[data-step-btn]") ? "[data-step-btn]" : "[data-level-btn]");
-        const n = all.indexOf(b);
-        const to = { ArrowRight: n + 1, ArrowLeft: n - 1, Home: 0, End: all.length - 1 }[event.key];
-        if (to == null) return;
-        event.preventDefault();
-        const next = all[(to + all.length) % all.length];
-        next.click();
-        next.focus();
-      }));
       qa("[data-sep-btn]").forEach((b) => b.addEventListener("click", () => { setSeparator(levels[activeLevel], b.dataset.sepBtn); renderNaming(); }));
       q("[data-lowercase]").addEventListener("change", (event) => { setLowercase(levels[activeLevel], event.target.checked); renderOutputs(); });
       q("[data-open-naming]").addEventListener("click", () => setStep("naming"));
