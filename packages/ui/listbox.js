@@ -1,7 +1,18 @@
-// <k-listbox>: unstyled select-style combobox (WAI-ARIA combobox + listbox, aria-activedescendant).
-// Options come from child <option value> elements. Add `searchable` to let the user type and filter.
-// Parts carry data-part="label|input|listbox|option|empty" for styling; nothing is styled here.
-// Fires a bubbling `change` event; read the choice from `element.value`.
+// Select-style combobox (WAI-ARIA combobox + listbox, aria-activedescendant), two ways:
+// - bindListbox(input, menu, { options, toggle, mode, onSelect, renderOption, activeClass, homeEnd, emptyText }):
+//   behaviour on existing markup. `options` is a list of [value, label]. The chosen value lives in
+//   input.dataset.value. `menu` needs an id; option ids derive from it.
+//   Modes: "select" (read-only, shows the chosen label), "editable" (any text is the value; the list
+//   filters as the user types and a chosen option puts its value in the input), "search" (typing only
+//   filters; the value changes on choosing, and closing restores the chosen label).
+//   `onSelect()` runs on every choice, and on every keystroke in editable mode. `renderOption(value, label)`
+//   returns the option element (default: a div with the label). `activeClass` is added to the highlighted
+//   option besides data-active. `homeEnd` adds Home/End in open select lists. `emptyText` shows a status
+//   line after the menu when a search finds nothing.
+// - <k-listbox>: the declarative, unstyled element. Options from child <option value>; `searchable`,
+//   `label`, `placeholder`, `value`. Built-in FI/EN strings follow the nearest `lang`. Fires a bubbling
+//   `change` event when the choice changes; read or set it with `element.value`.
+// Parts: data-part="label|input|listbox|option|empty".
 
 const STRINGS = {
   en: { choose: "Choose…", search: "Search…", empty: "No results" },
@@ -10,9 +21,163 @@ const STRINGS = {
 
 let uid = 0;
 
+export function bindListbox(input, menu, { options = [], toggle, mode = "select", onSelect = () => {}, renderOption, activeClass, homeEnd = false, emptyText } = {}) {
+  const editable = mode === "editable";
+  const search = mode === "search";
+  const labelOf = (value) => options.find(([v]) => v === value)?.[1] ?? "";
+  input.readOnly = !editable && !search;
+  input.dataset.part = "input";
+  menu.dataset.part = "listbox";
+
+  const items = options.map(([value, label], index) => {
+    const item = renderOption ? renderOption(value, label) : document.createElement("div");
+    if (!renderOption) item.textContent = label;
+    item.id = `${menu.id}-option-${index}`;
+    item.dataset.part = "option";
+    item.dataset.value = value;
+    item.dataset.filterText = `${value} ${label}`.toLowerCase();
+    item.setAttribute("role", "option");
+    item.setAttribute("aria-selected", String(input.dataset.value === value));
+    if (item instanceof HTMLButtonElement) item.tabIndex = -1;
+    item.addEventListener("mousedown", (event) => event.preventDefault()); // keep focus in the input
+    item.addEventListener("click", () => choose(item));
+    menu.appendChild(item);
+    return item;
+  });
+
+  let empty;
+  if (emptyText) {
+    empty = document.createElement("p");
+    empty.dataset.part = "empty";
+    empty.setAttribute("role", "status");
+    empty.hidden = true;
+    empty.textContent = emptyText;
+    menu.after(empty);
+  }
+
+  let active = -1;
+  const visible = () => items.filter((item) => !item.hidden);
+
+  function setOpen(open) {
+    const any = visible().length > 0;
+    menu.hidden = !open || (search && !any);
+    if (empty) empty.hidden = !open || any;
+    input.setAttribute("aria-expanded", String(!menu.hidden));
+    toggle?.setAttribute("aria-expanded", String(!menu.hidden));
+    if (menu.hidden) input.removeAttribute("aria-activedescendant");
+  }
+
+  function close() {
+    setOpen(false);
+    if (search) input.value = labelOf(input.dataset.value); // drop half-typed search text
+  }
+
+  function openAll() {
+    items.forEach((item) => (item.hidden = false));
+    const selected = visible().findIndex((item) => item.dataset.value === input.dataset.value);
+    active = editable ? selected : Math.max(0, selected);
+    setOpen(true);
+    highlight();
+  }
+
+  function highlight() {
+    const current = visible()[active];
+    for (const item of items) {
+      item.toggleAttribute("data-active", item === current);
+      if (activeClass) item.classList.toggle(activeClass, item === current);
+    }
+    if (current && !menu.hidden) {
+      input.setAttribute("aria-activedescendant", current.id);
+      current.scrollIntoView?.({ block: "nearest" });
+    } else {
+      input.removeAttribute("aria-activedescendant");
+    }
+  }
+
+  function choose(item) {
+    input.value = editable ? item.dataset.value : labelOf(item.dataset.value);
+    input.dataset.value = item.dataset.value;
+    items.forEach((other) => other.setAttribute("aria-selected", String(other === item)));
+    setOpen(false);
+    input.focus();
+    onSelect();
+  }
+
+  input.addEventListener("click", () => (menu.hidden ? openAll() : close()));
+  toggle?.addEventListener("click", () => {
+    if (menu.hidden) openAll();
+    else close();
+    input.focus();
+  });
+
+  if (editable || search) {
+    input.addEventListener("input", () => {
+      const query = input.value.trim().toLowerCase();
+      items.forEach((item) => (item.hidden = !item.dataset.filterText.includes(query)));
+      if (editable) {
+        input.dataset.value = input.value;
+        items.forEach((item) => item.setAttribute("aria-selected", String(item.dataset.value === input.value)));
+        active = -1;
+        setOpen(visible().length > 0);
+      } else {
+        active = visible().length ? 0 : -1;
+        setOpen(true);
+      }
+      highlight();
+      if (editable) onSelect();
+    });
+  }
+
+  input.addEventListener("keydown", (event) => {
+    const open = !menu.hidden;
+    if (event.key === "Tab") {
+      close();
+    } else if (event.key === "Escape") {
+      if (open || (empty && !empty.hidden)) close();
+    } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const list = visible();
+      if (!open) {
+        openAll();
+        return;
+      }
+      if (!list.length) return;
+      active = (active + (event.key === "ArrowDown" ? 1 : list.length - 1)) % list.length;
+      highlight();
+    } else if (homeEnd && open && mode === "select" && (event.key === "Home" || event.key === "End")) {
+      event.preventDefault();
+      active = event.key === "Home" ? 0 : visible().length - 1;
+      highlight();
+    } else if (event.key === "Enter" && open && active >= 0) {
+      event.preventDefault();
+      choose(visible()[active]);
+    } else if (event.key === "Enter" && !editable) {
+      event.preventDefault();
+      openAll();
+    } else if (event.key === " " && mode === "select") {
+      event.preventDefault();
+      if (!open) openAll();
+      else if (active >= 0) choose(visible()[active]);
+    }
+  });
+  input.addEventListener("blur", close);
+
+  return {
+    items,
+    get value() {
+      return input.dataset.value ?? "";
+    },
+    set value(value) {
+      input.dataset.value = value;
+      input.value = editable ? value : labelOf(value);
+      items.forEach((item) => item.setAttribute("aria-selected", String(item.dataset.value === value)));
+    },
+  };
+}
+
 export class KListbox extends HTMLElement {
   connectedCallback() {
-    if (this.input) return; // ponytail: render once; options are read at first connect only
+    if (this.listbox) return; // ponytail: render once; options are read at first connect only
     const id = `k-listbox-${++uid}`;
     const t = STRINGS[(this.closest("[lang]")?.lang || "en").toLowerCase().startsWith("fi") ? "fi" : "en"];
     const searchable = this.hasAttribute("searchable");
@@ -24,9 +189,7 @@ export class KListbox extends HTMLElement {
       label.textContent = this.getAttribute("label");
       this.append(label);
     }
-
-    const input = (this.input = el("input", {
-      "data-part": "input",
+    const input = el("input", {
       id: `${id}-input`,
       type: "text",
       role: "combobox",
@@ -34,122 +197,37 @@ export class KListbox extends HTMLElement {
       "aria-expanded": "false",
       "aria-controls": `${id}-listbox`,
       placeholder: this.getAttribute("placeholder") || (searchable ? t.search : t.choose),
-    }));
+    });
     if (searchable) input.setAttribute("aria-autocomplete", "list");
-    else input.readOnly = true;
-
-    const menu = el("div", { "data-part": "listbox", role: "listbox", id: `${id}-listbox`, hidden: "" });
+    const menu = el("div", { role: "listbox", id: `${id}-listbox`, hidden: "" });
     if (this.hasAttribute("label")) menu.setAttribute("aria-labelledby", `${id}-label`);
-    const empty = el("p", { "data-part": "empty", role: "status", hidden: "" });
-    empty.textContent = t.empty;
+    this.append(input, menu);
 
-    this.items = options.map(([value, text], i) => {
-      const item = el("div", { "data-part": "option", role: "option", id: `${id}-option-${i}`, "aria-selected": "false" });
-      item.dataset.value = value;
-      item.textContent = text;
-      item.addEventListener("mousedown", (e) => e.preventDefault()); // keep focus in the input
-      item.addEventListener("click", () => this.choose(item));
-      menu.append(item);
-      return item;
+    let current = this.getAttribute("value") ?? "";
+    input.dataset.value = current;
+    this.listbox = bindListbox(input, menu, {
+      options,
+      mode: searchable ? "search" : "select",
+      homeEnd: true,
+      emptyText: t.empty,
+      onSelect: () => {
+        if (input.dataset.value === current) return;
+        current = input.dataset.value;
+        this.dispatchEvent(new Event("change", { bubbles: true }));
+      },
     });
-    this.append(input, menu, empty);
-    this.menu = menu;
-    this.empty = empty;
-    this.active = -1;
-
-    const visible = () => this.items.filter((item) => !item.hidden);
-    const move = (step) => {
-      const list = visible();
-      if (!list.length) return;
-      this.active = (this.active + step + list.length) % list.length;
-      this.highlight();
-    };
-
-    input.addEventListener("click", () => (menu.hidden ? this.open() : this.close()));
-    input.addEventListener("blur", () => this.close());
-    input.addEventListener("input", () => {
-      const query = input.value.trim().toLowerCase();
-      this.items.forEach((item) => (item.hidden = !item.textContent.toLowerCase().includes(query)));
-      this.active = visible().length ? 0 : -1;
-      this.setOpen(true);
-      this.highlight();
-    });
-    input.addEventListener("keydown", (e) => {
-      const open = !menu.hidden;
-      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-        e.preventDefault();
-        if (open) move(e.key === "ArrowDown" ? 1 : -1);
-        else this.open();
-      } else if (e.key === "Home" && open && !searchable) {
-        e.preventDefault();
-        this.active = 0;
-        this.highlight();
-      } else if (e.key === "End" && open && !searchable) {
-        e.preventDefault();
-        this.active = visible().length - 1;
-        this.highlight();
-      } else if (e.key === "Enter" || (e.key === " " && !searchable)) {
-        e.preventDefault();
-        if (open && this.active >= 0) this.choose(visible()[this.active]);
-        else if (!open) this.open();
-      } else if (e.key === "Escape" && (open || !this.empty.hidden)) {
-        e.preventDefault();
-        this.close();
-      } else if (e.key === "Tab") {
-        this.close();
-      }
-    });
-
-    this.value = this.getAttribute("value") ?? "";
+    this.listbox.value = current;
+    this.setCurrent = (value) => (current = value);
   }
 
   get value() {
-    return this.items?.find((item) => item.getAttribute("aria-selected") === "true")?.dataset.value ?? "";
+    return this.listbox?.value ?? "";
   }
 
   set value(value) {
-    const match = this.items?.find((item) => item.dataset.value === value);
-    this.items?.forEach((item) => item.setAttribute("aria-selected", String(item === match)));
-    if (this.input) this.input.value = match ? match.textContent : "";
-  }
-
-  open() {
-    this.items.forEach((item) => (item.hidden = false));
-    this.active = Math.max(0, this.items.findIndex((item) => item.getAttribute("aria-selected") === "true"));
-    this.setOpen(true);
-    this.highlight();
-  }
-
-  close() {
-    this.setOpen(false);
-    this.value = this.value; // drop half-typed search text, show the chosen label again
-  }
-
-  choose(item) {
-    const changed = item.dataset.value !== this.value;
-    this.value = item.dataset.value;
-    this.setOpen(false);
-    this.input.focus();
-    if (changed) this.dispatchEvent(new Event("change", { bubbles: true }));
-  }
-
-  setOpen(open) {
-    const any = this.items.some((item) => !item.hidden);
-    this.menu.hidden = !open || !any;
-    this.empty.hidden = !open || any;
-    this.input.setAttribute("aria-expanded", String(!this.menu.hidden));
-    if (this.menu.hidden) this.input.removeAttribute("aria-activedescendant");
-  }
-
-  highlight() {
-    const current = this.items.filter((item) => !item.hidden)[this.active];
-    this.items.forEach((item) => item.toggleAttribute("data-active", item === current));
-    if (current && !this.menu.hidden) {
-      this.input.setAttribute("aria-activedescendant", current.id);
-      current.scrollIntoView?.({ block: "nearest" });
-    } else {
-      this.input.removeAttribute("aria-activedescendant");
-    }
+    if (!this.listbox) return;
+    this.setCurrent(value);
+    this.listbox.value = value;
   }
 }
 
