@@ -6,7 +6,7 @@
     "name": "Niko Karppinen",
     "url": "https://karppinen.one"
   },
-  "generated": "2026-10-04T00:00:00Z",
+  "generated": "2026-11-25T00:00:00Z",
   "verificationStatus": "generator-draft",
   "entities": [
     {
@@ -181,6 +181,78 @@
           "publisher": "Niko Karppinen",
           "retrieved": "2026-10-04T00:00:00Z",
           "contentType": "procedure"
+        }
+      ],
+      "relations": [
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+      ]
+    },
+    {
+      "entityId": "e_019",
+      "@type": "karppinen:Tool",
+      "name": "Meta CampaignCraft",
+      "description": "A browser tool that builds a naming convention for Meta campaigns, ad sets and ads, and a copyable UTM string whose values Meta fills in dynamically.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_029",
+          "text": "Build a naming convention for campaigns, ad sets and ads, then a copyable UTM string. Source, campaign, ad and IDs are filled in dynamically from Meta.",
+          "sourceUrl": "https://karppinen.one/tools/meta-campaigncraft/",
+          "pageTitle": "Meta CampaignCraft",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-11-25T00:00:00Z",
+          "contentType": "procedure"
+        }
+      ],
+      "relations": [
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+      ]
+    },
+    {
+      "entityId": "e_020",
+      "@type": "karppinen:Tool",
+      "name": "GA4 annotation builder",
+      "description": "A browser tool that turns a change you want to remember into a ready Google Analytics 4 annotation from an event template.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_030",
+          "text": "Record a change you want to remember when reading the data. Pick an event template, complete the text and copy a ready annotation into Google Analytics 4.",
+          "sourceUrl": "https://karppinen.one/tools/ga4-annotations/",
+          "pageTitle": "GA4 annotation builder",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-11-25T00:00:00Z",
+          "contentType": "procedure"
+        },
+        {
+          "chunkId": "c_031",
+          "text": "Use the title for what happened. Use the description for the target, the reason for the change or a note on how to read the data. Keep the goal apart from the observed effect: a campaign launch does not yet tell you its results.",
+          "sourceUrl": "https://karppinen.one/tools/ga4-annotations/",
+          "pageTitle": "GA4 annotation builder",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-11-25T00:00:00Z",
+          "contentType": "definition"
+        }
+      ],
+      "relations": [
+        { "predicate": "AUTHORED_BY", "targetId": "e_002", "targetName": "Niko Karppinen" }
+      ]
+    },
+    {
+      "entityId": "e_021",
+      "@type": "karppinen:Tool",
+      "name": "GA4 referral exclusions for payment providers",
+      "description": "A browser tool that lists payment provider domains to add to GA4's unwanted referrals, so sales are not credited to the payment provider after checkout.",
+      "audienceType": "technical",
+      "hasChunks": [
+        {
+          "chunkId": "c_032",
+          "text": "The customer pays on the payment provider's page and returns to the webshop. GA4 may treat the return as a new traffic source and record the purchase as a referral, so the ad or search engine that brought the customer in gets no credit. The list below tells GA4 that a payment provider is not a traffic source.",
+          "sourceUrl": "https://karppinen.one/tools/referral-exclusions/",
+          "pageTitle": "Google Analytics Referral Exclusions",
+          "publisher": "Niko Karppinen",
+          "retrieved": "2026-11-25T00:00:00Z",
+          "contentType": "definition"
         }
       ],
       "relations": [
