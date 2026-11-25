@@ -22,7 +22,7 @@ export const siteConfig = {
     familyName: "Karppinen",
     aboutPath: "/about/",
     // Update only when the actual English or Finnish profile content changes.
-    profileDateModified: "2026-08-07",
+    profileDateModified: "2026-11-25",
     jobTitle: "Senior SEO & Analytics Consultant",
     description: "Niko Karppinen helps teams make digital work measurable through SEO, analytics, technical implementation and AI-assisted workflows.",
     employerId: "https://agencybobble.com/#organization",

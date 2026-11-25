@@ -13,10 +13,10 @@ export const appearances = [
     ],
     inLanguage: "fi",
     en: {
-      description: "A conversation about cookies, web analytics, AI and the changing role of search engine optimisation.",
+      description: "We talked about cookies and consent banners: what “necessary only” means and why refusing should be as easy as accepting. We also talked about cookieless analytics, the limits of AI in content and how to start SEO for a new product.",
     },
     fi: {
-      description: "Keskustelimme evästeistä, web-analytiikasta, tekoälystä ja hakukoneoptimoinnin muutoksesta.",
+      description: "Keskustelimme evästeistä ja evästebannereista: mitä \"vain välttämättömät\" tarkoittaa ja miksi kieltämisen pitäisi olla yhtä helppoa kuin hyväksymisen. Puhuimme myös evästeettömästä analytiikasta, tekoälyn rajoista sisällöntuotannossa ja siitä, miten SEO aloitetaan uudelle tuotteelle.",
     },
   },
   {
@@ -27,10 +27,10 @@ export const appearances = [
     url: "https://open.spotify.com/episode/4Xd0GatdQM4a3fNSku2ljb",
     inLanguage: "fi",
     en: {
-      description: "A conversation about measuring SEO, analytics and evaluating content performance.",
+      description: "We talked about how to build SEO measurement and why no single tool solves it all. We also talked about how to measure content reading, how to categorise pages and how to track multilingual sites, plus using AI in reporting.",
     },
     fi: {
-      description: "Keskustelimme SEO:n mittaamisesta, analytiikasta ja sisältöjen toimivuuden arvioinnista.",
+      description: "Keskustelimme siitä, miten SEO:n mittaamista kannattaa rakentaa ja miksi yksi työkalu ei ratkaise kaikkea. Puhuimme myös siitä, miten sisällön lukemista mitataan, miten sivut kategorisoidaan ja miten monikielisiä sivustoja seurataan, sekä tekoälyn käytöstä raportoinnissa.",
     },
   },
 ];
