@@ -8,8 +8,18 @@ import Appearances from "../../components/Appearances.astro";
 import { contactUrl } from "../../data/site.js";
 ---
 
-<Base title="Minusta" description="Niko Karppinen on SEO- ja analytiikkakonsultti, jonka työhön kuuluvat digitaalinen mittaaminen, seurannan toteutukset ja verkkosivustojen kehittäminen." schemaPageType="about">
+<Base title="Minusta" documentTitle="Kuka on Niko Karppinen? Tausta ja työtapa" description="Niko Karppinen on SEO- ja analytiikkakonsultti, jonka työhön kuuluvat digitaalinen mittaaminen, seurannan toteutukset ja verkkosivustojen kehittäminen." schemaPageType="about">
   <AboutIntro fi={true} />
+
+  <SplitSection id="facts" variant="about">
+    <Fragment slot="title">
+      <h2>Lyhyesti</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>Niko Karppinen on helsinkiläinen SEO- ja analytiikkakonsultti. Hän työskentelee Agency Bobblella Senior SEO &amp; Analytics Consultantina. SEO, analytiikka ja digimarkkinointi ovat olleet hänen työnsä vuodesta 2017.</p>
+      <p>Niko on tehnyt töitä verkkokaupan, televiestinnän, vakuutusalan, terveydenhuollon ja julkisen sektorin sekä B2B- ja kuluttajapalvelujen parissa. Hän on kouluttanut SEO:ta, verkkoanalytiikkaa ja markkinoinnin automaatiota vuodesta 2018, muun muassa Rastor-instituutissa ja Professiolla. Analytiikasta, SEO:sta ja tekoälystä hän kirjoittaa tällä sivustolla.</p>
+    </Fragment>
+  </SplitSection>
 
   <Appearances fi={true} />
 

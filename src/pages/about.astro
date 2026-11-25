@@ -8,8 +8,18 @@ import Appearances from "../components/Appearances.astro";
 import { contactUrl } from "../data/site.js";
 ---
 
-<Base title="About Niko Karppinen" description="Niko Karppinen is an SEO and analytics consultant working across digital measurement, technical implementation and practical digital systems." schemaPageType="about">
+<Base title="About Niko Karppinen" documentTitle="About Niko Karppinen: Background and Approach" description="Niko Karppinen is an SEO and analytics consultant working across digital measurement, technical implementation and practical digital systems." schemaPageType="about">
   <AboutIntro />
+
+  <SplitSection id="facts" variant="about">
+    <Fragment slot="title">
+      <h2>In short</h2>
+    </Fragment>
+    <Fragment slot="copy">
+      <p>Niko Karppinen is a Helsinki-based SEO and analytics consultant. Niko works as Senior SEO &amp; Analytics Consultant at Agency Bobble. Niko has worked with SEO, analytics and digital marketing since 2017.</p>
+      <p>Niko has worked with organisations in ecommerce, telecommunications, insurance, healthcare, the public sector, B2B and consumer services. Since 2018, Niko has taught SEO, web analytics and marketing automation, including at Rastor-instituutti and Professio. Niko writes about analytics, SEO and AI on this site.</p>
+    </Fragment>
+  </SplitSection>
 
   <Appearances />
 
