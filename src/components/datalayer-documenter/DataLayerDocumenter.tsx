@@ -4,7 +4,6 @@ import {
   buildMarkdown,
   createInitialState,
   documentFilename,
-  downloadBlob,
   parseSavedState,
   selectedSections,
   type DocumentParameter,
@@ -13,6 +12,9 @@ import {
   type DocumentState,
 } from "./engine";
 import "./datalayer-documenter.css";
+import { downloadFile } from "../../../packages/ui/download.js";
+import { nextMessage } from "../../../packages/ui/status.js";
+import { storedState } from "../../../packages/ui/storage.js";
 
 const STORAGE_KEY = "nk:datalayer-documenter:v1";
 
@@ -58,14 +60,17 @@ const PrintText = ({ value }: { value: string }) => <span className="dl-print" a
 export default function DataLayerDocumenter() {
   const [state, setState] = useState<DocumentState>(createInitialState);
   const [saveStatus, setSaveStatus] = useState("Luonnos tallennetaan tähän selaimeen.");
-  const [exportStatus, setExportStatus] = useState("");
+  const [exportStatus, setExportText] = useState("");
+  // a repeated message (download twice) must still reach screen readers
+  const setExportStatus = (text: string) => setExportText((previous) => nextMessage(previous, text));
+  const store = storedState(STORAGE_KEY);
   const [exportingDocx, setExportingDocx] = useState(false);
   const hydrated = useRef(false);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = store.get(null);
       if (saved) {
         setState(parseSavedState(saved));
         setSaveStatus("Aiempi luonnos palautettiin tästä selaimesta.");
@@ -82,12 +87,9 @@ export default function DataLayerDocumenter() {
     setSaveStatus("Tallennetaan luonnosta...");
     clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        setSaveStatus("Luonnos tallennettu tähän selaimeen.");
-      } catch {
-        setSaveStatus("Luonnosta ei voitu tallentaa. Vie dokumentti ennen sivulta poistumista.");
-      }
+      setSaveStatus(store.set(state)
+        ? "Luonnos tallennettu tähän selaimeen."
+        : "Luonnosta ei voitu tallentaa. Vie dokumentti ennen sivulta poistumista.");
     }, 350);
     return () => clearTimeout(saveTimer.current);
   }, [state]);
@@ -126,13 +128,13 @@ export default function DataLayerDocumenter() {
 
   const reset = () => {
     if (!window.confirm("Palautetaanko alkuperäinen sisältöpohja? Nykyisiä muutoksia ei voi palauttaa.")) return;
-    localStorage.removeItem(STORAGE_KEY);
+    store.remove();
     setState(createInitialState());
     setExportStatus("Alkuperäinen sisältöpohja palautettu.");
   };
 
   const downloadMarkdown = () => {
-    downloadBlob(new Blob([buildMarkdown(state)], { type: "text/markdown;charset=utf-8" }), documentFilename(state, "md"));
+    downloadFile(buildMarkdown(state), documentFilename(state, "md"), "text/markdown;charset=utf-8");
     setExportStatus("Markdown-tiedosto ladattu.");
   };
 
@@ -140,7 +142,7 @@ export default function DataLayerDocumenter() {
     setExportingDocx(true);
     setExportStatus("Muodostetaan DOCX-tiedostoa...");
     try {
-      downloadBlob(await buildDocxBlob(state), documentFilename(state, "docx"));
+      downloadFile(await buildDocxBlob(state), documentFilename(state, "docx"));
       setExportStatus("DOCX-tiedosto ladattu.");
     } catch (error) {
       console.error("DOCX export failed", error);

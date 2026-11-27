@@ -23,6 +23,9 @@ import {
 import { FI_DESCRIPTIONS, FI_GROUPS, FI_MESSAGES, FI_NECESSITY } from "./fi";
 import "./gtm-builder.css";
 import { copyText } from "../../../packages/ui/copy.js";
+import { nextMessage } from "../../../packages/ui/status.js";
+import { storedState } from "../../../packages/ui/storage.js";
+import { downloadFile } from "../../../packages/ui/download.js";
 
 const SOURCES = {
   individual: individualTemplate as GtmRecord,
@@ -103,8 +106,11 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
   const [namingConvention, setNamingConvention] = useState<TagNamingConvention>("numbered");
   const [state, setState] = useState(() => createBuilderState(SOURCES.individual));
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [status, setStatus] = useState(() => tr("Choose the tags you need. Dependencies are handled automatically.", "Valitse tarvitsemasi tagit. Riippuvuudet lisätään automaattisesti."));
+  const [status, setStatusText] = useState(() => tr("Choose the tags you need. Dependencies are handled automatically.", "Valitse tarvitsemasi tagit. Riippuvuudet lisätään automaattisesti."));
+  // a repeated message (copy twice) must still reach screen readers
+  const setStatus = (text: string) => setStatusText((previous) => nextMessage(previous, text));
   const recovered = useRef(false);
+  const store = storedState(STORAGE_KEY);
   const source = useMemo(
     () => applyTagNamingConvention(SOURCES[mode], namingConvention),
     [mode, namingConvention],
@@ -116,9 +122,9 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = store.get(null);
       if (saved) {
-        const parsed = JSON.parse(saved);
+        const parsed = saved as any;
         const fingerprint = String(parsed?.sourceFingerprint ?? "");
         const savedMode = (Object.keys(SOURCES) as TemplateMode[]).find(
           (candidate) => String(SOURCES[candidate].containerVersion.fingerprint) === fingerprint,
@@ -142,8 +148,7 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
 
   useEffect(() => {
     if (!recovered.current) return;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, templateMode: mode, namingConvention })); }
-    catch { setStatus(tr("Automatic saving is unavailable in this browser.", "Automaattinen tallennus ei ole käytettävissä tässä selaimessa.")); }
+    if (!store.set({ ...state, templateMode: mode, namingConvention })) { setStatus(tr("Automatic saving is unavailable in this browser.", "Automaattinen tallennus ei ole käytettävissä tässä selaimessa.")); }
   }, [state, mode, namingConvention]);
 
   const setting = (key: keyof BuilderSettings, value: string) => {
@@ -193,13 +198,9 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
 
   const download = () => {
     if (!ready) return;
-    const url = URL.createObjectURL(new Blob([generateSelectedJson(state, source)], { type: "application/json" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = state.settings.outputFilename;
-    link.click();
-    URL.revokeObjectURL(url);
-    setStatus(tr(`Downloaded ${link.download}.`, `Ladattiin ${link.download}.`));
+    const filename = state.settings.outputFilename;
+    downloadFile(generateSelectedJson(state, source), filename, "application/json");
+    setStatus(tr(`Downloaded ${filename}.`, `Ladattiin ${filename}.`));
   };
 
   // ponytail: rebuilds the 138 KB container per state change; key on state.selectedTagIds if typing feels laggy
@@ -395,7 +396,7 @@ export default function GtmContainerBuilder({ fi = false }: { fi?: boolean }) {
                 {previewOpen && <textarea aria-label={tr("Generated GTM JSON", "Luotu GTM-JSON")} readOnly spellCheck={false} value={generateSelectedJson(state, source)} />}
               </details>
             )}
-            <button className="gtm-reset" type="button" onClick={() => { localStorage.removeItem(STORAGE_KEY); setState(createBuilderState(source)); setStatus(tr("Builder reset to the source defaults.", "Valinnat palautettiin lähdesäiliön oletuksiin.")); }}>{tr("Reset choices", "Palauta valinnat")}</button>
+            <button className="gtm-reset" type="button" onClick={() => { store.remove(); setState(createBuilderState(source)); setStatus(tr("Builder reset to the source defaults.", "Valinnat palautettiin lähdesäiliön oletuksiin.")); }}>{tr("Reset choices", "Palauta valinnat")}</button>
           </div>
         </aside>
       </div>

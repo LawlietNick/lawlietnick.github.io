@@ -16,7 +16,7 @@ const t = fi ? {
 <dialog id="image-modal" class="image-modal" aria-labelledby="image-modal-title" aria-describedby="image-modal-caption" data-enlarge={t.enlarge} data-loading={t.loading} data-error={t.error}>
   <header class="image-modal__header">
     <h2 id="image-modal-title">{t.title}</h2>
-    <button type="button" data-image-action="close" autofocus>
+    <button type="button" commandfor="image-modal" command="close" data-image-action="close" autofocus>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
       {t.close}
     </button>

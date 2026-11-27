@@ -126,6 +126,7 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
   // @ts-ignore: plain JavaScript module
   import { initSelectCombobox } from "../scripts/select-combobox.js";
   import { bindCopy } from "../../packages/ui/copy.js";
+  import { announce } from "../../packages/ui/status.js";
 
   type Option = [string, string];
   const chevron = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>`;
@@ -388,7 +389,7 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
       if (ok) {
         const button = isTitle ? titleCopy : descriptionCopy;
         button.textContent = copy.copied;
-        status.textContent = isTitle ? copy.titleCopied : copy.descriptionCopied;
+        announce(status, isTitle ? copy.titleCopied : copy.descriptionCopied);
         window.setTimeout(() => { button.textContent = isTitle ? copy.copyTitle : copy.copyDescription; }, 2500);
       } else {
         closeSuggestions(true);
@@ -396,7 +397,7 @@ const configJson = JSON.stringify({ ui, copy }).replace(/</g, "\\u003c");
         field.select();
         const message = isTitle ? fill(copy.titleCopyFailed, { code: code() }) : copy.descriptionCopyFailed;
         el(isTitle ? "[data-title-help]" : "[data-description-help]").textContent = message;
-        status.textContent = message;
+        announce(status, message);
       }
     }
     bindCopy(titleCopy, { text: fullTitle, quiet: true });

@@ -328,8 +328,8 @@ export function outputCounts(output: GtmRecord) {
   };
 }
 
-export function parseBuilderState(text: string, source: GtmRecord): BuilderState {
-  const parsed = JSON.parse(text);
+export function parseBuilderState(saved: string | unknown, source: GtmRecord): BuilderState {
+  const parsed = (typeof saved === "string" ? JSON.parse(saved) : saved) as any;
   if (parsed?.version !== 1 || parsed?.sourceFingerprint !== String(source.containerVersion.fingerprint)) {
     throw new Error("Saved choices do not match this GTM template.");
   }

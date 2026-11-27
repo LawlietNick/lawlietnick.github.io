@@ -419,6 +419,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
 <script>
   import { initSelectCombobox } from "../scripts/select-combobox.js";
   import { bindCopy } from "../../packages/ui/copy.js";
+  import { announce } from "../../packages/ui/status.js";
   import { bindTabs } from "../../packages/ui/tabs.js";
   import { bindToggleGroup } from "../../packages/ui/toggle-group.js";
   import { bindDialog } from "../../packages/ui/dialog.js";
@@ -689,7 +690,7 @@ const separators = [["_", "_"], ["-", "-"], ["|", "|"], ["/", "/"], [" ", t.nami
       // The SDK button copies; the tool keeps its own status line. `done` runs at click time so the text follows the UI language.
       function copyButton(button, text, statusEl, done) {
         bindCopy(button, { text, quiet: true });
-        button.addEventListener("k-copy", (event) => (statusEl.textContent = event.detail.ok ? done() : L().ui.copyError));
+        button.addEventListener("k-copy", (event) => announce(statusEl, event.detail.ok ? done() : L().ui.copyError));
       }
 
       // ---------- Naming step ----------

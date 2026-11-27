@@ -46,8 +46,16 @@ Every module also loads on a server (Astro frontmatter, Node tests). The custom 
 | `dialog` | `bindDialog` | none | none | Modal dialog |
 | `disclosure` | `bindDisclosure` | `<k-disclosure>` | `Disclosure.astro` | Show/hide panel or popup menu |
 | `listbox` | `bindListbox` | `<k-listbox>` | `Listbox.astro` | Select-style combobox |
-| `tabs` | `bindTabs` | `<k-tabs>` | `Tabs.astro` | Tabs with roving tabindex |
+| `tabs` | `bindTabs` | `<k-tabs>` | `Tabs.astro` | Tabs with roving tabindex; vertical with `aria-orientation` |
 | `toggle-group` | `bindToggleGroup` | `<k-toggle-group>` | `ToggleGroup.astro` | Single-choice toggle buttons |
+
+Helpers without markup of their own:
+
+| Module | Function | Does |
+| --- | --- | --- |
+| `status` | `announce`, `nextMessage` | Writes a message to a live region so a repeat is still read (`nextMessage` for React state) |
+| `storage` | `storedState` | One localStorage entry, JSON in and out, never throws when storage is blocked |
+| `download` | `downloadFile` | Saves a string or Blob as a file |
 
 The options of each function are documented at the top of its `.js` file and in its `.d.ts` file.
 

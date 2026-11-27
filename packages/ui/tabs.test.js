@@ -35,6 +35,21 @@ test("wires tabs to their own panels and moves with arrow keys, Home and End", (
   expect(changes).toBe(3);
 });
 
+test("a vertical tab list moves with Up and Down only", () => {
+  document.body.innerHTML = `<div aria-orientation="vertical"><button value="a">A</button><button value="b">B</button></div>`;
+  const list = document.querySelector("div");
+  const tabs = bindTabs(list);
+  const [a, b] = list.querySelectorAll("button");
+  a.focus();
+  press(a, "ArrowRight");
+  expect(tabs.value).toBe("a");
+  press(a, "ArrowDown");
+  expect(tabs.value).toBe("b");
+  list.setAttribute("aria-orientation", "horizontal");
+  press(b, "ArrowRight");
+  expect(tabs.value).toBe("a");
+});
+
 test("a shared panel follows the selected tab", () => {
   const { tabs, buttons, panels } = mount(`<k-tabs value="html">
     <button value="css">CSS</button><button value="html">HTML</button><pre data-panel="">code</pre></k-tabs>`);

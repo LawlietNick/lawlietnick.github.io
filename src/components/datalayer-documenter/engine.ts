@@ -495,8 +495,8 @@ export const createInitialState = (): DocumentState => ({
   sections: structuredClone(initialSections),
 });
 
-export function parseSavedState(value: string): DocumentState {
-  const parsed = JSON.parse(value) as DocumentState;
+export function parseSavedState(value: string | unknown): DocumentState {
+  const parsed = (typeof value === "string" ? JSON.parse(value) : value) as DocumentState;
   if (parsed?.version !== 1 || !parsed.settings || !Array.isArray(parsed.sections)) throw new Error("Tallennettu luonnos ei ole yhteensopiva.");
   const byId = new Map(parsed.sections.map((section) => [section.id, section]));
   const known = initialSections.map((section) => byId.get(section.id) ? { ...structuredClone(section), ...byId.get(section.id) } : structuredClone(section));
@@ -766,11 +766,3 @@ export async function buildDocxBlob(state: DocumentState, logoOverride?: ArrayBu
   return Packer.toBlob(document);
 }
 
-export function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 0);
-}

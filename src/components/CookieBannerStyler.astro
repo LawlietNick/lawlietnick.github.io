@@ -829,6 +829,7 @@ const alignFields = [
 
 <script>
   import { bindCopy } from "../../packages/ui/copy.js";
+  import { storedState } from "../../packages/ui/storage.js";
   import { bindTabs } from "../../packages/ui/tabs.js";
   import { bindToggleGroup } from "../../packages/ui/toggle-group.js";
 
@@ -842,10 +843,8 @@ const alignFields = [
     const baseCss = root.querySelector("#cbs-base").value;
     const bodyContrast = root.querySelector("#cbs-body-contrast");
 
-    const storageKey = "cookiebot-banner-styler";
-    let savedState = {};
-    try { savedState = JSON.parse(localStorage.getItem(storageKey)) || {}; } catch {}
-    const state = { ...defaults, ...savedState };
+    const store = storedState("cookiebot-banner-styler");
+    const state = { ...defaults, ...(store.get({}) || {}) };
 
     // apply a CSS variable to the live preview's banner element
     const applyVar = (cssVar, value) => {
@@ -977,7 +976,7 @@ const alignFields = [
       applyVar("--cb-description-align", state.descriptionAlign);
       cssOut.value = buildCss() + buildSelectionCss() + buildToggleCss();
       checkContrast();
-      localStorage.setItem(storageKey, JSON.stringify(state));
+      store.set(state);
     };
 
     // colour inputs (+ synced hex fields)

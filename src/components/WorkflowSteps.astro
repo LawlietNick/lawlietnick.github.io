@@ -54,6 +54,8 @@ const { id, label, steps, outcomeLabel = "Output", previousLabel = "Previous ste
 </workflow-steps>
 
 <script>
+  import { bindTabs } from "../../packages/ui/tabs.js";
+
   class WorkflowSteps extends HTMLElement {
     wideLayout = matchMedia("(min-width: 768px)");
     updateOrientation = () => {
@@ -78,13 +80,9 @@ const { id, label, steps, outcomeLabel = "Output", previousLabel = "Previous ste
       const next = this.querySelector<HTMLButtonElement>("[data-next]")!;
       if (!tabs.length) return;
       let current = 0;
-      const select = (index: number, focus = false) => {
+      // the SDK owns the tabs (roles, keys, panels); this adds the progress bar, step counter and step buttons
+      const update = (index: number, focus = false) => {
         current = index;
-        tabs.forEach((tab, i) => {
-          tab.setAttribute("aria-selected", String(i === index));
-          tab.tabIndex = i === index ? 0 : -1;
-          panels[i].hidden = i !== index;
-        });
         previous.disabled = index === 0;
         next.disabled = index === tabs.length - 1;
         progress.setAttribute("aria-valuenow", String(index + 1));
@@ -96,32 +94,23 @@ const { id, label, steps, outcomeLabel = "Output", previousLabel = "Previous ste
           panels[index].animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 180, easing: "ease-out" });
         }
       };
-      tablist.setAttribute("role", "tablist");
       tablist.setAttribute("aria-label", this.getAttribute("aria-label") || "Workflow");
-      tabs.forEach((tab, index) => {
-        tab.setAttribute("role", "tab");
-        tab.setAttribute("aria-controls", panels[index].id);
-        panels[index].setAttribute("role", "tabpanel");
-        panels[index].setAttribute("aria-labelledby", tab.id);
-        panels[index].tabIndex = 0;
-        tab.addEventListener("click", () => select(index));
-        tab.addEventListener("keydown", (event) => {
-          let target = index;
-          if (event.key === (this.wideLayout.matches ? "ArrowDown" : "ArrowRight")) target = (index + 1) % tabs.length;
-          else if (event.key === (this.wideLayout.matches ? "ArrowUp" : "ArrowLeft")) target = (index - 1 + tabs.length) % tabs.length;
-          else if (event.key === "Home") target = 0;
-          else if (event.key === "End") target = tabs.length - 1;
-          else return;
-          event.preventDefault();
-          select(target, true);
-        });
+      panels.forEach((panel) => (panel.tabIndex = 0));
+      const stepTabs = bindTabs(tablist, {
+        getValue: (tab) => tab.dataset.step ?? "",
+        panelFor: (value) => panels[Number(value)],
+        onSelect: (value) => update(Number(value)),
       });
-      previous.addEventListener("click", () => select(Math.max(0, current - 1), true));
-      next.addEventListener("click", () => select(Math.min(tabs.length - 1, current + 1), true));
+      const select = (index: number) => {
+        stepTabs.select(String(index));
+        update(index, true);
+      };
+      previous.addEventListener("click", () => select(Math.max(0, current - 1)));
+      next.addEventListener("click", () => select(Math.min(tabs.length - 1, current + 1)));
       this.dataset.ready = "true";
       this.querySelector<HTMLElement>(".workflow__navigation")!.hidden = false;
       controls.hidden = false;
-      select(0);
+      update(0);
     }
   }
   if (!customElements.get("workflow-steps")) customElements.define("workflow-steps", WorkflowSteps);

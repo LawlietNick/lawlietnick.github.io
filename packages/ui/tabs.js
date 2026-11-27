@@ -5,6 +5,8 @@
 //   shared panel's content is swapped. Per-tab panels are shown and hidden; a shared panel follows the
 //   selected tab's label. `onSelect(value)` runs when the user picks a different tab (click, Left/Right
 //   wrapping, Home, End). Returns { select(value), value }; select() from code never calls onSelect.
+//   With aria-orientation="vertical" on `list`, Up/Down move instead of Left/Right; the attribute is read
+//   on each key press, so a layout that turns the list at a breakpoint only has to update the attribute.
 // - <k-tabs>: the declarative element. Direct children: <button value="…"> tabs (wrapped in a generated
 //   tablist div) and panels marked data-panel="…", or one shared data-panel="". `label` names the tab list.
 //   Fires a bubbling `change` event; read or set the choice with `element.value`.
@@ -39,7 +41,9 @@ export function bindTabs(list, { getValue = (tab) => tab.value, panelFor = () =>
     const n = tabs.indexOf(document.activeElement);
     if (n < 0) return;
     const last = tabs.length - 1;
-    const to = { ArrowRight: n === last ? 0 : n + 1, ArrowLeft: n === 0 ? last : n - 1, Home: 0, End: last }[e.key];
+    const vertical = list.getAttribute("aria-orientation") === "vertical";
+    const [forward, back] = vertical ? ["ArrowDown", "ArrowUp"] : ["ArrowRight", "ArrowLeft"];
+    const to = { [forward]: n === last ? 0 : n + 1, [back]: n === 0 ? last : n - 1, Home: 0, End: last }[e.key];
     if (to === undefined) return;
     e.preventDefault();
     pick(tabs[to]);

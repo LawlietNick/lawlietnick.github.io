@@ -42,3 +42,14 @@ test("closing keeps focus where the caller moved it, or skips the return on requ
   d.close({ restoreFocus: false });
   expect(document.activeElement.id).not.toBe("open");
 });
+
+test("trapFocus keeps Tab inside a native dialog", () => {
+  document.body.innerHTML = `<button id="open">Open</button><dialog><button id="a">A</button><button id="b">B</button></dialog>`;
+  const dialog = document.querySelector("dialog");
+  dialog.showModal ??= function () { this.open = true; };
+  const controller = bindDialog(dialog, { trapFocus: true, initialFocus: () => dialog.querySelector("#a") });
+  controller.open(document.querySelector("#open"));
+  document.querySelector("#b").focus();
+  press(document.querySelector("#b"), "Tab");
+  expect(document.activeElement.id).toBe("a");
+});

@@ -17,6 +17,9 @@
     "./toggle-group": "./toggle-group.js",
     "./ToggleGroup.astro": "./ToggleGroup.astro",
     "./testing": "./testing.js",
-    "./ui.css": "./ui.css"
+    "./ui.css": "./ui.css",
+    "./status": "./status.js",
+    "./storage": "./storage.js",
+    "./download": "./download.js"
   }
 }

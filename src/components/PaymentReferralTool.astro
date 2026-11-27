@@ -151,6 +151,7 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
 <script>
   import { bigRegexes, ga4RowLimit, ownDomainRows } from "../utils/referral-exclusions.js";
   import { copyText } from "../../packages/ui/copy.js";
+  import { storedState } from "../../packages/ui/storage.js";
 
   const init = () => {
     document.querySelectorAll("[data-payment-referrals]").forEach((root) => {
@@ -169,18 +170,8 @@ const config = { script: { ...t.script, ownTag: t.own.tag, exampleTag: t.own.exa
       const chrome = root.querySelector("[data-chrome]");
 
       // Both the done marks and the group layout are remembered in this browser only
-      const read = (key, fallback) => {
-        try {
-          return JSON.parse(localStorage.getItem(key) ?? "") ?? fallback;
-        } catch {
-          return fallback;
-        }
-      };
-      const write = (key, value) => {
-        try {
-          localStorage.setItem(key, JSON.stringify(value));
-        } catch {}
-      };
+      const read = (key, fallback) => storedState(key).get(fallback) ?? fallback;
+      const write = (key, value) => storedState(key).set(value);
       const doneKey = "referral-exclusions-done";
       const groupsKey = "referral-exclusions-groups";
       const done = new Set(read(doneKey, []));

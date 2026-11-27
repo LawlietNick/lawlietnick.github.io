@@ -11,6 +11,7 @@
 // Built-in FI/EN labels follow the nearest `lang`. Parts: data-part="button|status".
 
 import { ElementBase, define } from "./element.js";
+import { announce } from "./status.js";
 
 const STRINGS = {
   en: { copy: "Copy", done: "Copied", fail: "Try again" },
@@ -62,13 +63,11 @@ export function bindCopy(button, { text = "", quiet = false, label } = {}) {
       if (!button.dataset.state) button.dataset.idle = idle; // remember the label once, not "Copied"
       button.textContent = message;
       button.dataset.state = ok ? "done" : "fail";
-      // VoiceOver skips a repeat of the previous message, so make repeats differ
-      status.textContent = status.dataset.last === message ? `${message} ` : message;
-      status.dataset.last = status.textContent;
+      announce(status, message);
       timer = setTimeout(() => {
         button.textContent = button.dataset.idle;
         delete button.dataset.state;
-        status.textContent = "";
+        announce(status, "");
       }, 1500);
     }
     button.dispatchEvent(new CustomEvent("k-copy", { bubbles: true, detail: { ok, text: value } }));

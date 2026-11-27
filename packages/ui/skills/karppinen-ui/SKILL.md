@@ -9,7 +9,7 @@ The SDK is unstyled behaviour: keyboard, focus, ARIA and FI/EN strings. Reach fo
 
 ## Read first
 
-- The API is each module's header comment and its `.d.ts` file (`copy`, `dialog`, `disclosure`, `listbox`, `tabs`, `toggle-group`). Read only the modules the task needs.
+- The API is each module's header comment and its `.d.ts` file: elements `copy`, `dialog`, `disclosure`, `listbox`, `tabs`, `toggle-group`; helpers `status` (live-region messages), `storage` (localStorage that never throws), `download` (save a file). Read only the modules the task needs.
 - `README.md` in the package lists the modules, events and the Astro wrappers.
 
 ## Pick the form
@@ -25,6 +25,7 @@ Import the single module (`@karppinen/ui/tabs`) in pages that need one element, 
 - **Default look.** `@karppinen/ui/ui.css` styles the `<k-*>` elements in the karppinen.one style inside `@layer k-ui`; the project's unlayered rules win. Tune it with the `--k-*` properties. It leaves `bind*()` markup alone.
 - **Name every control.** A visible label, `label` attribute or `aria-label`. People on screen readers and agents both find controls by name.
 - **Language from `lang`.** Built-in strings follow the nearest `lang`; set it on the element or an ancestor for Finnish.
+- **Messages through `announce`.** Status text goes into an existing live region with `announce(region, text)` (or `nextMessage` in React state), so a repeated message is still read.
 - **Changes from code are silent.** `select()` and `value =` never fire `onSelect`, `onPress` or `change`; update dependent state yourself.
 
 ## Test it

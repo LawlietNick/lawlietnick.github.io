@@ -5,6 +5,8 @@ export interface BindDialogOptions {
   closeOnBackdrop?: boolean;
   /** Non-native dialogs only: elements made inert while open. */
   inertRoots?: HTMLElement[];
+  /** Keep Tab inside the dialog (default: true for non-native dialogs, false for <dialog>). */
+  trapFocus?: boolean;
   /** Runs on every open and close. */
   onToggle?: (open: boolean) => void;
 }

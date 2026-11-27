@@ -1,3 +1,6 @@
+import { bindDialog } from "../../packages/ui/dialog.js";
+import { announce } from "../../packages/ui/status.js";
+
 type Point = { x: number; y: number };
 let dispose: (() => void) | undefined;
 
@@ -24,7 +27,6 @@ export function enhanceImageModal(root: HTMLElement) {
   const controller = new AbortController();
   const { signal } = controller;
   const pointers = new Map<number, Point>();
-  let opener: HTMLAnchorElement | undefined;
   let loaded = false;
   let locked = false;
   let scrollY = 0;
@@ -74,7 +76,8 @@ export function enhanceImageModal(root: HTMLElement) {
     render();
   }
 
-  function unlock(restoreFocus: boolean) {
+  // The page stays where it was under the dialog; focus goes back to the link through bindDialog.
+  function unlock() {
     if (!locked) return;
     locked = false;
     pointers.clear();
@@ -82,20 +85,25 @@ export function enhanceImageModal(root: HTMLElement) {
     document.documentElement.classList.remove("image-modal-open");
     root.style.top = previousTop;
     window.scrollTo({ top: scrollY, behavior: "instant" });
-    if (restoreFocus && opener?.isConnected) opener.focus({ preventScroll: true });
   }
+
+  const modal = bindDialog(dialog, {
+    initialFocus: () => closeButton,
+    closeOnBackdrop: false,
+    trapFocus: true,
+    onToggle: (isOpen) => { if (!isOpen) unlock(); },
+  });
 
   function open(link: HTMLAnchorElement) {
     const figure = link.closest("figure");
     const thumb = link.querySelector("img") ?? figure?.querySelector("img");
-    opener = link;
     loaded = false;
     zoom = 1;
     x = y = 0;
     image.hidden = true;
     image.alt = thumb?.alt ?? link.textContent?.trim() ?? "";
     caption.textContent = figure?.dataset.imageCaption ?? link.dataset.imageCaption ?? image.alt;
-    status.textContent = dialog!.dataset.loading!;
+    announce(status, dialog!.dataset.loading!);
     original.hidden = true;
     original.href = link.href;
     scrollY = window.scrollY;
@@ -104,8 +112,7 @@ export function enhanceImageModal(root: HTMLElement) {
     root.style.top = `-${scrollY}px`;
     document.documentElement.classList.add("image-modal-open");
     render();
-    dialog!.showModal();
-    closeButton.focus({ preventScroll: true });
+    modal.open(link);
     image.src = link.href;
   }
 
@@ -146,33 +153,20 @@ export function enhanceImageModal(root: HTMLElement) {
     if (!dialog.open) return;
     loaded = true;
     image.hidden = false;
-    status.textContent = "";
+    announce(status, "");
     fit();
   }, { signal });
   image.addEventListener("error", () => {
     if (!dialog.open) return;
     loaded = false;
     image.hidden = true;
-    status.textContent = dialog.dataset.error!;
+    announce(status, dialog.dataset.error!);
     original.hidden = false;
     render();
   }, { signal });
-  closeButton.addEventListener("click", () => dialog.close(), { signal });
-  dialog.addEventListener("close", () => unlock(true), { signal });
-  dialog.addEventListener("keydown", (event) => {
-    if (event.key !== "Tab") return;
-    const controls = [...dialog.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], [tabindex="0"]')]
-      .filter((element) => element.getClientRects().length && !element.closest("[hidden]"));
-    const first = controls[0];
-    const last = controls[controls.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last?.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first?.focus();
-    }
-  }, { signal });
+  if (!("commandForElement" in HTMLButtonElement.prototype)) {
+    closeButton.addEventListener("click", () => dialog.close(), { signal });
+  }
   zoomIn.addEventListener("click", () => setZoom(zoom * 1.5), { signal });
   zoomOut.addEventListener("click", () => setZoom(zoom / 1.5), { signal });
   fitButton.addEventListener("click", fit, { signal });
@@ -238,8 +232,8 @@ export function enhanceImageModal(root: HTMLElement) {
   const observer = new ResizeObserver(() => { if (dialog.open) fit(); });
   observer.observe(viewport);
   dispose = () => {
-    if (dialog.open) dialog.close();
-    unlock(false);
+    modal.close({ restoreFocus: false });
+    unlock();
     observer.disconnect();
     controller.abort();
   };

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { buildGa4ReportUrl, compactValues, isPropertySpecificField, normalizeCustomDimensions, reportErrors, type FilterType, type ReportConfig } from "./engine";
 import "./ga4-report-builder.css";
 import { copyText } from "../../../packages/ui/copy.js";
+import { nextMessage } from "../../../packages/ui/status.js";
 
 type FieldOption = { value: string; label: string; custom?: boolean };
 type Template = Omit<ReportConfig, "propertyId"> & { id: string; description: string };
@@ -211,7 +212,9 @@ export default function Ga4ReportBuilder() {
   const [metricSlots, setMetricSlots] = useState([...TEMPLATES[0].metrics, ...EMPTY_METRICS].slice(0, 12));
   const [customDimensions, setCustomDimensions] = useState("");
   const [customMetrics, setCustomMetrics] = useState("");
-  const [status, setStatus] = useState("Choose a template or customize every setting.");
+  const [status, setStatusText] = useState("Choose a template or customize every setting.");
+  // a repeated message (copy twice) must still reach screen readers
+  const setStatus = (text: string) => setStatusText((previous) => nextMessage(previous, text));
 
   const enteredCustomDimensions = normalizeCustomDimensions(customDimensions.split(","));
   const dimensions = compactValues(dimensionSlots, enteredCustomDimensions);

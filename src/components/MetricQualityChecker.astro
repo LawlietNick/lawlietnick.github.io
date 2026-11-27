@@ -337,6 +337,7 @@ let questionNumber = 0;
 <script>
   import { assessMetric } from "../utils/metric-quality.js";
   import { bindCopy } from "../../packages/ui/copy.js";
+  import { announce } from "../../packages/ui/status.js";
 
   const initializeMetricCheckers = () => {
     document.querySelectorAll("[data-metric-checker]").forEach((checker) => {
@@ -469,7 +470,7 @@ let questionNumber = 0;
       });
       const copied = ({ detail: { ok, text } }, link = false) => {
         if (ok && link) history.replaceState(null, "", text);
-        el("[data-copy-status]").textContent = ok ? copy.copied : copy.copyError;
+        announce(el("[data-copy-status]"), ok ? copy.copied : copy.copyError);
       };
       bindCopy(el("[data-copy-summary]"), { text: buildSummary, quiet: true });
       bindCopy(el("[data-copy-link]"), { text: buildLink, quiet: true });
