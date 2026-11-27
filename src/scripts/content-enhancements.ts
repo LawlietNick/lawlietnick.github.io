@@ -1,4 +1,5 @@
 import { bindCopy } from "../../packages/ui/copy.js";
+import { mermaidConfig } from "../utils/mermaid-config.js";
 
 // Loaded only when Base finds content that needs enhancement.
 const enhancedRoots = new WeakSet<HTMLElement>();
@@ -108,33 +109,12 @@ export function enhanceContent(root: HTMLElement) {
   });
 
   const renderMermaidDiagrams = async () => {
+    // fallback only: published diagrams arrive pre-rendered (npm run mermaid)
     const nodes = [...root.querySelectorAll<HTMLPreElement>('pre[data-language="mermaid"]:not([data-processed])')];
     if (!nodes.length) return;
 
     const { default: mermaid } = await import("mermaid");
-    mermaid.initialize({
-      startOnLoad: false,
-      securityLevel: "strict",
-      theme: "base",
-      look: "classic",
-      layout: "dagre",
-      themeVariables: {
-        background: "#1C1921",
-        fontFamily: '"Roboto Flex", system-ui, sans-serif',
-        fontSize: "16px",
-        lineColor: "#D8D1E0",
-        primaryColor: "#27232D",
-        primaryTextColor: "#F7F4FA",
-        primaryBorderColor: "#AE8EFF",
-        clusterBkg: "#1C1921",
-        clusterBorder: "#AE8EFF",
-      },
-      flowchart: {
-        curve: "basis",
-        nodeSpacing: 28,
-        rankSpacing: 34,
-      },
-    });
+    mermaid.initialize(mermaidConfig);
     for (const [index, node] of nodes.entries()) {
       if (!node.isConnected) return; // Navigation may finish while Mermaid loads.
       try {

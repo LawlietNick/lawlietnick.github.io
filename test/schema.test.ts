@@ -169,7 +169,7 @@ test("About pages are ProfilePages whose mainEntity is the shared person", () =>
     assert.equal("about" in page, false);
     assert.deepEqual(page.mainEntity, PERSON);
     assert.equal(page.inLanguage, language);
-    assert.equal(page.dateModified, `${siteConfig.person.profileDateModified}T00:00:00+03:00`);
+    assert.equal(page.dateModified, isoDate(siteConfig.person.profileDateModified));
     assert.equal("potentialAction" in page, false);
   }
 });

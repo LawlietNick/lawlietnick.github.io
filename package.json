@@ -6,6 +6,7 @@
     "build": "astro build && npm run validate:content && npm run validate:classification",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "mermaid": "node scripts/render-mermaid.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "validate:classification": "node scripts/validate-page-classification.mjs",
     "preview": "astro preview"

@@ -57,6 +57,7 @@ The dev server runs at `http://localhost:4321/`.
 | `npm test` | Unit tests (vitest) |
 | `npm run test:e2e` | Playwright browser tests |
 | `npm run validate:content` | Check frontmatter and EN↔FI translation links |
+| `npm run mermaid` | Pre-render ```` ```mermaid ```` diagrams to SVG (`src/data/mermaid-svg.json`); run after adding or editing one, and when publishing a draft that has one |
 
 ## Project structure
 
